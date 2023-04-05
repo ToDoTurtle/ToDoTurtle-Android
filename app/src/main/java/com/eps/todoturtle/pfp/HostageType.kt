@@ -8,7 +8,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 enum class HostageType : Parcelable {
     SELF_HOSTAGE,
-    FIRE_HOSTAGE;
+    FIRE_HOSTAGE,
+    ;
 
     fun getString(context: Context): String {
         return when (this) {
