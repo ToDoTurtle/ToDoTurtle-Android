@@ -7,4 +7,9 @@
     <!--    Hostage types    -->
     <string name="self_hosted">Self-hosted</string>
     <string name="firebase">Firebase hosting</string>
+
+    <!--    Image options    -->
+    <string name="chosen_image">Chosen image</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
 </resources>
