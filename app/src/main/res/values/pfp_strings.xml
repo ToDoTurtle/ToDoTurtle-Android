@@ -1,0 +1,10 @@
+<resources>
+    <string name="profile_picture_desc">Profile picture</string>
+    <string name="sign_out">Sign out</string>
+    <string name="username">Username</string>
+    <string name="hostage">Hostage type</string>
+
+    <!--    Hostage types    -->
+    <string name="self_hosted">Self-hosted</string>
+    <string name="firebase">Firebase hosting</string>
+</resources>
