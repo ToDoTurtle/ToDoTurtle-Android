@@ -1,5 +1,6 @@
 # Built application files
 *.apk
+*.aar
 *.ap_
 *.aab
 
@@ -12,7 +13,6 @@
 # Generated files
 .externalNativeBuild/
 .cxx/
-*.apk
 output.json
 bin/
 gen/
@@ -22,6 +22,7 @@ render.experimental.xml
 # release/
 
 # Gradle files
+.gradle/
 build/
 
 # Local configuration file (sdk path, etc)
@@ -42,9 +43,19 @@ captures/
 # IntelliJ
 .idea/*
 
-# Version control
-vcs.xml
-
 # Keystore files
+# Uncomment the following lines if you do not want to check your keystore files in.
 *.jks
 *.keystore
+
+#  Uncomment the following line in case you need and you don't have the release build type files in your app
+release/
+
+# External native build folder generated in Android Studio 2.2 and later
+.externalNativeBuild
+
+# Google Services (e.g. APIs or Firebase)
+# google-services.json
+
+# Version control
+vcs.xml
