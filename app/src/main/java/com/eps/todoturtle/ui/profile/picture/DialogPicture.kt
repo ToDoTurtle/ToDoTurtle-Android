@@ -24,7 +24,7 @@ fun DialogPicture(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxWidth(0.5f)
+            .fillMaxWidth(fraction = 0.5f)
             .padding(top = 20.dp)
             .height(150.dp),
     ) {

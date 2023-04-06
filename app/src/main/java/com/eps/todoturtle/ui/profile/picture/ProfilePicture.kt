@@ -29,7 +29,7 @@ fun ProfilePicture(
 
     Box(
         modifier = Modifier
-            .fillMaxWidth(0.5f)
+            .fillMaxWidth(fraction = 0.5f)
             .height(200.dp)
             .padding(top = 30.dp),
     ) {

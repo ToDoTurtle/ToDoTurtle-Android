@@ -91,8 +91,9 @@ private fun DialogOptions(
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
         it?.let {
             val bitmap: Bitmap?
-            if (Build.VERSION.SDK_INT < 28) {
-                @Suppress("DEPRECATION") // It was deprecated in API 29, the alternative was introduced in API 28. The check is already done.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                @Suppress("DEPRECATION")
+                // It was deprecated in API 29, the alternative was introduced in API 28. The check is already done.
                 bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
                 tempChosenImage.value = bitmap
             } else {

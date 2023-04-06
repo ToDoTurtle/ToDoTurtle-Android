@@ -7,7 +7,11 @@ import androidx.compose.runtime.MutableState
 import androidx.core.content.ContextCompat
 import com.eps.todoturtle.exceptions.DrawableNotFoundException
 
-data class ProfileDetails(var username: MutableState<String>, val hostage: MutableState<HostageType>, val profilePicture: MutableState<Bitmap>) {
+data class ProfileDetails(
+    var username: MutableState<String>,
+    val hostage: MutableState<HostageType>,
+    val profilePicture: MutableState<Bitmap>,
+) {
     companion object {
         fun bitmapFrom(drawableId: Int, context: Context): Bitmap {
             val drawable = ContextCompat.getDrawable(context, drawableId)
