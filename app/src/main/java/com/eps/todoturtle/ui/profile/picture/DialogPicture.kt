@@ -13,6 +13,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
@@ -36,8 +37,9 @@ fun DialogPicture(
         ) {
             Image(
                 bitmap = bitmap.asImageBitmap(),
-                modifier = Modifier.size(400.dp),
                 contentDescription = stringResource(id = R.string.profile_picture_desc),
+                modifier = Modifier.size(400.dp),
+                contentScale = ContentScale.Crop,
             )
         }
     }

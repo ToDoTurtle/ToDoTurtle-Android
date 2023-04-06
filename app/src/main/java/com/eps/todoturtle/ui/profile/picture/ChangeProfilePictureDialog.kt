@@ -48,7 +48,6 @@ fun ChangeProfilePictureDialog(
         shouldShowDialog.value = false
         profilePicture.value = tempChosenImage.value
     }) {
-        // TODO: Set the temporary chosen image to the profile picture
         Card(
             modifier = Modifier
                 .width(300.dp)
