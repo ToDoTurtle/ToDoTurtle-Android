@@ -1,7 +1,6 @@
 package com.eps.todoturtle.ui.profile.picture
 
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.provider.MediaStore
@@ -34,7 +33,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.core.content.ContextCompat
 import com.eps.todoturtle.R
 
 @Composable
@@ -42,7 +40,7 @@ fun ChangeProfilePictureDialog(
     shouldShowDialog: MutableState<Boolean>,
     profilePicture: MutableState<Bitmap>,
 ) {
-    val tempChosenImage = remember { mutableStateOf(profilePicture.value)}
+    val tempChosenImage = remember { mutableStateOf(profilePicture.value) }
 
     Dialog(onDismissRequest = {
         shouldShowDialog.value = false
@@ -82,7 +80,7 @@ private fun DialogTitle() {
 
 @Composable
 private fun DialogOptions(
-    tempChosenImage: MutableState<Bitmap>
+    tempChosenImage: MutableState<Bitmap>,
 ) {
     val context = LocalContext.current
 
@@ -94,7 +92,7 @@ private fun DialogOptions(
         it?.let {
             val bitmap: Bitmap?
             if (Build.VERSION.SDK_INT < 28) {
-                @Suppress("DEPRECATION")  // It was deprecated in API 29, the alternative was introduced in API 28. The check is already done.
+                @Suppress("DEPRECATION") // It was deprecated in API 29, the alternative was introduced in API 28. The check is already done.
                 bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
                 tempChosenImage.value = bitmap
             } else {
