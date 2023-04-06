@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.eps.todoturtle.ui
+package com.eps.todoturtle.ui.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,17 +15,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.HostageType
 import com.eps.todoturtle.profile.ProfileDetails
-import com.eps.todoturtle.ui.profile.HostageTypeProfileField
-import com.eps.todoturtle.ui.profile.SignOutProfileButton
-import com.eps.todoturtle.ui.profile.UsernameProfileField
 import com.eps.todoturtle.ui.profile.picture.ProfilePicture
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
@@ -34,12 +33,12 @@ fun ProfileUI(
     profileDetails: ProfileDetails = ProfileDetails(
         mutableStateOf("Mock username"),
         mutableStateOf(HostageType.FIRE_HOSTAGE),
-        mutableStateOf(R.drawable.stickman2_pfp),
+        mutableStateOf(ProfileDetails.bitmapFrom(R.drawable.stickman2_pfp, LocalContext.current)),
     ), // FIXME: Mock data
 ) {
     val remUsername = rememberSaveable { profileDetails.username }
     val remHostageType = rememberSaveable { profileDetails.hostage }
-    val remProfilePicture by rememberSaveable { profileDetails.profilePicture }
+    val remProfilePicture = remember { profileDetails.profilePicture }
     ToDoTurtleTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),

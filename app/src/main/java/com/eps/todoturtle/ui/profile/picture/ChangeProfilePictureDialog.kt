@@ -40,17 +40,14 @@ import com.eps.todoturtle.R
 @Composable
 fun ChangeProfilePictureDialog(
     shouldShowDialog: MutableState<Boolean>,
-    profilePicture: Int,
+    profilePicture: MutableState<Bitmap>,
 ) {
-    val context = LocalContext.current
-    val db = ContextCompat.getDrawable(context, profilePicture)
-    val bit = Bitmap.createBitmap(db!!.intrinsicWidth, db.intrinsicHeight, Bitmap.Config.ARGB_8888)
-    val canvas = Canvas(bit)
-    db.setBounds(0, 0, canvas.width, canvas.height)
-    db.draw(canvas)
-    val tempChosenImage = remember { mutableStateOf(bit!!)}
+    val tempChosenImage = remember { mutableStateOf(profilePicture.value)}
 
-    Dialog(onDismissRequest = { shouldShowDialog.value = false }) {
+    Dialog(onDismissRequest = {
+        shouldShowDialog.value = false
+        profilePicture.value = tempChosenImage.value
+    }) {
         // TODO: Set the temporary chosen image to the profile picture
         Card(
             modifier = Modifier
