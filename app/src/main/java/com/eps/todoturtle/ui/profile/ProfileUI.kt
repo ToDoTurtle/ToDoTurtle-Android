@@ -34,7 +34,7 @@ fun ProfileUI(
         mutableStateOf("Mock username"),
         mutableStateOf(HostageType.FIRE_HOSTAGE),
         mutableStateOf(ProfileDetails.bitmapFrom(R.drawable.stickman2_pfp, LocalContext.current)),
-    ), // FIXME: Mock data
+    ), // FIXME: Remove me, this is just for testing
 ) {
     val remUsername = rememberSaveable { profileDetails.username }
     val remHostageType = rememberSaveable { profileDetails.hostage }
