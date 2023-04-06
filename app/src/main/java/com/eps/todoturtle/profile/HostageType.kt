@@ -1,4 +1,4 @@
-package com.eps.todoturtle.pfp
+package com.eps.todoturtle.profile
 
 import android.content.Context
 import android.os.Parcelable

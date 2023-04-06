@@ -1,4 +1,4 @@
-package com.eps.todoturtle.pfp
+package com.eps.todoturtle.profile
 
 import androidx.compose.runtime.MutableState
 

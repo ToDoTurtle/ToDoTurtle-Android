@@ -1,5 +1,13 @@
 package com.eps.todoturtle.ui.profile.picture
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.ImageDecoder
+import android.os.Build
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,14 +23,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.content.ContextCompat
 import com.eps.todoturtle.R
 
 @Composable
@@ -30,7 +42,16 @@ fun ChangeProfilePictureDialog(
     shouldShowDialog: MutableState<Boolean>,
     profilePicture: Int,
 ) {
+    val context = LocalContext.current
+    val db = ContextCompat.getDrawable(context, profilePicture)
+    val bit = Bitmap.createBitmap(db!!.intrinsicWidth, db.intrinsicHeight, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bit)
+    db.setBounds(0, 0, canvas.width, canvas.height)
+    db.draw(canvas)
+    val tempChosenImage = remember { mutableStateOf(bit!!)}
+
     Dialog(onDismissRequest = { shouldShowDialog.value = false }) {
+        // TODO: Set the temporary chosen image to the profile picture
         Card(
             modifier = Modifier
                 .width(300.dp)
@@ -40,9 +61,9 @@ fun ChangeProfilePictureDialog(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Picture(profilePicture)
+                DialogPicture(tempChosenImage.value)
                 DialogTitle()
-                DialogOptions()
+                DialogOptions(tempChosenImage)
             }
         }
     }
@@ -64,7 +85,30 @@ private fun DialogTitle() {
 }
 
 @Composable
-private fun DialogOptions() {
+private fun DialogOptions(
+    tempChosenImage: MutableState<Bitmap>
+) {
+    val context = LocalContext.current
+
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) {
+        it?.let { tempChosenImage.value = it }
+    }
+
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        it?.let {
+            val bitmap: Bitmap?
+            if (Build.VERSION.SDK_INT < 28) {
+                @Suppress("DEPRECATION")  // It was deprecated in API 29, the alternative was introduced in API 28. The check is already done.
+                bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
+                tempChosenImage.value = bitmap
+            } else {
+                val source = ImageDecoder.createSource(context.contentResolver, it)
+                bitmap = ImageDecoder.decodeBitmap(source)
+            }
+            bitmap?.let { tempChosenImage.value = bitmap }
+        }
+    }
+
     Row(
         Modifier
             .fillMaxWidth()
@@ -72,8 +116,12 @@ private fun DialogOptions() {
             .background(color = MaterialTheme.colorScheme.onPrimary),
         horizontalArrangement = Arrangement.SpaceAround,
     ) {
-        DialogTextButton(R.string.camera) {}
-        DialogTextButton(R.string.gallery) { }
+        DialogTextButton(R.string.camera) {
+            cameraLauncher.launch()
+        }
+        DialogTextButton(R.string.gallery) {
+            galleryLauncher.launch("image/*")
+        }
     }
 }
 

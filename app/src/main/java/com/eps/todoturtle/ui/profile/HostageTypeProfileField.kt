@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.pfp.HostageType
+import com.eps.todoturtle.profile.HostageType
 
 @Composable
 fun HostageTypeProfileField(

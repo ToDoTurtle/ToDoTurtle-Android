@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.pfp.HostageType
-import com.eps.todoturtle.pfp.ProfileDetails
+import com.eps.todoturtle.profile.HostageType
+import com.eps.todoturtle.profile.ProfileDetails
 import com.eps.todoturtle.ui.profile.HostageTypeProfileField
 import com.eps.todoturtle.ui.profile.SignOutProfileButton
 import com.eps.todoturtle.ui.profile.UsernameProfileField
