@@ -531,10 +531,9 @@ style:
     includeLineWrapping: false
   ForbiddenComment:
     active: true
-    values:
+    values: # Allow TODOs
       - 'FIXME:'
       - 'STOPSHIP:'
-      - 'TODO:'
     allowedPatterns: ''
     customMessage: ''
   ForbiddenImport:
