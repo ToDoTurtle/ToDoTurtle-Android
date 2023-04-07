@@ -1,4 +1,4 @@
-package com.eps.todoturtle.ui.profile
+package com.eps.todoturtle.ui.profile.shared
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -12,20 +12,21 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.eps.todoturtle.R
 
 @Composable
-fun UsernameProfileField(
+fun OutlinedText(
     username: MutableState<String>,
+    label: Int,
+    topPadding: Int,
 ) {
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
-        modifier = Modifier.padding(top = 15.dp),
+        modifier = Modifier.padding(top = topPadding.dp),
         value = username.value,
         onValueChange = { username.value = it },
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-        label = { Text(stringResource(id = R.string.username)) },
+        label = { Text(stringResource(id = label)) },
     )
 }

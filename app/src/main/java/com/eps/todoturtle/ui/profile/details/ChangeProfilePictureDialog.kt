@@ -1,4 +1,4 @@
-package com.eps.todoturtle.ui.profile.picture
+package com.eps.todoturtle.ui.profile.details.picture
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
+import com.eps.todoturtle.ui.profile.shared.CenteredPicture
 
 @Composable
 fun ChangeProfilePictureDialog(
@@ -55,7 +56,11 @@ fun ChangeProfilePictureDialog(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                DialogPicture(tempChosenImage.value)
+                CenteredPicture(
+                    bitmap = tempChosenImage.value,
+                    description = R.string.profile_picture_desc,
+                    size = 150,
+                    paddingTop = 20)
                 DialogTitle()
                 DialogOptions(tempChosenImage)
             }
@@ -84,9 +89,10 @@ private fun DialogOptions(
 ) {
     val context = LocalContext.current
 
-    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) {
-        it?.let { tempChosenImage.value = it }
-    }
+    val cameraLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) {
+            it?.let { tempChosenImage.value = it }
+        }
 
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
         it?.let {

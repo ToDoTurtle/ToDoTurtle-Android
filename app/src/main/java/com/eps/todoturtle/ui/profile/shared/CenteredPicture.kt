@@ -1,7 +1,8 @@
-package com.eps.todoturtle.ui.profile.picture
+package com.eps.todoturtle.ui.profile.shared
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,32 +13,35 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.eps.todoturtle.R
 
 @Composable
-fun DialogPicture(
+fun CenteredPicture(
     bitmap: Bitmap,
+    description: Int,
+    size: Int,
+    paddingTop: Int = 0,
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth(fraction = 0.5f)
-            .padding(top = 20.dp)
-            .height(150.dp),
+            .padding(top = paddingTop.dp)
+            .height(size.dp),
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(18.dp),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 8.dp,
             ),
         ) {
             Image(
                 bitmap = bitmap.asImageBitmap(),
-                contentDescription = stringResource(id = R.string.profile_picture_desc),
+                contentDescription = stringResource(id = description),
                 modifier = Modifier.size(400.dp),
                 contentScale = ContentScale.Crop,
             )
