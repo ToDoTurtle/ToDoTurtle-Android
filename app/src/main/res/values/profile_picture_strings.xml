@@ -16,4 +16,7 @@
     <!--    Login strings    -->
     <!--    FIXME: Move me onto separate file    -->
     <string name="login_picture_desc">Login picture</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="sign_in">Sign in</string>
 </resources>

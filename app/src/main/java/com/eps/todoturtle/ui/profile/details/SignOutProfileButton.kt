@@ -1,4 +1,4 @@
-package com.eps.todoturtle.ui.profile
+package com.eps.todoturtle.ui.profile.details
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.padding
