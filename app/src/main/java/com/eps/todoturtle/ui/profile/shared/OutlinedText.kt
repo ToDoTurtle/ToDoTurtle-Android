@@ -11,20 +11,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun OutlinedText(
-    username: MutableState<String>,
+    text: MutableState<String>,
     label: Int,
     topPadding: Int,
+    isPassword: Boolean = false,
 ) {
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
         modifier = Modifier.padding(top = topPadding.dp),
-        value = username.value,
-        onValueChange = { username.value = it },
+        value = text.value,
+        onValueChange = { text.value = it },
+        visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         label = { Text(stringResource(id = label)) },

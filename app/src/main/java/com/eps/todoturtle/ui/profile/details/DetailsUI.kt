@@ -11,7 +11,6 @@ import com.eps.todoturtle.extensions.bitmapFrom
 import com.eps.todoturtle.profile.HostageType
 import com.eps.todoturtle.profile.ProfileDetails
 import com.eps.todoturtle.ui.profile.HostageTypeProfileField
-import com.eps.todoturtle.ui.profile.SignOutProfileButton
 import com.eps.todoturtle.ui.profile.shared.OutlinedText
 import com.eps.todoturtle.ui.profile.shared.ProfileUI
 
