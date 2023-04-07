@@ -12,4 +12,8 @@
     <string name="chosen_image">Chosen image</string>
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
+
+    <!--    Login strings    -->
+    <!--    FIXME: Move me onto separate file    -->
+    <string name="login_picture_desc">Login picture</string>
 </resources>
