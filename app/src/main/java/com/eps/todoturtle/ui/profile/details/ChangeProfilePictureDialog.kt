@@ -42,10 +42,12 @@ fun ChangeProfilePictureDialog(
 ) {
     val tempChosenImage = remember { mutableStateOf(profilePicture.value) }
 
-    Dialog(onDismissRequest = {
-        shouldShowDialog.value = false
-        profilePicture.value = tempChosenImage.value
-    }) {
+    Dialog(
+        onDismissRequest = {
+            shouldShowDialog.value = false
+            profilePicture.value = tempChosenImage.value
+        },
+    ) {
         Card(
             modifier = Modifier
                 .width(300.dp)

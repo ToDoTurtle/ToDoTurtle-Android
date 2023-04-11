@@ -14,11 +14,14 @@ import com.eps.todoturtle.R
 fun SignOutProfileButton(
     navController: NavController,
 ) {
-    Button(onClick = {
-        navController.navigate("login") {
-            launchSingleTop = true
-        }
-    }, modifier = Modifier.padding(top = 15.dp)) {
+    Button(
+        onClick = {
+            navController.navigate("login") {
+                launchSingleTop = true
+            }
+        },
+        modifier = Modifier.padding(top = 15.dp),
+    ) {
         Text(text = stringResource(id = R.string.sign_out))
     }
 }

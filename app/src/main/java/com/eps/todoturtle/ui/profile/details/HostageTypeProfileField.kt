@@ -84,14 +84,17 @@ private fun HostageTypeDropdownItem(
     hostageType: MutableState<HostageType>,
     expandedDropdown: MutableState<Boolean>,
 ) {
-    DropdownMenuItem(text = {
-        Text(
-            text = type.getString(
-                LocalContext.current,
-            ),
-        )
-    }, onClick = {
-        hostageType.value = type
-        expandedDropdown.value = false
-    })
+    DropdownMenuItem(
+        text = {
+            Text(
+                text = type.getString(
+                    LocalContext.current,
+                ),
+            )
+        },
+        onClick = {
+            hostageType.value = type
+            expandedDropdown.value = false
+        }
+    )
 }
