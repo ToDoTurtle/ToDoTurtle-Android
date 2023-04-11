@@ -12,7 +12,6 @@ import com.eps.todoturtle.R
 import com.eps.todoturtle.extensions.bitmapFrom
 import com.eps.todoturtle.profile.HostageType
 import com.eps.todoturtle.profile.ProfileDetails
-import com.eps.todoturtle.ui.profile.HostageTypeProfileField
 import com.eps.todoturtle.ui.profile.shared.OutlinedText
 import com.eps.todoturtle.ui.profile.shared.ProfileUI
 
@@ -40,7 +39,7 @@ fun DetailsContent(
     val remProfilePicture = remember { profileDetails.profilePicture }
 
     ProfilePicture(remProfilePicture)
-    OutlinedText(remUsername, R.string.username, 15)
+    OutlinedText(remUsername, R.string.username, topPadding = 15)
     HostageTypeProfileField(remHostageType)
     SignOutProfileButton(navController)
 }

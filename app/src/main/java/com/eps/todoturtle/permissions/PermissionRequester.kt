@@ -66,8 +66,8 @@ internal fun Activity.openAppSettings() {
 @Composable
 fun RequestPermissionContext(
     permissionRequester: PermissionRequester,
-    Content: @Composable PermissionRequester.() -> Unit,
+    content: @Composable PermissionRequester.() -> Unit,
 ) {
     permissionRequester.SetUp()
-    permissionRequester.Content()
+    permissionRequester.content()
 }
