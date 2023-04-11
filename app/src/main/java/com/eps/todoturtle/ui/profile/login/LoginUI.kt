@@ -51,14 +51,14 @@ fun LoginContent(
         text = username,
         label = R.string.login_username,
         topPadding = 8,
-        error = wrongLogin.value,
+        error = wrongLogin,
     )
     OutlinedText(
         text = password,
         label = R.string.login_password,
         topPadding = 8,
         isPassword = true,
-        error = wrongLogin.value,
+        error = wrongLogin,
     )
     Button(
         onClick = {
