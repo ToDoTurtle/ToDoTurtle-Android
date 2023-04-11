@@ -6,6 +6,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.eps.todoturtle.R
 import com.eps.todoturtle.extensions.bitmapFrom
 import com.eps.todoturtle.profile.HostageType
@@ -16,6 +18,7 @@ import com.eps.todoturtle.ui.profile.shared.ProfileUI
 
 @Composable
 fun DetailsUI(
+    navController: NavController,
     profileDetails: ProfileDetails = ProfileDetails(
         mutableStateOf("Mock username"),
         mutableStateOf(HostageType.FIRE_HOSTAGE),
@@ -23,12 +26,13 @@ fun DetailsUI(
     ), // TODO: Remove me, this is just for testing
 ) {
     ProfileUI {
-        DetailsContent(profileDetails)
+        DetailsContent(navController, profileDetails)
     }
 }
 
 @Composable
 fun DetailsContent(
+    navController: NavController,
     profileDetails: ProfileDetails,
 ) {
     val remUsername = rememberSaveable { profileDetails.username }
@@ -38,11 +42,11 @@ fun DetailsContent(
     ProfilePicture(remProfilePicture)
     OutlinedText(remUsername, R.string.username, 15)
     HostageTypeProfileField(remHostageType)
-    SignOutProfileButton()
+    SignOutProfileButton(navController)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ProfileUIPreview() {
-    DetailsUI()
+    DetailsUI(rememberNavController())
 }

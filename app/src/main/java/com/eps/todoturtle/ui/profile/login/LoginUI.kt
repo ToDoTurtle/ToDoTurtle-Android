@@ -12,6 +12,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.eps.todoturtle.R
 import com.eps.todoturtle.extensions.bitmapFrom
 import com.eps.todoturtle.mock.MockValues
@@ -20,14 +22,17 @@ import com.eps.todoturtle.ui.profile.shared.OutlinedText
 import com.eps.todoturtle.ui.profile.shared.ProfileUI
 
 @Composable
-fun LoginUI() {
+fun LoginUI(
+    navController: NavController,
+) {
     ProfileUI {
-        LoginContent()
+        LoginContent(navController)
     }
 }
 
 @Composable
 fun LoginContent(
+    navController: NavController,
     login: (() -> Boolean)? = null
 ) {
     val context = LocalContext.current
@@ -35,8 +40,10 @@ fun LoginContent(
     val password = rememberSaveable { mutableStateOf("") }
     val loginMethod = login ?: {
         if (username.value == MockValues.USERNAME.getValue() && password.value == MockValues.PASSWORD.getValue()) {
-            // TODO: Redirect to home page
-            Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
+            // TODO: Redirect to home page, not profile details
+            navController.navigate("profile") {
+                launchSingleTop = true
+            }
             true
         } else {
             // TODO: Show wrong dialog
@@ -61,5 +68,5 @@ fun LoginContent(
 @Preview
 @Composable
 fun LoginUIPreview() {
-    LoginUI()
+    LoginUI(rememberNavController())
 }
