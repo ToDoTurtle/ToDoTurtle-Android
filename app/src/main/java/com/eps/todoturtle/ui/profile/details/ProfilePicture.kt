@@ -20,7 +20,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.ui.profile.details.picture.ChangeProfilePictureDialog
 
 @Composable
 fun ProfilePicture(
