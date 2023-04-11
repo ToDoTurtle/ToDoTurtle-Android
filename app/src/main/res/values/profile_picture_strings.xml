@@ -20,6 +20,6 @@
     <string name="login_password">Password</string>
     <string name="sign_in">Sign in</string>
     <string name="wrong_login_desc">Wrong login picture (cross)</string>
-    <string name="wrong_login">Wrong credentials</string>
+    <string name="wrong_credentials">Wrong credentials</string>
     <string name="dismiss">Dismiss</string>
 </resources>
