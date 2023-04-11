@@ -32,10 +32,9 @@ fun LoginUI(
 
 @Composable
 fun LoginContent(
-    navController: NavController,
-    login: (() -> Boolean)? = null
+    navController: NavController, login: (() -> Boolean)? = null
 ) {
-    val shouldShowWrongLogin = rememberSaveable { mutableStateOf(false)}
+    val wrongLogin = rememberSaveable { mutableStateOf(false) }
     val username = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
     val loginMethod = login ?: {
@@ -45,24 +44,37 @@ fun LoginContent(
     CenteredPicture(
         bitmap = bitmapFrom(R.drawable.cool_turtle, LocalContext.current),
         description = R.string.login_picture_desc,
-        paddingTop = 12,
-        size = 260)
-    OutlinedText(text = username, label = R.string.login_username, topPadding = 12)
-    OutlinedText(text = password, label = R.string.login_password, topPadding = 12, isPassword = true)
-    Button(onClick = {
-        if (loginMethod()) {
-            // TODO: Redirect to home page, not profile details
-            navController.navigate("profile") {
-                launchSingleTop = true
+        paddingTop = 8,
+        size = 260
+    )
+    OutlinedText(
+        text = username,
+        label = R.string.login_username,
+        topPadding = 8,
+        error = wrongLogin.value,
+    )
+    OutlinedText(
+        text = password,
+        label = R.string.login_password,
+        topPadding = 8,
+        isPassword = true,
+        error = wrongLogin.value,
+    )
+    Button(
+        onClick = {
+            if (loginMethod()) {
+                // TODO: Redirect to home page, not profile details
+                wrongLogin.value = false
+                navController.navigate("profile") {
+                    launchSingleTop = true
+                }
+            } else {
+                wrongLogin.value = true
             }
-        } else {
-            shouldShowWrongLogin.value = true
-        }
-    },
-        modifier = Modifier.padding(top = 12.dp)) {
+        }, modifier = Modifier.padding(top = 8.dp)
+    ) {
         Text(text = stringResource(id = R.string.sign_in))
     }
-    if (shouldShowWrongLogin.value) WrongLoginDialog(shouldShowWrongLogin)
 }
 
 @Preview
