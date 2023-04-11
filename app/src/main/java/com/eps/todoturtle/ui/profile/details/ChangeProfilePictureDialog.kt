@@ -1,4 +1,4 @@
-package com.eps.todoturtle.ui.profile.details.picture
+package com.eps.todoturtle.ui.profile.details
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
 import com.eps.todoturtle.ui.profile.shared.CenteredPicture
+import com.eps.todoturtle.ui.profile.shared.DialogTitle
 
 @Composable
 fun ChangeProfilePictureDialog(
@@ -61,26 +62,11 @@ fun ChangeProfilePictureDialog(
                     description = R.string.profile_picture_desc,
                     size = 150,
                     paddingTop = 20)
-                DialogTitle()
+                DialogTitle(R.string.chosen_image)
                 DialogOptions(tempChosenImage)
             }
         }
     }
-}
-
-@Composable
-private fun DialogTitle() {
-    Text(
-        text = stringResource(id = R.string.chosen_image),
-        fontWeight = FontWeight.ExtraBold,
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 20.dp),
-        style = MaterialTheme.typography.headlineMedium,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-    )
 }
 
 @Composable

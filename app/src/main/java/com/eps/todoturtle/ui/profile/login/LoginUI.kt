@@ -1,8 +1,8 @@
 package com.eps.todoturtle.ui.profile.login
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -35,21 +35,11 @@ fun LoginContent(
     navController: NavController,
     login: (() -> Boolean)? = null
 ) {
-    val context = LocalContext.current
+    val shouldShowWrongLogin = rememberSaveable { mutableStateOf(false)}
     val username = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
     val loginMethod = login ?: {
-        if (username.value == MockValues.USERNAME.getValue() && password.value == MockValues.PASSWORD.getValue()) {
-            // TODO: Redirect to home page, not profile details
-            navController.navigate("profile") {
-                launchSingleTop = true
-            }
-            true
-        } else {
-            // TODO: Show wrong dialog
-            Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
-            false
-        }
+        username.value == MockValues.USERNAME.getValue() && password.value == MockValues.PASSWORD.getValue()
     }
 
     CenteredPicture(
@@ -59,10 +49,20 @@ fun LoginContent(
         size = 260)
     OutlinedText(text = username, label = R.string.login_username, topPadding = 12)
     OutlinedText(text = password, label = R.string.login_password, topPadding = 12, isPassword = true)
-    Button(onClick = { loginMethod() },
+    Button(onClick = {
+        if (loginMethod()) {
+            // TODO: Redirect to home page, not profile details
+            navController.navigate("profile") {
+                launchSingleTop = true
+            }
+        } else {
+            shouldShowWrongLogin.value = true
+        }
+    },
         modifier = Modifier.padding(top = 12.dp)) {
         Text(text = stringResource(id = R.string.sign_in))
     }
+    if (shouldShowWrongLogin.value) WrongLoginDialog(shouldShowWrongLogin)
 }
 
 @Preview
