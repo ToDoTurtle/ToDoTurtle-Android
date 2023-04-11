@@ -23,8 +23,8 @@ fun MainActivityUI() {
         ) {
             val navController = rememberNavController()
             NavHost(navController, startDestination = "login") {
-                composable("login") { LoginUI() }
-                composable("profile") { DetailsUI() }
+                composable("login") { LoginUI(navController) }
+                composable("profile") { DetailsUI(navController) }
             }
         }
     }

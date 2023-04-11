@@ -9,14 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.eps.todoturtle.R
 
 @Composable
-fun SignOutProfileButton() {
-    val context = LocalContext.current
-
+fun SignOutProfileButton(
+    navController: NavController,
+) {
     Button(onClick = {
-        Toast.makeText(context, "TODO: Sign out", Toast.LENGTH_SHORT).show()
+        navController.navigate("login") {
+            launchSingleTop = true
+        }
     }, modifier = Modifier.padding(top = 15.dp)) {
         Text(text = stringResource(id = R.string.sign_out))
     }
