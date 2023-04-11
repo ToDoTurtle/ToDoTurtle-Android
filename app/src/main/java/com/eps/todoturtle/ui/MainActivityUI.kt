@@ -7,6 +7,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.eps.todoturtle.ui.profile.details.DetailsUI
+import com.eps.todoturtle.ui.profile.login.LoginUI
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 @Composable
@@ -16,20 +21,17 @@ fun MainActivityUI() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            Greeting("Android")
+            val navController = rememberNavController()
+            NavHost(navController, startDestination = "login") {
+                composable("login") { LoginUI() }
+                composable("profile") { DetailsUI() }
+            }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    ToDoTurtleTheme {
-        Greeting("Android")
-    }
+    MainActivityUI()
 }
