@@ -36,6 +36,7 @@ fun OutlinedText(
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        singleLine = true,
         isError = error,
         trailingIcon = {
             if (error) Icon(Icons.Filled.Warning, "Error", tint = MaterialTheme.colorScheme.error)
