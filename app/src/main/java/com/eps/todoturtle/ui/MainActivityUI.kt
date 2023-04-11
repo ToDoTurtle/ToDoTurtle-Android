@@ -15,16 +15,14 @@ import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 @Composable
 fun MainActivityUI() {
-    ToDoTurtleTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background,
-        ) {
-            val navController = rememberNavController()
-            NavHost(navController, startDestination = "login") {
-                composable("login") { LoginUI(navController) }
-                composable("profile") { DetailsUI(navController) }
-            }
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background,
+    ) {
+        val navController = rememberNavController()
+        NavHost(navController, startDestination = "login") {
+            composable("login") { LoginUI(navController) }
+            composable("profile") { DetailsUI(navController) }
         }
     }
 }
@@ -32,5 +30,7 @@ fun MainActivityUI() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MainActivityUI()
+    ToDoTurtleTheme {
+        MainActivityUI()
+    }
 }
