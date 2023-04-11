@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DialogTitle(
-    textId: Int
+    textId: Int,
 ) {
     Text(
         text = stringResource(id = textId),

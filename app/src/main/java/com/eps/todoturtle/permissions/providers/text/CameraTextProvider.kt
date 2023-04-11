@@ -1,6 +1,6 @@
 package com.eps.todoturtle.permissions.providers.text
 
-class CameraTextProvider: PermissionTextProvider {
+class CameraTextProvider : PermissionTextProvider {
     override val isPermanentlyDeclined: String
         get() = """It seems you permanently declined permission to access your camera.
                 |You can go to app settings to grant it.

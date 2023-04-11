@@ -17,7 +17,7 @@ import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 @Composable
 fun ProfileUI(
-    Content: @Composable () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     ToDoTurtleTheme {
         Surface(
@@ -41,7 +41,7 @@ fun ProfileUI(
                         modifier = Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Content()
+                        content()
                     }
                 }
             }

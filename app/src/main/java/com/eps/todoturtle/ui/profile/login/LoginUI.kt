@@ -31,7 +31,8 @@ fun LoginUI(
 
 @Composable
 fun LoginContent(
-    navController: NavController, login: (() -> Boolean)? = null
+    navController: NavController,
+    login: (() -> Boolean)? = null,
 ) {
     val wrongLogin = rememberSaveable { mutableStateOf(false) }
     val username = rememberSaveable { mutableStateOf("") }
@@ -44,7 +45,7 @@ fun LoginContent(
         bitmap = bitmapFrom(R.drawable.cool_turtle, LocalContext.current),
         description = R.string.login_picture_desc,
         paddingTop = 8,
-        size = 260
+        size = 260,
     )
     OutlinedText(
         text = username,
@@ -70,7 +71,8 @@ fun LoginContent(
             } else {
                 wrongLogin.value = true
             }
-        }, modifier = Modifier.padding(top = 8.dp)
+        },
+        modifier = Modifier.padding(top = 8.dp),
     ) {
         Text(text = stringResource(id = R.string.sign_in))
     }

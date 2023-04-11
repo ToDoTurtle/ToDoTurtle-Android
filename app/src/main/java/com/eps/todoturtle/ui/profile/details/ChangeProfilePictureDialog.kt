@@ -29,8 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
@@ -61,7 +59,8 @@ fun ChangeProfilePictureDialog(
                     bitmap = tempChosenImage.value,
                     description = R.string.profile_picture_desc,
                     size = 150,
-                    paddingTop = 20)
+                    paddingTop = 20,
+                )
                 DialogTitle(R.string.chosen_image)
                 DialogOptions(tempChosenImage)
             }

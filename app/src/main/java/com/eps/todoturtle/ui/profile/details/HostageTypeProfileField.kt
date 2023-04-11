@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.eps.todoturtle.ui.profile
+package com.eps.todoturtle.ui.profile.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
