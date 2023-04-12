@@ -1,4 +1,4 @@
-package com.eps.todoturtle.permissions.providers.text
+package com.eps.todoturtle.permissions.logic.providers.text
 
 interface PermissionTextProvider {
     val isPermanentlyDeclined: String

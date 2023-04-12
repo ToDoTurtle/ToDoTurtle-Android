@@ -1,4 +1,4 @@
-package com.eps.todoturtle.ui.profile.details
+package com.eps.todoturtle.profile.ui.details
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -9,11 +9,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.eps.todoturtle.R
-import com.eps.todoturtle.extensions.bitmapFrom
-import com.eps.todoturtle.profile.HostageType
-import com.eps.todoturtle.profile.ProfileDetails
-import com.eps.todoturtle.ui.profile.shared.OutlinedText
-import com.eps.todoturtle.ui.profile.shared.ProfileUI
+import com.eps.todoturtle.profile.logic.HostageType
+import com.eps.todoturtle.profile.logic.ProfileDetails
+import com.eps.todoturtle.profile.ui.shared.OutlinedText
+import com.eps.todoturtle.profile.ui.shared.ProfileUI
+import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 
 @Composable
 fun DetailsUI(

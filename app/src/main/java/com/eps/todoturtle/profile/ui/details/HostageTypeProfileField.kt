@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.eps.todoturtle.ui.profile.details
+package com.eps.todoturtle.profile.ui.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.profile.HostageType
+import com.eps.todoturtle.profile.logic.HostageType
 
 @Composable
 fun HostageTypeProfileField(
@@ -95,6 +95,6 @@ private fun HostageTypeDropdownItem(
         onClick = {
             hostageType.value = type
             expandedDropdown.value = false
-        }
+        },
     )
 }

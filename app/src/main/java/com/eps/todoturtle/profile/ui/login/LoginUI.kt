@@ -1,4 +1,4 @@
-package com.eps.todoturtle.ui.profile.login
+package com.eps.todoturtle.profile.ui.login
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.eps.todoturtle.R
-import com.eps.todoturtle.extensions.bitmapFrom
 import com.eps.todoturtle.mock.MockValues
-import com.eps.todoturtle.ui.profile.shared.CenteredPicture
-import com.eps.todoturtle.ui.profile.shared.OutlinedText
-import com.eps.todoturtle.ui.profile.shared.ProfileUI
+import com.eps.todoturtle.profile.ui.shared.CenteredPicture
+import com.eps.todoturtle.profile.ui.shared.OutlinedText
+import com.eps.todoturtle.profile.ui.shared.ProfileUI
+import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 
 @Composable
 fun LoginUI(

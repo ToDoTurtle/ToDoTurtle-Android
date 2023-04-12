@@ -1,4 +1,4 @@
-package com.eps.todoturtle.permissions
+package com.eps.todoturtle.permissions.logic
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel

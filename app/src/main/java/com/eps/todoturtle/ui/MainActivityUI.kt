@@ -9,8 +9,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.eps.todoturtle.ui.profile.details.DetailsUI
-import com.eps.todoturtle.ui.profile.login.LoginUI
+import com.eps.todoturtle.profile.ui.details.DetailsUI
+import com.eps.todoturtle.profile.ui.login.LoginUI
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 @Composable

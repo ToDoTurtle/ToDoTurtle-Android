@@ -1,10 +1,10 @@
-package com.eps.todoturtle.extensions
+package com.eps.todoturtle.shared.logic.extensions
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.core.content.ContextCompat
-import com.eps.todoturtle.exceptions.DrawableNotFoundException
+import com.eps.todoturtle.shared.logic.exceptions.DrawableNotFoundException
 
 fun bitmapFrom(drawableId: Int, context: Context): Bitmap {
     val drawable = ContextCompat.getDrawable(context, drawableId)

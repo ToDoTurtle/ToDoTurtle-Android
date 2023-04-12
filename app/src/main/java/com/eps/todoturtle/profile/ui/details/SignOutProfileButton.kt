@@ -1,4 +1,4 @@
-package com.eps.todoturtle.ui.profile.details
+package com.eps.todoturtle.profile.ui.details
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button

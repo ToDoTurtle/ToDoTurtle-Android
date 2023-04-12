@@ -1,4 +1,4 @@
-package com.eps.todoturtle.permissions
+package com.eps.todoturtle.permissions.logic
 
 import android.app.Activity
 import android.content.Intent
@@ -9,7 +9,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.lifecycle.ViewModelProvider
-import com.eps.todoturtle.permissions.providers.PermissionProvider
+import com.eps.todoturtle.permissions.logic.providers.PermissionProvider
+import com.eps.todoturtle.permissions.ui.PermissionDialog
 
 class PermissionRequester(
     private val parentActivity: ComponentActivity,
