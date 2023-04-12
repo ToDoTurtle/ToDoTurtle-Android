@@ -1,7 +1,8 @@
-package com.eps.todoturtle.ui.profile.shared
+package com.eps.todoturtle.profile.ui.details
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -10,24 +11,27 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.R
 
 @Composable
-fun CenteredPicture(
-    bitmap: Bitmap,
-    description: Int,
-    size: Int,
-    paddingTop: Int = 0,
+fun ProfilePicture(
+    profilePicture: MutableState<Bitmap>,
 ) {
+    val shouldShowDialog = rememberSaveable { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxWidth(fraction = 0.5f)
-            .padding(top = paddingTop.dp)
-            .height(size.dp),
+            .height(200.dp)
+            .padding(top = 30.dp),
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -36,11 +40,12 @@ fun CenteredPicture(
             ),
         ) {
             Image(
-                bitmap = bitmap.asImageBitmap(),
-                contentDescription = stringResource(id = description),
-                modifier = Modifier.size(400.dp),
+                bitmap = profilePicture.value.asImageBitmap(),
+                contentDescription = stringResource(id = R.string.profile_picture_desc),
+                modifier = Modifier.clickable { shouldShowDialog.value = true }.size(400.dp),
                 contentScale = ContentScale.Crop,
             )
+            if (shouldShowDialog.value) ChangeProfilePictureDialog(shouldShowDialog, profilePicture)
         }
     }
 }

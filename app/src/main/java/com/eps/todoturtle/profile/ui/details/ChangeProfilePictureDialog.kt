@@ -1,4 +1,4 @@
-package com.eps.todoturtle.ui.profile.details
+package com.eps.todoturtle.profile.ui.details
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -32,8 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
-import com.eps.todoturtle.ui.profile.shared.CenteredPicture
-import com.eps.todoturtle.ui.profile.shared.DialogTitle
+import com.eps.todoturtle.profile.ui.shared.CenteredPicture
+import com.eps.todoturtle.profile.ui.shared.DialogTitle
 
 @Composable
 fun ChangeProfilePictureDialog(

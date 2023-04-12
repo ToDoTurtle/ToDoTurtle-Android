@@ -1,4 +1,4 @@
-package com.eps.todoturtle.ui.profile.shared
+package com.eps.todoturtle.profile.ui.shared
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

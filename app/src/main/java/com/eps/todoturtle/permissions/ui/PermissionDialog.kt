@@ -1,4 +1,4 @@
-package com.eps.todoturtle.permissions
+package com.eps.todoturtle.permissions.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.eps.todoturtle.permissions.providers.text.PermissionTextProvider
+import com.eps.todoturtle.permissions.logic.providers.text.PermissionTextProvider
 
 @Composable
 fun PermissionDialog(
