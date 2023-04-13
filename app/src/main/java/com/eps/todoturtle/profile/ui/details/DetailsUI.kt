@@ -17,6 +17,8 @@ import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 
 @Composable
 fun DetailsUI(
+    hasPermissions: () -> Boolean,
+    requestPermissions: () -> Unit,
     navController: NavController,
     profileDetails: ProfileDetails = ProfileDetails(
         mutableStateOf("Mock username"),
@@ -25,12 +27,19 @@ fun DetailsUI(
     ), // TODO: Remove me, this is just for testing
 ) {
     ProfileUI {
-        DetailsContent(navController, profileDetails)
+        DetailsContent(
+            hasPermissions = hasPermissions,
+            requestPermissions = requestPermissions,
+            navController = navController,
+            profileDetails = profileDetails,
+        )
     }
 }
 
 @Composable
 fun DetailsContent(
+    hasPermissions: () -> Boolean,
+    requestPermissions: () -> Unit,
     navController: NavController,
     profileDetails: ProfileDetails,
 ) {
@@ -38,7 +47,11 @@ fun DetailsContent(
     val remHostageType = rememberSaveable { profileDetails.hostage }
     val remProfilePicture = remember { profileDetails.profilePicture }
 
-    ProfilePicture(remProfilePicture)
+    ProfilePicture(
+        hasPermissions = hasPermissions,
+        requestPermissions = requestPermissions,
+        profilePicture = remProfilePicture,
+    )
     OutlinedText(remUsername, R.string.username, topPadding = 15)
     HostageTypeProfileField(remHostageType)
     SignOutProfileButton(navController)
@@ -47,5 +60,9 @@ fun DetailsContent(
 @Preview(showBackground = true)
 @Composable
 fun ProfileUIPreview() {
-    DetailsUI(rememberNavController())
+    DetailsUI(
+        hasPermissions = { true },
+        requestPermissions = {},
+        navController = rememberNavController(),
+    )
 }

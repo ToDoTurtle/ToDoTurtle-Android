@@ -37,6 +37,8 @@ import com.eps.todoturtle.profile.ui.shared.DialogTitle
 
 @Composable
 fun ChangeProfilePictureDialog(
+    hasPermissions: () -> Boolean,
+    requestPermissions: () -> Unit,
     shouldShowDialog: MutableState<Boolean>,
     profilePicture: MutableState<Bitmap>,
 ) {
@@ -64,7 +66,11 @@ fun ChangeProfilePictureDialog(
                     paddingTop = 20,
                 )
                 DialogTitle(R.string.chosen_image)
-                DialogOptions(tempChosenImage)
+                DialogOptions(
+                    hasPermissions = hasPermissions,
+                    requestPermissions = requestPermissions,
+                    tempChosenImage = tempChosenImage
+                )
             }
         }
     }
@@ -73,6 +79,8 @@ fun ChangeProfilePictureDialog(
 @Composable
 private fun DialogOptions(
     tempChosenImage: MutableState<Bitmap>,
+    hasPermissions: () -> Boolean,
+    requestPermissions: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -105,7 +113,7 @@ private fun DialogOptions(
         horizontalArrangement = Arrangement.SpaceAround,
     ) {
         DialogTextButton(R.string.camera) {
-            cameraLauncher.launch()
+            if (hasPermissions()) cameraLauncher.launch() else requestPermissions()
         }
         DialogTextButton(R.string.gallery) {
             galleryLauncher.launch("image/*")

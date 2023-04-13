@@ -23,6 +23,8 @@ import com.eps.todoturtle.R
 
 @Composable
 fun ProfilePicture(
+    hasPermissions: () -> Boolean,
+    requestPermissions: () -> Unit,
     profilePicture: MutableState<Bitmap>,
 ) {
     val shouldShowDialog = rememberSaveable { mutableStateOf(false) }
@@ -45,7 +47,12 @@ fun ProfilePicture(
                 modifier = Modifier.clickable { shouldShowDialog.value = true }.size(400.dp),
                 contentScale = ContentScale.Crop,
             )
-            if (shouldShowDialog.value) ChangeProfilePictureDialog(shouldShowDialog, profilePicture)
+            if (shouldShowDialog.value) ChangeProfilePictureDialog(
+                hasPermissions = hasPermissions,
+                requestPermissions = requestPermissions,
+                shouldShowDialog = shouldShowDialog,
+                profilePicture = profilePicture
+            )
         }
     }
 }
