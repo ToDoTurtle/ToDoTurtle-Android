@@ -47,12 +47,14 @@ fun ProfilePicture(
                 modifier = Modifier.clickable { shouldShowDialog.value = true }.size(400.dp),
                 contentScale = ContentScale.Crop,
             )
-            if (shouldShowDialog.value) ChangeProfilePictureDialog(
-                hasPermissions = hasPermissions,
-                requestPermissions = requestPermissions,
-                shouldShowDialog = shouldShowDialog,
-                profilePicture = profilePicture
-            )
+            if (shouldShowDialog.value) {
+                ChangeProfilePictureDialog(
+                    hasPermissions = hasPermissions,
+                    requestPermissions = requestPermissions,
+                    shouldShowDialog = shouldShowDialog,
+                    profilePicture = profilePicture,
+                )
+            }
         }
     }
 }

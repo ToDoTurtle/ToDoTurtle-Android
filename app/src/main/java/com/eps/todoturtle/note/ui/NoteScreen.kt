@@ -7,12 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 
 @Composable
 fun NoteScreen(
-    modifier: Modifier = Modifier,
     viewModel: NoteScreenViewModel,
 ) {
     var inHistory by rememberSaveable { mutableStateOf(false) }

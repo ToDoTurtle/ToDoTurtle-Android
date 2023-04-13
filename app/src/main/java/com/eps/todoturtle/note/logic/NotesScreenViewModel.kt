@@ -3,6 +3,8 @@ package com.eps.todoturtle.note.logic
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 
+private const val OFFSET = 100
+
 class NoteScreenViewModel : ViewModel() {
     private val _toDoNotes = getToDoNotes().toMutableStateList()
     private val _doneNotes = getDoneNotes().toMutableStateList()
@@ -25,14 +27,14 @@ class NoteScreenViewModel : ViewModel() {
 }
 
 private fun getToDoNotes() =
-    List(15) { i -> Note(i, "Note # $i", "This is the description of Note # $i") }
+    List(size = 15) { i -> Note(i, "Note # $i", "This is the description of Note # $i") }
 
 private fun getDoneNotes() =
-    List(15) { i ->
+    List(size = 15) { i ->
         Note(
-            i + 100,
-            "Note # ${i + 100}",
-            "This is the description of Note # ${i + 100}",
+            id = i + OFFSET,
+            title = "Note # ${i + OFFSET}",
+            description = "This is the description of Note # ${i + OFFSET}",
         )
     }
 

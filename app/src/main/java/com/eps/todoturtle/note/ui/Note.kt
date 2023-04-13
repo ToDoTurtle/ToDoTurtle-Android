@@ -35,7 +35,6 @@ import com.eps.todoturtle.ui.theme.inactiveOnPrimaryContainer
 
 @Composable
 fun Note(
-    modifier: Modifier = Modifier,
     note: Note,
     inHistory: Boolean,
     onCheckClick: () -> Unit = {},
@@ -43,7 +42,6 @@ fun Note(
     var isExpanded by remember { mutableStateOf(false) }
 
     NoteContainer(
-        isExpanded = isExpanded,
         onClick = { isExpanded = !isExpanded },
     ) {
         NoteHead(
@@ -57,7 +55,6 @@ fun Note(
 
 @Composable
 fun NoteContainer(
-    isExpanded: Boolean,
     onClick: () -> Unit,
     content: @Composable () -> Unit,
 ) {
@@ -99,7 +96,7 @@ fun NoteHead(
             checked = isChecked,
             onCheckedChange = { onCheckClick() },
             modifier = Modifier
-                .weight(0.1f)
+                .weight(weight = 0.1f)
                 .padding(end = 4.dp),
         )
         Text(
@@ -110,13 +107,13 @@ fun NoteHead(
                 textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
             ),
             modifier = Modifier
-                .weight(0.8f)
+                .weight(weight = 0.8f)
                 .padding(8.dp),
             textAlign = TextAlign.Start,
         )
         Column(
             modifier = Modifier
-                .weight(0.1f)
+                .weight(weight = 0.1f)
                 .padding(end = 4.dp),
         ) {
             NotificationsIcon(isActive = icons.hasNotifications)
@@ -150,10 +147,14 @@ data class NoteIcons(
 fun NfcIcon(isActive: Boolean) {
     val vectorResource = ImageVector.Companion.vectorResource(id = R.drawable.nfc)
     Icon(
-        modifier = Modifier.scale(0.9f),
+        modifier = Modifier.scale(scale = 0.9f),
         imageVector = vectorResource,
         contentDescription = "NFC",
-        tint = if (isActive) MaterialTheme.colorScheme.activeOnPrimaryContainer else MaterialTheme.colorScheme.inactiveOnPrimaryContainer,
+        tint = if (isActive) {
+            MaterialTheme.colorScheme.activeOnPrimaryContainer
+        } else {
+            MaterialTheme.colorScheme.inactiveOnPrimaryContainer
+        },
     )
 }
 
@@ -161,10 +162,14 @@ fun NfcIcon(isActive: Boolean) {
 fun NotificationsIcon(isActive: Boolean) {
     val vectorResource = ImageVector.Companion.vectorResource(id = R.drawable.notifications)
     Icon(
-        modifier = Modifier.scale(0.95f),
+        modifier = Modifier.scale(scale = 0.95f),
         imageVector = vectorResource,
         contentDescription = "Notifications",
-        tint = if (isActive) MaterialTheme.colorScheme.activeOnPrimaryContainer else MaterialTheme.colorScheme.inactiveOnPrimaryContainer,
+        tint = if (isActive) {
+            MaterialTheme.colorScheme.activeOnPrimaryContainer
+        } else {
+            MaterialTheme.colorScheme.inactiveOnPrimaryContainer
+        },
     )
 }
 
@@ -172,9 +177,13 @@ fun NotificationsIcon(isActive: Boolean) {
 fun DeadlineIcon(isActive: Boolean) {
     val vectorResource = ImageVector.Companion.vectorResource(id = R.drawable.deadline)
     Icon(
-        modifier = Modifier.scale(0.9f),
+        modifier = Modifier.scale(scale = 0.9f),
         imageVector = vectorResource,
         contentDescription = "Deadline",
-        tint = if (isActive) MaterialTheme.colorScheme.activeOnPrimaryContainer else MaterialTheme.colorScheme.inactiveOnPrimaryContainer,
+        tint = if (isActive) {
+            MaterialTheme.colorScheme.activeOnPrimaryContainer
+        } else {
+            MaterialTheme.colorScheme.inactiveOnPrimaryContainer
+        },
     )
 }

@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
 import com.eps.todoturtle.permissions.logic.providers.CameraPermissionProvider
@@ -31,7 +30,6 @@ class MainActivity : ComponentActivity() {
 
         permissionRequester = PermissionRequester(this, permissionsToRequest)
 
-        val viewModel = NoteScreenViewModel()
         setContent {
             ToDoTurtleTheme {
                 Surface(

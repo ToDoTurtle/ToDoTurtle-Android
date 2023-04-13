@@ -15,10 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.eps.todoturtle.note.logic.Note
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteList(
-    modifier: Modifier = Modifier,
     notes: List<Note>,
     inHistory: Boolean,
     onCheckClick: (Note) -> Unit,
@@ -46,7 +45,6 @@ fun NoteList(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NoteListContainer(
-    modifier: Modifier = Modifier,
     inHistory: Boolean,
     content: @Composable () -> Unit,
 ) {

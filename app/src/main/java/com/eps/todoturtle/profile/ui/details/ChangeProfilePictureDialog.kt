@@ -69,7 +69,7 @@ fun ChangeProfilePictureDialog(
                 DialogOptions(
                     hasPermissions = hasPermissions,
                     requestPermissions = requestPermissions,
-                    tempChosenImage = tempChosenImage
+                    tempChosenImage = tempChosenImage,
                 )
             }
         }

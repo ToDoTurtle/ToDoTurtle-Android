@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CheckCounter(
-    modifier: Modifier = Modifier,
     count: Int = 0,
     onHistoryClick: () -> Unit = {},
     inHistory: Boolean,
@@ -39,14 +38,13 @@ fun CheckCounter(
             tint = MaterialTheme.colorScheme.onTertiary,
             modifier = Modifier
                 .padding(start = 4.dp, end = 6.dp)
-                .scale(1.2f),
+                .scale(scale = 1.2f),
         )
     }
 }
 
 @Composable
 fun CheckCounterContainer(
-    modifier: Modifier = Modifier,
     onHistoryClick: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
@@ -69,7 +67,6 @@ fun CheckCounterContainer(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Counter(
-    modifier: Modifier = Modifier,
     count: Int,
     inHistory: Boolean,
 ) {
@@ -83,7 +80,7 @@ fun Counter(
                     } else {
                         AnimatedContentScope.SlideDirection.Up
                     },
-                    animationSpec = tween(200),
+                    animationSpec = tween(durationMillis = 200),
                 )
         },
     ) {
