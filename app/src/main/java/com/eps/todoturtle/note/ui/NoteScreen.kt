@@ -11,13 +11,11 @@ import com.eps.todoturtle.note.logic.NoteScreenViewModel
 
 @Composable
 fun NoteScreen(
-    viewModel: NoteScreenViewModel,
-    modifier: Modifier = Modifier,
+    viewModel: NoteScreenViewModel
 ) {
     var inHistory by rememberSaveable { mutableStateOf(false) }
 
     Column(
-        modifier = modifier,
         horizontalAlignment = Alignment.End,
     ) {
         CheckCounter(

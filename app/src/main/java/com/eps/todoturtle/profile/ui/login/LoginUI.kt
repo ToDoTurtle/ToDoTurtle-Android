@@ -11,8 +11,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.eps.todoturtle.R
 import com.eps.todoturtle.mock.MockValues
 import com.eps.todoturtle.profile.ui.shared.CenteredPicture
@@ -22,16 +20,17 @@ import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 
 @Composable
 fun LoginUI(
-    navController: NavController,
+    modifier: Modifier = Modifier,
+    onSignInClick: () -> Unit,
 ) {
-    ProfileUI {
-        LoginContent(navController)
+    ProfileUI(modifier = modifier) {
+        LoginContent(onSignInClick)
     }
 }
 
 @Composable
 fun LoginContent(
-    navController: NavController,
+    onSignInClick: () -> Unit,
     login: (() -> Boolean)? = null,
 ) {
     val wrongLogin = rememberSaveable { mutableStateOf(false) }
@@ -63,11 +62,8 @@ fun LoginContent(
     Button(
         onClick = {
             if (loginMethod()) {
-                // TODO: Redirect to home page, not profile details
                 wrongLogin.value = false
-                navController.navigate("profile") {
-                    launchSingleTop = true
-                }
+                onSignInClick()
             } else {
                 wrongLogin.value = true
             }
@@ -81,5 +77,5 @@ fun LoginContent(
 @Preview
 @Composable
 fun LoginUIPreview() {
-    LoginUI(rememberNavController())
+    LoginUI(onSignInClick = { })
 }

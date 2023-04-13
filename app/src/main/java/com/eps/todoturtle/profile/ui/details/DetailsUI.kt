@@ -6,8 +6,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.logic.HostageType
 import com.eps.todoturtle.profile.logic.ProfileDetails
@@ -19,7 +17,7 @@ import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 fun DetailsUI(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
-    navController: NavController,
+    onSignOutClick: () -> Unit,
     profileDetails: ProfileDetails = ProfileDetails(
         mutableStateOf("Mock username"),
         mutableStateOf(HostageType.FIRE_HOSTAGE),
@@ -30,7 +28,7 @@ fun DetailsUI(
         DetailsContent(
             hasPermissions = hasPermissions,
             requestPermissions = requestPermissions,
-            navController = navController,
+            onSignOutClick = onSignOutClick,
             profileDetails = profileDetails,
         )
     }
@@ -40,7 +38,7 @@ fun DetailsUI(
 fun DetailsContent(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
-    navController: NavController,
+    onSignOutClick: () -> Unit,
     profileDetails: ProfileDetails,
 ) {
     val remUsername = rememberSaveable { profileDetails.username }
@@ -54,7 +52,7 @@ fun DetailsContent(
     )
     OutlinedText(remUsername, R.string.username, topPadding = 15)
     HostageTypeProfileField(remHostageType)
-    SignOutProfileButton(navController)
+    SignOutProfileButton(onSignOutClick)
 }
 
 @Preview(showBackground = true)
@@ -63,6 +61,6 @@ fun ProfileUIPreview() {
     DetailsUI(
         hasPermissions = { true },
         requestPermissions = {},
-        navController = rememberNavController(),
+        onSignOutClick = {},
     )
 }

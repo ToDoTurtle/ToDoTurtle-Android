@@ -20,14 +20,14 @@ fun TopBar(
             Text(
                 "ToDo Turtle",
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
         navigationIcon = {
-            IconButton(onClick = onMenuClick ) {
+            IconButton(onClick = onMenuClick) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
-                    contentDescription = "Open drawer menu"
+                    contentDescription = "Open drawer menu",
                 )
             }
         },

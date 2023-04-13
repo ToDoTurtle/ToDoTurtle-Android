@@ -2,6 +2,7 @@ package com.eps.todoturtle.nav.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,7 +12,6 @@ import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
 import com.eps.todoturtle.profile.ui.details.DetailsUI
 import com.eps.todoturtle.profile.ui.login.LoginUI
-
 
 @Composable
 fun ToDoTurtleNavHost(
@@ -24,18 +24,40 @@ fun ToDoTurtleNavHost(
     NavHost(
         navController = navController,
         startDestination = "login",
-        modifier = modifier
+        modifier = modifier,
     ) {
-        composable("login") { LoginUI(navController) }
+        composable("login") {
+            LoginUI(
+                onSignInClick = { navController.navigateSingleTopTo("notes") },
+            )
+        }
         composable("profile") {
             RequestPermissionContext(permissionRequester) {
                 DetailsUI(
-                    navController = navController,
+                    onSignOutClick = { navController.navigateSingleTopTo("login") },
                     requestPermissions = { requestPermissions() },
                     hasPermissions = { hasCameraPermission() },
                 )
             }
         }
-        composable("notes") { NoteScreen(noteScreenViewModel) }
+        composable("notes") {
+            NoteScreen(
+                viewModel = noteScreenViewModel,
+            )
+        }
+        composable("devices") {}
+        composable("settings") {}
+        composable("invite") {}
     }
 }
+
+fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) {
+        popUpTo(
+            this@navigateSingleTopTo.graph.findStartDestination().id,
+        ) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }

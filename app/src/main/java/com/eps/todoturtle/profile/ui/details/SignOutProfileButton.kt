@@ -7,19 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.eps.todoturtle.R
 
 @Composable
 fun SignOutProfileButton(
-    navController: NavController,
+    onSignOutClick: () -> Unit,
 ) {
     Button(
-        onClick = {
-            navController.navigate("login") {
-                launchSingleTop = true
-            }
-        },
+        onClick = onSignOutClick,
         modifier = Modifier.padding(top = 15.dp),
     ) {
         Text(text = stringResource(id = R.string.sign_out))
