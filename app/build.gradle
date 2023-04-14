@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 android {
@@ -51,7 +52,6 @@ android {
 }
 
 dependencies {
-
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
     implementation 'androidx.core:core-ktx:1.10.0'
@@ -69,4 +69,10 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.4.1"
     debugImplementation "androidx.compose.ui:ui-tooling:1.4.1"
     debugImplementation "androidx.compose.ui:ui-test-manifest:1.4.1"
+
+
+    // Data store
+    implementation "androidx.datastore:datastore:1.0.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5" // Required by DataStore when adding lists
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 }
