@@ -28,12 +28,14 @@ internal fun PreferenceGroup(
         color = MaterialTheme.colorScheme.primaryContainer,
         shape = RoundedCornerShape(4)
     ) {
-
         Column(
             modifier = Modifier
                 .padding(vertical = 8.dp)
         ) {
-            Text(text = stringResource(groupTitle))
+            Text(
+                text = stringResource(groupTitle),
+                modifier = Modifier.padding(horizontal = 6.dp),
+            )
             Spacer(modifier = Modifier.height(8.dp))
             Surface(
                 color = MaterialTheme.colorScheme.secondaryContainer,

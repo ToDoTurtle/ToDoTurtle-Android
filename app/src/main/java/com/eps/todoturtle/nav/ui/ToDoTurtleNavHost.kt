@@ -6,7 +6,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.eps.todoturtle.PreferenceUI
+import com.eps.todoturtle.preferences.ui.PreferenceUI
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
@@ -26,7 +26,7 @@ fun ToDoTurtleNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = "settings",  // FIXME: Change to "login" when pushing to master
         modifier = modifier,
     ) {
         composable("login") {
