@@ -3,7 +3,7 @@ package com.eps.todoturtle.preferences.logic.data
 import android.content.Context
 import com.eps.todoturtle.R
 
-enum class Themes {
+enum class Themes: PreferenceEnum<Themes> {
     Greenish,
     Cold,
     ColdDark,
@@ -11,7 +11,7 @@ enum class Themes {
     Magenta,
     ;
 
-    fun getString(context: Context) =
+    override fun getString(context: Context) =
         when (this) {
             Greenish -> context.getString(R.string.theme_greenish)
             Cold -> context.getString(R.string.theme_cold)

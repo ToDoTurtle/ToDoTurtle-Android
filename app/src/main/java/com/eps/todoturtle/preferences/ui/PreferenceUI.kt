@@ -40,7 +40,7 @@ fun PreferenceUI(
                 R.string.category_sound
             ) {
                 PreferenceSwitch(
-                    icon = R.drawable.volume_mute,
+                    icon = R.drawable.headphones,
                     iconDesc = R.string.mute_image_desc,
                     text = R.string.mute_desc,
                     checked = currentPreferences.mute,  // FIXME: Implement data store logic
@@ -54,7 +54,12 @@ fun PreferenceUI(
             PreferenceGroup(
                 groupTitle = R.string.category_theme,
             ) {
-                
+                PreferenceDropdown(
+                    icon = R.drawable.palette,
+                    iconDesc = R.string.theme_image_desc,
+                    text = R.string.theme_desc,
+                    selected = currentPreferences.theme,
+                )
             }
         }
     }
