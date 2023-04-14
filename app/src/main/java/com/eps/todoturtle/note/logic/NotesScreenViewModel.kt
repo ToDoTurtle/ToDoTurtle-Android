@@ -17,12 +17,12 @@ class NoteScreenViewModel : ViewModel() {
 
     fun doNote(item: Note) {
         _doneNotes.remove(item)
-        _toDoNotes.add(item)
+        _toDoNotes.add(0, item)
     }
 
     fun undoNote(item: Note) {
         _toDoNotes.remove(item)
-        _doneNotes.add(item)
+        _doneNotes.add(0, item)
     }
 }
 
