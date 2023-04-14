@@ -150,7 +150,7 @@ inline fun <reified T : PreferenceEnum<T>> DropdownMenu(
 ) {
     dropdownScope.ExposedDropdownMenu(
         expanded = expanded.value,
-        modifier = Modifier.background(Color.Red),
+        modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer),
         onDismissRequest = { expanded.value = false }) {
         enumValues.forEach { value ->
             DropdownItem(
@@ -171,20 +171,13 @@ inline fun <reified T : PreferenceEnum<T>> DropdownItem(
     DropdownMenuItem(
         text = {
             Text(
+                modifier = Modifier.padding(end = 18.dp).fillMaxWidth(),
                 text = entry.getString(LocalContext.current),
                 style = MaterialTheme.typography.bodyLarge.copy(
                     textAlign = TextAlign.End,
                 ),
             )
         },
-//        modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer),
-        colors = MenuDefaults.itemColors(
-            textColor= Color.Transparent,
-            leadingIconColor= Color.Transparent,
-            trailingIconColor= Color.Transparent,
-            disabledTextColor= Color.Transparent,
-            disabledLeadingIconColor= Color.Transparent,
-            disabledTrailingIconColor= Color.Transparent        ),
         onClick = {
             onSelected(entry)
             expanded.value = false
