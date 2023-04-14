@@ -11,7 +11,7 @@ import com.eps.todoturtle.ui.App
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 class MainActivity : ComponentActivity() {
-    private val permissionsToRequest = listOf(CameraPermissionProvider())
+    private val permissionsToRequest = listOf(CameraPermissionProvider(this))
     private lateinit var permissionRequester: PermissionRequester
 
     override fun onCreate(savedInstanceState: Bundle?) {

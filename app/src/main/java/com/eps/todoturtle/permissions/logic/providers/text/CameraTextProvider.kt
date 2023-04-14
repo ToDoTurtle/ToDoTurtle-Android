@@ -1,10 +1,11 @@
 package com.eps.todoturtle.permissions.logic.providers.text
 
-class CameraTextProvider : PermissionTextProvider {
+import android.content.Context
+import com.eps.todoturtle.R
+
+class CameraTextProvider(private val context: Context) : PermissionTextProvider {
     override val isPermanentlyDeclined: String
-        get() = """It seems you permanently declined permission to access your camera.
-                |You can go to app settings to grant it.
-        """.trimMargin()
+        get() = context.getString(R.string.camera_permanently_declined)
     override val normalDecline: String
-        get() = "This app needs access to your camera so that you can change the profile picture."
+        get() = context.getString(R.string.camera_normal_decline)
 }

@@ -1,0 +1,4 @@
+<resources>
+    <string name="camera_permanently_declined">It seems you permanently declined permission to access your camera. You can go to app settings to grant it</string>
+    <string name="camera_normal_decline">This app needs access to your camera so that you can change the profile picture.</string>
+</resources>
