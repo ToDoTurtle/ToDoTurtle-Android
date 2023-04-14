@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -82,9 +83,10 @@ fun NotesItem(
     onItemClick: () -> Unit,
     badge: String
 ) {
+    val label = stringResource(Notes.labelId)
     NavigationDrawerItem(
-        icon = { ImageVector.vectorResource(id = R.drawable.note) },
-        label = { Text(stringResource(Notes.labelId)) },
+        icon = { Icon(ImageVector.vectorResource(id = R.drawable.note), label) },
+        label = { Text(label) },
         selected = isSelected,
         onClick = onItemClick,
         badge = { Text(badge) },
@@ -98,9 +100,10 @@ fun DevicesItem(
     onItemClick: () -> Unit,
     badge: String
 ) {
+    val label = stringResource(Devices.labelId)
     NavigationDrawerItem(
-        icon = { ImageVector.vectorResource(id = R.drawable.devices) },
-        label = { Text(stringResource(Devices.labelId)) },
+        icon = { Icon(ImageVector.vectorResource(id = R.drawable.devices), label) },
+        label = { Text(label) },
         selected = isSelected,
         onClick = onItemClick,
         badge = { Text(badge) },
@@ -113,9 +116,10 @@ fun ProfileItem(
     isSelected: Boolean,
     onItemClick: () -> Unit,
 ) {
+    val label = stringResource(Profile.labelId)
     NavigationDrawerItem(
-        icon = { Icons.Filled.Person },
-        label = { Text(stringResource(Profile.labelId)) },
+        icon = { Icon(Icons.Filled.Person, label) },
+        label = { Text(label) },
         selected = isSelected,
         onClick = onItemClick,
         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
@@ -127,9 +131,10 @@ fun SettingsItem(
     isSelected: Boolean,
     onItemClick: () -> Unit,
 ) {
+    val label = stringResource(Settings.labelId)
     NavigationDrawerItem(
-        icon = { Icons.Filled.Settings },
-        label = { Text(stringResource(Settings.labelId)) },
+        icon = { Icon(Icons.Filled.Settings, label) },
+        label = { Text(label) },
         selected = isSelected,
         onClick = onItemClick,
         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
@@ -141,9 +146,10 @@ fun InviteItem(
     isSelected: Boolean,
     onItemClick: () -> Unit,
 ) {
+    val label = stringResource(Invite.labelId)
     NavigationDrawerItem(
-        icon = { ImageVector.vectorResource(id = R.drawable.invite) },
-        label = { Text(stringResource(Invite.labelId)) },
+        icon = { Icon(ImageVector.vectorResource(id = R.drawable.invite), label) },
+        label = { Text(label) },
         selected = isSelected,
         onClick = onItemClick,
         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
