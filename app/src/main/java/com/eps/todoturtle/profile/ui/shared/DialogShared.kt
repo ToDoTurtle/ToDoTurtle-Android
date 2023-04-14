@@ -1,5 +1,6 @@
 package com.eps.todoturtle.profile.ui.shared
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -14,7 +15,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DialogTitle(
-    textId: Int,
+    @StringRes textId: Int,
 ) {
     Text(
         text = stringResource(id = textId),
