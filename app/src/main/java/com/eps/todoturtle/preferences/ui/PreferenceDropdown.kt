@@ -48,12 +48,15 @@ inline fun <reified T : PreferenceEnum<T>> PreferenceDropdown(
     selected: PreferenceEnum<T>,
     crossinline onSelected: (PreferenceEnum<T>) -> Unit,
 ) {
+    val expanded = rememberSaveable { mutableStateOf(false) }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         color = MaterialTheme.colorScheme.tertiaryContainer,
-        shape = RoundedCornerShape(10)
+        shape = RoundedCornerShape(10),
+        onClick = { expanded.value = true },
     ) {
         Column {
             Row(
@@ -78,6 +81,7 @@ inline fun <reified T : PreferenceEnum<T>> PreferenceDropdown(
                 Spacer(modifier = Modifier.weight(1f))
                 Dropdown(
                     selected = selected,
+                    expanded = expanded,
                     onSelected = onSelected,
                 )
             }
@@ -89,9 +93,9 @@ inline fun <reified T : PreferenceEnum<T>> PreferenceDropdown(
 @Composable
 inline fun <reified T : PreferenceEnum<T>> Dropdown(
     selected: PreferenceEnum<T>,
+    expanded: MutableState<Boolean>,
     crossinline onSelected: (PreferenceEnum<T>) -> Unit,
 ) {
-    val expanded = rememberSaveable { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
         expanded = expanded.value,
