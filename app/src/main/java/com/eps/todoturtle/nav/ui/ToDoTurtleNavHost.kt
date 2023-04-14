@@ -6,6 +6,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.eps.todoturtle.PreferenceUI
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
@@ -49,7 +50,9 @@ fun ToDoTurtleNavHost(
             )
         }
         composable("devices") {}
-        composable("settings") {}
+        composable("settings") {
+            PreferenceUI()
+        }
         composable("invite") {}
     }
 }
