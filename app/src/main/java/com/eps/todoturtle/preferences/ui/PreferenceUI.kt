@@ -59,7 +59,11 @@ fun PreferenceUI(
                     iconDesc = R.string.theme_image_desc,
                     text = R.string.theme_desc,
                     selected = currentPreferences.theme,
-                )
+                ) {
+                    coroutineScope.launch {
+                        preferenceMod.updateTheme(it)
+                    }
+                }
             }
         }
     }

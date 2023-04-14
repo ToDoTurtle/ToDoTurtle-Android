@@ -11,6 +11,10 @@ enum class Themes: PreferenceEnum<Themes> {
     Magenta,
     ;
 
+    override fun enumValues() = Themes.values()
+
+    override fun getValue() = this
+
     override fun getString(context: Context) =
         when (this) {
             Greenish -> context.getString(R.string.theme_greenish)

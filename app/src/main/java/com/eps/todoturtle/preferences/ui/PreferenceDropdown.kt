@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuBoxScope
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -36,11 +39,12 @@ import com.eps.todoturtle.preferences.logic.data.PreferenceEnum
 import com.eps.todoturtle.shared.logic.extensions.RobotoThin
 
 @Composable
-inline fun <reified T: PreferenceEnum<T>> PreferenceDropdown(
+inline fun <reified T : PreferenceEnum<T>> PreferenceDropdown(
     @DrawableRes icon: Int,
     @StringRes iconDesc: Int,
     @StringRes text: Int,
     selected: PreferenceEnum<T>,
+    crossinline onSelected: (PreferenceEnum<T>) -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -72,6 +76,7 @@ inline fun <reified T: PreferenceEnum<T>> PreferenceDropdown(
                 Spacer(modifier = Modifier.weight(1f))
                 Dropdown(
                     selected = selected,
+                    onSelected = onSelected,
                 )
             }
         }
@@ -80,8 +85,9 @@ inline fun <reified T: PreferenceEnum<T>> PreferenceDropdown(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-inline fun <reified T: PreferenceEnum<T>>Dropdown(
+inline fun <reified T : PreferenceEnum<T>> Dropdown(
     selected: PreferenceEnum<T>,
+    crossinline onSelected: (PreferenceEnum<T>) -> Unit,
 ) {
     val expanded = rememberSaveable { mutableStateOf(false) }
 
@@ -95,16 +101,19 @@ inline fun <reified T: PreferenceEnum<T>>Dropdown(
             expanded = expanded.value,
             selected = selected,
         )
-//        DropdownMenu(
-//
-//        )
+        DropdownMenu(
+            dropdownScope = this,
+            expanded = expanded,
+            enumValues = selected.enumValues(),
+            onSelected = onSelected,
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-inline fun <reified T: PreferenceEnum<T>> DropdownTitle(
-    modifier : Modifier,
+inline fun <reified T : PreferenceEnum<T>> DropdownTitle(
+    modifier: Modifier,
     expanded: Boolean,
     selected: PreferenceEnum<T>,
 ) {
@@ -125,6 +134,46 @@ inline fun <reified T: PreferenceEnum<T>> DropdownTitle(
         ),
         trailingIcon = {
             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+inline fun <reified T : PreferenceEnum<T>> DropdownMenu(
+    dropdownScope: ExposedDropdownMenuBoxScope,
+    expanded: MutableState<Boolean>,
+    enumValues: Array<T>,
+    crossinline onSelected: (PreferenceEnum<T>) -> Unit,
+) {
+    dropdownScope.ExposedDropdownMenu(
+        expanded = expanded.value,
+        onDismissRequest = { expanded.value = false }) {
+        enumValues.forEach { value ->
+            DropdownItem(
+                entry = value,
+                expanded = expanded,
+                onSelected = onSelected,
+            )
+        }
+    }
+}
+
+@Composable
+inline fun <reified T : PreferenceEnum<T>> DropdownItem(
+    entry: T,
+    expanded: MutableState<Boolean>,
+    crossinline onSelected: (PreferenceEnum<T>) -> Unit,
+) {
+    DropdownMenuItem(
+        text = {
+            Text(
+                text = entry.getString(LocalContext.current)
+            )
+        },
+        onClick = {
+            onSelected(entry)
+            expanded.value = false
         }
     )
 }

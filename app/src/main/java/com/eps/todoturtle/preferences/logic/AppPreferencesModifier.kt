@@ -2,6 +2,7 @@ package com.eps.todoturtle.preferences.logic
 
 import androidx.datastore.core.DataStore
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
+import com.eps.todoturtle.preferences.logic.data.PreferenceEnum
 import com.eps.todoturtle.preferences.logic.data.Themes
 
 class AppPreferencesModifier(
@@ -13,9 +14,9 @@ class AppPreferencesModifier(
         }
     }
 
-    suspend fun updateTheme(theme: Themes) {
+    suspend fun updateTheme(theme: PreferenceEnum<Themes>) {
         dataStore.updateData { preferences ->
-            preferences.copy(theme = theme)
+            preferences.copy(theme = theme.getValue())
         }
     }
 }
