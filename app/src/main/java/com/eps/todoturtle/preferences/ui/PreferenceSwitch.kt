@@ -46,7 +46,7 @@ internal fun PreferenceSwitch(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = painterResource(id = icon),
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(40.dp),
                         contentDescription = stringResource(id = iconDesc),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -65,7 +65,6 @@ internal fun PreferenceSwitch(
                     }
                 )
             }
-            Divider()
         }
     }
 }

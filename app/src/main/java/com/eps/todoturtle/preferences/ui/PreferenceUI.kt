@@ -40,7 +40,7 @@ fun PreferenceUI(
                 R.string.category_sound
             ) {
                 PreferenceSwitch(
-                    icon = R.drawable.mute,
+                    icon = R.drawable.volume_mute,
                     iconDesc = R.string.mute_image_desc,
                     text = R.string.mute_desc,
                     checked = currentPreferences.mute,  // FIXME: Implement data store logic
