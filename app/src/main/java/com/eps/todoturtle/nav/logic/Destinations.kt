@@ -16,32 +16,32 @@ interface Destination {
 
 object Notes : Destination {
     override val icon = Icons.Filled.Edit
-    override val route = "notes"
-    override val label = "Notes"
+    override val route = DestinationConstants.NOTES_ROUTE
+    override val label = DestinationConstants.NOTES_LABEL
 }
 
 object Profile : Destination {
     override val icon = Icons.Filled.Person
-    override val route = "profile"
-    override val label = "Profile"
+    override val route = DestinationConstants.PROFILE_ROUTE
+    override val label = DestinationConstants.PROFILE_LABEL
 }
 
 object Devices : Destination {
     override val icon = Icons.Filled.Star
-    override val route = "devices"
-    override val label = "Devices"
+    override val route = DestinationConstants.DEVICES_ROUTE
+    override val label = DestinationConstants.DEVICES_LABEL
 }
 
 object Settings : Destination {
     override val icon = Icons.Filled.Settings
-    override val route = "settings"
-    override val label = "Settings"
+    override val route = DestinationConstants.SETTINGS_ROUTE
+    override val label = DestinationConstants.SETTINGS_LABEL
 }
 
 object Invite : Destination {
     override val icon = Icons.Filled.AddCircle
-    override val route = "invite"
-    override val label = "Invite a friend"
+    override val route = DestinationConstants.INVITE_ROUTE
+    override val label = DestinationConstants.INVITE_LABEL
 }
 
 val screens = listOf(Notes, Devices, Profile, Settings, Invite)
