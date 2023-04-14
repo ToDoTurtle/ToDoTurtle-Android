@@ -29,7 +29,7 @@ fun PreferenceUI(
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = MaterialTheme.colorScheme.background,
     ) {
         Column(
             modifier = Modifier
@@ -37,18 +37,18 @@ fun PreferenceUI(
                 .fillMaxSize(),
         ) {
             PreferenceGroup(
-                R.string.category_sound
+                R.string.category_sound,
             ) {
                 PreferenceSwitch(
                     icon = R.drawable.headphones,
                     iconDesc = R.string.mute_image_desc,
                     text = R.string.mute_desc,
-                    checked = currentPreferences.mute,  // FIXME: Implement data store logic
+                    checked = currentPreferences.mute,
                     onCheckedChange = {
                         coroutineScope.launch {
                             preferenceMod.updateMute()
                         }
-                    }
+                    },
                 )
             }
             PreferenceGroup(
@@ -68,7 +68,6 @@ fun PreferenceUI(
         }
     }
 }
-
 
 @Preview
 @Composable

@@ -41,13 +41,13 @@ internal fun PreferenceSwitch(
             .fillMaxWidth()
             .padding(16.dp),
         color = MaterialTheme.colorScheme.tertiaryContainer,
-        shape = RoundedCornerShape(10),
+        shape = RoundedCornerShape(percent = 10),
         onClick = onCheckedChange,
     ) {
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
@@ -61,7 +61,7 @@ internal fun PreferenceSwitch(
                         modifier = Modifier.padding(16.dp),
                         style = MaterialTheme.typography.bodyLarge,
                         fontFamily = FontFamily.RobotoThin,
-                        textAlign = TextAlign.Start
+                        textAlign = TextAlign.Start,
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
@@ -77,7 +77,7 @@ internal fun PreferenceSwitch(
                     ),
                     onCheckedChange = {
                         onCheckedChange()
-                    }
+                    },
                 )
             }
         }

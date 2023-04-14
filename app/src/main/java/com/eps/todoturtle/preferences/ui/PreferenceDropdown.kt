@@ -19,7 +19,6 @@ import androidx.compose.material3.ExposedDropdownMenuBoxScope
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -55,19 +54,19 @@ inline fun <reified T : PreferenceEnum<T>> PreferenceDropdown(
             .fillMaxWidth()
             .padding(16.dp),
         color = MaterialTheme.colorScheme.tertiaryContainer,
-        shape = RoundedCornerShape(10),
+        shape = RoundedCornerShape(percent = 10),
         onClick = { expanded.value = true },
     ) {
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = painterResource(id = icon),
                         contentDescription = stringResource(id = iconDesc),
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(40.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -96,7 +95,6 @@ inline fun <reified T : PreferenceEnum<T>> Dropdown(
     expanded: MutableState<Boolean>,
     crossinline onSelected: (PreferenceEnum<T>) -> Unit,
 ) {
-
     ExposedDropdownMenuBox(
         expanded = expanded.value,
         onExpandedChange = { expanded.value = it },
@@ -140,7 +138,7 @@ inline fun <reified T : PreferenceEnum<T>> DropdownTitle(
         ),
         trailingIcon = {
             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-        }
+        },
     )
 }
 
@@ -155,7 +153,8 @@ inline fun <reified T : PreferenceEnum<T>> DropdownMenu(
     dropdownScope.ExposedDropdownMenu(
         expanded = expanded.value,
         modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer),
-        onDismissRequest = { expanded.value = false }) {
+        onDismissRequest = { expanded.value = false },
+    ) {
         enumValues.forEach { value ->
             DropdownItem(
                 entry = value,
@@ -185,6 +184,6 @@ inline fun <reified T : PreferenceEnum<T>> DropdownItem(
         onClick = {
             onSelected(entry)
             expanded.value = false
-        }
+        },
     )
 }

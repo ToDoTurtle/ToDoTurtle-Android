@@ -3,7 +3,7 @@ package com.eps.todoturtle.preferences.logic.data
 import android.content.Context
 import com.eps.todoturtle.R
 
-enum class Themes: PreferenceEnum<Themes> {
+enum class Themes : PreferenceEnum<Themes> {
     Greenish,
     Cold,
     ColdDark,

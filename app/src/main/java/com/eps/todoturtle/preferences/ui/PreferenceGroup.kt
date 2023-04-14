@@ -21,18 +21,18 @@ import com.eps.todoturtle.shared.logic.extensions.RobotoThin
 @Composable
 internal fun PreferenceGroup(
     @StringRes groupTitle: Int,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
         color = MaterialTheme.colorScheme.primaryContainer,
-        shape = RoundedCornerShape(4)
+        shape = RoundedCornerShape(percent = 4),
     ) {
         Column(
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(vertical = 8.dp),
         ) {
             Text(
                 text = stringResource(groupTitle),
@@ -45,7 +45,7 @@ internal fun PreferenceGroup(
                 color = MaterialTheme.colorScheme.secondaryContainer,
                 modifier = Modifier
                     .fillMaxWidth(),
-                shape = RoundedCornerShape(4)
+                shape = RoundedCornerShape(percent = 4),
             ) {
                 Column {
                     content()
