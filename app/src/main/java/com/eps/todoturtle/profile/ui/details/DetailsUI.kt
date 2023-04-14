@@ -16,11 +16,8 @@ fun DetailsUI(
     onSignOutClick: () -> Unit,
     profileViewModel: ProfileViewModel,
 ) {
-    val profileDetails = profileViewModel.details.collectAsState().value
-
     ProfileUI {
         DetailsContent(
-            details = profileDetails,
             hasPermissions = hasPermissions,
             requestPermissions = requestPermissions,
             onSignOutClick = onSignOutClick,
@@ -31,12 +28,13 @@ fun DetailsUI(
 
 @Composable
 fun DetailsContent(
-    details : ProfileDetails,
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
     onSignOutClick: () -> Unit,
     profileViewModel: ProfileViewModel,
 ) {
+    val details = profileViewModel.details.collectAsState().value
+
     ProfilePicture(
         hasPermissions = hasPermissions,
         requestPermissions = requestPermissions,
