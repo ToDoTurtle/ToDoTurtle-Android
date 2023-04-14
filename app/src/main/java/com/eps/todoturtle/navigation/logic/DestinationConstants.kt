@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nav.logic
+package com.eps.todoturtle.navigation.logic
 
 object DestinationConstants {
     const val NOTES_ROUTE = "notes"

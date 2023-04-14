@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nav.ui
+package com.eps.todoturtle.navigation.ui
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -17,8 +17,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.eps.todoturtle.nav.logic.Destination
-import com.eps.todoturtle.nav.logic.screens
+import com.eps.todoturtle.navigation.logic.Destination
+import com.eps.todoturtle.navigation.logic.screens
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

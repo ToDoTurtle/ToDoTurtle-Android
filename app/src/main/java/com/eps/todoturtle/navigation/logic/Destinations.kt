@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nav.logic
+package com.eps.todoturtle.navigation.logic
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle

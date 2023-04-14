@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nav.ui
+package com.eps.todoturtle.navigation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

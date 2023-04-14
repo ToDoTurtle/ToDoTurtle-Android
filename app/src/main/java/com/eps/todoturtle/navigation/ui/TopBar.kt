@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nav.ui
+package com.eps.todoturtle.navigation.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
