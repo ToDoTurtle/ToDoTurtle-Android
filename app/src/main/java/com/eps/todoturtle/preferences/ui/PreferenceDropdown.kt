@@ -2,6 +2,7 @@ package com.eps.todoturtle.preferences.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.material3.ExposedDropdownMenuBoxScope
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -148,6 +150,7 @@ inline fun <reified T : PreferenceEnum<T>> DropdownMenu(
 ) {
     dropdownScope.ExposedDropdownMenu(
         expanded = expanded.value,
+        modifier = Modifier.background(Color.Red),
         onDismissRequest = { expanded.value = false }) {
         enumValues.forEach { value ->
             DropdownItem(
@@ -168,9 +171,20 @@ inline fun <reified T : PreferenceEnum<T>> DropdownItem(
     DropdownMenuItem(
         text = {
             Text(
-                text = entry.getString(LocalContext.current)
+                text = entry.getString(LocalContext.current),
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    textAlign = TextAlign.End,
+                ),
             )
         },
+//        modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer),
+        colors = MenuDefaults.itemColors(
+            textColor= Color.Transparent,
+            leadingIconColor= Color.Transparent,
+            trailingIconColor= Color.Transparent,
+            disabledTextColor= Color.Transparent,
+            disabledLeadingIconColor= Color.Transparent,
+            disabledTrailingIconColor= Color.Transparent        ),
         onClick = {
             onSelected(entry)
             expanded.value = false
