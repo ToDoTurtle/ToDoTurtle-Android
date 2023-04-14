@@ -1,4 +1,4 @@
-package com.eps.todoturtle.profile.ui.shared
+package com.eps.todoturtle.profile.ui.login
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -22,7 +22,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun OutlinedText(
+fun LoginOutlinedText(
     text: MutableState<String>,
     label: Int,
     topPadding: Int,

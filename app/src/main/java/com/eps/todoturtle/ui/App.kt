@@ -20,6 +20,7 @@ import com.eps.todoturtle.nav.ui.TopBar
 import com.eps.todoturtle.nav.ui.navigateSingleTopTo
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
+import com.eps.todoturtle.profile.logic.ProfileViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 fun App(
     permissionRequester: PermissionRequester,
     noteScreenViewModel: NoteScreenViewModel,
+    profileViewModel: ProfileViewModel,
     hasCameraPermission: () -> Boolean,
 ) {
     val navController = rememberNavController()
@@ -56,6 +58,7 @@ fun App(
                     navController = navController,
                     permissionRequester = permissionRequester,
                     noteScreenViewModel = noteScreenViewModel,
+                    profileViewModel = profileViewModel,
                     hasCameraPermission = { hasCameraPermission() },
                 )
             }

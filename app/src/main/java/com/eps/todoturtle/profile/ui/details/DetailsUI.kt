@@ -1,60 +1,58 @@
 package com.eps.todoturtle.profile.ui.details
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.eps.todoturtle.R
-import com.eps.todoturtle.profile.logic.HostageType
 import com.eps.todoturtle.profile.logic.ProfileDetails
-import com.eps.todoturtle.profile.ui.shared.OutlinedText
+import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
-import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 
 @Composable
 fun DetailsUI(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
     onSignOutClick: () -> Unit,
-    profileDetails: ProfileDetails = ProfileDetails(
-        mutableStateOf("Mock username"),
-        mutableStateOf("mail@mock.com"),
-        mutableStateOf(HostageType.FIRE_HOSTAGE),
-        mutableStateOf(bitmapFrom(R.drawable.stickman2_pfp, LocalContext.current)),
-    ), // TODO: Remove me, this is just for testing
+    profileViewModel: ProfileViewModel,
 ) {
+    val profileDetails = profileViewModel.details.collectAsState().value
+
     ProfileUI {
         DetailsContent(
+            details = profileDetails,
             hasPermissions = hasPermissions,
             requestPermissions = requestPermissions,
             onSignOutClick = onSignOutClick,
-            profileDetails = profileDetails,
+            profileViewModel = profileViewModel,
         )
     }
 }
 
 @Composable
 fun DetailsContent(
+    details : ProfileDetails,
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
     onSignOutClick: () -> Unit,
-    profileDetails: ProfileDetails,
+    profileViewModel: ProfileViewModel,
 ) {
-    val remUsername = rememberSaveable { profileDetails.username }
-    val remMail = rememberSaveable { profileDetails.mail }
-    val remHostageType = rememberSaveable { profileDetails.hostage }
-    val remProfilePicture = remember { profileDetails.profilePicture }
-
     ProfilePicture(
         hasPermissions = hasPermissions,
         requestPermissions = requestPermissions,
-        profilePicture = remProfilePicture,
-    )
-    OutlinedText(remUsername, R.string.username, topPadding = 15)
-    OutlinedText(remMail, R.string.mail, topPadding = 15)
-    HostageTypeProfileField(remHostageType)
+        profilePicture = details.profilePicture
+    ) {
+        profileViewModel.changeProfilePicture(it)
+    }
+    ProfileOutlinedText(details.username, R.string.username, topPadding = 15) {
+        profileViewModel.changeUsername(it)
+    }
+    ProfileOutlinedText(details.mail, R.string.mail, topPadding = 15) {
+        profileViewModel.changeMail(it)
+    }
+    HostageTypeProfileField(details.hostage) {
+        profileViewModel.changeHostageType(it)
+    }
     SignOutProfileButton(onSignOutClick)
 }
 
@@ -65,5 +63,6 @@ fun ProfileUIPreview() {
         hasPermissions = { true },
         requestPermissions = {},
         onSignOutClick = {},
+        profileViewModel = ProfileViewModel(LocalContext.current),
     )
 }

@@ -19,13 +19,15 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.eps.todoturtle.R
 
 @Composable
 fun ProfilePicture(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
-    profilePicture: MutableState<Bitmap>,
+    profilePicture: Bitmap,
+    onChange: (Bitmap) -> Unit,
 ) {
     val shouldShowDialog = rememberSaveable { mutableStateOf(false) }
 
@@ -42,9 +44,11 @@ fun ProfilePicture(
             ),
         ) {
             Image(
-                bitmap = profilePicture.value.asImageBitmap(),
+                bitmap = profilePicture.asImageBitmap(),
                 contentDescription = stringResource(id = R.string.profile_picture_desc),
-                modifier = Modifier.clickable { shouldShowDialog.value = true }.size(400.dp),
+                modifier = Modifier
+                    .clickable { shouldShowDialog.value = true }
+                    .size(400.dp),
                 contentScale = ContentScale.Crop,
             )
             if (shouldShowDialog.value) {
@@ -53,7 +57,9 @@ fun ProfilePicture(
                     requestPermissions = requestPermissions,
                     shouldShowDialog = shouldShowDialog,
                     profilePicture = profilePicture,
-                )
+                ) {
+                    onChange(it)
+                }
             }
         }
     }

@@ -41,14 +41,15 @@ fun ChangeProfilePictureDialog(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
     shouldShowDialog: MutableState<Boolean>,
-    profilePicture: MutableState<Bitmap>,
+    profilePicture: Bitmap,
+    onChange: (Bitmap) -> Unit,
 ) {
-    val tempChosenImage = remember { mutableStateOf(profilePicture.value) }
+    val tempChosenImage = remember { mutableStateOf(profilePicture) }
 
     Dialog(
         onDismissRequest = {
             shouldShowDialog.value = false
-            profilePicture.value = tempChosenImage.value
+            onChange(tempChosenImage.value)
         },
     ) {
         Card(

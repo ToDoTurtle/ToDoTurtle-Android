@@ -25,7 +25,8 @@ import com.eps.todoturtle.profile.logic.HostageType
 
 @Composable
 fun HostageTypeProfileField(
-    hostageType: MutableState<HostageType>,
+    hostageType: HostageType,
+    onClick: (HostageType) -> Unit = {},
 ) {
     val expandedDropdown = rememberSaveable { mutableStateOf(false) }
 
@@ -39,20 +40,22 @@ fun HostageTypeProfileField(
             hostageType,
             expandedDropdown.value,
         )
-        HostageTypeDropdownMenu(hostageType, expandedDropdown, this)
+        HostageTypeDropdownMenu(expandedDropdown, this) {
+            onClick(it)
+        }
     }
 }
 
 @Composable
 private fun HostageTypeDropdownTitle(
     modifier: Modifier,
-    hostageType: MutableState<HostageType>,
+    hostageType: HostageType,
     expandedDropdown: Boolean,
 ) {
     OutlinedTextField(
         modifier = modifier,
         readOnly = true,
-        value = hostageType.value.getString(LocalContext.current),
+        value = hostageType.getString(LocalContext.current),
         onValueChange = {},
         label = { Text(stringResource(id = R.string.hostage)) },
         trailingIcon = {
@@ -63,9 +66,9 @@ private fun HostageTypeDropdownTitle(
 
 @Composable
 private fun HostageTypeDropdownMenu(
-    hostageType: MutableState<HostageType>,
     expandedDropdown: MutableState<Boolean>,
     scope: ExposedDropdownMenuBoxScope,
+    onClick: (HostageType) -> Unit = {},
 ) {
     scope.ExposedDropdownMenu(
         expanded = expandedDropdown.value,
@@ -73,7 +76,9 @@ private fun HostageTypeDropdownMenu(
         onDismissRequest = { expandedDropdown.value = false },
     ) {
         HostageType.values().forEach { type ->
-            HostageTypeDropdownItem(type, hostageType, expandedDropdown)
+            HostageTypeDropdownItem(type, expandedDropdown) {
+                onClick(it)
+            }
         }
     }
 }
@@ -81,8 +86,8 @@ private fun HostageTypeDropdownMenu(
 @Composable
 private fun HostageTypeDropdownItem(
     type: HostageType,
-    hostageType: MutableState<HostageType>,
     expandedDropdown: MutableState<Boolean>,
+    onClick: (HostageType) -> Unit = {},
 ) {
     DropdownMenuItem(
         text = {
@@ -93,7 +98,7 @@ private fun HostageTypeDropdownItem(
             )
         },
         onClick = {
-            hostageType.value = type
+            onClick(type)
             expandedDropdown.value = false
         },
     )

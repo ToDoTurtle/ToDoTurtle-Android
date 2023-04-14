@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.mock.MockValues
 import com.eps.todoturtle.profile.ui.shared.CenteredPicture
-import com.eps.todoturtle.profile.ui.shared.OutlinedText
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
 import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 
@@ -46,13 +45,13 @@ fun LoginContent(
         paddingTop = 8,
         size = 260,
     )
-    OutlinedText(
+    LoginOutlinedText(
         text = username,
         label = R.string.login_username,
         topPadding = 8,
         error = wrongLogin,
     )
-    OutlinedText(
+    LoginOutlinedText(
         text = password,
         label = R.string.login_password,
         topPadding = 8,

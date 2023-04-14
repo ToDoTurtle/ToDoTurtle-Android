@@ -10,6 +10,7 @@ import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
+import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.ui.details.DetailsUI
 import com.eps.todoturtle.profile.ui.login.LoginUI
 
@@ -18,6 +19,7 @@ fun ToDoTurtleNavHost(
     navController: NavHostController,
     permissionRequester: PermissionRequester,
     noteScreenViewModel: NoteScreenViewModel,
+    profileViewModel: ProfileViewModel,
     hasCameraPermission: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -37,6 +39,7 @@ fun ToDoTurtleNavHost(
                     onSignOutClick = { navController.navigateSingleTopTo("login") },
                     requestPermissions = { requestPermissions() },
                     hasPermissions = { hasCameraPermission() },
+                    profileViewModel = profileViewModel,
                 )
             }
         }
