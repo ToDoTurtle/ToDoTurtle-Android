@@ -14,7 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.shared.logic.extensions.RobotoThin
 
 @Composable
 internal fun PreferenceGroup(
@@ -35,6 +37,8 @@ internal fun PreferenceGroup(
             Text(
                 text = stringResource(groupTitle),
                 modifier = Modifier.padding(horizontal = 6.dp),
+                style = MaterialTheme.typography.bodyLarge,
+                fontFamily = FontFamily.RobotoThin,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Surface(

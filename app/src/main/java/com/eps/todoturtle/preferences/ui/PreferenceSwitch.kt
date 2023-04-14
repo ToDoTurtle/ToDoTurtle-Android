@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,8 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.shared.logic.extensions.RobotoThin
 
 @Composable
 internal fun PreferenceSwitch(
@@ -37,6 +39,7 @@ internal fun PreferenceSwitch(
             .fillMaxWidth()
             .padding(16.dp),
         color = MaterialTheme.colorScheme.tertiaryContainer,
+        shape = RoundedCornerShape(10)
     ) {
         Column {
             Row(
@@ -53,7 +56,8 @@ internal fun PreferenceSwitch(
                     Text(
                         text = stringResource(text),
                         modifier = Modifier.padding(16.dp),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontFamily = FontFamily.RobotoThin,
                         textAlign = TextAlign.Start
                     )
                 }
