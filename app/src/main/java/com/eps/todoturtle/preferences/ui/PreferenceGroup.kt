@@ -24,7 +24,7 @@ internal fun PreferenceGroup(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp, vertical = 6.dp),
         color = MaterialTheme.colorScheme.primaryContainer,
         shape = RoundedCornerShape(4)
     ) {

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.datastore.core.DataStore
 import androidx.navigation.compose.rememberNavController
 import com.eps.todoturtle.nav.ui.Drawer
 import com.eps.todoturtle.nav.ui.ToDoTurtleNavHost
@@ -20,6 +21,7 @@ import com.eps.todoturtle.nav.ui.TopBar
 import com.eps.todoturtle.nav.ui.navigateSingleTopTo
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
+import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.profile.logic.ProfileViewModel
 import kotlinx.coroutines.launch
 
@@ -29,6 +31,7 @@ fun App(
     permissionRequester: PermissionRequester,
     noteScreenViewModel: NoteScreenViewModel,
     profileViewModel: ProfileViewModel,
+    dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
 ) {
     val navController = rememberNavController()
@@ -58,6 +61,7 @@ fun App(
                     navController = navController,
                     permissionRequester = permissionRequester,
                     noteScreenViewModel = noteScreenViewModel,
+                    dataStore = dataStore,
                     profileViewModel = profileViewModel,
                     hasCameraPermission = { hasCameraPermission() },
                 )

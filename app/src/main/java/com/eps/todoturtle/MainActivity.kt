@@ -7,6 +7,7 @@ import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.providers.CameraPermissionProvider
 import com.eps.todoturtle.profile.logic.ProfileViewModel
+import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.shared.logic.extensions.hasCameraPermission
 import com.eps.todoturtle.ui.App
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
                     permissionRequester = permissionRequester,
                     noteScreenViewModel = noteScreenViewModel,
                     profileViewModel = profileViewModel,
+                    dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },
                 )
             }

@@ -30,7 +30,7 @@ internal fun PreferenceSwitch(
     @StringRes iconDesc: Int,
     @StringRes text: Int,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
+    onCheckedChange: () -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -61,7 +61,7 @@ internal fun PreferenceSwitch(
                 Switch(
                     checked = checked,
                     onCheckedChange = {
-                        onCheckedChange(it)
+                        onCheckedChange()
                     }
                 )
             }
