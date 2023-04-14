@@ -1,6 +1,5 @@
 package com.eps.todoturtle.profile.ui.details
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,7 +28,7 @@ fun ProfileOutlinedText(
     topPadding: Int,
     isPassword: Boolean = false,
     error: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) },
-    onClick : (String) -> Unit = {},
+    onClick: (String) -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current
 

@@ -11,15 +11,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class ProfileViewModel(context: Context): ViewModel() {
-    private val _details = MutableStateFlow(ProfileDetails(
-        username = context.getString(R.string.default_username),
-        mail = context.getString(R.string.default_username),
-        hostage = HostageType.FIRE_HOSTAGE,
-        profilePicture = bitmapFrom(R.drawable.stickman2_pfp, context),
-    ))
+class ProfileViewModel(context: Context) : ViewModel() {
+    private val _details = MutableStateFlow(
+        ProfileDetails(
+            username = context.getString(R.string.default_username),
+            mail = context.getString(R.string.default_username),
+            hostage = HostageType.FIRE_HOSTAGE,
+            profilePicture = bitmapFrom(R.drawable.stickman2_pfp, context),
+        ),
+    )
 
-    val details : StateFlow<ProfileDetails> = _details.asStateFlow()
+    val details: StateFlow<ProfileDetails> = _details.asStateFlow()
 
     fun getUserName() = details.value.username
     fun getMail() = details.value.mail
@@ -27,34 +29,34 @@ class ProfileViewModel(context: Context): ViewModel() {
     fun getProfilePicture() = details.value.profilePicture
 
     fun changeUsername(newUsername: String) {
-        _details.update {currentDetails ->
+        _details.update { currentDetails ->
             Log.i("ProfileViewModel", "changeUsername: $newUsername")
             currentDetails.copy(
-                username = newUsername
+                username = newUsername,
             )
         }
     }
 
     fun changeMail(newMail: String) {
-        _details.update {currentDetails ->
+        _details.update { currentDetails ->
             currentDetails.copy(
-                mail = newMail
+                mail = newMail,
             )
         }
     }
 
     fun changeHostageType(newHostageType: HostageType) {
-        _details.update {currentDetails ->
+        _details.update { currentDetails ->
             currentDetails.copy(
-                hostage = newHostageType
+                hostage = newHostageType,
             )
         }
     }
 
     fun changeProfilePicture(newProfilePicture: Bitmap) {
-        _details.update {currentDetails ->
+        _details.update { currentDetails ->
             currentDetails.copy(
-                profilePicture = newProfilePicture
+                profilePicture = newProfilePicture,
             )
         }
     }

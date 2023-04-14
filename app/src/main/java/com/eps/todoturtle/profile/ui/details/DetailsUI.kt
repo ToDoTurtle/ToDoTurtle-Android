@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.eps.todoturtle.R
-import com.eps.todoturtle.profile.logic.ProfileDetails
 import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
 
@@ -38,7 +37,7 @@ fun DetailsContent(
     ProfilePicture(
         hasPermissions = hasPermissions,
         requestPermissions = requestPermissions,
-        profilePicture = details.profilePicture
+        profilePicture = details.profilePicture,
     ) {
         profileViewModel.changeProfilePicture(it)
     }

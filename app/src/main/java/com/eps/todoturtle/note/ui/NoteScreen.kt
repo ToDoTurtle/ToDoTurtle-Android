@@ -11,7 +11,7 @@ import com.eps.todoturtle.note.logic.NoteScreenViewModel
 
 @Composable
 fun NoteScreen(
-    viewModel: NoteScreenViewModel
+    viewModel: NoteScreenViewModel,
 ) {
     var inHistory by rememberSaveable { mutableStateOf(false) }
 
