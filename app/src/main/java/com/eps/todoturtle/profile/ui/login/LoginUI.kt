@@ -1,6 +1,5 @@
 package com.eps.todoturtle.profile.ui.login
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.mock.MockValues
 import com.eps.todoturtle.profile.ui.shared.CenteredPicture
@@ -48,13 +46,11 @@ fun LoginContent(
     LoginOutlinedText(
         text = username,
         label = R.string.login_username,
-        topPadding = 8,
         error = wrongLogin,
     )
     LoginOutlinedText(
         text = password,
         label = R.string.login_password,
-        topPadding = 8,
         isPassword = true,
         error = wrongLogin,
     )
@@ -67,7 +63,6 @@ fun LoginContent(
                 wrongLogin.value = true
             }
         },
-        modifier = Modifier.padding(top = 8.dp),
     ) {
         Text(text = stringResource(id = R.string.sign_in))
     }
