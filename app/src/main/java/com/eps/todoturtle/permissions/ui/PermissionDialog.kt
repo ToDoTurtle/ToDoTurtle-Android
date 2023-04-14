@@ -9,9 +9,11 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.R
 import com.eps.todoturtle.permissions.logic.providers.text.PermissionTextProvider
 
 @Composable
@@ -30,7 +32,7 @@ fun PermissionDialog(
             ) {
                 Divider()
                 Text(
-                    text = if (isPermanentlyDeclined) "Grant permission" else "OK",
+                    text = stringResource(id = if (isPermanentlyDeclined) R.string.grant_permission else R.string.ok),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -41,7 +43,7 @@ fun PermissionDialog(
             }
         },
         title = {
-            Text(text = "Permission required")
+            Text(text = stringResource(id = R.string.permission_required))
         },
         text = {
             Text(
