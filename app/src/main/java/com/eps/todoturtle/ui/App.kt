@@ -10,12 +10,21 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.datastore.core.DataStore
 import androidx.navigation.compose.rememberNavController
-import com.eps.todoturtle.navigation.ui.Drawer
+import com.eps.todoturtle.navigation.logic.Devices
+import com.eps.todoturtle.nav.ui.Drawer
+import com.eps.todoturtle.navigation.logic.Invite
+import com.eps.todoturtle.navigation.logic.Notes
+import com.eps.todoturtle.navigation.logic.Profile
+import com.eps.todoturtle.navigation.logic.Settings
 import com.eps.todoturtle.navigation.ui.ToDoTurtleNavHost
 import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
@@ -42,13 +51,17 @@ fun App(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
     ) {
+        val items = listOf(Notes, Devices, Profile, Settings, Invite)
+        var selectedItem by remember { mutableStateOf(items.first()) }
         Drawer(
             drawerState = drawerState,
             toDoCount = noteScreenViewModel.toDoNotes.size,
             onItemClick = { destination ->
+                selectedItem = destination
+                scope.launch { drawerState.close() }
                 navController.navigateSingleTopTo(destination.route)
             },
-            scope = scope,
+            selectedItem = selectedItem,
         ) {
             Scaffold(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),

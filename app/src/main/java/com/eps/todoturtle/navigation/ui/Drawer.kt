@@ -1,11 +1,13 @@
-package com.eps.todoturtle.navigation.ui
+package com.eps.todoturtle.nav.ui
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -13,24 +15,27 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.R
 import com.eps.todoturtle.navigation.logic.Destination
-import com.eps.todoturtle.navigation.logic.screens
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.eps.todoturtle.navigation.logic.Devices
+import com.eps.todoturtle.navigation.logic.Invite
+import com.eps.todoturtle.navigation.logic.Notes
+import com.eps.todoturtle.navigation.logic.Profile
+import com.eps.todoturtle.navigation.logic.Settings
 
 @Composable
 fun Drawer(
     drawerState: DrawerState,
     onItemClick: (Destination) -> Unit,
     toDoCount: Int,
-    scope: CoroutineScope,
+    selectedItem: Destination,
     content: @Composable () -> Unit,
 ) {
-    val selectedItem = remember { mutableStateOf(screens[0]) }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -45,38 +50,102 @@ fun Drawer(
                 Spacer(Modifier.height(12.dp))
                 Divider(thickness = 1.dp)
                 Spacer(Modifier.height(12.dp))
-                screens.forEach { item ->
-                    NavigationDrawerItem(
-                        icon = {
-                            Icon(
-                                item.icon,
-                                contentDescription = item.label,
-                            )
-                        },
-                        label = { Text(item.label) },
-                        badge = when (item.route) {
-                            "notes" -> {
-                                { Text(toDoCount.toString()) }
-                            }
-                            "devices" -> {
-                                { Text("0") }
-                            }
-                            else -> {
-                                null
-                            }
-                        },
-                        selected = item == selectedItem.value,
-                        onClick = {
-                            scope.launch { drawerState.close() }
-                            selectedItem.value = item
-                            onItemClick(item)
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
-                    )
-                }
+                NotesItem(
+                    isSelected = selectedItem == Notes,
+                    onItemClick = { onItemClick(Notes) },
+                    badge = toDoCount.toString()
+                )
+                DevicesItem(
+                    isSelected = selectedItem == Devices,
+                    onItemClick = { onItemClick(Devices) },
+                    badge = "0"
+                )
+                ProfileItem(
+                    isSelected = selectedItem == Profile,
+                    onItemClick = { onItemClick(Profile) })
+                SettingsItem(
+                    isSelected = selectedItem == Settings,
+                    onItemClick = { onItemClick(Settings) })
+                InviteItem(
+                    isSelected = selectedItem == Invite,
+                    onItemClick = { onItemClick(Invite) })
             }
         },
     ) {
         content()
     }
+}
+
+@Composable
+fun NotesItem(
+    isSelected: Boolean,
+    onItemClick: () -> Unit,
+    badge: String
+) {
+    NavigationDrawerItem(
+        icon = { ImageVector.vectorResource(id = R.drawable.note) },
+        label = { Text(stringResource(Notes.labelId)) },
+        selected = isSelected,
+        onClick = onItemClick,
+        badge = { Text(badge) },
+        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+    )
+}
+
+@Composable
+fun DevicesItem(
+    isSelected: Boolean,
+    onItemClick: () -> Unit,
+    badge: String
+) {
+    NavigationDrawerItem(
+        icon = { ImageVector.vectorResource(id = R.drawable.devices) },
+        label = { Text(stringResource(Devices.labelId)) },
+        selected = isSelected,
+        onClick = onItemClick,
+        badge = { Text(badge) },
+        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+    )
+}
+
+@Composable
+fun ProfileItem(
+    isSelected: Boolean,
+    onItemClick: () -> Unit,
+) {
+    NavigationDrawerItem(
+        icon = { Icons.Filled.Person },
+        label = { Text(stringResource(Profile.labelId)) },
+        selected = isSelected,
+        onClick = onItemClick,
+        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+    )
+}
+
+@Composable
+fun SettingsItem(
+    isSelected: Boolean,
+    onItemClick: () -> Unit,
+) {
+    NavigationDrawerItem(
+        icon = { Icons.Filled.Settings },
+        label = { Text(stringResource(Settings.labelId)) },
+        selected = isSelected,
+        onClick = onItemClick,
+        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+    )
+}
+
+@Composable
+fun InviteItem(
+    isSelected: Boolean,
+    onItemClick: () -> Unit,
+) {
+    NavigationDrawerItem(
+        icon = { ImageVector.vectorResource(id = R.drawable.invite) },
+        label = { Text(stringResource(Invite.labelId)) },
+        selected = isSelected,
+        onClick = onItemClick,
+        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+    )
 }
