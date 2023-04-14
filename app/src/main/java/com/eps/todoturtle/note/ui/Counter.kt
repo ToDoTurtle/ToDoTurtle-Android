@@ -7,7 +7,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -27,10 +26,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CheckCounter(
     count: Int = 0,
-    onHistoryClick: () -> Unit = {},
     inHistory: Boolean,
 ) {
-    CheckCounterContainer(onHistoryClick = onHistoryClick) {
+    CheckCounterContainer {
         Counter(count = count, inHistory = inHistory)
         Icon(
             imageVector = Icons.Filled.Check,
@@ -45,7 +43,6 @@ fun CheckCounter(
 
 @Composable
 fun CheckCounterContainer(
-    onHistoryClick: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     Row(
@@ -53,7 +50,6 @@ fun CheckCounterContainer(
             .wrapContentSize()
             .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 8.dp)
             .clip(MaterialTheme.shapes.medium)
-            .clickable { onHistoryClick() }
             .background(
                 color = MaterialTheme.colorScheme.tertiary,
             ),
@@ -74,14 +70,14 @@ fun Counter(
         targetState = count,
         transitionSpec = {
             scaleIn() with
-                slideOutOfContainer(
-                    towards = if (inHistory) {
-                        AnimatedContentScope.SlideDirection.Down
-                    } else {
-                        AnimatedContentScope.SlideDirection.Up
-                    },
-                    animationSpec = tween(durationMillis = 200),
-                )
+                    slideOutOfContainer(
+                        towards = if (inHistory) {
+                            AnimatedContentScope.SlideDirection.Down
+                        } else {
+                            AnimatedContentScope.SlideDirection.Up
+                        },
+                        animationSpec = tween(durationMillis = 200),
+                    )
         },
     ) {
         Text(

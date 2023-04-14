@@ -1,6 +1,7 @@
 package com.eps.todoturtle.note.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,11 +19,18 @@ fun NoteScreen(
     Column(
         horizontalAlignment = Alignment.End,
     ) {
-        CheckCounter(
-            count = viewModel.doneNotes.size,
-            onHistoryClick = { inHistory = !inHistory },
-            inHistory = inHistory,
-        )
+        Row(
+
+        ) {
+            CheckCounter(
+                count = viewModel.doneNotes.size,
+                inHistory = inHistory,
+            )
+            HistoryToggle(
+                inHistory = inHistory,
+                onHistoryClick = { inHistory = !inHistory },
+            )
+        }
         NoteList(
             inHistory = inHistory,
             notes = if (inHistory) viewModel.doneNotes else viewModel.toDoNotes,
