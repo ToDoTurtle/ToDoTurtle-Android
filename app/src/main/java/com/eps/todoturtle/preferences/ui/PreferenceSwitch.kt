@@ -41,7 +41,8 @@ internal fun PreferenceSwitch(
             .fillMaxWidth()
             .padding(16.dp),
         color = MaterialTheme.colorScheme.tertiaryContainer,
-        shape = RoundedCornerShape(10)
+        shape = RoundedCornerShape(10),
+        onClick = onCheckedChange,
     ) {
         Column {
             Row(
