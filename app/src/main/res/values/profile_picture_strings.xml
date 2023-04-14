@@ -2,6 +2,7 @@
     <string name="profile_picture_desc">Profile picture</string>
     <string name="sign_out">Sign out</string>
     <string name="username">Username</string>
+    <string name="mail">Mail</string>
     <string name="hostage">Hostage type</string>
 
     <!--    Hostage types    -->

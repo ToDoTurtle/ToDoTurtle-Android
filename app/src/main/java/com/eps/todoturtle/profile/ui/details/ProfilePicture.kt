@@ -33,7 +33,7 @@ fun ProfilePicture(
         modifier = Modifier
             .fillMaxWidth(fraction = 0.5f)
             .height(200.dp)
-            .padding(top = 30.dp),
+            .padding(top = 20.dp),
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),

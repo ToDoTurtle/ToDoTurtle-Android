@@ -20,6 +20,7 @@ fun DetailsUI(
     onSignOutClick: () -> Unit,
     profileDetails: ProfileDetails = ProfileDetails(
         mutableStateOf("Mock username"),
+        mutableStateOf("mail@mock.com"),
         mutableStateOf(HostageType.FIRE_HOSTAGE),
         mutableStateOf(bitmapFrom(R.drawable.stickman2_pfp, LocalContext.current)),
     ), // TODO: Remove me, this is just for testing
@@ -42,6 +43,7 @@ fun DetailsContent(
     profileDetails: ProfileDetails,
 ) {
     val remUsername = rememberSaveable { profileDetails.username }
+    val remMail = rememberSaveable { profileDetails.mail }
     val remHostageType = rememberSaveable { profileDetails.hostage }
     val remProfilePicture = remember { profileDetails.profilePicture }
 
@@ -51,6 +53,7 @@ fun DetailsContent(
         profilePicture = remProfilePicture,
     )
     OutlinedText(remUsername, R.string.username, topPadding = 15)
+    OutlinedText(remMail, R.string.mail, topPadding = 15)
     HostageTypeProfileField(remHostageType)
     SignOutProfileButton(onSignOutClick)
 }

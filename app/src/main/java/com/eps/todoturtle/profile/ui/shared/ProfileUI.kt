@@ -26,7 +26,7 @@ fun ProfileUI(
     ) {
         Card(
             modifier = Modifier
-                .height(500.dp)
+                .height(530.dp)
                 .width(320.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
