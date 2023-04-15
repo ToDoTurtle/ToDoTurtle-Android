@@ -37,7 +37,6 @@ fun Drawer(
     selectedItem: Destination,
     content: @Composable () -> Unit,
 ) {
-
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -54,22 +53,25 @@ fun Drawer(
                 NotesItem(
                     isSelected = selectedItem == Notes,
                     onItemClick = { onItemClick(Notes) },
-                    badge = toDoCount.toString()
+                    badge = toDoCount.toString(),
                 )
                 DevicesItem(
                     isSelected = selectedItem == Devices,
                     onItemClick = { onItemClick(Devices) },
-                    badge = "0"
+                    badge = "0",
                 )
                 ProfileItem(
                     isSelected = selectedItem == Profile,
-                    onItemClick = { onItemClick(Profile) })
+                    onItemClick = { onItemClick(Profile) },
+                )
                 SettingsItem(
                     isSelected = selectedItem == Settings,
-                    onItemClick = { onItemClick(Settings) })
+                    onItemClick = { onItemClick(Settings) },
+                )
                 InviteItem(
                     isSelected = selectedItem == Invite,
-                    onItemClick = { onItemClick(Invite) })
+                    onItemClick = { onItemClick(Invite) },
+                )
             }
         },
     ) {
@@ -81,7 +83,7 @@ fun Drawer(
 fun NotesItem(
     isSelected: Boolean,
     onItemClick: () -> Unit,
-    badge: String
+    badge: String,
 ) {
     val label = stringResource(Notes.labelId)
     NavigationDrawerItem(
@@ -98,7 +100,7 @@ fun NotesItem(
 fun DevicesItem(
     isSelected: Boolean,
     onItemClick: () -> Unit,
-    badge: String
+    badge: String,
 ) {
     val label = stringResource(Devices.labelId)
     NavigationDrawerItem(

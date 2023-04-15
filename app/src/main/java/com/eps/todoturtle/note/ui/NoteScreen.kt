@@ -46,7 +46,7 @@ fun NoteScreenHeadline(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(bottom = 8.dp)
+        modifier = Modifier.padding(bottom = 8.dp),
     ) {
         CheckCounter(
             modifier = Modifier

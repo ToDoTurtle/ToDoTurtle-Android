@@ -7,21 +7,18 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.ui.theme.noteHeadlineContainer
 import com.eps.todoturtle.ui.theme.onNoteHeadlineContainer
 
 @Composable
@@ -34,6 +31,9 @@ fun CheckCounter(
         modifier = Modifier
             .padding(start = 32.dp, bottom = 0.dp)
             .clip(MaterialTheme.shapes.medium)
+            .background(
+                color = MaterialTheme.colorScheme.noteHeadlineContainer,
+            ),
     ) {
         Counter(count = count, inHistory = inHistory)
         Icon(
@@ -57,14 +57,14 @@ fun Counter(
         targetState = count,
         transitionSpec = {
             scaleIn() with
-                    slideOutOfContainer(
-                        towards = if (inHistory) {
-                            AnimatedContentScope.SlideDirection.Down
-                        } else {
-                            AnimatedContentScope.SlideDirection.Up
-                        },
-                        animationSpec = tween(durationMillis = 200),
-                    )
+                slideOutOfContainer(
+                    towards = if (inHistory) {
+                        AnimatedContentScope.SlideDirection.Down
+                    } else {
+                        AnimatedContentScope.SlideDirection.Up
+                    },
+                    animationSpec = tween(durationMillis = 200),
+                )
         },
     ) {
         Text(

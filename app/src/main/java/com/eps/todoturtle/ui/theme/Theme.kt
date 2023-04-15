@@ -84,6 +84,14 @@ val ColorScheme.onNoteHeadlineContainer: Color
     @Composable
     get() = onSecondaryContainer
 
+val ColorScheme.onNoteHeadlineButton: Color
+    @Composable
+    get() = onTertiary
+
+val ColorScheme.noteHeadlineButton: Color
+    @Composable
+    get() = tertiary
+
 @Composable
 fun ToDoTurtleTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),

@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.with
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -22,7 +23,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.ui.theme.onNoteHeadlineContainer
+import com.eps.todoturtle.ui.theme.noteHeadlineButton
+import com.eps.todoturtle.ui.theme.onNoteHeadlineButton
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -36,6 +38,9 @@ fun HistoryToggle(
             .padding(start = 0.dp, end = 24.dp, bottom = 0.dp)
             .clip(MaterialTheme.shapes.medium)
             .clickable { onHistoryClick() }
+            .background(
+                color = MaterialTheme.colorScheme.noteHeadlineButton,
+            ),
     ) {
         HistoryToggleContainer(
             targetState = inHistory,
@@ -58,10 +63,10 @@ fun HistoryToggleContainer(
         transitionSpec = {
             if (targetState) {
                 slideInHorizontally { width -> width } + fadeIn() with
-                        slideOutHorizontally { width -> -width } + fadeOut()
+                    slideOutHorizontally { width -> -width } + fadeOut()
             } else {
                 slideInHorizontally { width -> -width } + fadeIn() with
-                        slideOutHorizontally { width -> width } + fadeOut()
+                    slideOutHorizontally { width -> width } + fadeOut()
             }
         },
     ) { targetInHistory ->
@@ -74,18 +79,18 @@ fun GoHistoryButton() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.history),
         contentDescription = stringResource(R.string.note_history_icon_desc),
-        tint = MaterialTheme.colorScheme.onNoteHeadlineContainer,
+        tint = MaterialTheme.colorScheme.onNoteHeadlineButton,
         modifier = Modifier
             .padding(start = 8.dp, end = 0.dp, top = 4.dp, bottom = 4.dp)
-            .scale(scale = 1.2f)
+            .scale(scale = 1.2f),
     )
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.right_arrow),
         contentDescription = stringResource(R.string.go_history_icon_desc),
-        tint = MaterialTheme.colorScheme.onNoteHeadlineContainer,
+        tint = MaterialTheme.colorScheme.onNoteHeadlineButton,
         modifier = Modifier
             .padding(start = 0.dp, end = 4.dp, top = 4.dp, bottom = 4.dp)
-            .scale(scale = 1.2f)
+            .scale(scale = 1.2f),
     )
 }
 
@@ -94,18 +99,18 @@ fun GoBackButton() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.left_arrow),
         contentDescription = stringResource(R.string.go_back_to_notes_icon_desc),
-        tint = MaterialTheme.colorScheme.onNoteHeadlineContainer,
+        tint = MaterialTheme.colorScheme.onNoteHeadlineButton,
         modifier = Modifier
             .padding(start = 4.dp, end = 0.dp, top = 4.dp, bottom = 4.dp)
-            .scale(scale = 1.2f)
+            .scale(scale = 1.2f),
     )
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.note),
         contentDescription = stringResource(R.string.notes_icon_desc),
-        tint = MaterialTheme.colorScheme.onNoteHeadlineContainer,
+        tint = MaterialTheme.colorScheme.onNoteHeadlineButton,
         modifier = Modifier
             .padding(start = 0.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
-            .scale(scale = 1.2f)
+            .scale(scale = 1.2f),
     )
 }
 

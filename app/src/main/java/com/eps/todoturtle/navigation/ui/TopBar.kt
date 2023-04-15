@@ -53,7 +53,7 @@ fun AppTitle() {
         Spacer(modifier = Modifier.weight(0.25f))
         Text(
             modifier = Modifier.weight(0.6f),
-            style = MaterialTheme.typography.headlineLarge.copy(
+            style = MaterialTheme.typography.headlineMedium.copy(
                 fontWeight = FontWeight.Black,
             ),
             text = stringResource(R.string.app_title),
@@ -66,7 +66,7 @@ fun AppTitle() {
             modifier = Modifier
                 .scale(0.4f)
                 .offset(y = (8).dp, x = (-65).dp)
-                .weight(0.3f)
+                .weight(0.3f),
         )
     }
 }
