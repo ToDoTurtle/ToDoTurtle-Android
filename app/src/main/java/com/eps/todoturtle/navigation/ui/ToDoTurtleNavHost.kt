@@ -1,6 +1,7 @@
 package com.eps.todoturtle.navigation.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -21,6 +22,7 @@ import com.eps.todoturtle.profile.ui.login.LoginUI
 fun ToDoTurtleNavHost(
     navController: NavHostController,
     permissionRequester: PermissionRequester,
+    shouldShowMenu: MutableState<Boolean>,
     noteScreenViewModel: NoteScreenViewModel,
     profileViewModel: ProfileViewModel,
     dataStore: DataStore<AppPreferences>,
@@ -34,13 +36,19 @@ fun ToDoTurtleNavHost(
     ) {
         composable("login") {
             LoginUI(
-                onSignInClick = { navController.navigateSingleTopTo("notes") },
+                onSignInClick = {
+                    navController.navigateSingleTopTo("notes")
+                    shouldShowMenu.value = true
+                },
             )
         }
         composable("profile") {
             RequestPermissionContext(permissionRequester) {
                 DetailsUI(
-                    onSignOutClick = { navController.navigateSingleTopTo("login") },
+                    onSignOutClick = {
+                        navController.navigateSingleTopTo("login")
+                        shouldShowMenu.value = false
+                    },
                     requestPermissions = { requestPermissions() },
                     hasPermissions = { hasCameraPermission() },
                     profileViewModel = profileViewModel,

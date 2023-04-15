@@ -28,6 +28,7 @@ import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
+    shouldShowMenu: Boolean = true,
     onMenuClick: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
@@ -35,11 +36,13 @@ fun TopBar(
             AppTitle()
         },
         navigationIcon = {
-            IconButton(onClick = onMenuClick) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "Open drawer menu",
-                )
+            if (shouldShowMenu) {
+                IconButton(onClick = onMenuClick) {
+                    Icon(
+                        imageVector = Icons.Filled.Menu,
+                        contentDescription = "Open drawer menu",
+                    )
+                }
             }
         },
     )

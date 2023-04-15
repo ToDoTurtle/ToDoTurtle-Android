@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -49,6 +50,7 @@ fun App(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val shouldShowMenu = rememberSaveable { mutableStateOf(false) }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
@@ -64,13 +66,17 @@ fun App(
             Scaffold(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 topBar = {
-                    TopBar(onMenuClick = { scope.launch { drawerState.open() } })
+                    TopBar(
+                        shouldShowMenu = shouldShowMenu.value,
+                        onMenuClick = { scope.launch { drawerState.open() } },
+                    )
                 },
             ) { innerPadding ->
                 ToDoTurtleNavHost(
                     modifier = Modifier.padding(innerPadding),
                     navController = navController,
                     permissionRequester = permissionRequester,
+                    shouldShowMenu = shouldShowMenu,
                     noteScreenViewModel = noteScreenViewModel,
                     dataStore = dataStore,
                     profileViewModel = profileViewModel,
