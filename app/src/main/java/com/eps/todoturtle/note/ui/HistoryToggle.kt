@@ -36,22 +36,35 @@ fun HistoryToggle(
             .clip(MaterialTheme.shapes.medium)
             .clickable { onHistoryClick() }
     ) {
-        AnimatedContent(
+        HistoryToggleContainer(
             targetState = inHistory,
-            transitionSpec = {
-                if (targetState) {
-                    slideInHorizontally { width -> width } + fadeIn() with
-                            slideOutHorizontally { width -> -width } + fadeOut()
-                } else {
-                    slideInHorizontally { width -> -width } + fadeIn() with
-                            slideOutHorizontally { width -> width } + fadeOut()
-                }
-            },
-        ) {targetInHistory ->
+        ) {
             Row {
-                if (targetInHistory) GoBackButton() else GoHistoryButton()
+                if (inHistory) GoBackButton() else GoHistoryButton()
             }
         }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun HistoryToggleContainer(
+    targetState: Boolean,
+    content: @Composable () -> Unit,
+) {
+    AnimatedContent(
+        targetState = targetState,
+        transitionSpec = {
+            if (targetState) {
+                slideInHorizontally { width -> width } + fadeIn() with
+                        slideOutHorizontally { width -> -width } + fadeOut()
+            } else {
+                slideInHorizontally { width -> -width } + fadeIn() with
+                        slideOutHorizontally { width -> width } + fadeOut()
+            }
+        },
+    ) { targetInHistory ->
+        content()
     }
 }
 

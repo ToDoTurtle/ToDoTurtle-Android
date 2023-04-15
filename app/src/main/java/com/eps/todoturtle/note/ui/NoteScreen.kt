@@ -23,28 +23,42 @@ fun NoteScreen(
     Column(
         horizontalAlignment = Alignment.End,
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            CheckCounter(
-                modifier = Modifier
-                    .weight(0.1f),
-                count = viewModel.doneNotes.size,
-                inHistory = inHistory,
-            )
-            Spacer(modifier = Modifier.weight(0.8f))
-            HistoryToggle(
-                modifier = Modifier.weight(0.1f),
-                inHistory = inHistory,
-                onHistoryClick = { inHistory = !inHistory },
-            )
-        }
+        NoteScreenHeadline(
+            viewModel = viewModel,
+            inHistory = inHistory,
+            onHistoryToggle = { inHistory = !inHistory },
+        )
         NoteList(
             inHistory = inHistory,
             notes = if (inHistory) viewModel.doneNotes else viewModel.toDoNotes,
             onCheckClick = { note ->
                 if (inHistory) viewModel.doNote(note) else viewModel.undoNote(note)
             },
+        )
+    }
+}
+
+@Composable
+fun NoteScreenHeadline(
+    viewModel: NoteScreenViewModel,
+    inHistory: Boolean,
+    onHistoryToggle: () -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(bottom = 8.dp)
+    ) {
+        CheckCounter(
+            modifier = Modifier
+                .weight(0.1f),
+            count = viewModel.doneNotes.size,
+            inHistory = inHistory,
+        )
+        Spacer(modifier = Modifier.weight(0.8f))
+        HistoryToggle(
+            modifier = Modifier.weight(0.1f),
+            inHistory = inHistory,
+            onHistoryClick = onHistoryToggle,
         )
     }
 }
