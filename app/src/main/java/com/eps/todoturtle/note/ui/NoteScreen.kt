@@ -49,8 +49,7 @@ fun NoteScreenHeadline(
         modifier = Modifier.padding(bottom = 8.dp),
     ) {
         CheckCounter(
-            modifier = Modifier
-                .weight(0.1f),
+            modifier = Modifier.weight(0.1f),
             count = viewModel.doneNotes.size,
             inHistory = inHistory,
         )

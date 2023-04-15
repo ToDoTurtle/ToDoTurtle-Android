@@ -64,8 +64,10 @@ fun ChangeProfilePictureDialog(
                 CenteredPicture(
                     bitmap = tempChosenImage.value,
                     description = R.string.profile_picture_desc,
-                    size = 150,
-                    paddingTop = 20,
+                    modifier = Modifier
+                        .fillMaxWidth(fraction = 0.5f)
+                        .padding(top = 20.dp)
+                        .height(150.dp),
                 )
                 DialogTitle(R.string.chosen_image)
                 DialogOptions(

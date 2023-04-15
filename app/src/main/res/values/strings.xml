@@ -10,4 +10,6 @@
     <string name="go_back_to_notes_icon_desc">Go back to undone notes</string>
     <string name="notes_icon_desc">Notes</string>
     <string name="app_title">ToDo Turtle</string>
+    <string name="welcome_message_part1">"Welcome to "</string>
+    <string name="welcome_message_part2">ToDo Turtle</string>
 </resources>

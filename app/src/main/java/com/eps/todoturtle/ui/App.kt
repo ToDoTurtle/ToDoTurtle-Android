@@ -20,13 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.datastore.core.DataStore
 import androidx.navigation.compose.rememberNavController
-import com.eps.todoturtle.nav.ui.Drawer
 import com.eps.todoturtle.navigation.logic.Destination
 import com.eps.todoturtle.navigation.logic.Devices
 import com.eps.todoturtle.navigation.logic.Invite
 import com.eps.todoturtle.navigation.logic.Notes
 import com.eps.todoturtle.navigation.logic.Profile
 import com.eps.todoturtle.navigation.logic.Settings
+import com.eps.todoturtle.navigation.ui.Drawer
 import com.eps.todoturtle.navigation.ui.ToDoTurtleNavHost
 import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo

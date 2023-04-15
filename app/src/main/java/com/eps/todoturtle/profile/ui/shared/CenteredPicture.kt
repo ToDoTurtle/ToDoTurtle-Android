@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
@@ -14,20 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun CenteredPicture(
+    modifier: Modifier = Modifier,
     bitmap: Bitmap,
     description: Int,
-    size: Int,
-    paddingTop: Int = 0,
+    innerImagePadding: Dp = 0.dp,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth(fraction = 0.5f)
-            .padding(top = paddingTop.dp)
-            .height(size.dp),
+        modifier = modifier,
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -38,7 +35,9 @@ fun CenteredPicture(
             Image(
                 bitmap = bitmap.asImageBitmap(),
                 contentDescription = stringResource(id = description),
-                modifier = Modifier.size(400.dp),
+                modifier = Modifier
+                    .size(400.dp)
+                    .padding(innerImagePadding),
                 contentScale = ContentScale.Crop,
             )
         }
