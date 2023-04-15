@@ -75,4 +75,8 @@ dependencies {
     implementation "androidx.datastore:datastore:1.0.0"
     implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5" // Required by DataStore when adding lists
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+
+    // Maps
+    implementation 'org.osmdroid:osmdroid-android:6.1.13'
+    implementation 'com.github.MKergall:osmbonuspack:6.9.0'
 }
