@@ -22,6 +22,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
+import com.eps.todoturtle.ui.theme.onNoteHeadlineContainer
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -73,7 +74,7 @@ fun GoHistoryButton() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.history),
         contentDescription = stringResource(R.string.note_history_icon_desc),
-        tint = MaterialTheme.colorScheme.onTertiary,
+        tint = MaterialTheme.colorScheme.onNoteHeadlineContainer,
         modifier = Modifier
             .padding(start = 8.dp, end = 0.dp, top = 4.dp, bottom = 4.dp)
             .scale(scale = 1.2f)
@@ -81,7 +82,7 @@ fun GoHistoryButton() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.right_arrow),
         contentDescription = stringResource(R.string.go_history_icon_desc),
-        tint = MaterialTheme.colorScheme.onTertiary,
+        tint = MaterialTheme.colorScheme.onNoteHeadlineContainer,
         modifier = Modifier
             .padding(start = 0.dp, end = 4.dp, top = 4.dp, bottom = 4.dp)
             .scale(scale = 1.2f)
@@ -93,7 +94,7 @@ fun GoBackButton() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.left_arrow),
         contentDescription = stringResource(R.string.go_back_to_notes_icon_desc),
-        tint = MaterialTheme.colorScheme.onTertiary,
+        tint = MaterialTheme.colorScheme.onNoteHeadlineContainer,
         modifier = Modifier
             .padding(start = 4.dp, end = 0.dp, top = 4.dp, bottom = 4.dp)
             .scale(scale = 1.2f)
@@ -101,7 +102,7 @@ fun GoBackButton() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.note),
         contentDescription = stringResource(R.string.notes_icon_desc),
-        tint = MaterialTheme.colorScheme.onTertiary,
+        tint = MaterialTheme.colorScheme.onNoteHeadlineContainer,
         modifier = Modifier
             .padding(start = 0.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
             .scale(scale = 1.2f)

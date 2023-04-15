@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.ui.theme.onNoteHeadlineContainer
 
 @Composable
 fun CheckCounter(
@@ -38,7 +39,7 @@ fun CheckCounter(
         Icon(
             imageVector = Icons.Filled.Check,
             contentDescription = "Check",
-            tint = MaterialTheme.colorScheme.onTertiary,
+            tint = MaterialTheme.colorScheme.onNoteHeadlineContainer,
             modifier = Modifier
                 .padding(start = 4.dp, end = 6.dp, top = 4.dp, bottom = 4.dp)
                 .scale(scale = 1.2f),
@@ -68,7 +69,7 @@ fun Counter(
     ) {
         Text(
             text = "$count",
-            color = MaterialTheme.colorScheme.onTertiary,
+            color = MaterialTheme.colorScheme.onNoteHeadlineContainer,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(start = 8.dp),
         )

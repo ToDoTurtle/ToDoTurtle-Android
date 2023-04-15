@@ -76,6 +76,14 @@ val ColorScheme.inactiveOnPrimaryContainer: Color
     @Composable
     get() = if (isSystemInDarkTheme()) onSecondary else secondary
 
+val ColorScheme.noteHeadlineContainer: Color
+    @Composable
+    get() = secondaryContainer
+
+val ColorScheme.onNoteHeadlineContainer: Color
+    @Composable
+    get() = onSecondaryContainer
+
 @Composable
 fun ToDoTurtleTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),

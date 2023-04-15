@@ -2,6 +2,7 @@ package com.eps.todoturtle.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +22,7 @@ import androidx.datastore.core.DataStore
 import androidx.navigation.compose.rememberNavController
 import com.eps.todoturtle.navigation.logic.Devices
 import com.eps.todoturtle.nav.ui.Drawer
+import com.eps.todoturtle.navigation.logic.Destination
 import com.eps.todoturtle.navigation.logic.Invite
 import com.eps.todoturtle.navigation.logic.Notes
 import com.eps.todoturtle.navigation.logic.Profile
@@ -51,17 +53,13 @@ fun App(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
     ) {
-        val items = listOf(Notes, Devices, Profile, Settings, Invite)
-        var selectedItem by remember { mutableStateOf(items[1]) }
-        Drawer(
+        DrawerContainer(
             drawerState = drawerState,
             toDoCount = noteScreenViewModel.toDoNotes.size,
             onItemClick = { destination ->
-                selectedItem = destination
                 scope.launch { drawerState.close() }
                 navController.navigateSingleTopTo(destination.route)
             },
-            selectedItem = selectedItem,
         ) {
             Scaffold(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -80,5 +78,27 @@ fun App(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun DrawerContainer(
+    drawerState: DrawerState,
+    toDoCount: Int,
+    onItemClick: (Destination) -> Unit,
+    content: @Composable () -> Unit,
+) {
+    val items = listOf(Notes, Devices, Profile, Settings, Invite)
+    var selectedItem by remember { mutableStateOf(items[0]) }
+    Drawer(
+        drawerState = drawerState,
+        toDoCount = toDoCount,
+        onItemClick = { destination ->
+            selectedItem = destination
+            onItemClick(destination)
+        },
+        selectedItem = selectedItem,
+    ) {
+        content()
     }
 }
