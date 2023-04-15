@@ -1,5 +1,6 @@
 package com.eps.todoturtle.preferences.ui
 
+import android.text.BoringLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +35,7 @@ internal fun PreferenceSwitch(
     @StringRes iconDesc: Int,
     @StringRes text: Int,
     checked: Boolean,
-    onCheckedChange: () -> Unit,
+    onCheckedChange: (Boolean) -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -42,7 +43,9 @@ internal fun PreferenceSwitch(
             .padding(16.dp),
         color = MaterialTheme.colorScheme.tertiaryContainer,
         shape = RoundedCornerShape(percent = 10),
-        onClick = onCheckedChange,
+        onClick = {
+            onCheckedChange(!checked)
+        },
     ) {
         Column {
             Row(
@@ -76,7 +79,7 @@ internal fun PreferenceSwitch(
                         uncheckedBorderColor = MaterialTheme.colorScheme.tertiary,
                     ),
                     onCheckedChange = {
-                        onCheckedChange()
+                        onCheckedChange(it)
                     },
                 )
             }

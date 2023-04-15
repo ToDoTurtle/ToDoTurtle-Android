@@ -46,7 +46,7 @@ fun PreferenceUI(
                     checked = currentPreferences.mute,
                     onCheckedChange = {
                         coroutineScope.launch {
-                            preferenceMod.updateMute()
+                            preferenceMod.updateMute(it)
                         }
                     },
                 )
