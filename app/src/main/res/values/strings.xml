@@ -5,4 +5,8 @@
     <string name="drawer_profile">Profile</string>
     <string name="drawer_settings">Settings</string>
     <string name="drawer_invite">Invite a friend</string>
+    <string name="note_history_icon_desc">History</string>
+    <string name="go_history_icon_desc">Go history</string>
+    <string name="go_back_to_notes_icon_desc">Go back to undone notes</string>
+    <string name="notes_icon_desc">Notes</string>
 </resources>

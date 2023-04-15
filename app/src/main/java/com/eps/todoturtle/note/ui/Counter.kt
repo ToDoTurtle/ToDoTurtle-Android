@@ -25,38 +25,24 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CheckCounter(
+    modifier: Modifier = Modifier,
     count: Int = 0,
     inHistory: Boolean,
 ) {
-    CheckCounterContainer {
+    NoteScreenHeadLineContainer(
+        modifier = Modifier
+            .padding(start = 32.dp, bottom = 0.dp)
+            .clip(MaterialTheme.shapes.medium)
+    ) {
         Counter(count = count, inHistory = inHistory)
         Icon(
             imageVector = Icons.Filled.Check,
             contentDescription = "Check",
             tint = MaterialTheme.colorScheme.onTertiary,
             modifier = Modifier
-                .padding(start = 4.dp, end = 6.dp)
+                .padding(start = 4.dp, end = 6.dp, top = 4.dp, bottom = 4.dp)
                 .scale(scale = 1.2f),
         )
-    }
-}
-
-@Composable
-fun CheckCounterContainer(
-    content: @Composable () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .wrapContentSize()
-            .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 8.dp)
-            .clip(MaterialTheme.shapes.medium)
-            .background(
-                color = MaterialTheme.colorScheme.tertiary,
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-    ) {
-        content()
     }
 }
 

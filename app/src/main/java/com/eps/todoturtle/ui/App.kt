@@ -52,7 +52,7 @@ fun App(
         color = MaterialTheme.colorScheme.background,
     ) {
         val items = listOf(Notes, Devices, Profile, Settings, Invite)
-        var selectedItem by remember { mutableStateOf(items.first()) }
+        var selectedItem by remember { mutableStateOf(items[1]) }
         Drawer(
             drawerState = drawerState,
             toDoCount = noteScreenViewModel.toDoNotes.size,
