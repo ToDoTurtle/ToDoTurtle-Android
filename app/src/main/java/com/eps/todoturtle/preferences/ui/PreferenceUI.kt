@@ -24,7 +24,7 @@ fun PreferenceUI(
     dataStore: DataStore<AppPreferences>,
 ) {
     val currentPreferences: AppPreferences = dataStore.data.collectAsState(initial = AppPreferences()).value
-    val preferenceMod = AppPreferencesModifier(dataStore)
+    val preferenceMod = AppPreferencesModifier(dataStore, LocalContext.current)
     val coroutineScope = rememberCoroutineScope()
 
     Surface(

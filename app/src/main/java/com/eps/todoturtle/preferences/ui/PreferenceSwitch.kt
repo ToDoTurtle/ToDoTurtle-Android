@@ -1,6 +1,5 @@
 package com.eps.todoturtle.preferences.ui
 
-import android.text.BoringLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
