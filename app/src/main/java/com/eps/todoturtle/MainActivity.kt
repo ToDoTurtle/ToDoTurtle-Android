@@ -3,6 +3,7 @@ package com.eps.todoturtle
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.eps.todoturtle.nfc.getDevicesViewModel
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.providers.CameraPermissionProvider
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
                 App(
                     permissionRequester = permissionRequester,
                     noteScreenViewModel = noteScreenViewModel,
+                    devicesViewModel = getDevicesViewModel(),
                     profileViewModel = profileViewModel,
                     dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },

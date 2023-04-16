@@ -31,6 +31,7 @@ import com.eps.todoturtle.navigation.ui.Drawer
 import com.eps.todoturtle.navigation.ui.ToDoTurtleNavHost
 import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
+import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
@@ -43,6 +44,7 @@ fun App(
     permissionRequester: PermissionRequester,
     noteScreenViewModel: NoteScreenViewModel,
     profileViewModel: ProfileViewModel,
+    devicesViewModel: NfcWriteViewModel,
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
 ) {
@@ -79,6 +81,7 @@ fun App(
                     permissionRequester = permissionRequester,
                     shouldShowMenu = shouldShowMenu,
                     noteScreenViewModel = noteScreenViewModel,
+                    devicesViewModel = devicesViewModel,
                     dataStore = dataStore,
                     profileViewModel = profileViewModel,
                     hasCameraPermission = { hasCameraPermission() },
