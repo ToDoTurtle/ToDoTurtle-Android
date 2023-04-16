@@ -31,7 +31,7 @@ fun ToDoTurtleNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = "settings",  // FIXME: Change this to "login" when login is implemented
         modifier = modifier,
     ) {
         composable("login") {

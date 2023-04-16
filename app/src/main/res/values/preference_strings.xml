@@ -1,7 +1,6 @@
 <resources>
     <!--    Categories    -->
-    <string name="category_sound">Sound</string>
-    <string name="category_theme">Color themes</string>
+    <string name="preference_category_general">General</string>
 
     <!--    Mute types    -->
     <string name="mute_desc">Mute sounds</string>

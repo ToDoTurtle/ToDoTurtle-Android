@@ -23,7 +23,8 @@ import kotlinx.coroutines.launch
 fun PreferenceUI(
     dataStore: DataStore<AppPreferences>,
 ) {
-    val currentPreferences: AppPreferences = dataStore.data.collectAsState(initial = AppPreferences()).value
+    val currentPreferences: AppPreferences =
+        dataStore.data.collectAsState(initial = AppPreferences()).value
     val preferenceMod = AppPreferencesModifier(dataStore, LocalContext.current)
     val coroutineScope = rememberCoroutineScope()
 
@@ -37,7 +38,7 @@ fun PreferenceUI(
                 .fillMaxSize(),
         ) {
             PreferenceGroup(
-                R.string.category_sound,
+                R.string.preference_category_general,
             ) {
                 PreferenceSwitch(
                     icon = R.drawable.headphones,
@@ -50,10 +51,6 @@ fun PreferenceUI(
                         }
                     },
                 )
-            }
-            PreferenceGroup(
-                groupTitle = R.string.category_theme,
-            ) {
                 PreferenceDropdown(
                     icon = R.drawable.palette,
                     iconDesc = R.string.theme_image_desc,
