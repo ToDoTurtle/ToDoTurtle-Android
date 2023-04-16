@@ -1,11 +1,16 @@
 package com.eps.todoturtle.map.logic
 
 import android.content.Context
+import android.util.Log
 import com.eps.todoturtle.R
+import com.eps.todoturtle.map.logic.markers.MarkerFactory
+import com.eps.todoturtle.map.logic.markers.MarkerFactory.setCurrentMarker
+import com.eps.todoturtle.map.logic.markers.MarkerType
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MyMap {
@@ -17,7 +22,7 @@ class MyMap {
                 setTileSource()
                 setZoom()
                 setStartPoint(startLat, startLon)
-                setMarkers(this)
+                setMarkers(this, startLat, startLon)
             }
         }
 
@@ -38,16 +43,15 @@ class MyMap {
             controller.setZoom(20.00)
         }
 
-        private fun setMarkers(map: MapView) {
+        private fun MapView.setMarkers(map: MapView, startLat: Double, startLon: Double) {
+            setCurrentPositionMarker(map, startLat, startLon)
             setCurrentMarker(map)
         }
 
-        private fun setCurrentMarker(map: MapView) {
-            val overlay = MyLocationNewOverlay(map).apply {
-                enableMyLocation()
-                enableFollowLocation()
-            }
-            map.overlays.add(overlay)
+
+        private fun MapView.setCurrentPositionMarker(map: MapView, startLat: Double, startLon: Double) {
+            val marker = MarkerFactory.getMarker(map, MarkerType.CAR, startLat, startLon)
+            overlays.add(marker)
         }
 
 

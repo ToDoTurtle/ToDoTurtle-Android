@@ -1,0 +1,5 @@
+<resources>
+    <!--    Car strings    -->
+    <string name="marker_car_title">Car</string>
+    <string name="marker_car_snippet">You left your car here you silly fuck</string>
+</resources>
