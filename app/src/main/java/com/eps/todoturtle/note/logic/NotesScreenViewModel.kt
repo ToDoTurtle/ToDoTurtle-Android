@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 
 private const val OFFSET = 100
 private const val EPS_LAT  = 41.608440
-private const val EPS_LON = 20.623380
+private const val EPS_LON = 0.623380
 
 class NoteScreenViewModel : ViewModel() {
     private val _toDoNotes = getToDoNotes().toMutableStateList()
