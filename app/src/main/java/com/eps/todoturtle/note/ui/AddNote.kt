@@ -26,7 +26,7 @@ fun AddNoteButton(
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.add_notes_big),
             modifier = Modifier.scale(0.8f),
-            contentDescription = stringResource(id = R.string.add_note_button_description),
+            contentDescription = stringResource(id = R.string.note_add_note_button_desc),
         )
     }
 }

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.R
 
 @Composable
 fun ProfileOutlinedText(
@@ -48,7 +49,7 @@ fun ProfileOutlinedText(
             if (error.value) {
                 Icon(
                     Icons.Filled.Warning,
-                    "Error",
+                    stringResource(id = R.string.profile_error_desc),
                     tint = MaterialTheme.colorScheme.error,
                 )
             }

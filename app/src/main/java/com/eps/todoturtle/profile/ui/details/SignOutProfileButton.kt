@@ -23,6 +23,6 @@ fun SignOutProfileButton(
         onClick = onSignOutClick,
         modifier = Modifier.padding(top = 15.dp),
     ) {
-        Text(text = stringResource(id = R.string.sign_out))
+        Text(text = stringResource(id = R.string.profile_sign_out))
     }
 }

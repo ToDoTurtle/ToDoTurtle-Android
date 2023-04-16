@@ -42,8 +42,8 @@ fun PreferenceUI(
             ) {
                 PreferenceSwitch(
                     icon = R.drawable.headphones,
-                    iconDesc = R.string.mute_image_desc,
-                    text = R.string.mute_desc,
+                    iconDesc = R.string.preference_mute_image_desc,
+                    text = R.string.preference_mute_desc,
                     checked = currentPreferences.mute,
                     onCheckedChange = {
                         coroutineScope.launch {
@@ -53,8 +53,8 @@ fun PreferenceUI(
                 )
                 PreferenceDropdown(
                     icon = R.drawable.palette,
-                    iconDesc = R.string.theme_image_desc,
-                    text = R.string.theme_desc,
+                    iconDesc = R.string.preference_theme_image_desc,
+                    text = R.string.preference_theme_desc,
                     selected = currentPreferences.theme,
                 ) {
                     coroutineScope.launch {

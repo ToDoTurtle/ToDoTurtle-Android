@@ -17,10 +17,10 @@ enum class Themes : PreferenceEnum<Themes> {
 
     override fun getString(context: Context) =
         when (this) {
-            Greenish -> context.getString(R.string.theme_greenish)
-            Cold -> context.getString(R.string.theme_cold)
-            ColdDark -> context.getString(R.string.theme_cold_dark)
-            Amber -> context.getString(R.string.theme_amber)
-            Magenta -> context.getString(R.string.theme_magenta)
+            Greenish -> context.getString(R.string.preference_theme_greenish)
+            Cold -> context.getString(R.string.preference_theme_cold)
+            ColdDark -> context.getString(R.string.preference_theme_cold_dark)
+            Amber -> context.getString(R.string.preference_theme_amber)
+            Magenta -> context.getString(R.string.preference_theme_magenta)
         }
 }

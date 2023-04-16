@@ -1,10 +1,10 @@
 <resources>
     <!--    General    -->
-    <string name="grant_permission">Grant Permission</string>
-    <string name="ok">OK</string>
+    <string name="permission_grant_permission">Grant Permission</string>
+    <string name="permission_ok">OK</string>
     <string name="permission_required">Permission required</string>
 
     <!--    Camera    -->
-    <string name="camera_permanently_declined">It seems you permanently declined permission to access your camera. You can go to app settings to grant it</string>
-    <string name="camera_normal_decline">This app needs access to your camera so that you can change the profile picture.</string>
+    <string name="permission_camera_permanently_declined">It seems you permanently declined permission to access your camera. You can go to app settings to grant it</string>
+    <string name="permission_camera_normal_decline">This app needs access to your camera so that you can change the profile picture.</string>
 </resources>

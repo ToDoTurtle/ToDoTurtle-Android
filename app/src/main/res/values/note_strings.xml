@@ -3,4 +3,15 @@
     <string name="note_icon_nfc_desc">NFC</string>
     <string name="note_icon_notification_desc">Notifications</string>
     <string name="note_icon_deadline_desc">Deadline</string>
+    <string name="note_counter_check_desc">Check icon</string>
+    <string name="note_history_icon_desc">History</string>
+    <string name="note_notes_icon_desc">Notes</string>
+
+    <!--    Note content    -->
+    <string name="note_title">Note # %d</string>
+    <string name="note_description">This is the description of Note # %d</string>
+
+    <!--    Note actions    -->
+    <string name="note_add_note_button_desc">Button that prompts the form to create a new note.</string>
+    <string name="note_counter_count">%d</string>
 </resources>

@@ -40,7 +40,7 @@ fun TopBar(
                 IconButton(onClick = onMenuClick) {
                     Icon(
                         imageVector = Icons.Filled.Menu,
-                        contentDescription = "Open drawer menu",
+                        contentDescription = stringResource(R.string.navigation_drawer_open),
                     )
                 }
             },
@@ -59,13 +59,13 @@ fun AppTitle() {
             style = MaterialTheme.typography.headlineMedium.copy(
                 fontWeight = FontWeight.Black,
             ),
-            text = stringResource(R.string.app_title),
+            text = stringResource(R.string.spaced_app_name),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
         Image(
             bitmap = bitmapFrom(R.drawable.turtle, LocalContext.current).asImageBitmap(),
-            contentDescription = "Turtle",
+            contentDescription = stringResource(R.string.navigation_icon_desc),
             modifier = Modifier
                 .scale(0.4f)
                 .offset(y = (8).dp, x = (-65).dp)

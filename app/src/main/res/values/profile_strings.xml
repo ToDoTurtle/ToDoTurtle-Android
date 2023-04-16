@@ -1,29 +1,32 @@
 <resources>
-    <string name="profile_picture_desc">Profile picture</string>
-    <string name="sign_out">Sign out</string>
-    <string name="username">Username</string>
-    <string name="mail">Mail</string>
-    <string name="hostage">Hostage type</string>
+    <string name="profile_sign_out">Sign out</string>
+    <string name="profile_username">Username</string>
+    <string name="profile_mail">Mail</string>
+    <string name="profile_hostage">Hostage type</string>
 
     <!--    Defaults    -->
-    <string name="default_username">John Doe</string>
-    <string name="default_mail">john@doe.app</string>
+    <string name="profile_default_username">John Doe</string>
+    <string name="profile_default_mail">john@doe.app</string>
 
     <!--    Hostage types    -->
-    <string name="self_hosted">Self-hosted</string>
-    <string name="firebase">Firebase hosting</string>
+    <string name="profile_self_hosted">Self-hosted</string>
+    <string name="profile_firebase">Firebase hosting</string>
 
     <!--    Image options    -->
-    <string name="chosen_image">Chosen image</string>
-    <string name="gallery">Gallery</string>
-    <string name="camera">Camera</string>
+    <string name="profile_chosen_image">Chosen image</string>
+    <string name="profile_gallery">Gallery</string>
+    <string name="profile_camera">Camera</string>
 
     <!--    Login strings    -->
-    <string name="login_picture_desc">Login picture</string>
-    <string name="login_username">Username</string>
-    <string name="login_password">Password</string>
-    <string name="sign_in">Sign in</string>
-    <string name="wrong_login_desc">Wrong login picture (cross)</string>
-    <string name="wrong_credentials">Wrong credentials</string>
-    <string name="dismiss">Dismiss</string>
+    <string name="profile_login_username">Username</string>
+    <string name="profile_login_password">Password</string>
+    <string name="profile_sign_in">Sign in</string>
+    <string name="profile_wrong_credentials">Wrong credentials</string>
+    <string name="profile_dismiss">Dismiss</string>
+
+    <!--    Icon/Image desc   -->
+    <string name="profile_profile_picture_desc">Profile picture</string>
+    <string name="profile_login_picture_desc">Login picture</string>
+    <string name="profile_wrong_login_desc">Wrong login picture (cross)</string>
+    <string name="profile_error_desc">Error icon</string>
 </resources>

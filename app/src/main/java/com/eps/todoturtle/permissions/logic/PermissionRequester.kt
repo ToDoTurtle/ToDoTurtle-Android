@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.eps.todoturtle.permissions.logic.providers.PermissionProvider
 import com.eps.todoturtle.permissions.ui.PermissionDialog
 
+private const val PACKAGE_SCHEMA = "package"
+
 class PermissionRequester(
     private val parentActivity: ComponentActivity,
     private val permissionProviders: List<PermissionProvider>,
@@ -60,7 +62,7 @@ class PermissionRequester(
 internal fun Activity.openAppSettings() {
     Intent(
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-        Uri.fromParts("package", packageName, null),
+        Uri.fromParts(PACKAGE_SCHEMA, packageName, null),
     ).also(::startActivity)
 }
 

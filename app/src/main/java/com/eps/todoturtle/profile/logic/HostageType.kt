@@ -13,8 +13,8 @@ enum class HostageType : Parcelable {
 
     fun getString(context: Context): String {
         return when (this) {
-            SELF_HOSTAGE -> context.getString(R.string.self_hosted)
-            FIRE_HOSTAGE -> context.getString(R.string.firebase)
+            SELF_HOSTAGE -> context.getString(R.string.profile_self_hosted)
+            FIRE_HOSTAGE -> context.getString(R.string.profile_firebase)
         }
     }
 }

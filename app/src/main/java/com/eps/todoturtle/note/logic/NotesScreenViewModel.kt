@@ -1,15 +1,18 @@
 package com.eps.todoturtle.note.logic
 
+import android.content.Context
 import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
+import com.eps.todoturtle.R
 
 private const val OFFSET = 100
 private const val EPS_LAT = 41.608440
 private const val EPS_LON = 0.623380
 
-class NoteScreenViewModel : ViewModel() {
-    private val _toDoNotes = getToDoNotes().toMutableStateList()
-    private val _doneNotes = getDoneNotes().toMutableStateList()
+class NoteScreenViewModel(context: Context) : ViewModel() {
+    private val _toDoNotes = getToDoNotes(context).toMutableStateList()
+    private val _doneNotes = getDoneNotes(context).toMutableStateList()
 
     val toDoNotes: List<BaseNote>
         get() = _toDoNotes
@@ -28,27 +31,31 @@ class NoteScreenViewModel : ViewModel() {
     }
 }
 
-private fun getToDoNotes(): List<BaseNote> =
+private fun getToDoNotes(context: Context): List<BaseNote> =
     List(size = 15) { i ->
         if (i % 2 == 0) {
-            Note(i, "Note # $i", "This is the description of Note # $i")
+            Note(
+                i,
+                title = context.getString(R.string.note_title, i),
+                description = context.getString(R.string.note_description, i)
+            )
         } else {
             MapNote(
                 id = i,
-                title = "Note # $i",
-                description = "This is the description of Note # $i",
+                title = context.getString(R.string.note_title, i),
+                description = context.getString(R.string.note_description, i),
                 latitude = EPS_LAT,
                 longitude = EPS_LON,
             )
         }
     }
 
-private fun getDoneNotes(): List<BaseNote> =
+private fun getDoneNotes(context: Context): List<BaseNote> =
     List(size = 15) { i ->
         Note(
             id = i + OFFSET,
-            title = "Note # ${i + OFFSET}",
-            description = "This is the description of Note # ${i + OFFSET}",
+            title = context.getString(R.string.note_title, i + OFFSET),
+            description = context.getString(R.string.note_description, i + OFFSET)
         )
     }
 

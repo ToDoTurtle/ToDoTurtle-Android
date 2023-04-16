@@ -18,6 +18,13 @@ import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.ui.details.DetailsUI
 import com.eps.todoturtle.profile.ui.login.LoginUI
 
+private const val LOGIN = "login"
+private const val PROFILE = "profile"
+private const val NOTES = "notes"
+private const val DEVICES = "devices"
+private const val SETTINGS = "settings"
+private const val INVITE = "invite"
+
 @Composable
 fun ToDoTurtleNavHost(
     navController: NavHostController,
@@ -31,22 +38,22 @@ fun ToDoTurtleNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = LOGIN,
         modifier = modifier,
     ) {
-        composable("login") {
+        composable(LOGIN) {
             LoginUI(
                 onSignInClick = {
-                    navController.navigateSingleTopTo("notes")
+                    navController.navigateSingleTopTo(NOTES)
                     shouldShowMenu.value = true
                 },
             )
         }
-        composable("profile") {
+        composable(PROFILE) {
             RequestPermissionContext(permissionRequester) {
                 DetailsUI(
                     onSignOutClick = {
-                        navController.navigateSingleTopTo("login")
+                        navController.navigateSingleTopTo(LOGIN)
                         shouldShowMenu.value = false
                     },
                     requestPermissions = { requestPermissions() },
@@ -55,16 +62,16 @@ fun ToDoTurtleNavHost(
                 )
             }
         }
-        composable("notes") {
+        composable(NOTES) {
             NoteScreen(
                 viewModel = noteScreenViewModel,
             )
         }
-        composable("devices") {}
-        composable("settings") {
+        composable(DEVICES) {}
+        composable(SETTINGS) {
             PreferenceUI(dataStore = dataStore)
         }
-        composable("invite") {}
+        composable(INVITE) {}
     }
 }
 

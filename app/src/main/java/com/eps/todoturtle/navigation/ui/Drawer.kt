@@ -43,7 +43,7 @@ fun Drawer(
             ModalDrawerSheet {
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    text = "ToDo Turtle",
+                    text = stringResource(id = R.string.spaced_app_name),
                     style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
                 )

@@ -45,10 +45,10 @@ fun DetailsContent(
     ) {
         profileViewModel.changeProfilePicture(it)
     }
-    ProfileOutlinedText(details.username, R.string.username, topPadding = 15) {
+    ProfileOutlinedText(details.username, R.string.profile_username, topPadding = 15) {
         profileViewModel.changeUsername(it)
     }
-    ProfileOutlinedText(details.mail, R.string.mail, topPadding = 15) {
+    ProfileOutlinedText(details.mail, R.string.profile_mail, topPadding = 15) {
         profileViewModel.changeMail(it)
     }
     HostageTypeProfileField(details.hostage) {

@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.update
 class ProfileViewModel(context: Context) : ViewModel() {
     private val _details = MutableStateFlow(
         ProfileDetails(
-            username = context.getString(R.string.default_username),
-            mail = context.getString(R.string.default_username),
+            username = context.getString(R.string.profile_default_username),
+            mail = context.getString(R.string.profile_default_username),
             hostage = HostageType.FIRE_HOSTAGE,
             profilePicture = bitmapFrom(R.drawable.stickman2_pfp, context),
         ),

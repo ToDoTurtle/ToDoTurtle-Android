@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import com.eps.todoturtle.R
 
 @Composable
 fun LoginOutlinedText(
@@ -42,7 +43,7 @@ fun LoginOutlinedText(
             if (error.value) {
                 Icon(
                     Icons.Filled.Warning,
-                    "Error",
+                    stringResource(id = R.string.profile_error_desc),
                     tint = MaterialTheme.colorScheme.error,
                 )
             }

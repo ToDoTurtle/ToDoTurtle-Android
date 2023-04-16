@@ -91,7 +91,7 @@ fun GoHistoryButton() {
 fun GoBackButton() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.uncheck_list),
-        contentDescription = stringResource(R.string.notes_icon_desc),
+        contentDescription = stringResource(R.string.note_notes_icon_desc),
         tint = MaterialTheme.colorScheme.onNoteScreenButton,
         modifier = Modifier
             .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)

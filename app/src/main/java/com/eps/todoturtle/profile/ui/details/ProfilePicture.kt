@@ -43,7 +43,7 @@ fun ProfilePicture(
         ) {
             Image(
                 bitmap = profilePicture.asImageBitmap(),
-                contentDescription = stringResource(id = R.string.profile_picture_desc),
+                contentDescription = stringResource(id = R.string.profile_profile_picture_desc),
                 modifier = Modifier
                     .clickable { shouldShowDialog.value = true }
                     .size(400.dp),

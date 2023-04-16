@@ -50,7 +50,7 @@ fun LoginContent(
     Spacer(modifier = Modifier.size(20.dp))
     CenteredPicture(
         bitmap = bitmapFrom(R.drawable.turtle, LocalContext.current),
-        description = R.string.login_picture_desc,
+        description = R.string.profile_login_picture_desc,
         modifier = Modifier
             .size(150.dp),
         innerImagePadding = 15.dp,
@@ -58,12 +58,12 @@ fun LoginContent(
     WelcomeMessage()
     LoginOutlinedText(
         text = username,
-        label = R.string.login_username,
+        label = R.string.profile_login_username,
         error = wrongLogin,
     )
     LoginOutlinedText(
         text = password,
-        label = R.string.login_password,
+        label = R.string.profile_login_password,
         isPassword = true,
         error = wrongLogin,
     )
@@ -82,7 +82,7 @@ fun LoginContent(
             }
         },
     ) {
-        Text(text = stringResource(id = R.string.sign_in))
+        Text(text = stringResource(id = R.string.profile_sign_in))
     }
     Spacer(modifier = Modifier.size(5.dp))
 }

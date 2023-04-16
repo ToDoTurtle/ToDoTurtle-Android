@@ -3,16 +3,16 @@
     <string name="preference_category_general">General</string>
 
     <!--    Mute types    -->
-    <string name="mute_desc">Mute sounds</string>
-    <string name="mute_image_desc">Mute icon</string>
+    <string name="preference_mute_desc">Mute sounds</string>
+    <string name="preference_mute_image_desc">Mute icon</string>
 
     <!--    Theme types    -->
-    <string name="theme_desc">App theme</string>
-    <string name="theme_image_desc">Palette icon</string>
-    <string name="theme_label">Theme</string>
-    <string name="theme_greenish">Green</string>
-    <string name="theme_cold">Cold</string>
-    <string name="theme_cold_dark">Cold dark</string>
-    <string name="theme_amber">Amber</string>
-    <string name="theme_magenta">Magenta</string>
+    <string name="preference_theme_desc">App theme</string>
+    <string name="preference_theme_image_desc">Palette icon</string>
+    <string name="preference_theme_label">Theme</string>
+    <string name="preference_theme_greenish">Green</string>
+    <string name="preference_theme_cold">Cold</string>
+    <string name="preference_theme_cold_dark">Cold dark</string>
+    <string name="preference_theme_amber">Amber</string>
+    <string name="preference_theme_magenta">Magenta</string>
 </resources>

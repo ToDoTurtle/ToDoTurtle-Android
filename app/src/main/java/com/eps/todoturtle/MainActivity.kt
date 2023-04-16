@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
 
         permissionRequester = PermissionRequester(this, permissionsToRequest)
 
-        val noteScreenViewModel = NoteScreenViewModel()
+        val noteScreenViewModel = NoteScreenViewModel(this)
         val profileViewModel = ProfileViewModel(this)
 
         setContent {

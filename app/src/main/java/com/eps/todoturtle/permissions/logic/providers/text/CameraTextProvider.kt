@@ -5,7 +5,7 @@ import com.eps.todoturtle.R
 
 class CameraTextProvider(private val context: Context) : PermissionTextProvider {
     override val isPermanentlyDeclined: String
-        get() = context.getString(R.string.camera_permanently_declined)
+        get() = context.getString(R.string.permission_camera_permanently_declined)
     override val normalDecline: String
-        get() = context.getString(R.string.camera_normal_decline)
+        get() = context.getString(R.string.permission_camera_normal_decline)
 }

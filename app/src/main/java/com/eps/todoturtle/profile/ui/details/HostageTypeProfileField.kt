@@ -57,7 +57,7 @@ private fun HostageTypeDropdownTitle(
         readOnly = true,
         value = hostageType.getString(LocalContext.current),
         onValueChange = {},
-        label = { Text(stringResource(id = R.string.hostage)) },
+        label = { Text(stringResource(id = R.string.profile_hostage)) },
         trailingIcon = {
             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedDropdown)
         },

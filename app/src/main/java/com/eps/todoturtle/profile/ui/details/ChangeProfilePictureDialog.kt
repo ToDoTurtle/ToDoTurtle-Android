@@ -36,6 +36,8 @@ import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.ui.shared.CenteredPicture
 import com.eps.todoturtle.profile.ui.shared.DialogTitle
 
+private const val IMAGE_INPUT = "image/*"
+
 @Composable
 fun ChangeProfilePictureDialog(
     hasPermissions: () -> Boolean,
@@ -63,13 +65,13 @@ fun ChangeProfilePictureDialog(
             ) {
                 CenteredPicture(
                     bitmap = tempChosenImage.value,
-                    description = R.string.profile_picture_desc,
+                    description = R.string.profile_profile_picture_desc,
                     modifier = Modifier
                         .fillMaxWidth(fraction = 0.5f)
                         .padding(top = 20.dp)
                         .height(150.dp),
                 )
-                DialogTitle(R.string.chosen_image)
+                DialogTitle(R.string.profile_chosen_image)
                 DialogOptions(
                     hasPermissions = hasPermissions,
                     requestPermissions = requestPermissions,
@@ -116,11 +118,11 @@ private fun DialogOptions(
             .background(color = MaterialTheme.colorScheme.onPrimary),
         horizontalArrangement = Arrangement.SpaceAround,
     ) {
-        DialogTextButton(R.string.camera) {
+        DialogTextButton(R.string.profile_camera) {
             if (hasPermissions()) cameraLauncher.launch() else requestPermissions()
         }
-        DialogTextButton(R.string.gallery) {
-            galleryLauncher.launch("image/*")
+        DialogTextButton(R.string.profile_gallery) {
+            galleryLauncher.launch(IMAGE_INPUT)
         }
     }
 }

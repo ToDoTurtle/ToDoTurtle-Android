@@ -1,0 +1,4 @@
+<resources>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_icon_desc">Turtle icon</string>
+</resources>
