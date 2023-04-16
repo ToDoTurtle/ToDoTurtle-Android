@@ -2,7 +2,7 @@ package com.eps.todoturtle.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val colorProvider = ColorProviderFactory(GreenishTheme).getColorProvider()
+val colorProvider = ColorProviderFactory(DefaultTheme).getColorProvider()
 
 class ColorProviderFactory(private val theme: Theme) {
     fun getColorProvider(): ColorProvider {
@@ -12,6 +12,7 @@ class ColorProviderFactory(private val theme: Theme) {
             is ColdDarkTheme -> ColdDarkColorProvider()
             is AmberTheme -> AmberColorProvider()
             is MagentaTheme -> MagentaColorProvider()
+            is DefaultTheme -> DefaultColorProvider()
         }
     }
 }
@@ -22,6 +23,7 @@ object ColdTheme : Theme()
 object ColdDarkTheme : Theme()
 object AmberTheme : Theme()
 object MagentaTheme : Theme()
+object DefaultTheme : Theme()
 
 val md_theme_light_primary = colorProvider.lightPrimary
 val md_theme_light_onPrimary = colorProvider.lightOnPrimary
@@ -151,6 +153,72 @@ interface ColorProvider {
     val darkScrim: Color
 
     val seed: Color
+}
+
+class DefaultColorProvider : ColorProvider {
+    override val lightPrimary = Color(0xFF246C2D)
+    override val lightOnPrimary = Color(0xFFFFFFFF)
+    override val lightPrimaryContainer = Color(0xFFA8F5A5)
+    override val lightOnPrimaryContainer = Color(0xFF002105)
+    override val lightSecondary = Color(0xFF52634F)
+    override val lightOnSecondary = Color(0xFFFFFFFF)
+    override val lightSecondaryContainer = Color(0xFFD5E8CF)
+    override val lightOnSecondaryContainer = Color(0xFF101F10)
+    override val lightTertiary = Color(0xFF39656B)
+    override val lightOnTertiary = Color(0xFFFFFFFF)
+    override val lightTertiaryContainer = Color(0xFFBCEBF1)
+    override val lightOnTertiaryContainer = Color(0xFF001F23)
+    override val lightError = Color(0xFFBA1A1A)
+    override val lightErrorContainer = Color(0xFFFFDAD6)
+    override val lightOnError = Color(0xFFFFFFFF)
+    override val lightOnErrorContainer = Color(0xFF410002)
+    override val lightBackground = Color(0xFFFCFDF6)
+    override val lightOnBackground = Color(0xFF1A1C19)
+    override val lightSurface = Color(0xFFFCFDF6)
+    override val lightOnSurface = Color(0xFF1A1C19)
+    override val lightSurfaceVariant = Color(0xFFDEE5D9)
+    override val lightOnSurfaceVariant = Color(0xFF424940)
+    override val lightOutline = Color(0xFF72796F)
+    override val lightInverseOnSurface = Color(0xFFF0F1EB)
+    override val lightInverseSurface = Color(0xFF2F312D)
+    override val lightInversePrimary = Color(0xFF8DD88C)
+    override val lightShadow = Color(0xFF000000)
+    override val lightSurfaceTint = Color(0xFF246C2D)
+    override val lightOutlineVariant = Color(0xFFC2C9BD)
+    override val lightScrim = Color(0xFF000000)
+
+    override val darkPrimary = Color(0xFF4CD9DE)
+    override val darkOnPrimary = Color(0xFF003738)
+    override val darkPrimaryContainer = Color(0xFF004F51)
+    override val darkOnPrimaryContainer = Color(0xFF6FF6FB)
+    override val darkSecondary = Color(0xFFB0CCCC)
+    override val darkOnSecondary = Color(0xFF1B3435)
+    override val darkSecondaryContainer = Color(0xFF324B4C)
+    override val darkOnSecondaryContainer = Color(0xFFCCE8E8)
+    override val darkTertiary = Color(0xFFB4C7E9)
+    override val darkOnTertiary = Color(0xFF1E314C)
+    override val darkTertiaryContainer = Color(0xFF354863)
+    override val darkOnTertiaryContainer = Color(0xFFD4E3FF)
+    override val darkError = Color(0xFFFFB4AB)
+    override val darkErrorContainer = Color(0xFF93000A)
+    override val darkOnError = Color(0xFF690005)
+    override val darkOnErrorContainer = Color(0xFFFFDAD6)
+    override val darkBackground = Color(0xFF191C1C)
+    override val darkOnBackground = Color(0xFFE0E3E2)
+    override val darkSurface = Color(0xFF191C1C)
+    override val darkOnSurface = Color(0xFFE0E3E2)
+    override val darkSurfaceVariant = Color(0xFF3F4949)
+    override val darkOnSurfaceVariant = Color(0xFFBEC8C8)
+    override val darkOutline = Color(0xFF899393)
+    override val darkInverseOnSurface = Color(0xFF191C1C)
+    override val darkInverseSurface = Color(0xFFE0E3E2)
+    override val darkInversePrimary = Color(0xFF00696C)
+    override val darkShadow = Color(0xFF000000)
+    override val darkSurfaceTint = Color(0xFF4CD9DE)
+    override val darkOutlineVariant = Color(0xFF3F4949)
+    override val darkScrim = Color(0xFF000000)
+
+    override val seed = Color(0xFF6A8E8F)
 }
 
 class GreenishColorProvider : ColorProvider {
