@@ -31,21 +31,21 @@ fun TopBar(
     shouldShowMenu: Boolean = true,
     onMenuClick: () -> Unit,
 ) {
-    CenterAlignedTopAppBar(
-        title = {
-            AppTitle()
-        },
-        navigationIcon = {
-            if (shouldShowMenu) {
+    if (shouldShowMenu) {
+        CenterAlignedTopAppBar(
+            title = {
+                AppTitle()
+            },
+            navigationIcon = {
                 IconButton(onClick = onMenuClick) {
                     Icon(
                         imageVector = Icons.Filled.Menu,
                         contentDescription = "Open drawer menu",
                     )
                 }
-            }
-        },
-    )
+            },
+        )
+    }
 }
 
 @Composable
