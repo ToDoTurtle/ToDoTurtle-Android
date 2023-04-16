@@ -10,6 +10,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.ui.theme.noteScreenButton
@@ -29,4 +30,17 @@ fun AddNoteButton(
             contentDescription = stringResource(id = R.string.note_add_note_button_desc),
         )
     }
+}
+
+@Composable
+fun NoteForm(
+
+) {
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NoteFormPreview() {
+    NoteForm()
 }

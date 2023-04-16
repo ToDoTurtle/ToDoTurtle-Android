@@ -92,6 +92,14 @@ val ColorScheme.noteScreenButton: Color
     @Composable
     get() = tertiary
 
+val ColorScheme.formContainer: Color
+    @Composable
+    get() = onTertiary
+
+val ColorScheme.onFormContainer: Color
+    @Composable
+    get() = tertiary
+
 @Composable
 fun ToDoTurtleTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
