@@ -17,7 +17,7 @@ fun rememberMapViewWithLifecycle(
     startLon: Double = 0.0,
 ): MapView {
     val context = LocalContext.current
-    MapConfiguration.setUpMapConfiguration(context)
+    MapConfiguration.setUpMapConfiguration()
     val mapView = remember {
         MyMap.getMap(context, startLat, startLon)
     }

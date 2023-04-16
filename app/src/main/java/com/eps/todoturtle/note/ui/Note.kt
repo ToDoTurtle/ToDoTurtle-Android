@@ -155,7 +155,7 @@ fun MapNoteBody(
 ) {
     val modifier = Modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp)
     NoteBody(description = description, modifier = modifier)
-    MapView(modifier = Modifier.height(200.dp), startLat = latitude, startLon = longitude)  // FIXME: hardcoded height
+    MapView(modifier = Modifier.height(200.dp), startLat = latitude, startLon = longitude)
 }
 
 data class NoteIcons(
