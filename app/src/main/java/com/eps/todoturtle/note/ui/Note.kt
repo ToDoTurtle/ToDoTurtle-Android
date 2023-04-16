@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -149,7 +150,7 @@ fun NfcIcon(isActive: Boolean) {
     Icon(
         modifier = Modifier.scale(scale = 0.9f),
         imageVector = vectorResource,
-        contentDescription = "NFC",
+        contentDescription = stringResource(id = R.string.note_icon_nfc_desc),
         tint = if (isActive) {
             MaterialTheme.colorScheme.activeOnPrimaryContainer
         } else {
@@ -164,7 +165,7 @@ fun NotificationsIcon(isActive: Boolean) {
     Icon(
         modifier = Modifier.scale(scale = 0.95f),
         imageVector = vectorResource,
-        contentDescription = "Notifications",
+        contentDescription = stringResource(id = R.string.note_icon_notification_desc),
         tint = if (isActive) {
             MaterialTheme.colorScheme.activeOnPrimaryContainer
         } else {
@@ -179,7 +180,7 @@ fun DeadlineIcon(isActive: Boolean) {
     Icon(
         modifier = Modifier.scale(scale = 0.9f),
         imageVector = vectorResource,
-        contentDescription = "Deadline",
+        contentDescription = stringResource(id = R.string.note_icon_deadline_desc),
         tint = if (isActive) {
             MaterialTheme.colorScheme.activeOnPrimaryContainer
         } else {

@@ -1,0 +1,6 @@
+<resources>
+    <!--    Note icons    -->
+    <string name="note_icon_nfc_desc">NFC</string>
+    <string name="note_icon_notification_desc">Notifications</string>
+    <string name="note_icon_deadline_desc">Deadline</string>
+</resources>
