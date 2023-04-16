@@ -8,7 +8,7 @@ import org.osmdroid.config.Configuration
 class MapConfiguration {
     companion object MapConfiguration {
         fun setUpMapConfiguration(context: Context) {
-//            loadConfiguration(context)
+            loadConfiguration(context)
             setUserAgent()
         }
 

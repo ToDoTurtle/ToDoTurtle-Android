@@ -12,11 +12,14 @@ import com.eps.todoturtle.map.logic.MyMap
 import org.osmdroid.views.MapView
 
 @Composable
-fun rememberMapViewWithLifecycle(): MapView {
+fun rememberMapViewWithLifecycle(
+    startLat: Double = 0.0,
+    startLon: Double = 0.0,
+): MapView {
     val context = LocalContext.current
     MapConfiguration.setUpMapConfiguration(context)
     val mapView = remember {
-        MyMap.getMap(context)
+        MyMap.getMap(context, startLat, startLon)
     }
 
     val lifecycleObserver = rememberMapLifecycleObserver(mapView)

@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
@@ -30,13 +31,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
+import com.eps.todoturtle.map.ui.MapView
+import com.eps.todoturtle.note.logic.BaseNote
+import com.eps.todoturtle.note.logic.MapNote
 import com.eps.todoturtle.note.logic.Note
 import com.eps.todoturtle.ui.theme.activeOnPrimaryContainer
 import com.eps.todoturtle.ui.theme.inactiveOnPrimaryContainer
 
 @Composable
 fun Note(
-    note: Note,
+    note: BaseNote,
     inHistory: Boolean,
     onCheckClick: () -> Unit = {},
 ) {
@@ -50,7 +54,12 @@ fun Note(
             isChecked = inHistory,
             onCheckClick = { onCheckClick() },
         )
-        if (isExpanded) NoteBody(note.description)
+        if (isExpanded){
+            when (note) {
+                is Note -> NoteBody(note.description)
+                is MapNote -> MapNoteBody(note.description, note.latitude, note.longitude)
+            }
+        }
     }
 }
 
@@ -125,17 +134,28 @@ fun NoteHead(
 }
 
 @Composable
-fun NoteBody(description: String) {
+fun NoteBody(description: String, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = description,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp),
+            modifier = modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }
+}
+
+@Composable
+fun MapNoteBody(
+    description: String,
+    latitude: Double,
+    longitude: Double,
+) {
+    val modifier = Modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp)
+    NoteBody(description = description, modifier = modifier)
+    MapView(modifier = Modifier.height(200.dp), startLat = latitude, startLon = longitude)  // FIXME: hardcoded height
 }
 
 data class NoteIcons(
