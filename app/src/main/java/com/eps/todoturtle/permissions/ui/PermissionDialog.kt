@@ -32,7 +32,13 @@ fun PermissionDialog(
             ) {
                 Divider()
                 Text(
-                    text = stringResource(id = if (isPermanentlyDeclined) R.string.permission_grant_permission else R.string.permission_ok),
+                    text = stringResource(
+                        id = if (isPermanentlyDeclined) {
+                            R.string.permission_grant_permission
+                        } else {
+                            R.string.permission_ok
+                        },
+                    ),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier

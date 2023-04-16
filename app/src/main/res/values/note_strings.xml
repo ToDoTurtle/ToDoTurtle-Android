@@ -1,6 +1,6 @@
 <resources>
     <!--    Note icons    -->
-    <string name="note_icon_nfc_desc">NFC</string>
+    <string name="note_icon_nfc_desc" translatable="false">NFC</string>
     <string name="note_icon_notification_desc">Notifications</string>
     <string name="note_icon_deadline_desc">Deadline</string>
     <string name="note_counter_check_desc">Check icon</string>
@@ -13,5 +13,5 @@
 
     <!--    Note actions    -->
     <string name="note_add_note_button_desc">Button that prompts the form to create a new note.</string>
-    <string name="note_counter_count">%d</string>
+    <string name="note_counter_count" translatable="false">%d</string>
 </resources>

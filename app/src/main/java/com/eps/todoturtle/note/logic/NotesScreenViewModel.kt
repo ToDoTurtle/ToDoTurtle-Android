@@ -2,7 +2,6 @@ package com.eps.todoturtle.note.logic
 
 import android.content.Context
 import androidx.compose.runtime.toMutableStateList
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import com.eps.todoturtle.R
 
@@ -37,7 +36,7 @@ private fun getToDoNotes(context: Context): List<BaseNote> =
             Note(
                 i,
                 title = context.getString(R.string.note_title, i),
-                description = context.getString(R.string.note_description, i)
+                description = context.getString(R.string.note_description, i),
             )
         } else {
             MapNote(
@@ -55,7 +54,7 @@ private fun getDoneNotes(context: Context): List<BaseNote> =
         Note(
             id = i + OFFSET,
             title = context.getString(R.string.note_title, i + OFFSET),
-            description = context.getString(R.string.note_description, i + OFFSET)
+            description = context.getString(R.string.note_description, i + OFFSET),
         )
     }
 

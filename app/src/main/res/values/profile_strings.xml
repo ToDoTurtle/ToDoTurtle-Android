@@ -5,8 +5,8 @@
     <string name="profile_hostage">Hostage type</string>
 
     <!--    Defaults    -->
-    <string name="profile_default_username">John Doe</string>
-    <string name="profile_default_mail">john@doe.app</string>
+    <string name="profile_default_username" translatable="false">John Doe</string>
+    <string name="profile_default_mail" translatable="false">john@doe.app</string>
 
     <!--    Hostage types    -->
     <string name="profile_self_hosted">Self-hosted</string>

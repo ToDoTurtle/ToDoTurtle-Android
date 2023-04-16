@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">ToDoTurtle</string>
-    <string name="spaced_app_name">ToDo Turtle</string>
+    <string name="app_name" translatable="false">ToDoTurtle</string>
+    <string name="spaced_app_name" translatable="false">ToDo Turtle</string>
     <string name="drawer_notes">Notes</string>
     <string name="drawer_devices">Devices</string>
     <string name="drawer_profile">Profile</string>
