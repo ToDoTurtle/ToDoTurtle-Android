@@ -23,14 +23,8 @@ class ProfileViewModel(context: Context) : ViewModel() {
 
     val details: StateFlow<ProfileDetails> = _details.asStateFlow()
 
-    fun getUserName() = details.value.username
-    fun getMail() = details.value.mail
-    fun getHostageType() = details.value.hostage
-    fun getProfilePicture() = details.value.profilePicture
-
     fun changeUsername(newUsername: String) {
         _details.update { currentDetails ->
-            Log.i("ProfileViewModel", "changeUsername: $newUsername")
             currentDetails.copy(
                 username = newUsername,
             )
