@@ -22,7 +22,7 @@ fun NoteScreen(
     var inHistory by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
-        floatingActionButton = { AddNoteButton() },
+        floatingActionButton = { AddNoteButton(onClick = {}) },
     ) {
         Column(
             horizontalAlignment = Alignment.End,
@@ -51,7 +51,7 @@ fun NoteScreenHeadline(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(bottom = 8.dp),
+        modifier = Modifier.padding(bottom = 8.dp, top = 8.dp),
     ) {
         CheckCounter(
             modifier = Modifier.weight(0.1f),
@@ -60,7 +60,6 @@ fun NoteScreenHeadline(
         )
         Spacer(modifier = Modifier.weight(0.8f))
         HistoryToggle(
-            modifier = Modifier.weight(0.1f),
             inHistory = inHistory,
             onHistoryClick = onHistoryToggle,
         )

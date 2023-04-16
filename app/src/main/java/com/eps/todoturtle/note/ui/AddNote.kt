@@ -14,13 +14,14 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.ui.theme.noteScreenButton
 
-
 @Composable
-fun AddNoteButton() {
+fun AddNoteButton(
+    onClick: () -> Unit,
+) {
     FloatingActionButton(
         containerColor = MaterialTheme.colorScheme.noteScreenButton,
         modifier = Modifier.padding(0.dp),
-        onClick = { },
+        onClick = onClick,
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.add_notes_big),

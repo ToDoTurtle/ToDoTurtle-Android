@@ -15,9 +15,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -35,9 +35,9 @@ fun HistoryToggle(
     onHistoryClick: () -> Unit,
 ) {
     NoteScreenHeadLineContainer(
-        modifier = Modifier
+        modifier = modifier
             .padding(start = 0.dp, end = 24.dp, bottom = 0.dp)
-            .clip(MaterialTheme.shapes.medium)
+            .shadow(6.dp, MaterialTheme.shapes.medium)
             .clickable { onHistoryClick() }
             .background(
                 color = MaterialTheme.colorScheme.noteScreenButton,
