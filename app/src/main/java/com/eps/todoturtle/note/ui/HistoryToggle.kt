@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -77,19 +78,11 @@ fun HistoryToggleContainer(
 @Composable
 fun GoHistoryButton() {
     Icon(
-        imageVector = ImageVector.Companion.vectorResource(id = R.drawable.history),
+        imageVector = ImageVector.Companion.vectorResource(id = R.drawable.checklist),
         contentDescription = stringResource(R.string.note_history_icon_desc),
         tint = MaterialTheme.colorScheme.onNoteHeadlineButton,
         modifier = Modifier
-            .padding(start = 8.dp, end = 0.dp, top = 4.dp, bottom = 4.dp)
-            .scale(scale = 1.2f),
-    )
-    Icon(
-        imageVector = ImageVector.Companion.vectorResource(id = R.drawable.right_arrow),
-        contentDescription = stringResource(R.string.go_history_icon_desc),
-        tint = MaterialTheme.colorScheme.onNoteHeadlineButton,
-        modifier = Modifier
-            .padding(start = 0.dp, end = 4.dp, top = 4.dp, bottom = 4.dp)
+            .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
             .scale(scale = 1.2f),
     )
 }
@@ -97,20 +90,13 @@ fun GoHistoryButton() {
 @Composable
 fun GoBackButton() {
     Icon(
-        imageVector = ImageVector.Companion.vectorResource(id = R.drawable.left_arrow),
-        contentDescription = stringResource(R.string.go_back_to_notes_icon_desc),
-        tint = MaterialTheme.colorScheme.onNoteHeadlineButton,
-        modifier = Modifier
-            .padding(start = 4.dp, end = 0.dp, top = 4.dp, bottom = 4.dp)
-            .scale(scale = 1.2f),
-    )
-    Icon(
-        imageVector = ImageVector.Companion.vectorResource(id = R.drawable.note),
+        imageVector = ImageVector.Companion.vectorResource(id = R.drawable.uncheck_list),
         contentDescription = stringResource(R.string.notes_icon_desc),
         tint = MaterialTheme.colorScheme.onNoteHeadlineButton,
         modifier = Modifier
-            .padding(start = 0.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
-            .scale(scale = 1.2f),
+            .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
+            .rotate(degrees = 180f)
+            .scale(scale = 1.1f),
     )
 }
 
