@@ -103,7 +103,7 @@ fun WelcomeMessage() {
                     fontWeight = FontWeight.Bold,
                 ).toSpanStyle(),
             ) {
-                append("\n" + stringResource(id = R.string.welcome_message_part2))
+                append("\n" + stringResource(id = R.string.spaced_app_name))
             }
         },
     )
