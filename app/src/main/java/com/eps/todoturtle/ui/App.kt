@@ -58,6 +58,7 @@ fun App(
         DrawerContainer(
             drawerState = drawerState,
             toDoCount = noteScreenViewModel.toDoNotes.size,
+            shouldShowMenu = shouldShowMenu.value,
             onItemClick = { destination ->
                 scope.launch { drawerState.close() }
                 navController.navigateSingleTopTo(destination.route)
@@ -92,19 +93,24 @@ fun DrawerContainer(
     drawerState: DrawerState,
     toDoCount: Int,
     onItemClick: (Destination) -> Unit,
+    shouldShowMenu: Boolean,
     content: @Composable () -> Unit,
 ) {
     val items = listOf(Notes, Devices, Profile, Settings, Invite)
     var selectedItem by remember { mutableStateOf(items[0]) }
-    Drawer(
-        drawerState = drawerState,
-        toDoCount = toDoCount,
-        onItemClick = { destination ->
-            selectedItem = destination
-            onItemClick(destination)
-        },
-        selectedItem = selectedItem,
-    ) {
+    if (shouldShowMenu) {
+        Drawer(
+            drawerState = drawerState,
+            toDoCount = toDoCount,
+            onItemClick = { destination ->
+                selectedItem = destination
+                onItemClick(destination)
+            },
+            selectedItem = selectedItem,
+        ) {
+            content()
+        }
+    } else {
         content()
     }
 }
