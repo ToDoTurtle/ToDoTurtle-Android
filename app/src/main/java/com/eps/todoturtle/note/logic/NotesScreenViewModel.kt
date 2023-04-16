@@ -4,7 +4,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 
 private const val OFFSET = 100
-private const val EPS_LAT  = 41.608440
+private const val EPS_LAT = 41.608440
 private const val EPS_LON = 0.623380
 
 class NoteScreenViewModel : ViewModel() {
@@ -32,8 +32,7 @@ private fun getToDoNotes(): List<BaseNote> =
     List(size = 15) { i ->
         if (i % 2 == 0) {
             Note(i, "Note # $i", "This is the description of Note # $i")
-        }
-        else {
+        } else {
             MapNote(
                 id = i,
                 title = "Note # $i",

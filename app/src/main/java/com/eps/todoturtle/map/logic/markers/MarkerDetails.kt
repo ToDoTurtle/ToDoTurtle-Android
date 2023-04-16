@@ -18,7 +18,7 @@ data class MarkerDetails(
     @DrawableRes private val iconId: Int,
     var title: String? = null,
     var snippet: String? = null,
-    var icon: Drawable? = null
+    var icon: Drawable? = null,
 ) {
     init {
         icon = ContextCompat.getDrawable(context, iconId)!!

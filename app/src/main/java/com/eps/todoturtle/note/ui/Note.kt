@@ -54,7 +54,7 @@ fun Note(
             isChecked = inHistory,
             onCheckClick = { onCheckClick() },
         )
-        if (isExpanded){
+        if (isExpanded) {
             when (note) {
                 is Note -> NoteBody(note.description)
                 is MapNote -> MapNoteBody(note.description, note.latitude, note.longitude)

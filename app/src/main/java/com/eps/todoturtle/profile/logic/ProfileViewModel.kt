@@ -2,7 +2,6 @@ package com.eps.todoturtle.profile.logic
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.eps.todoturtle.R
 import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
