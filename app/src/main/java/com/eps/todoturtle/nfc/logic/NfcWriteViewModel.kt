@@ -1,6 +1,9 @@
 package com.eps.todoturtle.nfc.logic
 
+import android.content.Intent
+import android.provider.Settings
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineScope
@@ -16,6 +19,9 @@ class NfcWriteViewModel(componentActivity: ComponentActivity): ViewModel() {
 
     private val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val nfcWriteDevice = componentActivity.NfcWriteDevice(DeviceInformation(UUID.randomUUID().toString()))
+    private val nfcAction: () -> Unit = {
+        startActivity(componentActivity, Intent(Settings.ACTION_NFC_SETTINGS), null)
+    }
 
     fun onNfcOperation(callback: (WriteOperationStatus) -> Unit) {
         nfcWriteDevice.operationResults.onEach {
@@ -23,6 +29,11 @@ class NfcWriteViewModel(componentActivity: ComponentActivity): ViewModel() {
                 callback(it)
             }
         }.launchIn(lifecycleScope)
+    }
+
+    fun goToNfcSettings() {
+        nfcAction()
+        nfcWriteDevice.recheckNfcPermission()
     }
 
 }

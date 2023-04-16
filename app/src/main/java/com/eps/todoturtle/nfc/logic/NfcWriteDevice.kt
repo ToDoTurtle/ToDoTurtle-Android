@@ -1,12 +1,17 @@
 package com.eps.todoturtle.nfc.logic
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.nfc.FormatException
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.TagLostException
 import android.nfc.tech.Ndef
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -14,11 +19,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.io.IOException
 
 
-class NfcWriteDevice private constructor (
+class NfcWriteDevice private constructor(
     private val activity: Activity,
     private val message: NfcParcelable,
     private val nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(activity),
-) : NfcAdapter.ReaderCallback, DefaultLifecycleObserver {
+) : NfcAdapter.ReaderCallback, DefaultLifecycleObserver, BroadcastReceiver() {
 
     companion object Init {
         fun ComponentActivity.NfcWriteDevice(message: NfcParcelable): NfcWriteDevice {
@@ -35,6 +40,10 @@ class NfcWriteDevice private constructor (
         if (nfcAdapter == null) return WriteOperationStatus.NFC_NOT_SUPPORTED
         if (!nfcAdapter.isEnabled) return WriteOperationStatus.NFC_NOT_ENABLED
         return WriteOperationStatus.PREPARED
+    }
+
+    fun recheckNfcPermission() {
+        operationResults.value = initialStatus()
     }
 
     override fun onTagDiscovered(tag: Tag?) {
@@ -81,6 +90,39 @@ class NfcWriteDevice private constructor (
     override fun onPause(owner: LifecycleOwner) {
         super.onPause(owner)
         nfcAdapter?.disableReaderMode(activity)
+    }
+
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
+        val filter = IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED)
+        activity.registerReceiver(this, filter)
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        activity.unregisterReceiver(this)
+    }
+
+    override fun onReceive(context: Context?, intent: Intent?) {
+        val action = intent?.action
+        Log.e("NFC", "onReceive: $action")
+        if (action == NfcAdapter.ACTION_ADAPTER_STATE_CHANGED) {
+            val state = intent.getIntExtra(
+                NfcAdapter.EXTRA_ADAPTER_STATE,
+                NfcAdapter.STATE_OFF
+            )
+            Log.e("NFC", "state: $state")
+            when (state) {
+                NfcAdapter.STATE_OFF, NfcAdapter.STATE_TURNING_OFF -> {
+                    Log.e("NFC", "STATE_OFF, changing to not enabled")
+                    operationResults.value = WriteOperationStatus.NFC_NOT_ENABLED
+                }
+                NfcAdapter.STATE_ON, NfcAdapter.STATE_TURNING_ON-> {
+                    Log.e("NFC", "STATE_ON, changing to prepared")
+                    operationResults.value = WriteOperationStatus.PREPARED
+                }
+            }
+        }
     }
 
 }
