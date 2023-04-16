@@ -12,4 +12,5 @@
     <string name="app_title">ToDo Turtle</string>
     <string name="welcome_message_part1">"Welcome to "</string>
     <string name="welcome_message_part2">ToDo Turtle</string>
+    <string name="add_note_button_description">Button that prompts the form to create a new note.</string>
 </resources>

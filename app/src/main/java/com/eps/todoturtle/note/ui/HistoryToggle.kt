@@ -24,8 +24,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.ui.theme.noteHeadlineButton
-import com.eps.todoturtle.ui.theme.onNoteHeadlineButton
+import com.eps.todoturtle.ui.theme.noteScreenButton
+import com.eps.todoturtle.ui.theme.onNoteScreenButton
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -40,7 +40,7 @@ fun HistoryToggle(
             .clip(MaterialTheme.shapes.medium)
             .clickable { onHistoryClick() }
             .background(
-                color = MaterialTheme.colorScheme.noteHeadlineButton,
+                color = MaterialTheme.colorScheme.noteScreenButton,
             ),
     ) {
         HistoryToggleContainer(
@@ -80,7 +80,7 @@ fun GoHistoryButton() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.checklist),
         contentDescription = stringResource(R.string.note_history_icon_desc),
-        tint = MaterialTheme.colorScheme.onNoteHeadlineButton,
+        tint = MaterialTheme.colorScheme.onNoteScreenButton,
         modifier = Modifier
             .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
             .scale(scale = 1.2f),
@@ -92,7 +92,7 @@ fun GoBackButton() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.uncheck_list),
         contentDescription = stringResource(R.string.notes_icon_desc),
-        tint = MaterialTheme.colorScheme.onNoteHeadlineButton,
+        tint = MaterialTheme.colorScheme.onNoteScreenButton,
         modifier = Modifier
             .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
             .rotate(degrees = 180f)

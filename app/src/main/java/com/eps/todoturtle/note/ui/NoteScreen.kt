@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,21 +21,25 @@ fun NoteScreen(
 ) {
     var inHistory by rememberSaveable { mutableStateOf(false) }
 
-    Column(
-        horizontalAlignment = Alignment.End,
+    Scaffold(
+        floatingActionButton = { AddNoteButton() },
     ) {
-        NoteScreenHeadline(
-            viewModel = viewModel,
-            inHistory = inHistory,
-            onHistoryToggle = { inHistory = !inHistory },
-        )
-        NoteList(
-            inHistory = inHistory,
-            notes = if (inHistory) viewModel.doneNotes else viewModel.toDoNotes,
-            onCheckClick = { note ->
-                if (inHistory) viewModel.doNote(note) else viewModel.undoNote(note)
-            },
-        )
+        Column(
+            horizontalAlignment = Alignment.End,
+        ) {
+            NoteScreenHeadline(
+                viewModel = viewModel,
+                inHistory = inHistory,
+                onHistoryToggle = { inHistory = !inHistory },
+            )
+            NoteList(
+                inHistory = inHistory,
+                notes = if (inHistory) viewModel.doneNotes else viewModel.toDoNotes,
+                onCheckClick = { note ->
+                    if (inHistory) viewModel.doNote(note) else viewModel.undoNote(note)
+                },
+            )
+        }
     }
 }
 

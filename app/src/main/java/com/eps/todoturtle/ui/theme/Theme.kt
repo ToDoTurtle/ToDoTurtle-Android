@@ -84,11 +84,11 @@ val ColorScheme.onNoteHeadlineContainer: Color
     @Composable
     get() = onSecondaryContainer
 
-val ColorScheme.onNoteHeadlineButton: Color
+val ColorScheme.onNoteScreenButton: Color
     @Composable
     get() = onTertiary
 
-val ColorScheme.noteHeadlineButton: Color
+val ColorScheme.noteScreenButton: Color
     @Composable
     get() = tertiary
 

@@ -31,7 +31,7 @@ fun ToDoTurtleNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = "notes",
         modifier = modifier,
     ) {
         composable("login") {
