@@ -36,6 +36,7 @@ fun LoadingAnimation() {
     var rotateOuter by remember {
         mutableStateOf(false)
     }
+
     val angle by animateFloatAsState(
         targetValue = if (rotateOuter) 360 * 3f else 0f,
         animationSpec = spring(

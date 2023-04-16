@@ -31,10 +31,7 @@ class NfcWriteViewModel(componentActivity: ComponentActivity): ViewModel() {
         }.launchIn(lifecycleScope)
     }
 
-    fun goToNfcSettings() {
-        nfcAction()
-        nfcWriteDevice.recheckNfcPermission()
-    }
+    fun goToNfcSettings() { nfcAction() }
 
 }
 

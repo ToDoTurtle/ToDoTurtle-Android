@@ -11,7 +11,6 @@ import android.nfc.Tag
 import android.nfc.TagLostException
 import android.nfc.tech.Ndef
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -40,10 +39,6 @@ class NfcWriteDevice private constructor(
         if (nfcAdapter == null) return WriteOperationStatus.NFC_NOT_SUPPORTED
         if (!nfcAdapter.isEnabled) return WriteOperationStatus.NFC_NOT_ENABLED
         return WriteOperationStatus.PREPARED
-    }
-
-    fun recheckNfcPermission() {
-        operationResults.value = initialStatus()
     }
 
     override fun onTagDiscovered(tag: Tag?) {
@@ -105,20 +100,16 @@ class NfcWriteDevice private constructor(
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val action = intent?.action
-        Log.e("NFC", "onReceive: $action")
         if (action == NfcAdapter.ACTION_ADAPTER_STATE_CHANGED) {
             val state = intent.getIntExtra(
                 NfcAdapter.EXTRA_ADAPTER_STATE,
                 NfcAdapter.STATE_OFF
             )
-            Log.e("NFC", "state: $state")
             when (state) {
                 NfcAdapter.STATE_OFF, NfcAdapter.STATE_TURNING_OFF -> {
-                    Log.e("NFC", "STATE_OFF, changing to not enabled")
                     operationResults.value = WriteOperationStatus.NFC_NOT_ENABLED
                 }
                 NfcAdapter.STATE_ON, NfcAdapter.STATE_TURNING_ON-> {
-                    Log.e("NFC", "STATE_ON, changing to prepared")
                     operationResults.value = WriteOperationStatus.PREPARED
                 }
             }
@@ -126,7 +117,6 @@ class NfcWriteDevice private constructor(
     }
 
 }
-
 
 fun Ndef.write(content: NfcParcelable) {
     connect()
