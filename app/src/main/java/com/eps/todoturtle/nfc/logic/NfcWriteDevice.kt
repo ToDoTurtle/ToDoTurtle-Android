@@ -36,9 +36,13 @@ class NfcWriteDevice private constructor(
         MutableStateFlow(initialStatus())
 
     private fun initialStatus(): WriteOperationStatus {
-        if (nfcAdapter == null) return WriteOperationStatus.NFC_NOT_SUPPORTED
-        if (!nfcAdapter.isEnabled) return WriteOperationStatus.NFC_NOT_ENABLED
-        return WriteOperationStatus.PREPARED
+        return with(nfcAdapter) {
+            when {
+                this == null -> WriteOperationStatus.NFC_NOT_SUPPORTED
+                !isEnabled -> WriteOperationStatus.NFC_NOT_ENABLED
+                else -> WriteOperationStatus.PREPARED
+            }
+        }
     }
 
     override fun onTagDiscovered(tag: Tag?) {
@@ -72,11 +76,18 @@ class NfcWriteDevice private constructor(
 
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)
-        val options = Bundle().apply { putInt(NfcAdapter.EXTRA_READER_PRESENCE_CHECK_DELAY, 250) }
+        val options = Bundle().apply {
+            putInt(NfcAdapter.EXTRA_READER_PRESENCE_CHECK_DELAY, 250)
+        }
         nfcAdapter?.enableReaderMode(
             activity,
             this,
-            NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_NFC_B or NfcAdapter.FLAG_READER_NFC_F or NfcAdapter.FLAG_READER_NFC_V or NfcAdapter.FLAG_READER_NFC_BARCODE or NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS,
+            NfcAdapter.FLAG_READER_NFC_A or
+                    NfcAdapter.FLAG_READER_NFC_B or
+                    NfcAdapter.FLAG_READER_NFC_F or
+                    NfcAdapter.FLAG_READER_NFC_V or
+                    NfcAdapter.FLAG_READER_NFC_BARCODE or
+                    NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS,
             options
         )
     }
@@ -109,7 +120,8 @@ class NfcWriteDevice private constructor(
                 NfcAdapter.STATE_OFF, NfcAdapter.STATE_TURNING_OFF -> {
                     operationResults.value = WriteOperationStatus.NFC_NOT_ENABLED
                 }
-                NfcAdapter.STATE_ON, NfcAdapter.STATE_TURNING_ON-> {
+
+                NfcAdapter.STATE_ON, NfcAdapter.STATE_TURNING_ON -> {
                     operationResults.value = WriteOperationStatus.PREPARED
                 }
             }

@@ -19,7 +19,7 @@ class ReadNfcActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val message = getMessage()
-        // TODO: Here we should handle the message (uuid) properly, for now, we're printing it
+        // Here we should handle the message (uuid) properly, for now, we're printing it
         setContent {
             ToDoTurtleTheme {
                 // A surface container using the 'background' color from the theme
