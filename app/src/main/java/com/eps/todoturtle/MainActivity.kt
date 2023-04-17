@@ -3,6 +3,7 @@ package com.eps.todoturtle
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getDevicesViewModel
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
@@ -21,7 +22,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         permissionRequester = PermissionRequester(this, permissionsToRequest)
-
         val noteScreenViewModel = NoteScreenViewModel(this)
         val profileViewModel = ProfileViewModel(this)
 
@@ -30,7 +30,8 @@ class MainActivity : ComponentActivity() {
                 App(
                     permissionRequester = permissionRequester,
                     noteScreenViewModel = noteScreenViewModel,
-                    devicesViewModel = getDevicesViewModel(),
+                    devicesViewModel = DevicesViewModel(),
+                    nfcWriteViewModel = getDevicesViewModel(),
                     profileViewModel = profileViewModel,
                     dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },

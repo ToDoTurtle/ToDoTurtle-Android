@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getDevicesViewModel
-import com.eps.todoturtle.nfc.ui.DevicesScreen
+import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 class WriteToDeviceActivity : ComponentActivity() {
@@ -21,7 +21,7 @@ class WriteToDeviceActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    DevicesScreen(viewModel = viewModel)
+                    WriteDevice(viewModel = viewModel)
                 }
             }
         }

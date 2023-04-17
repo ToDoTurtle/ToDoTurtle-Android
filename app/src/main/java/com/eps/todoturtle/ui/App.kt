@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -31,6 +32,7 @@ import com.eps.todoturtle.navigation.ui.Drawer
 import com.eps.todoturtle.navigation.ui.ToDoTurtleNavHost
 import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
+import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
@@ -44,7 +46,8 @@ fun App(
     permissionRequester: PermissionRequester,
     noteScreenViewModel: NoteScreenViewModel,
     profileViewModel: ProfileViewModel,
-    devicesViewModel: NfcWriteViewModel,
+    devicesViewModel: DevicesViewModel,
+    nfcWriteViewModel: NfcWriteViewModel,
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
 ) {
@@ -73,7 +76,7 @@ fun App(
                         shouldShowMenu = shouldShowMenu.value,
                         onMenuClick = { scope.launch { drawerState.open() } },
                     )
-                },
+                }
             ) { innerPadding ->
                 ToDoTurtleNavHost(
                     modifier = Modifier.padding(innerPadding),
@@ -82,6 +85,7 @@ fun App(
                     shouldShowMenu = shouldShowMenu,
                     noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = devicesViewModel,
+                    nfcWriteViewModel = nfcWriteViewModel,
                     dataStore = dataStore,
                     profileViewModel = profileViewModel,
                     hasCameraPermission = { hasCameraPermission() },

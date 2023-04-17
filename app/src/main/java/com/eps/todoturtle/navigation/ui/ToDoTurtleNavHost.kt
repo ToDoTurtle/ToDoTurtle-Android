@@ -9,8 +9,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.eps.todoturtle.invite.ui.InviteUI
+import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
-import com.eps.todoturtle.nfc.ui.DevicesScreen
+import com.eps.todoturtle.nfc.ui.DeviceScreen
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
@@ -35,7 +36,8 @@ fun ToDoTurtleNavHost(
     shouldShowMenu: MutableState<Boolean>,
     noteScreenViewModel: NoteScreenViewModel,
     profileViewModel: ProfileViewModel,
-    devicesViewModel: NfcWriteViewModel,
+    devicesViewModel: DevicesViewModel,
+    nfcWriteViewModel: NfcWriteViewModel,
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
     modifier: Modifier = Modifier,
@@ -72,8 +74,9 @@ fun ToDoTurtleNavHost(
             )
         }
         composable(DEVICES) {
-            DevicesScreen(
-                viewModel = devicesViewModel,
+            DeviceScreen(
+                devicesViewModel = devicesViewModel,
+                writeViewModel = nfcWriteViewModel,
                 onNfcNotSupported = { navController.navigateSingleTopTo(NOTES) },
                 onTagLost = { navController.navigateSingleTopTo(DEVICES) },
                 onTagNotWriteable = { navController.navigateSingleTopTo(DEVICES) },
