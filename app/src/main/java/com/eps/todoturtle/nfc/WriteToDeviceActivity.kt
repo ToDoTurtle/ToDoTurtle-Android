@@ -31,9 +31,11 @@ class WriteToDeviceActivity : ComponentActivity() {
 }
 
 fun ComponentActivity.getDevicesViewModel(): NfcWriteViewModel {
-    return ViewModelProvider(
+    val viewModel = ViewModelProvider(
         this, NfcWriteViewModelFactory(
             this,
         )
     )[NfcWriteViewModel::class.java]
+    viewModel.setActivity(this)
+    return viewModel
 }
