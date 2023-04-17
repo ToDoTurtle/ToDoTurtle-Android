@@ -8,8 +8,6 @@ const val DEVICES_ROUTE = "devices"
 const val SETTINGS_ROUTE = "settings"
 const val INVITE_ROUTE = "invite"
 
-val screens = listOf(Notes, Devices, Profile, Settings, Invite)
-
 sealed class Destination {
     abstract val route: String
     abstract val labelId: Int

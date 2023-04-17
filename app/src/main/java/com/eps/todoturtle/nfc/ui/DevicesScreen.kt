@@ -27,20 +27,15 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NFCDevice
-import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
 
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
-    writeViewModel: NfcWriteViewModel,
-    onNfcNotSupported: () -> Unit = {},
-    onTagNotWriteable: () -> Unit = {},
-    onTagLost: () -> Unit = {},
-    unknownError: () -> Unit = {},
+    onAddDevice: () -> Unit = {},
 ) {
-    DeviceScreenLayout(devices = devicesViewModel.getDevices(), {})
+    DeviceScreenLayout(devices = devicesViewModel.getDevices(), onAddDevice)
 }
 
 @Composable
@@ -130,9 +125,23 @@ fun EditDeviceButton(alreadyConfigured: Boolean, onClick: () -> Unit) {
 @Composable
 fun DevicesPreview() {
     ToDoTurtleTheme {
-        DeviceScreenLayout(devices = listOf(
-            NFCDevice(name = "Car", description = "My car", identifier = "1234567890", iconResId = R.drawable.car, true),
-            NFCDevice(name = "Kitchen", description = "My Kitchen", identifier = "1234567890", iconResId = R.drawable.headphones, false),
-        )){}
+        DeviceScreenLayout(
+            devices = listOf(
+                NFCDevice(
+                    name = "Car",
+                    description = "My car",
+                    identifier = "1234567890",
+                    iconResId = R.drawable.car,
+                    true
+                ),
+                NFCDevice(
+                    name = "Kitchen",
+                    description = "My Kitchen",
+                    identifier = "1234567890",
+                    iconResId = R.drawable.headphones,
+                    false
+                ),
+            )
+        ) {}
     }
 }

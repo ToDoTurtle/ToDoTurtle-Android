@@ -54,7 +54,7 @@ class NfcWriteViewModel private constructor(componentActivity: ComponentActivity
             }
         }
 
-        fun ComponentActivity.getDevicesViewModel(): NfcWriteViewModel {
+        fun ComponentActivity.getNfcWriteModel(): NfcWriteViewModel {
             val viewModel = ViewModelProvider(
                 this,
                 NfcWriteViewModelFactory(

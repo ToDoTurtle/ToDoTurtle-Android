@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
-import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getDevicesViewModel
+import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.providers.CameraPermissionProvider
@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     permissionRequester = permissionRequester,
                     noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = DevicesViewModel(),
-                    nfcWriteViewModel = getDevicesViewModel(),
+                    nfcWriteViewModel = getNfcWriteModel(),
                     profileViewModel = profileViewModel,
                     dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },

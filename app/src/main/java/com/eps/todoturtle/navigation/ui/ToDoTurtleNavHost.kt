@@ -5,13 +5,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.DeviceScreen
+import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
@@ -27,6 +28,7 @@ private const val PROFILE = "profile"
 private const val NOTES = "notes"
 private const val DEVICES = "devices"
 private const val SETTINGS = "settings"
+private const val WRITE_DEVICE = "write_device"
 private const val INVITE = "invite"
 
 @Composable
@@ -47,49 +49,87 @@ fun ToDoTurtleNavHost(
         startDestination = LOGIN,
         modifier = modifier,
     ) {
-        composable(LOGIN) {
-            LoginUI(
-                onSignInClick = {
-                    navController.navigateFromLogin(NOTES)
-                    shouldShowMenu.value = true
+        login(navController, shouldShowMenu)
+        profile(permissionRequester, navController, profileViewModel, shouldShowMenu, hasCameraPermission)
+        notes(noteScreenViewModel)
+        devices(navController, devicesViewModel)
+        writeDevice(navController, nfcWriteViewModel)
+        settings(dataStore)
+        invite()
+    }
+}
+
+fun NavGraphBuilder.login(navController: NavHostController, shouldShowMenu: MutableState<Boolean>) {
+    composable(LOGIN) {
+        LoginUI(
+            onSignInClick = {
+                navController.navigateSingleTopTo(NOTES)
+                shouldShowMenu.value = true
+            },
+        )
+    }
+}
+
+fun NavGraphBuilder.profile(permissionRequester: PermissionRequester, navController: NavHostController, profileViewModel: ProfileViewModel, shouldShowMenu: MutableState<Boolean>, hasCameraPermission: () -> Boolean) {
+    composable(PROFILE) {
+        RequestPermissionContext(permissionRequester) {
+            DetailsUI(
+                onSignOutClick = {
+                    navController.navigateSingleTopTo(LOGIN)
+                    shouldShowMenu.value = false
                 },
+                requestPermissions = { requestPermissions() },
+                hasPermissions = { hasCameraPermission() },
+                profileViewModel = profileViewModel,
             )
-        }
-        composable(PROFILE) {
-            RequestPermissionContext(permissionRequester) {
-                DetailsUI(
-                    onSignOutClick = {
-                        navController.navigateSingleTopTo(LOGIN)
-                        shouldShowMenu.value = false
-                    },
-                    requestPermissions = { requestPermissions() },
-                    hasPermissions = { hasCameraPermission() },
-                    profileViewModel = profileViewModel,
-                )
-            }
-        }
-        composable(NOTES) {
-            NoteScreen(
-                viewModel = noteScreenViewModel,
-            )
-        }
-        composable(DEVICES) {
-            DeviceScreen(
-                devicesViewModel = devicesViewModel,
-                writeViewModel = nfcWriteViewModel,
-                onNfcNotSupported = { navController.navigateSingleTopTo(NOTES) },
-                onTagLost = { navController.navigateSingleTopTo(DEVICES) },
-                onTagNotWriteable = { navController.navigateSingleTopTo(DEVICES) },
-                unknownError = { navController.navigateSingleTopTo(DEVICES) },
-            )
-        }
-        composable(SETTINGS) {
-            PreferenceUI(dataStore = dataStore)
-        }
-        composable(INVITE) {
-            InviteUI()
         }
     }
+}
+
+fun NavGraphBuilder.notes(noteScreenViewModel: NoteScreenViewModel) {
+    composable(NOTES) {
+        NoteScreen(
+            viewModel = noteScreenViewModel,
+        )
+    }
+}
+
+fun NavGraphBuilder.devices(navController: NavHostController, devicesViewModel: DevicesViewModel) {
+    composable(DEVICES) {
+        DeviceScreen(devicesViewModel = devicesViewModel) {
+            navController.navigate(WRITE_DEVICE) {
+                navController.graph.startDestinationRoute?.let { rout ->
+                    popUpTo(DEVICES) {
+                        saveState = true
+                    }
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
+    }
+}
+
+fun NavGraphBuilder.writeDevice(navController: NavHostController, nfcWriteViewModel: NfcWriteViewModel) {
+    composable(WRITE_DEVICE) {
+        WriteDevice(
+            viewModel = nfcWriteViewModel,
+            onNfcNotSupported = { navController.navigateSingleTopTo(NOTES) },
+            onTagLost = { navController.navigateSingleTopTo(DEVICES) },
+            onTagNotWriteable = { navController.navigateSingleTopTo(DEVICES) },
+            unknownError = { navController.navigateSingleTopTo(DEVICES) })
+    }
+}
+
+
+private fun NavGraphBuilder.settings(dataStore: DataStore<AppPreferences>) {
+    composable(SETTINGS) {
+        PreferenceUI(dataStore = dataStore)
+    }
+}
+
+fun NavGraphBuilder.invite() {
+    composable(INVITE) {}
 }
 
 fun NavHostController.navigateSingleTopTo(route: String) =
