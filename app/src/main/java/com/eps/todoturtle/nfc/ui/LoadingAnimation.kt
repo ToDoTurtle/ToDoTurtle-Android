@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,8 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -77,51 +76,62 @@ fun LoadingAnimation() {
                     Modifier
                         .align(Alignment.Center)
                         .size(50.dp)
-                        .background(Color.Black, shape = CircleShape)
+                        .background(colorScheme.inverseSurface, shape = CircleShape)
                 )
                 // two arc's
-                Box(Modifier.rotate(angle)) {
-                    Canvas(modifier = Modifier
-                        .align(Alignment.Center)
-                        .size(100.dp), onDraw = {
-                        drawArc(
-                            color =
-                            Color.White,
-                            style = Stroke(
-                                width = 3f,
-                                cap = StrokeCap.Round,
-                                join =
-                                StrokeJoin.Round,
-                            ),
-                            startAngle = 180f,
-                            sweepAngle = 288f,
-                            useCenter = false
-                        )
-
-                    })
-                }
-                Box(Modifier.rotate(angle)) {
-                    Canvas(modifier = Modifier
-                        .rotate(180f)
-                        .align(Alignment.Center)
-                        .size(100.dp), onDraw = {
-                        drawArc(
-                            color =
-                            Blue,
-                            style = Stroke(
-                                width = 3f,
-                                cap = StrokeCap.Round,
-                                join =
-                                StrokeJoin.Round,
-                            ),
-                            startAngle = 180f,
-                            sweepAngle = 288f,
-                            useCenter = false
-                        )
-                    }
-                    )
-                }
+                SmallArc(angle)
+                BigArc(angle)
             }
         }
+    }
+}
+
+@Composable
+fun SmallArc(angle: Float) {
+    val color = colorScheme.background
+    Box(Modifier.rotate(angle)) {
+        Canvas(modifier = Modifier
+            .align(Alignment.Center)
+            .size(100.dp),
+            onDraw = {
+                drawArc(
+                    color = color,
+                    style = Stroke(
+                        width = 3f,
+                        cap = StrokeCap.Round,
+                        join =
+                        StrokeJoin.Round,
+                    ),
+                    startAngle = 180f,
+                    sweepAngle = 288f,
+                    useCenter = false
+                )
+
+            })
+    }
+}
+
+@Composable
+fun BigArc(angle: Float) {
+    val color = colorScheme.primary
+    Box(Modifier.rotate(angle)) {
+        Canvas(modifier = Modifier
+            .rotate(180f)
+            .align(Alignment.Center)
+            .size(100.dp), onDraw = {
+            drawArc(
+                color = color,
+                style = Stroke(
+                    width = 3f,
+                    cap = StrokeCap.Round,
+                    join =
+                    StrokeJoin.Round,
+                ),
+                startAngle = 180f,
+                sweepAngle = 288f,
+                useCenter = false
+            )
+        }
+        )
     }
 }

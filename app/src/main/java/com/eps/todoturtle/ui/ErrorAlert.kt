@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,10 +28,11 @@ fun ErrorAlert(
     buttonMessage: String,
     onDismiss: () -> Unit
 ) {
+    val colorSurface = colorScheme.background
     Dialog(onDismissRequest = { onDismiss.invoke() }) {
         Surface(
             shape = RoundedCornerShape(8.dp),
-            color = Color.White,
+            color = colorSurface,
             modifier = Modifier.width(300.dp)
         ) {
             Column(
