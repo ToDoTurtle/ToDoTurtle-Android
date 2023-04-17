@@ -3,7 +3,7 @@ package com.eps.todoturtle.map.logic
 import android.content.Intent
 import android.net.Uri
 
-private const val URI_TEMPLATE = "geo:%f,%f"
+private const val URI_TEMPLATE = "geo:0,0?q=%f,%f"
 private const val PACKAGE = "com.google.android.apps.maps"
 
 
