@@ -55,9 +55,10 @@ fun Note(
             onCheckClick = { onCheckClick() },
         )
         if (isExpanded) {
+            val modifier = Modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp)
             when (note) {
-                is Note -> NoteBody(note.description)
-                is MapNote -> MapNoteBody(note.description, note.latitude, note.longitude)
+                is Note -> NoteBody(modifier, note.description)
+                is MapNote -> MapNoteBody(modifier, note.description, note.latitude, note.longitude)
             }
         }
     }
@@ -134,7 +135,10 @@ fun NoteHead(
 }
 
 @Composable
-fun NoteBody(description: String, modifier: Modifier = Modifier) {
+fun NoteBody(
+    modifier: Modifier,
+    description: String,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -149,11 +153,11 @@ fun NoteBody(description: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun MapNoteBody(
+    modifier: Modifier,
     description: String,
     latitude: Double,
     longitude: Double,
 ) {
-    val modifier = Modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp)
     NoteBody(description = description, modifier = modifier)
     MapView(modifier = Modifier.height(200.dp), startLat = latitude, startLon = longitude)
 }
