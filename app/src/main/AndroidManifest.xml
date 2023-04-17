@@ -24,7 +24,7 @@
         android:theme="@style/Theme.ToDoTurtle"
         tools:targetApi="31">
         <activity
-            android:name=".ReadNfcActivity"
+            android:name=".nfc.ReadNfcActivity"
             android:exported="true"
             android:label="@string/title_activity_read_nfc"
             android:theme="@style/Theme.ToDoTurtle">
