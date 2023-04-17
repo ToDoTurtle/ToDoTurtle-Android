@@ -1,5 +1,9 @@
 package com.eps.todoturtle.note.ui
 
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -34,6 +38,8 @@ import androidx.compose.ui.unit.sp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.map.ui.MapView
 import com.eps.todoturtle.note.logic.BaseNote
+import com.eps.todoturtle.note.logic.EPS_LAT
+import com.eps.todoturtle.note.logic.EPS_LON
 import com.eps.todoturtle.note.logic.MapNote
 import com.eps.todoturtle.note.logic.Note
 import com.eps.todoturtle.ui.theme.activeOnSecondaryContainer
@@ -165,8 +171,13 @@ fun MapNoteBody(
     latitude: Double,
     longitude: Double,
 ) {
+    val uri = "google.streetview:cbll=${EPS_LAT},${EPS_LON}"
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+    intent.setPackage("com.google.android.apps.maps")
+    val mapsLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult = {  })
+
     NoteBody(description = description, modifier = modifier)
-    MapView(modifier = Modifier.height(200.dp), startLat = latitude, startLon = longitude)
+    MapView(modifier = Modifier.height(200.dp), startLat = latitude, startLon = longitude, onMapClick = { mapsLauncher.launch(intent) })
 }
 
 data class NoteIcons(

@@ -15,11 +15,12 @@ import org.osmdroid.views.MapView
 fun rememberMapViewWithLifecycle(
     startLat: Double = 0.0,
     startLon: Double = 0.0,
+    onMapClick: () -> Unit,
 ): MapView {
     val context = LocalContext.current
     MapConfiguration.setUpMapConfiguration()
     val mapView = remember {
-        MyMap.getMap(context, startLat, startLon)
+        MyMap.getMap(context, startLat, startLon, onMapClick)
     }
 
     val lifecycleObserver = rememberMapLifecycleObserver(mapView)

@@ -11,8 +11,9 @@ fun MapView(
     startLat: Double = 0.0,
     startLon: Double = 0.0,
     onLoad: ((map: MapView) -> Unit)? = null,
+    onMapClick: () -> Unit,
 ) {
-    val mapViewState = rememberMapViewWithLifecycle(startLat, startLon)
+    val mapViewState = rememberMapViewWithLifecycle(startLat, startLon, onMapClick)
 
     AndroidView({ mapViewState }, modifier = modifier) { mapView ->
         onLoad?.invoke(mapView)

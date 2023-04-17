@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.eps.todoturtle.R
 
 private const val OFFSET = 100
-private const val EPS_LAT = 41.608440
-private const val EPS_LON = 0.623380
+const val EPS_LAT = 41.608440
+const val EPS_LON = 0.623380
 
 class NoteScreenViewModel(context: Context) : ViewModel() {
     private val _toDoNotes = getToDoNotes(context).toMutableStateList()
