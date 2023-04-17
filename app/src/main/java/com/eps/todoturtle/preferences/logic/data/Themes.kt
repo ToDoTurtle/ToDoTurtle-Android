@@ -9,6 +9,7 @@ enum class Themes : PreferenceEnum<Themes> {
     ColdDark,
     Amber,
     Magenta,
+    Default,
     ;
 
     override fun enumValues() = Themes.values()
@@ -22,5 +23,6 @@ enum class Themes : PreferenceEnum<Themes> {
             ColdDark -> context.getString(R.string.preference_theme_cold_dark)
             Amber -> context.getString(R.string.preference_theme_amber)
             Magenta -> context.getString(R.string.preference_theme_magenta)
+            Default -> context.getString(R.string.preference_theme_default)
         }
 }

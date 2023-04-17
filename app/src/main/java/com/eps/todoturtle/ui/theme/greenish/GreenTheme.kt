@@ -1,11 +1,12 @@
 package com.eps.todoturtle.ui.theme.greenish
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-private val GreenishLightColors = lightColorScheme(
+val GreenishLightColors = lightColorScheme(
     primary = GreenishLightColor.primary,
     onPrimary = GreenishLightColor.onPrimary,
     primaryContainer = GreenishLightColor.primaryContainer,
@@ -67,7 +68,7 @@ private val GreenishDarkColors = darkColorScheme(
 
 @Composable
 fun GreenishTheme(
-    useDarkTheme: Boolean = true,
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
     val colors = if(!useDarkTheme)

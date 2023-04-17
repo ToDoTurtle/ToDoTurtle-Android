@@ -19,12 +19,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.logic.WriteOperationStatus
+import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.ErrorAlert
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import kotlinx.coroutines.delay
@@ -179,7 +181,7 @@ fun ColumnScope.AnimatedDisappearingText(text: String, modifier: Modifier = Modi
 @Preview(showBackground = true)
 @Composable
 fun WriteDeviceScreenPreview() {
-    ToDoTurtleTheme {
+    ToDoTurtleTheme(LocalContext.current.dataStore) {
         WaitForNfcTag()
     }
 }

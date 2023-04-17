@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NFCDevice
+import com.eps.todoturtle.preferences.logic.data.Themes
+import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
 
@@ -178,7 +181,7 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun DevicesPreview() {
-    ToDoTurtleTheme {
+    ToDoTurtleTheme(LocalContext.current.dataStore) {
         DeviceScreenLayout(
             devices = listOf(
                 NFCDevice(

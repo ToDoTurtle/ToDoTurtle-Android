@@ -15,4 +15,5 @@
     <string name="preference_theme_cold_dark">Cold dark</string>
     <string name="preference_theme_amber">Amber</string>
     <string name="preference_theme_magenta">Magenta</string>
+    <string name="preference_theme_default">Default</string>
 </resources>

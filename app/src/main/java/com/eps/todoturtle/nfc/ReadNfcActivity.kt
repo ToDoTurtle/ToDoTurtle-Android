@@ -12,7 +12,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 class ReadNfcActivity : ComponentActivity() {
@@ -21,7 +23,7 @@ class ReadNfcActivity : ComponentActivity() {
         val message = getMessage()
         // Here we should handle the message (uuid) properly, for now, we're printing it
         setContent {
-            ToDoTurtleTheme {
+            ToDoTurtleTheme(dataStore) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -61,7 +63,7 @@ fun Greeting2(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    ToDoTurtleTheme {
+    ToDoTurtleTheme(LocalContext.current.dataStore) {
         Greeting2("Android")
     }
 }

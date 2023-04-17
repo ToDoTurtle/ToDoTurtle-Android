@@ -14,9 +14,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 @Composable
@@ -62,7 +64,7 @@ fun ErrorAlert(
 @Preview(showBackground = true)
 @Composable
 fun ErrorAlertPreview() {
-    ToDoTurtleTheme {
+    ToDoTurtleTheme(LocalContext.current.dataStore) {
         ErrorAlert(
             "Unexpected Error",
             "Something very bad happened, it may be a fault from the programmers, please send an email with the logcat",
