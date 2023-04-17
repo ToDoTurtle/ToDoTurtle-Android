@@ -29,7 +29,7 @@ fun ErrorAlert(
     onDismiss: () -> Unit
 ) {
     val colorSurface = colorScheme.background
-    Dialog(onDismissRequest = { onDismiss.invoke() }) {
+    Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = RoundedCornerShape(8.dp),
             color = colorSurface,
@@ -49,9 +49,7 @@ fun ErrorAlert(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 TextButton(
-                    onClick = {
-                        onDismiss.invoke()
-                    },
+                    onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End)
                 ) {
                     Text(

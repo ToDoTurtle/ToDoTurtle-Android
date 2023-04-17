@@ -26,7 +26,13 @@ import com.eps.todoturtle.ui.ErrorAlert
 
 
 @Composable
-fun DevicesScreen(viewModel: NfcWriteViewModel) {
+fun DevicesScreen(
+    viewModel: NfcWriteViewModel,
+    onNfcNotSupported: () -> Unit = {},
+    onTagNotWriteable: () -> Unit = {},
+    onTagLost: () -> Unit = {},
+    unknownError: () -> Unit = {},
+) {
     var deviceStatus: WriteOperationStatus? by rememberSaveable { mutableStateOf(null) }
     viewModel.onNfcOperation { deviceStatus = it }
     when (deviceStatus) {
@@ -34,11 +40,11 @@ fun DevicesScreen(viewModel: NfcWriteViewModel) {
         WriteOperationStatus.MESSAGE_FORMAT_ERROR -> ProgrammingError()
         WriteOperationStatus.NFC_NOT_ENABLED -> NfcNotEnabled { viewModel.goToNfcSettings() }
         WriteOperationStatus.SUCCESS -> NfcWriteSuccessSnackbar { }
-        WriteOperationStatus.NOT_WRITABLE -> TODO()
-        WriteOperationStatus.TAG_LOST -> TODO()
-        WriteOperationStatus.UNKNOWN_ERROR -> TODO()
-        WriteOperationStatus.NFC_NOT_SUPPORTED -> TODO()
-        null -> Text("TODO")
+        WriteOperationStatus.NOT_WRITABLE -> TagNotWriteable(onTagNotWriteable)
+        WriteOperationStatus.TAG_LOST -> TagLost(onTagLost)
+        WriteOperationStatus.UNKNOWN_ERROR -> UnknownError(unknownError)
+        WriteOperationStatus.NFC_NOT_SUPPORTED -> NfcNotSupported(onNfcNotSupported)
+        null -> {}
     }
 }
 
@@ -57,6 +63,46 @@ fun NfcNotEnabled(action: () -> Unit) {
         "NFC isn't enabled!",
         "Please, enable NFC on your device and try again",
         "Enable NFC",
+        action
+    )
+}
+
+@Composable
+fun NfcNotSupported(action: () -> Unit) {
+    ErrorAlert(
+        "NFC isn't supported on your device!",
+        "You can't use this feature on your device",
+        "close",
+        action
+    )
+}
+
+@Composable
+fun TagNotWriteable(action: () -> Unit) {
+    ErrorAlert(
+        "NFC tag isn't supported!",
+        "Please use an NFC compatible tag, if you are using an NFC compatible tag, please try again",
+        "close",
+        action
+    )
+}
+
+@Composable
+fun TagLost(action: () -> Unit) {
+    ErrorAlert(
+        "You moved too fast!",
+        "You moved too fast the NFC tag, please try again",
+        "retry",
+        action
+    )
+}
+
+@Composable
+fun UnknownError(action: () -> Unit) {
+    ErrorAlert(
+        "Something bad happened",
+        "The write operation didn't go well, please try again",
+        "retry",
         action
     )
 }

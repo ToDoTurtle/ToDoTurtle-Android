@@ -71,7 +71,13 @@ fun ToDoTurtleNavHost(
             )
         }
         composable(DEVICES) {
-            DevicesScreen(viewModel = devicesViewModel)
+            DevicesScreen(
+                viewModel = devicesViewModel,
+                onNfcNotSupported = { navController.navigateSingleTopTo(NOTES) },
+                onTagLost = { navController.navigateSingleTopTo(DEVICES) },
+                onTagNotWriteable = { navController.navigateSingleTopTo(DEVICES) },
+                unknownError = { navController.navigateSingleTopTo(DEVICES) },
+            )
         }
         composable(SETTINGS) {
             PreferenceUI(dataStore = dataStore)
