@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModelProvider
-import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
-import com.eps.todoturtle.nfc.logic.NfcWriteViewModelFactory
+import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getDevicesViewModel
 import com.eps.todoturtle.nfc.ui.DevicesScreen
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
@@ -30,12 +28,3 @@ class WriteToDeviceActivity : ComponentActivity() {
     }
 }
 
-fun ComponentActivity.getDevicesViewModel(): NfcWriteViewModel {
-    val viewModel = ViewModelProvider(
-        this, NfcWriteViewModelFactory(
-            this,
-        )
-    )[NfcWriteViewModel::class.java]
-    viewModel.setActivity(this)
-    return viewModel
-}

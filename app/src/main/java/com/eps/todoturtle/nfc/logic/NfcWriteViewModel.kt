@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import java.util.UUID
 
-class NfcWriteViewModel(componentActivity: ComponentActivity) : ViewModel() {
+class NfcWriteViewModel private constructor(componentActivity: ComponentActivity) : ViewModel() {
 
     private val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var nfcWriteDevice =
@@ -43,15 +43,27 @@ class NfcWriteViewModel(componentActivity: ComponentActivity) : ViewModel() {
         startActivity(componentActivity, Intent(Settings.ACTION_NFC_SETTINGS), null)
     }
 
-}
+    object INIT {
+        @Suppress("UNCHECKED_CAST")
+        private class NfcWriteViewModelFactory(
+            private val context: ComponentActivity
+        ) :
+            ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return NfcWriteViewModel(context) as T
+            }
+        }
 
-@Suppress("UNCHECKED_CAST")
-class NfcWriteViewModelFactory(
-    private val context: ComponentActivity
-) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return NfcWriteViewModel(context) as T
+        fun ComponentActivity.getDevicesViewModel(): NfcWriteViewModel {
+            val viewModel = ViewModelProvider(
+                this, NfcWriteViewModelFactory(
+                    this,
+                )
+            )[NfcWriteViewModel::class.java]
+            viewModel.setActivity(this)
+            return viewModel
+        }
+
     }
 }
 
