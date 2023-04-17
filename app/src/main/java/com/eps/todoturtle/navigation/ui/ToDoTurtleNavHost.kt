@@ -48,7 +48,7 @@ fun ToDoTurtleNavHost(
         composable(LOGIN) {
             LoginUI(
                 onSignInClick = {
-                    navController.navigateSingleTopTo(NOTES)
+                    navController.navigateFromLogin(NOTES)
                     shouldShowMenu.value = true
                 },
             )
@@ -99,3 +99,9 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         launchSingleTop = true
         restoreState = true
     }
+
+fun NavHostController.navigateFromLogin(route: String) {
+    this.navigate(route) {
+        popUpTo(0)
+    }
+}
