@@ -32,7 +32,7 @@ fun ProfileUI(
                 defaultElevation = 8.dp,
             ),
             modifier = Modifier
-                .weight(0.7f)
+                .weight(0.8f)
                 .fillMaxWidth(fraction = 0.8f),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -48,6 +48,6 @@ fun ProfileUI(
                 content()
             }
         }
-        Spacer(modifier = Modifier.weight(0.2f))
+        Spacer(modifier = Modifier.weight(0.1f))
     }
 }

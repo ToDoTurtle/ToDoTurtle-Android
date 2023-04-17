@@ -11,4 +11,9 @@
     <string name="welcome_message_part1">"Welcome to "</string>
     <string name="title_activity_write_to_device">WriteToDeviceActivity</string>
     <string name="title_activity_read_nfc">ReadNfcActivity</string>
+    <string name="welcome_message_part2">ToDo Turtle</string>
+    <string name="add_note_button_description">Button that prompts the form to create a new note.</string>
+    <string name="note_form_title_field">Title</string>
+    <string name="note_form_description_field">Description</string>
+    <string name="login_wrong_username_or_password">Wrong password or username doesn\'t exist.</string>
 </resources>

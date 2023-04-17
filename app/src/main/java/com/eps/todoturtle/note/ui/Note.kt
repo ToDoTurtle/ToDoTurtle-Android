@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -30,13 +30,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.map.ui.MapView
 import com.eps.todoturtle.note.logic.BaseNote
 import com.eps.todoturtle.note.logic.MapNote
 import com.eps.todoturtle.note.logic.Note
-import com.eps.todoturtle.ui.theme.activeOnPrimaryContainer
-import com.eps.todoturtle.ui.theme.inactiveOnPrimaryContainer
+import com.eps.todoturtle.ui.theme.activeOnSecondaryContainer
+import com.eps.todoturtle.ui.theme.inactiveOnSecondaryContainer
+import com.eps.todoturtle.ui.theme.noteContainer
+import com.eps.todoturtle.ui.theme.onNoteContainer
 
 @Composable
 fun Note(
@@ -81,7 +84,7 @@ fun NoteContainer(
             )
             .clip(MaterialTheme.shapes.medium)
             .clickable { onClick() }
-            .background(MaterialTheme.colorScheme.primaryContainer)
+            .background(MaterialTheme.colorScheme.noteContainer)
             .fillMaxWidth(),
     ) {
         content()
@@ -92,7 +95,7 @@ fun NoteContainer(
 fun NoteHead(
     title: String,
     icons: NoteIcons = NoteIcons(
-        hasDeadline = false,
+        hasDeadline = true,
         hasNfc = false,
         hasNotifications = false,
     ),
@@ -104,6 +107,9 @@ fun NoteHead(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colorScheme.onNoteContainer,
+            ),
             checked = isChecked,
             onCheckedChange = { onCheckClick() },
             modifier = Modifier
@@ -112,9 +118,10 @@ fun NoteHead(
         )
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineSmall.copy(
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                color = MaterialTheme.colorScheme.onNoteContainer,
                 textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
             ),
             modifier = Modifier
@@ -144,9 +151,9 @@ fun NoteBody(
     ) {
         Text(
             text = description,
-            fontWeight = FontWeight.Bold,
-            modifier = modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp),
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            fontWeight = FontWeight.W400,
+            modifier = Modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp),
+            color = MaterialTheme.colorScheme.onNoteContainer,
         )
     }
 }
@@ -170,45 +177,42 @@ data class NoteIcons(
 
 @Composable
 fun NfcIcon(isActive: Boolean) {
-    val vectorResource = ImageVector.Companion.vectorResource(id = R.drawable.nfc)
+    val vectorResource = ImageVector.Companion.vectorResource(id = R.drawable.devices_filled)
     Icon(
-        modifier = Modifier.scale(scale = 0.9f),
         imageVector = vectorResource,
         contentDescription = stringResource(id = R.string.note_icon_nfc_desc),
         tint = if (isActive) {
-            MaterialTheme.colorScheme.activeOnPrimaryContainer
+            MaterialTheme.colorScheme.activeOnSecondaryContainer
         } else {
-            MaterialTheme.colorScheme.inactiveOnPrimaryContainer
+            MaterialTheme.colorScheme.inactiveOnSecondaryContainer
         },
     )
 }
 
 @Composable
 fun NotificationsIcon(isActive: Boolean) {
-    val vectorResource = ImageVector.Companion.vectorResource(id = R.drawable.notifications)
+    val vectorResource = ImageVector.Companion.vectorResource(id = R.drawable.notification_filled)
     Icon(
-        modifier = Modifier.scale(scale = 0.95f),
         imageVector = vectorResource,
         contentDescription = stringResource(id = R.string.note_icon_notification_desc),
         tint = if (isActive) {
-            MaterialTheme.colorScheme.activeOnPrimaryContainer
+            MaterialTheme.colorScheme.activeOnSecondaryContainer
         } else {
-            MaterialTheme.colorScheme.inactiveOnPrimaryContainer
+            MaterialTheme.colorScheme.inactiveOnSecondaryContainer
         },
     )
 }
 
 @Composable
 fun DeadlineIcon(isActive: Boolean) {
-    val vectorResource = ImageVector.Companion.vectorResource(id = R.drawable.deadline)
+    val vectorResource = ImageVector.Companion.vectorResource(id = R.drawable.deadline_filled)
     Icon(
-        modifier = Modifier.scale(scale = 0.9f),
         imageVector = vectorResource,
         contentDescription = stringResource(id = R.string.note_icon_deadline_desc),
         tint = if (isActive) {
-            MaterialTheme.colorScheme.activeOnPrimaryContainer
+            MaterialTheme.colorScheme.activeOnSecondaryContainer
         } else {
-            MaterialTheme.colorScheme.inactiveOnPrimaryContainer
+            MaterialTheme.colorScheme.inactiveOnSecondaryContainer
         },
     )
 }

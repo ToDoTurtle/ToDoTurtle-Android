@@ -68,41 +68,50 @@ private val DarkColors = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
 )
 
-val ColorScheme.activeOnPrimaryContainer: Color
-    @Composable
-    get() = onPrimaryContainer
-
-val ColorScheme.inactiveOnPrimaryContainer: Color
-    @Composable
-    get() = if (isSystemInDarkTheme()) onSecondary else secondary
-
-val ColorScheme.noteHeadlineContainer: Color
+val ColorScheme.noteContainer: Color
     @Composable
     get() = secondaryContainer
 
-val ColorScheme.onNoteHeadlineContainer: Color
+val ColorScheme.onNoteContainer: Color
     @Composable
     get() = onSecondaryContainer
 
+val ColorScheme.activeOnSecondaryContainer: Color
+    @Composable
+    get() = onSecondaryContainer
+
+val ColorScheme.inactiveOnSecondaryContainer: Color
+    @Composable
+    get() = if (isSystemInDarkTheme()) onSecondary else outline
+
+val ColorScheme.noteHeadlineContainer: Color
+    @Composable
+    get() = tertiaryContainer
+
+val ColorScheme.onNoteHeadlineContainer: Color
+    @Composable
+    get() = onTertiaryContainer
+
 val ColorScheme.onNoteScreenButton: Color
     @Composable
-    get() = onTertiary
+    get() = onPrimaryContainer
 
 val ColorScheme.noteScreenButton: Color
     @Composable
-    get() = tertiary
+    get() = primaryContainer
 
 val ColorScheme.formContainer: Color
     @Composable
-    get() = onTertiary
+    get() = noteScreenButton
 
 val ColorScheme.onFormContainer: Color
     @Composable
-    get() = tertiary
+    get() = onNoteScreenButton
 
 @Composable
 fun ToDoTurtleTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    useDarkTheme: Boolean = true,
+//    useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
     val colors = if (!useDarkTheme) {

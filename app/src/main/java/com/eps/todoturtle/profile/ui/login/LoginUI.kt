@@ -62,10 +62,9 @@ fun LoginContent(
         label = R.string.profile_login_username,
         error = wrongLogin,
     )
-    LoginOutlinedText(
+    LoginOutlinedPassword(
         text = password,
         label = R.string.profile_login_password,
-        isPassword = true,
         error = wrongLogin,
     )
     Button(
