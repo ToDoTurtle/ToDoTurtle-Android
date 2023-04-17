@@ -110,8 +110,7 @@ val ColorScheme.onFormContainer: Color
 
 @Composable
 fun ToDoTurtleTheme(
-    useDarkTheme: Boolean = true,
-//    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
     val colors = if (!useDarkTheme) {

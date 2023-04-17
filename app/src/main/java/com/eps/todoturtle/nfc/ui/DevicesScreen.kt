@@ -72,7 +72,7 @@ fun NFCDeviceList(devices: List<NFCDevice>) {
 @Composable
 fun NFCDeviceListItem(device: NFCDevice) {
     Card(
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier.padding(4.dp),
     ) {
         DeviceCard(device = device)
     }
@@ -84,7 +84,7 @@ fun DeviceCard(device: NFCDevice) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         DeviceIcon(device = device)
         DeviceInformation(device = device)
@@ -100,7 +100,7 @@ fun DeviceIcon(device: NFCDevice) {
         tint = colorScheme.onSurface,
         modifier = Modifier
             .size(48.dp)
-            .padding(end = 16.dp)
+            .padding(end = 16.dp),
     )
 }
 
@@ -132,16 +132,16 @@ fun DevicesPreview() {
                     description = "My car",
                     identifier = "1234567890",
                     iconResId = R.drawable.car,
-                    true
+                    true,
                 ),
                 NFCDevice(
                     name = "Kitchen",
                     description = "My Kitchen",
                     identifier = "1234567890",
                     iconResId = R.drawable.headphones,
-                    false
+                    false,
                 ),
-            )
+            ),
         ) {}
     }
 }

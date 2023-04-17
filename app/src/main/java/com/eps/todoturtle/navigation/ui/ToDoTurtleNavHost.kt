@@ -50,7 +50,13 @@ fun ToDoTurtleNavHost(
         modifier = modifier,
     ) {
         login(navController, shouldShowMenu)
-        profile(permissionRequester, navController, profileViewModel, shouldShowMenu, hasCameraPermission)
+        profile(
+            permissionRequester,
+            navController,
+            profileViewModel,
+            shouldShowMenu,
+            hasCameraPermission,
+        )
         notes(noteScreenViewModel)
         devices(navController, devicesViewModel)
         writeDevice(navController, nfcWriteViewModel)
@@ -70,7 +76,13 @@ fun NavGraphBuilder.login(navController: NavHostController, shouldShowMenu: Muta
     }
 }
 
-fun NavGraphBuilder.profile(permissionRequester: PermissionRequester, navController: NavHostController, profileViewModel: ProfileViewModel, shouldShowMenu: MutableState<Boolean>, hasCameraPermission: () -> Boolean) {
+fun NavGraphBuilder.profile(
+    permissionRequester: PermissionRequester,
+    navController: NavHostController,
+    profileViewModel: ProfileViewModel,
+    shouldShowMenu: MutableState<Boolean>,
+    hasCameraPermission: () -> Boolean,
+) {
     composable(PROFILE) {
         RequestPermissionContext(permissionRequester) {
             DetailsUI(
@@ -110,17 +122,20 @@ fun NavGraphBuilder.devices(navController: NavHostController, devicesViewModel: 
     }
 }
 
-fun NavGraphBuilder.writeDevice(navController: NavHostController, nfcWriteViewModel: NfcWriteViewModel) {
+fun NavGraphBuilder.writeDevice(
+    navController: NavHostController,
+    nfcWriteViewModel: NfcWriteViewModel,
+) {
     composable(WRITE_DEVICE) {
         WriteDevice(
             viewModel = nfcWriteViewModel,
             onNfcNotSupported = { navController.navigateSingleTopTo(NOTES) },
             onTagLost = { navController.navigateSingleTopTo(DEVICES) },
             onTagNotWriteable = { navController.navigateSingleTopTo(DEVICES) },
-            unknownError = { navController.navigateSingleTopTo(DEVICES) })
+            unknownError = { navController.navigateSingleTopTo(DEVICES) },
+        )
     }
 }
-
 
 private fun NavGraphBuilder.settings(dataStore: DataStore<AppPreferences>) {
     composable(SETTINGS) {

@@ -22,7 +22,11 @@ fun NoteScreen(
     var inHistory by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
-        floatingActionButton = { AddNoteButton(onClick = {}) },
+        floatingActionButton = { AddNoteMenu(
+            onAddClick = {},
+            onDoneClick = {},
+            onCancelClick = {},
+        ) },
     ) {
         Column(
             horizontalAlignment = Alignment.End,
