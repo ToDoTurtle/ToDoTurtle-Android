@@ -2,6 +2,7 @@ package com.eps.todoturtle.map.logic
 
 import android.content.Context
 import com.eps.todoturtle.R
+import com.eps.todoturtle.map.logic.listeners.ListenerFactory
 import com.eps.todoturtle.map.logic.markers.MarkerFactory
 import com.eps.todoturtle.map.logic.markers.MarkerFactory.setCurrentMarker
 import com.eps.todoturtle.map.logic.markers.MarkerType
@@ -58,19 +59,7 @@ object MyMap {
     }
 
     private fun MapView.setListener(onMapClick: () -> Unit) {
-        overlays.add(
-            MapEventsOverlay(
-                object : MapEventsReceiver {
-                    override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
-                        onMapClick()
-                        return true
-                    }
-
-                    override fun longPressHelper(p: GeoPoint?): Boolean {
-                        return false
-                    }
-                }
-            )
-        )
+        val listenerOverlay = ListenerFactory.getListenerOverlay { onMapClick() }
+        overlays.add(listenerOverlay)
     }
 }

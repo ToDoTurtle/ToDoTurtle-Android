@@ -13,7 +13,7 @@ fun MapView(
     onLoad: ((map: MapView) -> Unit)? = null,
     onMapClick: () -> Unit,
 ) {
-    val mapViewState = rememberMapViewWithLifecycle(startLat, startLon, onMapClick)
+    val mapViewState = rememberMapViewWithLifecycle(startLat, startLon) { onMapClick() }
 
     AndroidView({ mapViewState }, modifier = modifier) { mapView ->
         onLoad?.invoke(mapView)
