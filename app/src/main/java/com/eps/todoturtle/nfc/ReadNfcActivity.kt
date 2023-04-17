@@ -25,7 +25,7 @@ class ReadNfcActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     Greeting2(message)
                 }
@@ -48,14 +48,13 @@ class ReadNfcActivity : ComponentActivity() {
             return String(inNdefRecord[0].payload)
         }
     }
-
 }
 
 @Composable
 fun Greeting2(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
-        modifier = modifier
+        modifier = modifier,
     )
 }
 

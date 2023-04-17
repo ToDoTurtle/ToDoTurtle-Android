@@ -46,7 +46,7 @@ class NfcWriteViewModel private constructor(componentActivity: ComponentActivity
     object INIT {
         @Suppress("UNCHECKED_CAST")
         private class NfcWriteViewModelFactory(
-            private val context: ComponentActivity
+            private val context: ComponentActivity,
         ) :
             ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -56,14 +56,13 @@ class NfcWriteViewModel private constructor(componentActivity: ComponentActivity
 
         fun ComponentActivity.getDevicesViewModel(): NfcWriteViewModel {
             val viewModel = ViewModelProvider(
-                this, NfcWriteViewModelFactory(
+                this,
+                NfcWriteViewModelFactory(
                     this,
-                )
+                ),
             )[NfcWriteViewModel::class.java]
             viewModel.setActivity(this)
             return viewModel
         }
-
     }
 }
-

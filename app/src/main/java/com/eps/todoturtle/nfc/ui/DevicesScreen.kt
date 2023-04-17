@@ -24,7 +24,6 @@ import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.logic.WriteOperationStatus
 import com.eps.todoturtle.ui.ErrorAlert
 
-
 @Composable
 fun DevicesScreen(
     viewModel: NfcWriteViewModel,
@@ -54,7 +53,8 @@ fun ProgrammingError() {
         "Programming Error",
         "Something very bad happened, it may be a fault from the programmers, please send an email with the logcat",
         "Send",
-        {})
+        {},
+    )
 }
 
 @Composable
@@ -63,7 +63,7 @@ fun NfcNotEnabled(action: () -> Unit) {
         "NFC isn't enabled!",
         "Please, enable NFC on your device and try again",
         "Enable NFC",
-        action
+        action,
     )
 }
 
@@ -73,7 +73,7 @@ fun NfcNotSupported(action: () -> Unit) {
         "NFC isn't supported on your device!",
         "You can't use this feature on your device",
         "close",
-        action
+        action,
     )
 }
 
@@ -83,7 +83,7 @@ fun TagNotWriteable(action: () -> Unit) {
         "NFC tag isn't supported!",
         "Please use an NFC compatible tag, if you are using an NFC compatible tag, please try again",
         "close",
-        action
+        action,
     )
 }
 
@@ -93,7 +93,7 @@ fun TagLost(action: () -> Unit) {
         "You moved too fast!",
         "You moved too fast the NFC tag, please try again",
         "retry",
-        action
+        action,
     )
 }
 
@@ -103,7 +103,7 @@ fun UnknownError(action: () -> Unit) {
         "Something bad happened",
         "The write operation didn't go well, please try again",
         "retry",
-        action
+        action,
     )
 }
 
@@ -119,17 +119,17 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
                     contentDescription = "Close",
                 )
             }
-        }
+        },
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = "NFC write success",
                 tint = colorScheme.secondary,
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = 8.dp),
             )
             Text(
                 text = "NFC has been successfully written!",

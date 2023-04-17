@@ -53,9 +53,11 @@ fun InviteUI() {
                     .fillMaxWidth(0.5f),
                 painter = rememberAsyncImagePainter(
                     ImageRequest.Builder(context)
-                        .data(data = R.drawable.drill).apply(block = {
-                            size(Size.ORIGINAL)
-                        }).build(),
+                        .data(
+                            data = R.drawable.drill,
+                        ).apply(
+                            block = { size(Size.ORIGINAL) },
+                        ).build(),
                     imageLoader = imageLoader,
                 ),
                 contentDescription = null,

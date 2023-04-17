@@ -8,5 +8,5 @@ enum class WriteOperationStatus {
     MESSAGE_FORMAT_ERROR,
     UNKNOWN_ERROR,
     NFC_NOT_SUPPORTED,
-    NFC_NOT_ENABLED
+    NFC_NOT_ENABLED,
 }

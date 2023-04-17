@@ -3,16 +3,15 @@ package com.eps.todoturtle.nfc.logic
 import android.nfc.NdefMessage
 import android.nfc.NdefRecord
 
-
 const val PACKAGE_NAME = "com.eps.todoturtle"
 
-data class DeviceInformation(val uuid: String = ""): NfcParcelable {
+data class DeviceInformation(val uuid: String = "") : NfcParcelable {
 
     override fun toMessage(): NdefMessage {
         return NdefMessage(
             arrayOf(
                 NdefRecord.createMime("application/$PACKAGE_NAME", uuid.toByteArray()),
-            )
+            ),
         )
     }
 
@@ -21,5 +20,4 @@ data class DeviceInformation(val uuid: String = ""): NfcParcelable {
             return DeviceInformation(String(bytes))
         }
     }
-
 }

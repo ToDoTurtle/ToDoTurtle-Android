@@ -19,7 +19,7 @@ class WriteToDeviceActivity : ComponentActivity() {
             ToDoTurtleTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     DevicesScreen(viewModel = viewModel)
                 }
@@ -27,4 +27,3 @@ class WriteToDeviceActivity : ComponentActivity() {
         }
     }
 }
-

@@ -14,34 +14,32 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
-
 
 @Composable
 fun ErrorAlert(
     title: String,
     errorMessage: String,
     buttonMessage: String,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     val colorSurface = colorScheme.background
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = RoundedCornerShape(8.dp),
             color = colorSurface,
-            modifier = Modifier.width(300.dp)
+            modifier = Modifier.width(300.dp),
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = title,
-                    style = typography.headlineLarge
+                    style = typography.headlineLarge,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -50,7 +48,7 @@ fun ErrorAlert(
                 Spacer(modifier = Modifier.height(16.dp))
                 TextButton(
                     onClick = onDismiss,
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier.align(Alignment.End),
                 ) {
                     Text(
                         text = buttonMessage,
@@ -69,6 +67,7 @@ fun ErrorAlertPreview() {
             "Unexpected Error",
             "Something very bad happened, it may be a fault from the programmers, please send an email with the logcat",
             "Send",
-            {})
+            {},
+        )
     }
 }

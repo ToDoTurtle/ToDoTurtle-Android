@@ -17,7 +17,6 @@ import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.io.IOException
 
-
 class NfcWriteDevice private constructor(
     private val activity: Activity,
     private val message: NfcParcelable,
@@ -83,15 +82,14 @@ class NfcWriteDevice private constructor(
             activity,
             this,
             NfcAdapter.FLAG_READER_NFC_A or
-                    NfcAdapter.FLAG_READER_NFC_B or
-                    NfcAdapter.FLAG_READER_NFC_F or
-                    NfcAdapter.FLAG_READER_NFC_V or
-                    NfcAdapter.FLAG_READER_NFC_BARCODE or
-                    NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS,
-            options
+                NfcAdapter.FLAG_READER_NFC_B or
+                NfcAdapter.FLAG_READER_NFC_F or
+                NfcAdapter.FLAG_READER_NFC_V or
+                NfcAdapter.FLAG_READER_NFC_BARCODE or
+                NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS,
+            options,
         )
     }
-
 
     override fun onPause(owner: LifecycleOwner) {
         super.onPause(owner)
@@ -114,7 +112,7 @@ class NfcWriteDevice private constructor(
         if (action == NfcAdapter.ACTION_ADAPTER_STATE_CHANGED) {
             val state = intent.getIntExtra(
                 NfcAdapter.EXTRA_ADAPTER_STATE,
-                NfcAdapter.STATE_OFF
+                NfcAdapter.STATE_OFF,
             )
             when (state) {
                 NfcAdapter.STATE_OFF, NfcAdapter.STATE_TURNING_OFF -> {
@@ -127,7 +125,6 @@ class NfcWriteDevice private constructor(
             }
         }
     }
-
 }
 
 fun Ndef.write(content: NfcParcelable) {

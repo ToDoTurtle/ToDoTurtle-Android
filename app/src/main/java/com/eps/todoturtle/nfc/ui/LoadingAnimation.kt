@@ -41,8 +41,8 @@ fun LoadingAnimation() {
         animationSpec = spring(
             visibilityThreshold = 0.3f,
             dampingRatio = 0.1f,
-            stiffness = 0.87f
-        )
+            stiffness = 0.87f,
+        ),
     )
     val infiniteTransition = rememberInfiniteTransition()
     val scaleBox by infiniteTransition.animateFloat(
@@ -50,33 +50,36 @@ fun LoadingAnimation() {
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(2000),
-            repeatMode = RepeatMode.Reverse
-        )
+            repeatMode = RepeatMode.Reverse,
+        ),
     )
-    LaunchedEffect(key1 = true, block = {
-        rotateOuter = !rotateOuter
-        while (true) {
-            delay(2000)
+    LaunchedEffect(
+        key1 = true,
+        block = {
             rotateOuter = !rotateOuter
+            while (true) {
+                delay(2000)
+                rotateOuter = !rotateOuter
+            }
         }
-    })
+    )
     Box {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .scale(1.2f)
+                .scale(1.2f),
         ) {
             Box(
                 Modifier
                     .scale(scaleBox)
-                    .align(Alignment.Center)
+                    .align(Alignment.Center),
             ) {
                 // center circle
                 Box(
                     Modifier
                         .align(Alignment.Center)
                         .size(50.dp)
-                        .background(colorScheme.inverseSurface, shape = CircleShape)
+                        .background(colorScheme.inverseSurface, shape = CircleShape),
                 )
                 // two arc's
                 SmallArc(angle)
@@ -90,24 +93,24 @@ fun LoadingAnimation() {
 fun SmallArc(angle: Float) {
     val color = colorScheme.background
     Box(Modifier.rotate(angle)) {
-        Canvas(modifier = Modifier
-            .align(Alignment.Center)
-            .size(100.dp),
+        Canvas(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .size(100.dp),
             onDraw = {
                 drawArc(
                     color = color,
                     style = Stroke(
                         width = 3f,
                         cap = StrokeCap.Round,
-                        join =
-                        StrokeJoin.Round,
+                        join = StrokeJoin.Round,
                     ),
                     startAngle = 180f,
                     sweepAngle = 288f,
-                    useCenter = false
+                    useCenter = false,
                 )
-
-            })
+            },
+        )
     }
 }
 
@@ -115,23 +118,24 @@ fun SmallArc(angle: Float) {
 fun BigArc(angle: Float) {
     val color = colorScheme.primary
     Box(Modifier.rotate(angle)) {
-        Canvas(modifier = Modifier
-            .rotate(180f)
-            .align(Alignment.Center)
-            .size(100.dp), onDraw = {
-            drawArc(
-                color = color,
-                style = Stroke(
-                    width = 3f,
-                    cap = StrokeCap.Round,
-                    join =
-                    StrokeJoin.Round,
-                ),
-                startAngle = 180f,
-                sweepAngle = 288f,
-                useCenter = false
-            )
-        }
+        Canvas(
+            modifier = Modifier
+                .rotate(180f)
+                .align(Alignment.Center)
+                .size(100.dp),
+            onDraw = {
+                drawArc(
+                    color = color,
+                    style = Stroke(
+                        width = 3f,
+                        cap = StrokeCap.Round,
+                        join = StrokeJoin.Round,
+                    ),
+                    startAngle = 180f,
+                    sweepAngle = 288f,
+                    useCenter = false,
+                )
+            },
         )
     }
 }
