@@ -54,4 +54,6 @@
     <string name="profile_login_picture_desc">Imatge d\'inici de sessió</string>
     <string name="profile_wrong_login_desc">Inici de sessió incorrecte (creu)</string>
     <string name="profile_error_desc">Icona d\'error</string>
+    <string name="invite_gif_desc">GIF d\'un home taladrant el terra</string>
+    <string name="invite_construction">En construcció…</string>
 </resources>

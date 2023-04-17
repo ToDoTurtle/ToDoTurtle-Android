@@ -54,4 +54,6 @@
     <string name="note_description">Esta és la descripción de la nota Nº %d</string>
     <string name="note_add_note_button_desc">Botón que muestra el formulario para crear una nueva nota.</string>
     <string name="note_notes_icon_desc">Notas</string>
+    <string name="invite_gif_desc">GIF de un hombre taladrando el suelo</string>
+    <string name="invite_construction">En construcción…</string>
 </resources>
