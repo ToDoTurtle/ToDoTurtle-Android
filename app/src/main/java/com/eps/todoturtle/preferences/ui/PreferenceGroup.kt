@@ -27,7 +27,6 @@ internal fun PreferenceGroup(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
-        color = MaterialTheme.colorScheme.primaryContainer,
         shape = RoundedCornerShape(percent = 4),
     ) {
         Column(
@@ -42,7 +41,7 @@ internal fun PreferenceGroup(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Surface(
-                color = MaterialTheme.colorScheme.secondaryContainer,
+                color = MaterialTheme.colorScheme.primaryContainer,
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(percent = 4),

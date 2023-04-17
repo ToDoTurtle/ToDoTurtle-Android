@@ -61,7 +61,7 @@ fun LoadingAnimation() {
                 delay(2000)
                 rotateOuter = !rotateOuter
             }
-        }
+        },
     )
     Box {
         Box(
