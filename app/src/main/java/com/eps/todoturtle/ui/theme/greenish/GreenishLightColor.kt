@@ -1,0 +1,36 @@
+package com.eps.todoturtle.ui.theme.greenish
+
+import androidx.compose.ui.graphics.Color
+
+object GreenishLightColor {
+    val primary = Color(0xFF246C2D)
+    val onPrimary = Color(0xFFFFFFFF)
+    val primaryContainer = Color(0xFFA8F5A5)
+    val onPrimaryContainer = Color(0xFF002105)
+    val secondary = Color(0xFF52634F)
+    val onSecondary = Color(0xFFFFFFFF)
+    val secondaryContainer = Color(0xFFD5E8CF)
+    val onSecondaryContainer = Color(0xFF101F10)
+    val tertiary = Color(0xFF39656B)
+    val onTertiary = Color(0xFFFFFFFF)
+    val tertiaryContainer = Color(0xFFBCEBF1)
+    val onTertiaryContainer = Color(0xFF001F23)
+    val error = Color(0xFFBA1A1A)
+    val errorContainer = Color(0xFFFFDAD6)
+    val onError = Color(0xFFFFFFFF)
+    val onErrorContainer = Color(0xFF410002)
+    val background = Color(0xFFFCFDF6)
+    val onBackground = Color(0xFF1A1C19)
+    val surface = Color(0xFFFCFDF6)
+    val onSurface = Color(0xFF1A1C19)
+    val surfaceVariant = Color(0xFFDEE5D9)
+    val onSurfaceVariant = Color(0xFF424940)
+    val outline = Color(0xFF72796F)
+    val inverseOnSurface = Color(0xFFF0F1EB)
+    val inverseSurface = Color(0xFF2F312D)
+    val inversePrimary = Color(0xFF8DD88C)
+    val shadow = Color(0xFF000000)
+    val surfaceTint = Color(0xFF246C2D)
+    val outlineVariant = Color(0xFFC2C9BD)
+    val scrim = Color(0xFF000000)
+}

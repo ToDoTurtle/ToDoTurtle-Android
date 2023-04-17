@@ -2,7 +2,7 @@ package com.eps.todoturtle.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val colorProvider = ColorProviderFactory(DefaultTheme).getColorProvider()
+val colorProvider = ColorProviderFactory(AmberTheme).getColorProvider()
 
 class ColorProviderFactory(private val theme: Theme) {
     fun getColorProvider(): ColorProvider {

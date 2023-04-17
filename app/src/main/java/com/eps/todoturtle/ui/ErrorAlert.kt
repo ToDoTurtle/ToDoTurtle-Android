@@ -67,7 +67,6 @@ fun ErrorAlertPreview() {
             "Unexpected Error",
             "Something very bad happened, it may be a fault from the programmers, please send an email with the logcat",
             "Send",
-            {},
-        )
+        ) {}
     }
 }

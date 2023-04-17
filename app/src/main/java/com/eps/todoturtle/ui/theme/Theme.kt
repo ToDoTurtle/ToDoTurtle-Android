@@ -108,11 +108,13 @@ val ColorScheme.onFormContainer: Color
     @Composable
     get() = onNoteScreenButton
 
+
 @Composable
 fun ToDoTurtleTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
+    // FIXME: Aqui serà el switch de temes
     val colors = if (!useDarkTheme) {
         LightColors
     } else {
