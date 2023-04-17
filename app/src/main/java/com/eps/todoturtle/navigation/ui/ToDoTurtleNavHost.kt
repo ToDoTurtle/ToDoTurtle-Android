@@ -46,7 +46,7 @@ fun ToDoTurtleNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = LOGIN,
+        startDestination = NOTES,
         modifier = modifier,
     ) {
         login(navController, shouldShowMenu)

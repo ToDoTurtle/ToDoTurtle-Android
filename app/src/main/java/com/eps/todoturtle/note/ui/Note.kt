@@ -172,8 +172,8 @@ fun MapNoteBody(
     val launcher =
         rememberLauncherForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
-            onResult = { })
-
+            onResult = { },
+        )
 
     NoteBody(description = description, modifier = modifier)
     MapView(

@@ -6,12 +6,9 @@ import com.eps.todoturtle.map.logic.listeners.ListenerFactory
 import com.eps.todoturtle.map.logic.markers.MarkerFactory
 import com.eps.todoturtle.map.logic.markers.MarkerFactory.setCurrentMarker
 import com.eps.todoturtle.map.logic.markers.MarkerType
-import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.MapEventsOverlay
 
 object MyMap {
     fun getMap(context: Context, startLat: Double = 0.0, startLon: Double = 0.0, onMapClick: () -> Unit): MapView {
@@ -39,8 +36,7 @@ object MyMap {
     }
 
     private fun MapView.setZoom() {
-        zoomController.setVisibility(CustomZoomButtonsController.Visibility.ALWAYS)
-        controller.setZoom(20.00)
+        controller.setZoom(18.50)
     }
 
     private fun MapView.setMarkers(map: MapView, startLat: Double, startLon: Double) {

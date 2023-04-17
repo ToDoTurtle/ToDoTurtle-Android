@@ -16,6 +16,5 @@ object ListenerFactory {
         override fun longPressHelper(p: GeoPoint?): Boolean {
             return false
         }
-
     }
 }

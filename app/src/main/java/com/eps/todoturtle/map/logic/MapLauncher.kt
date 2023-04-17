@@ -6,7 +6,6 @@ import android.net.Uri
 private const val URI_TEMPLATE = "geo:0,0?q=%f,%f"
 private const val PACKAGE = "com.google.android.apps.maps"
 
-
 object MapLauncher {
     fun getMapIntent(latitude: Double, longitude: Double): Intent {
         val uri = getUriFrom(latitude, longitude)
