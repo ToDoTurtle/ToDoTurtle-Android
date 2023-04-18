@@ -18,14 +18,22 @@ import java.util.UUID
 class NfcWriteViewModel private constructor(componentActivity: ComponentActivity) : ViewModel() {
 
     private val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private var nfcWriteDevice =
+    private var getNfcWriteDevice: () -> NfcWriteDevice = {
         componentActivity.NfcWriteDevice(DeviceInformation(UUID.randomUUID().toString()))
+    }
+    private var nfcWriteDevice = getNfcWriteDevice()
     private var nfcAction: () -> Unit = getNfcOpenAction(componentActivity)
+    private var callback: (WriteOperationStatus) -> Unit = {}
 
     fun onNfcOperation(callback: (WriteOperationStatus) -> Unit) {
+        this.callback = callback
+        startCorroutine()
+    }
+
+    fun startCorroutine() {
         nfcWriteDevice.operationResults.onEach {
             runBlocking(Dispatchers.Main) {
-                callback(it)
+                this@NfcWriteViewModel.callback(it)
             }
         }.launchIn(lifecycleScope)
     }
@@ -37,10 +45,16 @@ class NfcWriteViewModel private constructor(componentActivity: ComponentActivity
     fun setActivity(componentActivity: ComponentActivity) {
         nfcAction = getNfcOpenAction(componentActivity)
         nfcWriteDevice = componentActivity.NfcWriteDevice(DeviceInformation(UUID.randomUUID().toString()))
+        getNfcWriteDevice = { componentActivity.NfcWriteDevice(DeviceInformation(UUID.randomUUID().toString()))}
     }
 
     private fun getNfcOpenAction(componentActivity: ComponentActivity): () -> Unit = {
         startActivity(componentActivity, Intent(Settings.ACTION_NFC_SETTINGS), null)
+    }
+
+    fun finishNfc() {
+        nfcWriteDevice = getNfcWriteDevice()
+        startCorroutine()
     }
 
     object INIT {

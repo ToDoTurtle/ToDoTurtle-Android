@@ -9,13 +9,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,15 +37,31 @@ import com.eps.todoturtle.ui.theme.noteScreenButton
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
+    newDeviceAdded: Boolean = false,
+    onNewDeviceAddedOkay: () -> Unit = {},
     onAddDevice: () -> Unit = {},
 ) {
-    DeviceScreenLayout(devices = devicesViewModel.getDevices(), onAddDevice)
+    DeviceScreenLayout(
+        devices = devicesViewModel.getDevices(),
+        newDeviceAdded,
+        onNewDeviceAddedOkay,
+        onAddDevice
+    )
 }
 
 @Composable
-fun DeviceScreenLayout(devices: List<NFCDevice>, addDevice: () -> Unit) {
+fun DeviceScreenLayout(
+    devices: List<NFCDevice>,
+    newDeviceAdded: Boolean,
+    onNewDeviceAddedOkay: () -> Unit,
+    addDevice: () -> Unit
+) {
     Scaffold(
         floatingActionButton = { AddDeviceButton(onClick = addDevice) },
+        snackbarHost = {
+            if (newDeviceAdded)
+                NfcWriteSuccessSnackbar(onNewDeviceAddedOkay)
+        }
     ) {
         NFCDeviceList(devices)
     }
@@ -121,6 +141,39 @@ fun EditDeviceButton(alreadyConfigured: Boolean, onClick: () -> Unit) {
     }
 }
 
+@Composable
+fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
+    Snackbar(
+        action = {
+            IconButton(
+                onClick = onClose,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Close",
+                )
+            }
+        }
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Check,
+                contentDescription = "NFC write success",
+                tint = colorScheme.secondary,
+                modifier = Modifier.padding(end = 8.dp)
+            )
+            Text(
+                text = "NFC has been successfully written!",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+    }
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun DevicesPreview() {
@@ -141,7 +194,7 @@ fun DevicesPreview() {
                     iconResId = R.drawable.headphones,
                     false
                 ),
-            )
+            ), false, {}
         ) {}
     }
 }
