@@ -15,6 +15,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.DeviceScreen
@@ -185,7 +186,9 @@ private fun NavGraphBuilder.settings(dataStore: DataStore<AppPreferences>) {
 }
 
 fun NavGraphBuilder.invite() {
-    composable(INVITE) {}
+    composable(INVITE) {
+        InviteUI()
+    }
 }
 
 fun NavHostController.navigateSingleTopTo(route: String) =
