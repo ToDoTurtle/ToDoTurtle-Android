@@ -22,6 +22,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NFCDevice
+import com.eps.todoturtle.note.ui.CompleteAddNoteFormDialog
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
@@ -110,9 +113,19 @@ fun DeviceCard(device: NFCDevice) {
             .fillMaxWidth()
             .padding(16.dp),
     ) {
+        var inDialog by rememberSaveable { mutableStateOf(false) }
         DeviceIcon(device = device)
         DeviceInformation(device = device)
-        EditDeviceButton(alreadyConfigured = device.configured) {}
+        EditDeviceButton(alreadyConfigured = device.configured) {
+            inDialog = true
+        }
+        if (inDialog) {
+            CompleteAddNoteFormDialog(
+                onDismissRequest = { inDialog = false },
+                onDoneClick = { inDialog = false },
+                onCloseClick = { inDialog = false },
+            )
+        }
     }
 }
 
