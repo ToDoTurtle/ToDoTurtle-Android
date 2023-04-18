@@ -6,8 +6,11 @@
     <!-- Your custom dialog style, don't forget to specify the parent style! -->
     <style name="CustomIconDialogStyle" parent="IcdStyle">
         <item name="icdIconSize">48dp</item>
-        <item name="icdIconColor">#FFFFDAD6</item>
+        <item name="icdIconColor">#FFFFFFFF</item>
         <item name="icdListHeaderStyle">@style/CustomHeaderStyle</item>
+        <item name="icdSearchIconStyle">@style/CustomSearchIconStyle</item>
+        <item name="icdCancelSearchIconStyle">@style/CustomIdCancelSearchStyle</item>
+        <item name="icdDialogButtonStyle">@style/CustomButtonStyle</item>
     </style>
 
     <!-- Custom style for the list headers, again don't forget the parent! -->
@@ -15,4 +18,27 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:typeface">monospace</item>
     </style>
+
+    <style name="CustomSearchIconStyle" parent="IcdSearchIconStyle">
+        <item name="srcCompat">@drawable/icd_ic_search</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+        <item name="tint">#FFFFFFFF</item>>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+    </style>
+
+    <style name="CustomIdCancelSearchStyle" parent="IcdCancelSearchIconStyle">
+        <item name="srcCompat">@drawable/icd_ic_close</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+        <item name="tint">#FFFFFFFF</item>
+        <item name="android:disabledAlpha">1.0</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+    </style>
+
+    <style name="CustomButtonStyle" parent="IcdDialogButtonStyle">
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="iconTint">#FFFFFFFF</item>
+    </style>
+
 </resources>
