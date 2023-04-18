@@ -33,7 +33,7 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback {
         val viewModel = getNfcWriteModel(callBackIcons) {
             iconDialog.show(
                 supportFragmentManager,
-                ICON_DIALOG_TAG
+                ICON_DIALOG_TAG,
             )
         }
         setContent {
@@ -51,7 +51,7 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback {
                             Toast.makeText(
                                 this,
                                 getString(R.string.nfc_not_supported_solution),
-                                Toast.LENGTH_SHORT
+                                Toast.LENGTH_SHORT,
                             ).show()
                             finish()
                         },
@@ -59,7 +59,7 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback {
                             Toast.makeText(
                                 this,
                                 getString(R.string.nfc_write_success),
-                                Toast.LENGTH_SHORT
+                                Toast.LENGTH_SHORT,
                             )
                                 .show()
                             finish()

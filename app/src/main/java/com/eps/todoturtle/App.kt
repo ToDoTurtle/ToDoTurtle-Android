@@ -21,5 +21,4 @@ class App : Application() {
         iconPack.loadDrawables(loader.drawableLoader)
         this.iconPack = iconPack
     }
-
 }

@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment.STYLE_NORMAL
-import androidx.fragment.app.DialogFragment.STYLE_NO_FRAME
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
@@ -46,7 +44,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback {
                     nfcWriteViewModel = getNfcWriteModel(callBackIcons) {
                         iconDialog.show(
                             supportFragmentManager,
-                            ICON_DIALOG_TAG
+                            ICON_DIALOG_TAG,
                         )
                     },
                     profileViewModel = profileViewModel,
@@ -56,7 +54,6 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback {
             }
         }
     }
-
 
     override val iconDialogIconPack: IconPack?
         get() = (application as App).iconPack

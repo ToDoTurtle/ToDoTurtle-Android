@@ -10,9 +10,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -33,8 +34,8 @@ fun DeviceConfigurationScreen(nfcWriteDevice: NfcWriteViewModel, onSave: () -> U
     ) {
         var deviceName by rememberSaveable { mutableStateOf("") }
         var description by rememberSaveable { mutableStateOf("") }
-        DeviceNameChooser(deviceName) { deviceName = it}
-        DescriptionChooser(description) { description = it}
+        DeviceNameChooser(deviceName) { deviceName = it }
+        DescriptionChooser(description) { description = it }
         IconChooser { nfcWriteDevice.showIconDialog() }
         SaveButton(onSave)
     }
@@ -46,7 +47,7 @@ fun DeviceNameChooser(value: String, onChange: (String) -> Unit) {
         text = "Device Name",
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
-        modifier = Modifier.padding(bottom = 8.dp)
+        modifier = Modifier.padding(bottom = 8.dp),
     )
     TextField(
         value = value,
@@ -62,7 +63,7 @@ fun DescriptionChooser(value: String, onChange: (String) -> Unit) {
         text = "Description",
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
-        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
     )
     TextField(
         value = value,
@@ -77,11 +78,11 @@ fun IconChooser(onClick: () -> Unit) {
         text = "Choose an Icon",
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
-        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
     )
     Button(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Text(text = "Choose Icon")
     }
@@ -94,7 +95,7 @@ fun SaveButton(onClick: () -> Unit) {
         modifier = Modifier
             .padding(top = 32.dp)
             .fillMaxWidth()
-            .height(50.dp)
+            .height(50.dp),
     ) {
         Text(text = "Save")
     }

@@ -19,7 +19,7 @@ import java.util.UUID
 class NfcWriteViewModel private constructor(
     componentActivity: ComponentActivity,
     val showIconDialog: () -> Unit,
-    val iconFlow: Flow<Int?>
+    val iconFlow: Flow<Int?>,
 ) : ViewModel() {
 
     private val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -69,7 +69,7 @@ class NfcWriteViewModel private constructor(
         private class NfcWriteViewModelFactory(
             private val context: ComponentActivity,
             private val showIconDialog: () -> Unit,
-            private val iconFlow: Flow<Int?>
+            private val iconFlow: Flow<Int?>,
         ) :
             ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -86,7 +86,7 @@ class NfcWriteViewModel private constructor(
                 NfcWriteViewModelFactory(
                     this,
                     showIconDialog,
-                    iconFlow
+                    iconFlow,
                 ),
             )[NfcWriteViewModel::class.java]
             viewModel.setActivity(this)

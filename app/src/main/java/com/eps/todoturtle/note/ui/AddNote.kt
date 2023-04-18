@@ -1,7 +1,6 @@
 package com.eps.todoturtle.note.ui
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -58,7 +58,6 @@ import com.eps.todoturtle.ui.theme.formContainer
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.eps.todoturtle.ui.theme.onFormContainer
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AddNoteMenu(
     onAddClick: () -> Unit,
@@ -160,7 +159,7 @@ fun CompleteAddNoteFormDialog(
     onAddDeadlineClick: () -> Unit = {},
 ) {
     Dialog(
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
     ) {
         Card {
             CompleteAddNoteForm(
@@ -221,9 +220,12 @@ fun CompleteAddNoteForm(
             labelId = R.string.note_form_title_field,
             onValueChange = { newText -> titleText = newText },
             trailingIcon = {
-                ClearTextIcon(onClick = {
-                    if (titleText.isNotEmpty()) titleText = ""
-                })
+                ClearTextIcon(
+                    onClick = {
+                        if (titleText.isNotEmpty())
+                            titleText = ""
+                    }
+                )
             },
         )
         SimpleNoteFormOutlinedTextField(
@@ -234,51 +236,69 @@ fun CompleteAddNoteForm(
             labelId = R.string.note_form_description_field,
             onValueChange = { newText -> descriptionText = newText },
             trailingIcon = {
-                ClearTextIcon(onClick = {
-                    if (descriptionText.isNotEmpty()) descriptionText = ""
-                })
+                ClearTextIcon(
+                    onClick = {
+                        if (descriptionText.isNotEmpty())
+                            descriptionText = ""
+                    }
+                )
             },
         )
-        Row {
-            Row(
-                modifier = Modifier.weight(0.5f),
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                IconButton(onClick = { choosingNotification = true }) {
-                    ResourceIcon(
-                        contentDescriptionId = R.string.add_notification_icon_desc,
-                        imageId = R.drawable.add_notification_filled,
-                    )
-                }
-                IconButton(onClick = { choosingDeadline = true }) {
-                    ResourceIcon(
-                        contentDescriptionId = R.string.add_deadline_icon_desc,
-                        imageId = R.drawable.add_deadline_filled,
-                    )
-                }
-                IconButton(onClick = { }) {
-                    Icon(
-                        Icons.Default.AddCircle,
-                        contentDescription = stringResource(id = R.string.more_icon_desc),
-                    )
-                }
+        QuickForm(
+            { choosingNotification = true },
+            { choosingDeadline = true },
+            onCloseClick,
+            onDoneClick,
+        )
+    }
+}
+
+@Composable
+fun QuickForm(
+    onClick1: () -> Unit,
+    onClick2: () -> Unit,
+    onCloseClick: () -> Unit,
+    onDoneClick: () -> Unit,
+) {
+    Row {
+        Row(
+            modifier = Modifier.weight(0.5f),
+            horizontalArrangement = Arrangement.Start,
+        ) {
+            IconButton(onClick = onClick1) {
+                ResourceIcon(
+                    contentDescriptionId = R.string.add_notification_icon_desc,
+                    imageId = R.drawable.add_notification_filled,
+                )
             }
-            Row(
-                modifier = Modifier.weight(0.5f),
-                horizontalArrangement = Arrangement.End,
-            ) {
-                IconButton(onClick = onCloseClick) {
-                    Icon(
-                        Icons.Default.Close,
-                        contentDescription = stringResource(R.string.quick_note_form_close_button_desc),
-                    )
-                }
-                IconButton(onClick = onDoneClick) {
-                    Icon(
-                        Icons.Default.Done,
-                        contentDescription = stringResource(R.string.note_quick_form_done_button),
-                    )
-                }
+            IconButton(onClick = onClick2) {
+                ResourceIcon(
+                    contentDescriptionId = R.string.add_deadline_icon_desc,
+                    imageId = R.drawable.add_deadline_filled,
+                )
+            }
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Default.AddCircle,
+                    contentDescription = stringResource(id = R.string.more_icon_desc),
+                )
+            }
+        }
+        Row(
+            modifier = Modifier.weight(0.5f),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            IconButton(onClick = onCloseClick) {
+                Icon(
+                    Icons.Default.Close,
+                    contentDescription = stringResource(R.string.quick_note_form_close_button_desc),
+                )
+            }
+            IconButton(onClick = onDoneClick) {
+                Icon(
+                    Icons.Default.Done,
+                    contentDescription = stringResource(R.string.note_quick_form_done_button),
+                )
             }
         }
     }
@@ -315,46 +335,8 @@ fun QuickAddNoteForm(
             .fillMaxWidth(),
     ) {
         Row {
-            Row(
-                modifier = Modifier.weight(0.5f),
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                IconButton(onClick = { choosingNotification = true }) {
-                    ResourceIcon(
-                        contentDescriptionId = R.string.add_notification_icon_desc,
-                        imageId = R.drawable.add_notification_filled,
-                    )
-                }
-                IconButton(onClick = { choosingDeadline = true }) {
-                    ResourceIcon(
-                        contentDescriptionId = R.string.add_deadline_icon_desc,
-                        imageId = R.drawable.add_deadline_filled,
-                    )
-                }
-                IconButton(onClick = { }) {
-                    Icon(
-                        Icons.Default.AddCircle,
-                        contentDescription = stringResource(id = R.string.more_icon_desc),
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier.weight(0.5f),
-                horizontalArrangement = Arrangement.End,
-            ) {
-                IconButton(onClick = onCloseClick) {
-                    Icon(
-                        Icons.Default.Close,
-                        contentDescription = stringResource(R.string.quick_note_form_close_button_desc),
-                    )
-                }
-                IconButton(onClick = onDoneClick) {
-                    Icon(
-                        Icons.Default.Done,
-                        contentDescription = stringResource(R.string.note_quick_form_done_button),
-                    )
-                }
-            }
+            DateOptions({ choosingNotification = true }, { choosingDeadline = true })
+            FormCreationAlert(onCloseClick = onCloseClick, onDoneClick = onDoneClick)
         }
         SimpleNoteFormTextField(
             modifier = Modifier.padding(bottom = 8.dp),
@@ -362,11 +344,62 @@ fun QuickAddNoteForm(
             labelId = R.string.note_form_title_field,
             onValueChange = { newText -> titleText = newText },
             trailingIcon = {
-                ClearTextIcon(onClick = {
-                    if (titleText.isNotEmpty()) titleText = ""
-                })
+                ClearTextIcon(
+                    onClick = {
+                        if (titleText.isNotEmpty())
+                            titleText = ""
+                    }
+                )
             },
         )
+    }
+}
+
+@Composable
+fun RowScope.DateOptions(choosingNotification: () -> Unit, choosingDeadline: () -> Unit) {
+    Row(
+        modifier = Modifier.weight(0.5f),
+        horizontalArrangement = Arrangement.Start,
+    ) {
+        IconButton(onClick = choosingNotification) {
+            ResourceIcon(
+                contentDescriptionId = R.string.add_notification_icon_desc,
+                imageId = R.drawable.add_notification_filled,
+            )
+        }
+        IconButton(onClick = choosingDeadline) {
+            ResourceIcon(
+                contentDescriptionId = R.string.add_deadline_icon_desc,
+                imageId = R.drawable.add_deadline_filled,
+            )
+        }
+        IconButton(onClick = { }) {
+            Icon(
+                Icons.Default.AddCircle,
+                contentDescription = stringResource(id = R.string.more_icon_desc),
+            )
+        }
+    }
+}
+
+@Composable
+fun RowScope.FormCreationAlert(onCloseClick: () -> Unit, onDoneClick: () -> Unit) {
+    Row(
+        modifier = Modifier.weight(0.5f),
+        horizontalArrangement = Arrangement.End,
+    ) {
+        IconButton(onClick = onCloseClick) {
+            Icon(
+                Icons.Default.Close,
+                contentDescription = stringResource(R.string.quick_note_form_close_button_desc),
+            )
+        }
+        IconButton(onClick = onDoneClick) {
+            Icon(
+                Icons.Default.Done,
+                contentDescription = stringResource(R.string.note_quick_form_done_button),
+            )
+        }
     }
 }
 
