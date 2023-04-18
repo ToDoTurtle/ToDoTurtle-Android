@@ -8,10 +8,16 @@ import com.eps.todoturtle.map.logic.markers.MarkerFactory.setCurrentMarker
 import com.eps.todoturtle.map.logic.markers.MarkerType
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 
 object MyMap {
-    fun getMap(context: Context, startLat: Double = 0.0, startLon: Double = 0.0, onMapClick: () -> Unit): MapView {
+    fun getMap(
+        context: Context,
+        startLat: Double = 0.0,
+        startLon: Double = 0.0,
+        onMapClick: () -> Unit,
+    ): MapView {
         return MapView(context).apply {
             setId()
             setOutlineClip()
@@ -20,6 +26,7 @@ object MyMap {
             setStartPoint(startLat, startLon)
             setMarkers(this, startLat, startLon)
             setListener(onMapClick)
+            setUnDraggable()
         }
     }
 
@@ -37,6 +44,7 @@ object MyMap {
 
     private fun MapView.setZoom() {
         controller.setZoom(18.50)
+        zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
     }
 
     private fun MapView.setMarkers(map: MapView, startLat: Double, startLon: Double) {
@@ -57,5 +65,9 @@ object MyMap {
     private fun MapView.setListener(onMapClick: () -> Unit) {
         val listenerOverlay = ListenerFactory.getListenerOverlay { onMapClick() }
         overlays.add(listenerOverlay)
+    }
+
+    private fun MapView.setUnDraggable() {
+        isClickable = true
     }
 }
