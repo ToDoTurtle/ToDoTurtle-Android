@@ -79,7 +79,7 @@ fun NavGraphBuilder.login(navController: NavHostController, shouldShowMenu: Muta
     composable(LOGIN) {
         LoginUI(
             onSignInClick = {
-                navController.navigateSingleTopTo(NOTES)
+                navController.navigateFromLogin(NOTES)
                 shouldShowMenu.value = true
             },
         )
