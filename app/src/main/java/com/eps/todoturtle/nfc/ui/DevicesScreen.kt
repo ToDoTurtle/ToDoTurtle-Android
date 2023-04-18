@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NFCDevice
-import com.eps.todoturtle.preferences.logic.data.Themes
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton

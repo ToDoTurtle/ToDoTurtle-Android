@@ -1,3 +1,3 @@
 package com.eps.todoturtle.ui.theme.greenish
 
-private const val greenishSeed = 0xFF679765
+private const val GREENISH_SEED = 0xFF679765

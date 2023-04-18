@@ -3,7 +3,7 @@ package com.eps.todoturtle.ui.theme.greenish
 import androidx.compose.ui.graphics.Color
 import com.eps.todoturtle.ui.theme.ColorInterface
 
-object GreenishLightColor: ColorInterface {
+object GreenishLightColor : ColorInterface {
     override val primary = Color(0xFF246C2D)
     override val onPrimary = Color(0xFFFFFFFF)
     override val primaryContainer = Color(0xFFA8F5A5)

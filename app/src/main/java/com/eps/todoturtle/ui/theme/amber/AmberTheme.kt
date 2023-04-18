@@ -71,10 +71,11 @@ fun AmberTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val colors = if (useDarkTheme)
+    val colors = if (useDarkTheme) {
         AmberDarkColors
-    else
+    } else {
         AmberLightColors
+    }
 
     MaterialTheme(
         colorScheme = colors,

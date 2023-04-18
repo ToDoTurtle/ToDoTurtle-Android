@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.preferences.logic.data.Themes
 import com.eps.todoturtle.ui.theme.amber.AmberTheme
@@ -55,7 +54,6 @@ val ColorScheme.formContainer: Color
 val ColorScheme.onFormContainer: Color
     @Composable
     get() = onNoteScreenButton
-
 
 @Composable
 fun ToDoTurtleTheme(

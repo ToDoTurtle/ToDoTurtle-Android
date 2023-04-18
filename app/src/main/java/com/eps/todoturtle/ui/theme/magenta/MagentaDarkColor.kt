@@ -3,7 +3,7 @@ package com.eps.todoturtle.ui.theme.magenta
 import androidx.compose.ui.graphics.Color
 import com.eps.todoturtle.ui.theme.ColorInterface
 
-object MagentaDarkColor : ColorInterface{
+object MagentaDarkColor : ColorInterface {
     override val primary = Color(0xFFFFAEDF)
     override val onPrimary = Color(0xFF591147)
     override val primaryContainer = Color(0xFF752A5F)

@@ -3,7 +3,7 @@ package com.eps.todoturtle.ui.theme.cold
 import androidx.compose.ui.graphics.Color
 import com.eps.todoturtle.ui.theme.ColorInterface
 
-object ColdLightColor: ColorInterface {
+object ColdLightColor : ColorInterface {
     override val primary = Color(0xFF00696C)
     override val onPrimary = Color(0xFFFFFFFF)
     override val primaryContainer = Color(0xFF6FF6FB)

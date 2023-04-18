@@ -3,7 +3,6 @@ package com.eps.todoturtle
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.collectAsState
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NoteScreenViewModel

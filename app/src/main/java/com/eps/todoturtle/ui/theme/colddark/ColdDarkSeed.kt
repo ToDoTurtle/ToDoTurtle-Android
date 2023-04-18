@@ -1,3 +1,3 @@
 package com.eps.todoturtle.ui.theme.colddark
 
-private const val coldDarkSeed = 0xFF395E77
+private const val COLD_DARK_SEED = 0xFF395E77

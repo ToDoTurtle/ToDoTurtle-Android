@@ -33,5 +33,4 @@ interface ColorInterface {
     val surfaceTint: Color
     val outlineVariant: Color
     val scrim: Color
-
 }

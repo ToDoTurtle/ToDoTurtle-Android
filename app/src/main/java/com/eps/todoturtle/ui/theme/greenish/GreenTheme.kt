@@ -71,10 +71,11 @@ fun GreenishTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val colors = if(!useDarkTheme)
+    val colors = if (!useDarkTheme) {
         GreenishLightColors
-    else
+    } else {
         GreenishDarkColors
+    }
 
     MaterialTheme(
         colorScheme = colors,

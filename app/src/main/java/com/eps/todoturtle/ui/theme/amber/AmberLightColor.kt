@@ -3,7 +3,7 @@ package com.eps.todoturtle.ui.theme.amber
 import androidx.compose.ui.graphics.Color
 import com.eps.todoturtle.ui.theme.ColorInterface
 
-object AmberLightColor: ColorInterface {
+object AmberLightColor : ColorInterface {
     override val primary = Color(0xFF815500)
     override val onPrimary = Color(0xFFFFFFFF)
     override val primaryContainer = Color(0xFFFFDDB2)
