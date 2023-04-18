@@ -51,6 +51,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
 import com.eps.todoturtle.shared.ui.ResourceIcon
 import com.eps.todoturtle.ui.theme.formContainer
@@ -147,6 +148,28 @@ fun FormContainer(
         elevation = CardDefaults.elevatedCardElevation(),
     ) {
         content()
+    }
+}
+
+@Composable
+fun CompleteAddNoteFormDialog(
+    onDismissRequest: () -> Unit = {},
+    onDoneClick: () -> Unit = {},
+    onCloseClick: () -> Unit = {},
+    onAddNotificationClick: () -> Unit = {},
+    onAddDeadlineClick: () -> Unit = {},
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest
+    ) {
+        Card {
+            CompleteAddNoteForm(
+                onCloseClick = onCloseClick,
+                onDoneClick = onDoneClick,
+                onAddNotificationClick = onAddNotificationClick,
+                onAddDeadlineClick = onAddDeadlineClick,
+            )
+        }
     }
 }
 
