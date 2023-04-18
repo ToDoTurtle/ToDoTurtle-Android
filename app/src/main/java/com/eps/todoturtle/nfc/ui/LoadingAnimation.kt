@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +32,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun LoadingAnimation(modifier: Modifier = Modifier) {
-    var rotateOuter by remember {
+    var rotateOuter by rememberSaveable {
         mutableStateOf(false)
     }
     val angle by animateFloatAsState(
@@ -89,7 +89,7 @@ fun LoadingAnimation(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SmallArc(angle: Float) {
+private fun SmallArc(angle: Float) {
     val color = colorScheme.background
     Box(Modifier.rotate(angle)) {
         Canvas(
@@ -114,7 +114,7 @@ fun SmallArc(angle: Float) {
 }
 
 @Composable
-fun BigArc(angle: Float) {
+private fun BigArc(angle: Float) {
     val color = colorScheme.primary
     Box(Modifier.rotate(angle)) {
         Canvas(
