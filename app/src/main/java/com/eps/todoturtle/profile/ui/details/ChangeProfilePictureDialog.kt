@@ -69,6 +69,7 @@ fun ChangeProfilePictureDialog(
                     modifier = Modifier
                         .fillMaxWidth(fraction = 0.5f)
                         .padding(top = 20.dp)
+                        .weight(weight = 1f)
                         .height(150.dp),
                 )
                 DialogTitle(R.string.profile_chosen_image)
