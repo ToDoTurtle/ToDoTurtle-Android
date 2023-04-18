@@ -261,6 +261,7 @@ fun CompleteAddNoteForm(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuickAddNoteForm(
     modifier: Modifier = Modifier,
@@ -270,6 +271,21 @@ fun QuickAddNoteForm(
     onAddDeadlineClick: () -> Unit,
 ) {
     var titleText by rememberSaveable { mutableStateOf("") }
+    var choosingNotification by remember { mutableStateOf(false) }
+    var choosingDeadline by remember { mutableStateOf(false) }
+
+    if (choosingNotification || choosingDeadline) {
+        DatePickerDialog(
+            onDismissRequest = {
+                choosingNotification = false
+                choosingDeadline = false
+            },
+            confirmButton = {},
+        ) {
+            DatePicker(state = rememberDatePickerState())
+        }
+    }
+
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp, vertical = 16.dp)
@@ -280,13 +296,13 @@ fun QuickAddNoteForm(
                 modifier = Modifier.weight(0.5f),
                 horizontalArrangement = Arrangement.Start,
             ) {
-                IconButton(onClick = { }) {
+                IconButton(onClick = { choosingNotification = true }) {
                     ResourceIcon(
                         contentDescriptionId = R.string.add_notification_icon_desc,
                         imageId = R.drawable.add_notification_filled,
                     )
                 }
-                IconButton(onClick = { }) {
+                IconButton(onClick = { choosingDeadline = true }) {
                     ResourceIcon(
                         contentDescriptionId = R.string.add_deadline_icon_desc,
                         imageId = R.drawable.add_deadline_filled,
