@@ -3,23 +3,39 @@ package com.eps.todoturtle.nfc
 import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.eps.todoturtle.App
 import com.eps.todoturtle.R
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
+import com.maltaisn.icondialog.IconDialog
+import com.maltaisn.icondialog.IconDialogSettings
+import com.maltaisn.icondialog.data.Icon
+import com.maltaisn.icondialog.pack.IconPack
+import kotlinx.coroutines.flow.MutableStateFlow
 
-class WriteToDeviceActivity : ComponentActivity() {
+class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback {
+
+    private val callBackIcons: MutableStateFlow<Int?> = MutableStateFlow(null)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel = getNfcWriteModel()
+        val iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
+            ?: IconDialog.newInstance(IconDialogSettings())
+        val viewModel = getNfcWriteModel(callBackIcons) {
+            iconDialog.show(
+                supportFragmentManager,
+                ICON_DIALOG_TAG
+            )
+        }
         setContent {
             ToDoTurtleTheme(LocalContext.current.dataStore) {
                 Surface(
@@ -32,11 +48,19 @@ class WriteToDeviceActivity : ComponentActivity() {
                         onTagLost = ::restartActivity,
                         unknownError = ::restartActivity,
                         onNfcNotSupported = {
-                            Toast.makeText(this, getString(R.string.nfc_not_supported_solution), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                getString(R.string.nfc_not_supported_solution),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             finish()
                         },
                         onWriteSuccessful = {
-                            Toast.makeText(this, getString(R.string.nfc_write_success), Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                this,
+                                getString(R.string.nfc_write_success),
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                             finish()
                         },
@@ -53,5 +77,17 @@ class WriteToDeviceActivity : ComponentActivity() {
                 addFlags(FLAG_ACTIVITY_NO_ANIMATION)
             },
         )
+    }
+
+    override val iconDialogIconPack: IconPack?
+        get() = (application as App).iconPack
+
+    override fun onIconDialogIconsSelected(dialog: IconDialog, icons: List<Icon>) {
+        this.callBackIcons.value = icons.last().id
+        Toast.makeText(this, "Icon selected ${icons.last().pathData}", Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val ICON_DIALOG_TAG = "icon-dialog"
     }
 }

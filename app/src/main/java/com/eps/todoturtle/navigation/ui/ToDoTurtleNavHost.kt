@@ -18,6 +18,7 @@ import androidx.navigation.navArgument
 import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
+import com.eps.todoturtle.nfc.ui.DeviceConfigurationScreen
 import com.eps.todoturtle.nfc.ui.DeviceScreen
 import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
@@ -40,6 +41,7 @@ private const val DEVICES_WRITE_SUCCESSFUL_PARAM = "write_successful"
 private const val DEVICES = "devices/{$DEVICES_WRITE_SUCCESSFUL_PARAM}"
 const val DEVICES_WRITE_SUCCESSFUL = "devices/true"
 const val DEVICES_NORMAL = "devices/false"
+private const val DEVICE_CONFIGURATION = "device_configuration"
 
 @Composable
 fun ToDoTurtleNavHost(
@@ -70,6 +72,7 @@ fun ToDoTurtleNavHost(
         notes(noteScreenViewModel)
         devices(navController, devicesViewModel)
         writeDevice(navController, nfcWriteViewModel)
+        deviceConfiguration(navController, nfcWriteViewModel)
         settings(dataStore)
         invite()
     }
@@ -126,6 +129,16 @@ fun NavGraphBuilder.devices(navController: NavHostController, devicesViewModel: 
     }
 }
 
+fun NavGraphBuilder.deviceConfiguration(navController: NavHostController, nfcWriteViewModel: NfcWriteViewModel) {
+    composable(
+        DEVICE_CONFIGURATION,
+    ) {
+        DeviceConfigurationScreen(nfcWriteViewModel) {
+            navController.navigate(DEVICES_WRITE_SUCCESSFUL)
+        }
+    }
+}
+
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
@@ -173,7 +186,7 @@ fun NavGraphBuilder.writeDevice(
             },
             onWriteSuccessful = {
                 nfcWriteViewModel.finishNfc()
-                navController.navigate(DEVICES_WRITE_SUCCESSFUL)
+                navController.navigate(DEVICE_CONFIGURATION)
             },
         )
     }
