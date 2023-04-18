@@ -20,6 +20,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
+import com.eps.todoturtle.mock.MockValues
 import com.eps.todoturtle.profile.ui.shared.CenteredPicture
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
 import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
@@ -43,9 +44,7 @@ fun LoginContent(
     val username = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
     val loginMethod = login ?: {
-        // TODO: Change mock true to commented code
-//        username.value == MockValues.USERNAME.getValue() && password.value == MockValues.PASSWORD.getValue()
-        true
+        username.value == MockValues.USERNAME.getValue() && password.value == MockValues.PASSWORD.getValue()
     }
 
     Spacer(modifier = Modifier.size(20.dp))
