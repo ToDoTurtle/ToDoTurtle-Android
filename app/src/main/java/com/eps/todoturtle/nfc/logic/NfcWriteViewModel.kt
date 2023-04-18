@@ -45,7 +45,7 @@ class NfcWriteViewModel private constructor(componentActivity: ComponentActivity
     fun setActivity(componentActivity: ComponentActivity) {
         nfcAction = getNfcOpenAction(componentActivity)
         nfcWriteDevice = componentActivity.NfcWriteDevice(DeviceInformation(UUID.randomUUID().toString()))
-        getNfcWriteDevice = { componentActivity.NfcWriteDevice(DeviceInformation(UUID.randomUUID().toString()))}
+        getNfcWriteDevice = { componentActivity.NfcWriteDevice(DeviceInformation(UUID.randomUUID().toString())) }
     }
 
     private fun getNfcOpenAction(componentActivity: ComponentActivity): () -> Unit = {

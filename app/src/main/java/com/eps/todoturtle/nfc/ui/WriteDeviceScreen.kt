@@ -79,7 +79,7 @@ fun ProgrammingError() {
     ErrorAlert(
         stringResource(R.string.programming_error_nfc_tag),
         stringResource(R.string.programing_error_explain_nfc_tag),
-        stringResource(R.string.send_error_nfc_tag)
+        stringResource(R.string.send_error_nfc_tag),
     ) {}
 }
 
@@ -89,7 +89,7 @@ fun NfcNotEnabled(action: () -> Unit) {
         stringResource(R.string.nfc_not_enabled),
         stringResource(R.string.nfc_not_enabled_solution),
         stringResource(R.string.enable_nfc),
-        action
+        action,
     )
 }
 
@@ -138,13 +138,13 @@ fun WaitForNfcTag() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         AnimatedDisappearingText(text = stringResource(R.string.approach_nfc_tag), modifier = Modifier.weight(1f))
         LoadingAnimation(
             modifier = Modifier
                 .padding(16.dp)
-                .weight(1.5f)
+                .weight(1.5f),
         )
     }
 }
@@ -158,7 +158,7 @@ fun ColumnScope.AnimatedDisappearingText(text: String, modifier: Modifier = Modi
             modifier = Modifier.align(Alignment.BottomCenter),
             visible = visible,
             enter = fadeIn(animationSpec = tween(durationMillis = animationDuration)),
-            exit = fadeOut(animationSpec = tween(durationMillis = animationDuration))
+            exit = fadeOut(animationSpec = tween(durationMillis = animationDuration)),
         ) {
             Text(text)
         }

@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
-import com.eps.todoturtle.note.ui.NoteFormPreview
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.providers.CameraPermissionProvider
 import com.eps.todoturtle.profile.logic.ProfileViewModel

@@ -1,25 +1,17 @@
 package com.eps.todoturtle.note.ui
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -34,7 +26,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -74,8 +65,8 @@ fun AddNoteMenu(
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioNoBouncy,
                     stiffness = Spring.StiffnessLow,
-                )
-            )
+                ),
+            ),
     ) {
         if (isFormVisible) {
             FormContainer(
@@ -89,7 +80,7 @@ fun AddNoteMenu(
                 onDoneClick = {
                     isFormVisible = false
                     onDoneClick()
-                }
+                },
             )
         } else {
             AddNoteButton(
@@ -97,9 +88,8 @@ fun AddNoteMenu(
                 onClick = {
                     isFormVisible = true
                     onAddClick()
-                }
+                },
             )
-
         }
     }
 }
@@ -167,13 +157,13 @@ fun QuickNoteForm(
             IconButton(onClick = { }) {
                 ResourceIcon(
                     contentDescriptionId = R.string.add_notification_icon_desc,
-                    imageId = R.drawable.add_notification_filled
+                    imageId = R.drawable.add_notification_filled,
                 )
             }
             IconButton(onClick = { }) {
                 ResourceIcon(
                     contentDescriptionId = R.string.add_deadline_icon_desc,
-                    imageId = R.drawable.add_deadline_filled
+                    imageId = R.drawable.add_deadline_filled,
                 )
             }
             IconButton(onClick = { }) {
@@ -190,13 +180,13 @@ fun QuickNoteForm(
             IconButton(onClick = onCloseClicked) {
                 Icon(
                     Icons.Default.Close,
-                    contentDescription = stringResource(R.string.quick_note_form_close_button_desc)
+                    contentDescription = stringResource(R.string.quick_note_form_close_button_desc),
                 )
             }
             IconButton(onClick = onDoneClicked) {
                 Icon(
                     Icons.Default.Done,
-                    contentDescription = stringResource(R.string.note_quick_form_done_button)
+                    contentDescription = stringResource(R.string.note_quick_form_done_button),
                 )
             }
         }

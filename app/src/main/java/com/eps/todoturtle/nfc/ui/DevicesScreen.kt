@@ -46,7 +46,7 @@ fun DeviceScreen(
         devices = devicesViewModel.getDevices(),
         newDeviceAdded,
         onNewDeviceAddedOkay,
-        onAddDevice
+        onAddDevice,
     )
 }
 
@@ -55,14 +55,15 @@ fun DeviceScreenLayout(
     devices: List<NFCDevice>,
     newDeviceAdded: Boolean,
     onNewDeviceAddedOkay: () -> Unit,
-    addDevice: () -> Unit
+    addDevice: () -> Unit,
 ) {
     Scaffold(
         floatingActionButton = { AddDeviceButton(onClick = addDevice) },
         snackbarHost = {
-            if (newDeviceAdded)
+            if (newDeviceAdded) {
                 NfcWriteSuccessSnackbar(onNewDeviceAddedOkay)
-        }
+            }
+        },
     ) {
         NFCDeviceList(devices)
     }
@@ -154,17 +155,17 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
                     contentDescription = stringResource(R.string.close),
                 )
             }
-        }
+        },
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = stringResource(R.string.nfc_write_success),
                 tint = colorScheme.secondary,
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = 8.dp),
             )
             Text(
                 text = stringResource(R.string.nfc_write_success),
@@ -173,7 +174,6 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -195,7 +195,9 @@ fun DevicesPreview() {
                     iconResId = R.drawable.headphones,
                     false,
                 ),
-            ), false, {}
+            ),
+            false,
+            {},
         ) {}
     }
 }

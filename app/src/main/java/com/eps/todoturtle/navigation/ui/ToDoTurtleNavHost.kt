@@ -118,7 +118,7 @@ fun NavGraphBuilder.notes(noteScreenViewModel: NoteScreenViewModel) {
 fun NavGraphBuilder.devices(navController: NavHostController, devicesViewModel: DevicesViewModel) {
     composable(
         DEVICES,
-        arguments = listOf(navArgument(DEVICES_WRITE_SUCCESSFUL_PARAM) { type = NavType.BoolType })
+        arguments = listOf(navArgument(DEVICES_WRITE_SUCCESSFUL_PARAM) { type = NavType.BoolType }),
     ) {
         val newDeviceAdded = it.arguments?.getBoolean(DEVICES_WRITE_SUCCESSFUL_PARAM) ?: false
         DeviceScreen(devicesViewModel = devicesViewModel, navController, newDeviceAdded)
@@ -129,7 +129,7 @@ fun NavGraphBuilder.devices(navController: NavHostController, devicesViewModel: 
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
     navController: NavHostController,
-    newDeviceAdded: Boolean = false
+    newDeviceAdded: Boolean = false,
 ) {
     var deviceAdded by rememberSaveable { mutableStateOf(newDeviceAdded) }
     DeviceScreen(
@@ -146,7 +146,8 @@ fun DeviceScreen(
                 launchSingleTop = true
                 restoreState = true
             }
-        })
+        },
+    )
 }
 
 fun NavGraphBuilder.writeDevice(
