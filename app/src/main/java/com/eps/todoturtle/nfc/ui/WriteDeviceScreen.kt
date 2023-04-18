@@ -19,8 +19,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.R
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.logic.WriteOperationStatus
 import com.eps.todoturtle.ui.ErrorAlert
@@ -75,28 +77,28 @@ fun WriteDevice(
 @Composable
 fun ProgrammingError() {
     ErrorAlert(
-        "Programming Error",
-        "Something very bad happened, it may be a fault from the programmers, please send an email with the logcat",
-        "Send"
+        stringResource(R.string.programming_error_nfc_tag),
+        stringResource(R.string.programing_error_explain_nfc_tag),
+        stringResource(R.string.send_error_nfc_tag)
     ) {}
 }
 
 @Composable
 fun NfcNotEnabled(action: () -> Unit) {
     ErrorAlert(
-        "NFC isn't enabled!",
-        "Please, enable NFC on your device and try again",
-        "Enable NFC",
-        action,
+        stringResource(R.string.nfc_not_enabled),
+        stringResource(R.string.nfc_not_enabled_solution),
+        stringResource(R.string.enable_nfc),
+        action
     )
 }
 
 @Composable
 fun NfcNotSupported(action: () -> Unit) {
     ErrorAlert(
-        "NFC isn't supported on your device!",
-        "You can't use this feature on your device",
-        "close",
+        stringResource(R.string.nfc_not_supported),
+        stringResource(R.string.nfc_not_supported_solution),
+        stringResource(R.string.close),
         action,
     )
 }
@@ -104,9 +106,9 @@ fun NfcNotSupported(action: () -> Unit) {
 @Composable
 fun TagNotWriteable(action: () -> Unit) {
     ErrorAlert(
-        "NFC tag isn't supported!",
-        "Please use an NFC compatible tag, if you are using an NFC compatible tag, please try again",
-        "close",
+        stringResource(R.string.nfc_tag_not_supported),
+        stringResource(R.string.nfc_not_supported_solution),
+        stringResource(R.string.close),
         action,
     )
 }
@@ -114,9 +116,9 @@ fun TagNotWriteable(action: () -> Unit) {
 @Composable
 fun TagLost(action: () -> Unit) {
     ErrorAlert(
-        "You moved too fast!",
-        "You moved too fast the NFC tag, please try again",
-        "retry",
+        stringResource(R.string.move_too_fast),
+        stringResource(R.string.move_too_fast_solution),
+        stringResource(R.string.retry),
         action,
     )
 }
@@ -124,9 +126,9 @@ fun TagLost(action: () -> Unit) {
 @Composable
 fun UnknownError(action: () -> Unit) {
     ErrorAlert(
-        "Something bad happened",
-        "The write operation didn't go well, please try again",
-        "retry",
+        stringResource(R.string.unknown_error_nfc),
+        stringResource(R.string.unknown_error_nfc_solution),
+        stringResource(R.string.retry),
         action,
     )
 }
@@ -138,7 +140,7 @@ fun WaitForNfcTag() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        AnimatedDisappearingText(text = "Approach the NFC tag close to the phone", modifier = Modifier.weight(1f))
+        AnimatedDisappearingText(text = stringResource(R.string.approach_nfc_tag), modifier = Modifier.weight(1f))
         LoadingAnimation(
             modifier = Modifier
                 .padding(16.dp)

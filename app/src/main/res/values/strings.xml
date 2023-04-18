@@ -22,4 +22,22 @@
     <string name="more_icon_desc">Icon button to see more options.</string>
     <string name="quick_note_form_close_button_desc">Close button to dismiss the current note creation.</string>
     <string name="note_quick_form_done_button">Ok button to complete the note creation.</string>
+    <string name="programming_error_nfc_tag">Programming Error</string>
+    <string name="programing_error_explain_nfc_tag">Something very bad happened, it may be a fault from the programmers, please send an email with the logcat</string>
+    <string name="send_error_nfc_tag">Send</string>
+    <string name="nfc_not_enabled">NFC isn\'t enabled!</string>
+    <string name="nfc_not_enabled_solution">"Please, enable NFC on your device and try again"</string>
+    <string name="enable_nfc">Enable NFC</string>
+    <string name="nfc_not_supported">NFC isn\'t supported on your device!</string>
+    <string name="nfc_not_supported_solution">You can\'t use this feature on your device</string>
+    <string name="close">Close</string>
+    <string name="nfc_tag_not_supported">NFC tag isn\'t supported!</string>
+    <string name="nfc_tag_not_supported_solution">Please use an NFC compatible tag, if you are using an NFC compatible tag, please try again</string>
+    <string name="move_too_fast">You moved too fast!</string>
+    <string name="move_too_fast_solution">You moved too fast the NFC tag, please try again</string>
+    <string name="retry">Retry</string>
+    <string name="unknown_error_nfc">Something bad happened</string>
+    <string name="unknown_error_nfc_solution">The write operation didn\'t go well, please try again</string>
+    <string name="approach_nfc_tag">Approach the NFC tag close to the phone</string>
+    <string name="nfc_write_success">Tag has been successfully written!</string>
 </resources>

@@ -56,4 +56,10 @@
     <string name="note_notes_icon_desc">Notas</string>
     <string name="invite_gif_desc">GIF de un hombre taladrando el suelo</string>
     <string name="invite_construction">En construcción…</string>
+    <string name="programming_error_nfc_tag">Error de programación</string>
+    <string name="programing_error_explain_nfc_tag">La aplicación se encuentra en un estado no conocido, seguramente sea culpa de los programadores, porfavor envien el logcat a su correo</string>
+    <string name="send_error_nfc_tag">Enviar</string>
+    <string name="nfc_not_enabled">¡El NFC no esta activado!</string>
+    <string name="nfc_not_enabled_solution">Porfavor, activa el NFC y vuelve a intentarlo</string>
+    <string name="enable_nfc">Activa el NFC</string>
 </resources>
