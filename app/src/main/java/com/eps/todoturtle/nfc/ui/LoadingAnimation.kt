@@ -31,11 +31,10 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
 @Composable
-fun LoadingAnimation() {
+fun LoadingAnimation(modifier: Modifier = Modifier) {
     var rotateOuter by remember {
         mutableStateOf(false)
     }
-
     val angle by animateFloatAsState(
         targetValue = if (rotateOuter) 360 * 3f else 0f,
         animationSpec = spring(
@@ -63,7 +62,7 @@ fun LoadingAnimation() {
             }
         },
     )
-    Box {
+    Box(modifier = modifier) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
