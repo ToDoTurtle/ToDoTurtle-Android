@@ -57,16 +57,18 @@ val ColorScheme.onFormContainer: Color
 
 @Composable
 fun ToDoTurtleTheme(
-    preferences: DataStore<AppPreferences>,
+    storage: DataStore<AppPreferences>,
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    when (preferences.data.collectAsState(initial = AppPreferences()).value.theme) {
+    val preferences: AppPreferences? = storage.data.collectAsState(null).value
+    when (preferences?.theme) {
         Themes.Greenish -> GreenishTheme(useDarkTheme, content)
         Themes.Cold -> ColdTheme(useDarkTheme, content)
         Themes.ColdDark -> ColdDarkTheme(useDarkTheme, content)
         Themes.Amber -> AmberTheme(useDarkTheme, content)
         Themes.Magenta -> MagentaTheme(useDarkTheme, content)
         Themes.Default -> DefaultTheme(useDarkTheme, content)
+        else -> {}
     }
 }

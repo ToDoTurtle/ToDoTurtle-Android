@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AppPreferences(
     val mute: Boolean = false,
-    val theme: Themes = Themes.Amber,
+    val theme: Themes = Themes.Default,
 )
