@@ -40,4 +40,5 @@
     <string name="unknown_error_nfc_solution">The write operation didn\'t go well, please try again</string>
     <string name="approach_nfc_tag">Approach the NFC tag close to the phone</string>
     <string name="nfc_write_success">Tag has been successfully written!</string>
+    <string name="add_note_form_title">Add a note</string>
 </resources>

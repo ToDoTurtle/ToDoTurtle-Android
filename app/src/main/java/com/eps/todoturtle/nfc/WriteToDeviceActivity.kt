@@ -26,7 +26,8 @@ class WriteToDeviceActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    WriteDevice(viewModel = viewModel,
+                    WriteDevice(
+                        viewModel = viewModel,
                         onTagNotWriteable = ::restartActivity,
                         onTagLost = ::restartActivity,
                         unknownError = ::restartActivity,
@@ -38,7 +39,8 @@ class WriteToDeviceActivity : ComponentActivity() {
                             Toast.makeText(this, getString(R.string.nfc_write_success), Toast.LENGTH_SHORT)
                                 .show()
                             finish()
-                        })
+                        },
+                    )
                 }
             }
         }
@@ -46,9 +48,10 @@ class WriteToDeviceActivity : ComponentActivity() {
 
     private fun restartActivity() {
         finish()
-        startActivity(intent.apply {
-            addFlags(FLAG_ACTIVITY_NO_ANIMATION)
-        })
+        startActivity(
+            intent.apply {
+                addFlags(FLAG_ACTIVITY_NO_ANIMATION)
+            },
+        )
     }
 }
-
