@@ -77,11 +77,13 @@ fun AddNoteMenu(
             ),
     ) {
         if (isFormVisible) {
-            FormContainer {
+            FormContainer(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .offset(x = 20.dp)
+                    .fillMaxWidth(),
+            ) {
                 QuickAddNoteForm(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
                     onCloseClick = {
                         isFormVisible = false
                         onCancelClick()
