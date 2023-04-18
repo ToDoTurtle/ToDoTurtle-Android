@@ -9,7 +9,7 @@
     <string name="go_history_icon_desc">Go history</string>
     <string name="go_back_to_notes_icon_desc">Go back to undone notes</string>
     <string name="welcome_message_part1">"Welcome to "</string>
-    <string name="title_activity_write_to_device">WriteToDeviceActivity</string>
+    <string name="title_activity_write_to_device">Write Tag</string>
     <string name="title_activity_read_nfc">ReadNfcActivity</string>
     <string name="welcome_message_part2">ToDo Turtle</string>
     <string name="add_note_button_description">Button that prompts the form to create a new note.</string>
