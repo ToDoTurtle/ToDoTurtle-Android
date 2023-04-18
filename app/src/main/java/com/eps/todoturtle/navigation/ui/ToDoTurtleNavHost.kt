@@ -2,13 +2,19 @@ package com.eps.todoturtle.navigation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.eps.todoturtle.nfc.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.DeviceScreen
@@ -26,10 +32,13 @@ import com.eps.todoturtle.profile.ui.login.LoginUI
 private const val LOGIN = "login"
 private const val PROFILE = "profile"
 private const val NOTES = "notes"
-private const val DEVICES = "devices"
 private const val SETTINGS = "settings"
 private const val WRITE_DEVICE = "write_device"
 private const val INVITE = "invite"
+private const val DEVICES_WRITE_SUCCESSFUL_PARAM = "write_successful"
+private const val DEVICES = "devices/{$DEVICES_WRITE_SUCCESSFUL_PARAM}"
+const val DEVICES_WRITE_SUCCESSFUL = "devices/true"
+const val DEVICES_NORMAL = "devices/false"
 
 @Composable
 fun ToDoTurtleNavHost(
@@ -107,19 +116,37 @@ fun NavGraphBuilder.notes(noteScreenViewModel: NoteScreenViewModel) {
 }
 
 fun NavGraphBuilder.devices(navController: NavHostController, devicesViewModel: DevicesViewModel) {
-    composable(DEVICES) {
-        DeviceScreen(devicesViewModel = devicesViewModel) {
+    composable(
+        DEVICES,
+        arguments = listOf(navArgument(DEVICES_WRITE_SUCCESSFUL_PARAM) { type = NavType.BoolType })
+    ) {
+        val newDeviceAdded = it.arguments?.getBoolean(DEVICES_WRITE_SUCCESSFUL_PARAM) ?: false
+        DeviceScreen(devicesViewModel = devicesViewModel, navController, newDeviceAdded)
+    }
+}
+
+@Composable
+fun DeviceScreen(
+    devicesViewModel: DevicesViewModel,
+    navController: NavHostController,
+    newDeviceAdded: Boolean = false
+) {
+    var deviceAdded by rememberSaveable { mutableStateOf(newDeviceAdded) }
+    DeviceScreen(
+        devicesViewModel = devicesViewModel,
+        newDeviceAdded = deviceAdded,
+        onNewDeviceAddedOkay = { deviceAdded = false },
+        onAddDevice = {
             navController.navigate(WRITE_DEVICE) {
-                navController.graph.startDestinationRoute?.let { rout ->
-                    popUpTo(DEVICES) {
+                navController.graph.startDestinationRoute?.let { _ ->
+                    popUpTo(DEVICES_NORMAL) {
                         saveState = true
                     }
                 }
                 launchSingleTop = true
                 restoreState = true
             }
-        }
-    }
+        })
 }
 
 fun NavGraphBuilder.writeDevice(
@@ -130,9 +157,22 @@ fun NavGraphBuilder.writeDevice(
         WriteDevice(
             viewModel = nfcWriteViewModel,
             onNfcNotSupported = { navController.navigateSingleTopTo(NOTES) },
-            onTagLost = { navController.navigateSingleTopTo(DEVICES) },
-            onTagNotWriteable = { navController.navigateSingleTopTo(DEVICES) },
-            unknownError = { navController.navigateSingleTopTo(DEVICES) },
+            onTagLost = {
+                nfcWriteViewModel.finishNfc()
+                navController.navigateSingleTopTo(WRITE_DEVICE)
+            },
+            onTagNotWriteable = {
+                nfcWriteViewModel.finishNfc()
+                navController.navigateSingleTopTo(DEVICES_NORMAL)
+            },
+            unknownError = {
+                nfcWriteViewModel.finishNfc()
+                navController.navigateSingleTopTo(WRITE_DEVICE)
+            },
+            onWriteSuccessful = {
+                nfcWriteViewModel.finishNfc()
+                navController.navigate(DEVICES_WRITE_SUCCESSFUL)
+            },
         )
     }
 }

@@ -1,25 +1,11 @@
 package com.eps.todoturtle.nfc.ui
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.logic.WriteOperationStatus
 import com.eps.todoturtle.ui.ErrorAlert
@@ -32,6 +18,7 @@ fun WriteDevice(
     onTagNotWriteable: () -> Unit = {},
     onTagLost: () -> Unit = {},
     unknownError: () -> Unit = {},
+    onWriteSuccessful: () -> Unit = {},
 ) {
     var deviceStatus: WriteOperationStatus? by rememberSaveable { mutableStateOf(null) }
     viewModel.onNfcOperation { deviceStatus = it }
@@ -42,6 +29,7 @@ fun WriteDevice(
         onTagNotWriteable = onTagNotWriteable,
         onTagLost = onTagLost,
         unknownError = unknownError,
+        onWriteSuccessful = onWriteSuccessful,
     )
 }
 
@@ -53,12 +41,13 @@ fun WriteDevice(
     onTagNotWriteable: () -> Unit = {},
     onTagLost: () -> Unit = {},
     unknownError: () -> Unit = {},
+    onWriteSuccessful: () -> Unit = {},
 ) {
     when (deviceStatus) {
         WriteOperationStatus.PREPARED -> LoadingAnimation()
         WriteOperationStatus.MESSAGE_FORMAT_ERROR -> ProgrammingError()
         WriteOperationStatus.NFC_NOT_ENABLED -> NfcNotEnabled(onNfcNotEnabled)
-        WriteOperationStatus.SUCCESS -> NfcWriteSuccessSnackbar { }
+        WriteOperationStatus.SUCCESS -> onWriteSuccessful()
         WriteOperationStatus.NOT_WRITABLE -> TagNotWriteable(onTagNotWriteable)
         WriteOperationStatus.TAG_LOST -> TagLost(onTagLost)
         WriteOperationStatus.UNKNOWN_ERROR -> UnknownError(unknownError)
@@ -72,9 +61,8 @@ fun ProgrammingError() {
     ErrorAlert(
         "Programming Error",
         "Something very bad happened, it may be a fault from the programmers, please send an email with the logcat",
-        "Send",
-        {},
-    )
+        "Send"
+    ) {}
 }
 
 @Composable
@@ -125,38 +113,6 @@ fun UnknownError(action: () -> Unit) {
         "retry",
         action,
     )
-}
-
-@Composable
-fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
-    Snackbar(
-        action = {
-            IconButton(
-                onClick = onClose,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
-                )
-            }
-        },
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = "NFC write success",
-                tint = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(end = 8.dp),
-            )
-            Text(
-                text = "NFC has been successfully written!",
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
-    }
 }
 
 @Preview(showBackground = true)

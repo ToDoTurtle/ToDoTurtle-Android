@@ -1,10 +1,10 @@
 package com.eps.todoturtle.navigation.logic
 
 import com.eps.todoturtle.R
+import com.eps.todoturtle.navigation.ui.DEVICES_NORMAL
 
 const val NOTES_ROUTE = "notes"
 const val PROFILE_ROUTE = "profile"
-const val DEVICES_ROUTE = "devices"
 const val SETTINGS_ROUTE = "settings"
 const val INVITE_ROUTE = "invite"
 
@@ -24,7 +24,7 @@ object Profile : Destination() {
 }
 
 object Devices : Destination() {
-    override val route = DEVICES_ROUTE
+    override val route = DEVICES_NORMAL
     override val labelId = R.string.drawer_devices
 }
 
