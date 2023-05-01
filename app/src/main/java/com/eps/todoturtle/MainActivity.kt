@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.eps.todoturtle.nfc.logic.DevicesViewModel
+import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester

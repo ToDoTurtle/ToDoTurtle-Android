@@ -1,7 +1,7 @@
 package com.eps.todoturtle.nfc.logic.sensor
 
 import androidx.activity.ComponentActivity
-import com.eps.todoturtle.nfc.logic.DeviceInformation
+import com.eps.todoturtle.devices.logic.DeviceInformation
 import com.eps.todoturtle.nfc.logic.NfcStatus
 import com.eps.todoturtle.nfc.logic.WriteOperationStatus
 import kotlinx.coroutines.flow.MutableStateFlow
