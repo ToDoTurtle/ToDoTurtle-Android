@@ -1,10 +1,9 @@
-package com.eps.todoturtle.nfc.logic.sensor
+package com.eps.todoturtle.nfc.logic.state
 
 import android.app.Activity
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner

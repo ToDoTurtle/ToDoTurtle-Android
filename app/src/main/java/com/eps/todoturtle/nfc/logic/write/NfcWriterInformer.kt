@@ -1,9 +1,8 @@
-package com.eps.todoturtle.nfc.logic.sensor
+package com.eps.todoturtle.nfc.logic.write
 
 import androidx.activity.ComponentActivity
 import com.eps.todoturtle.nfc.logic.NfcParcelable
-import com.eps.todoturtle.nfc.logic.WriteOperationStatus
-import com.eps.todoturtle.nfc.logic.sensor.NfcTagDetector.Companion.NfcTagDetector
+import com.eps.todoturtle.nfc.logic.state.NfcTagDetector.Companion.NfcTagDetector
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class NfcWriterInformer(
@@ -11,7 +10,7 @@ class NfcWriterInformer(
     var message: NfcParcelable,
 ) {
 
-    val writeResults: MutableStateFlow<WriteOperationStatus?> = MutableStateFlow(null)
+    val writeResults: MutableStateFlow<WriteOperation?> = MutableStateFlow(null)
 
     init {
         activity.NfcTagDetector { tag ->

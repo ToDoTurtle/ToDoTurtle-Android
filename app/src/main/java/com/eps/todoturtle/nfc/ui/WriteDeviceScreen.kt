@@ -14,9 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eps.todoturtle.R
-import com.eps.todoturtle.nfc.logic.NfcStatus
+import com.eps.todoturtle.nfc.logic.state.NfcStatus
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
-import com.eps.todoturtle.nfc.logic.WriteOperationStatus
+import com.eps.todoturtle.nfc.logic.write.WriteOperation
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
@@ -87,11 +87,11 @@ fun WriteDevice(
 ) {
     val deviceStatus by viewModel.writeResults.collectAsStateWithLifecycle()
     when (deviceStatus) {
-        WriteOperationStatus.MESSAGE_FORMAT_ERROR -> ProgrammingError()
-        WriteOperationStatus.SUCCESS -> onWriteSuccessful()
-        WriteOperationStatus.NOT_WRITABLE -> TagNotWriteable(onTagNotWriteable)
-        WriteOperationStatus.TAG_LOST -> TagLost(onTagLost)
-        WriteOperationStatus.UNKNOWN_ERROR -> UnknownError(unknownError)
+        WriteOperation.MESSAGE_FORMAT_ERROR -> ProgrammingError()
+        WriteOperation.SUCCESS -> onWriteSuccessful()
+        WriteOperation.NOT_WRITABLE -> TagNotWriteable(onTagNotWriteable)
+        WriteOperation.TAG_LOST -> TagLost(onTagLost)
+        WriteOperation.UNKNOWN_ERROR -> UnknownError(unknownError)
         null -> WaitForNfcTag()
     }
 }

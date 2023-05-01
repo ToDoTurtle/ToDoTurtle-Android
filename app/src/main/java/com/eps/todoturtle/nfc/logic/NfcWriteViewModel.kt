@@ -6,7 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import com.eps.todoturtle.devices.logic.DeviceInformation
-import com.eps.todoturtle.nfc.logic.sensor.NfcDevice
+import com.eps.todoturtle.nfc.logic.state.NfcStatus
+import com.eps.todoturtle.nfc.logic.write.WriteOperation
 import kotlinx.coroutines.flow.StateFlow
 import java.util.UUID
 
@@ -16,7 +17,7 @@ class NfcWriteViewModel private constructor() : ViewModel() {
 
     private lateinit var nfcDevice: NfcDevice
     private lateinit var openNfcSettings: () -> Unit
-    lateinit var writeResults: StateFlow<WriteOperationStatus?>
+    lateinit var writeResults: StateFlow<WriteOperation?>
         private set
     lateinit var status: StateFlow<NfcStatus>
         private set
