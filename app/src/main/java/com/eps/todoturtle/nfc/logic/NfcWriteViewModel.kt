@@ -5,6 +5,7 @@ import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
+import com.eps.todoturtle.devices.logic.DeviceInformation
 import com.eps.todoturtle.nfc.logic.sensor.NfcDevice
 import kotlinx.coroutines.flow.StateFlow
 import java.util.UUID

@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nfc.logic
+package com.eps.todoturtle.devices.logic
 
 data class NFCDevice(
     val name: String,

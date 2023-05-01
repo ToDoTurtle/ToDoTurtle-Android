@@ -35,8 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.nfc.logic.DevicesViewModel
-import com.eps.todoturtle.nfc.logic.NFCDevice
+import com.eps.todoturtle.devices.logic.DevicesViewModel
+import com.eps.todoturtle.devices.logic.NFCDevice
 import com.eps.todoturtle.note.ui.CompleteAddNoteFormDialog
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme

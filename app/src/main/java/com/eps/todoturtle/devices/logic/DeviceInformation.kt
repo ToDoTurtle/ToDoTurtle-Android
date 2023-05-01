@@ -1,7 +1,8 @@
-package com.eps.todoturtle.nfc.logic
+package com.eps.todoturtle.devices.logic
 
 import android.nfc.NdefMessage
 import android.nfc.NdefRecord
+import com.eps.todoturtle.nfc.logic.NfcParcelable
 
 const val PACKAGE_NAME = "com.eps.todoturtle"
 

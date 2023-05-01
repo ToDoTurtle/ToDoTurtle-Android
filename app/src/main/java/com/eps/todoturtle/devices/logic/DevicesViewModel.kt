@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nfc.logic
+package com.eps.todoturtle.devices.logic
 
 import androidx.lifecycle.ViewModel
 import com.eps.todoturtle.R
