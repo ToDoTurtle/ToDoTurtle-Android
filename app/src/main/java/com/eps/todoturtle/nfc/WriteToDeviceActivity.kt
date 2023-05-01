@@ -28,43 +28,38 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
-            ?: IconDialog.newInstance(IconDialogSettings())
-        val viewModel = getNfcWriteModel(callBackIcons) {
-            iconDialog.show(
-                supportFragmentManager,
-                ICON_DIALOG_TAG,
-            )
-        }
+//        val iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
+//            ?: IconDialog.newInstance(IconDialogSettings())
+//        val viewModel = getNfcWriteModel()
         setContent {
             ToDoTurtleTheme(LocalContext.current.dataStore) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    WriteDevice(
-                        viewModel = viewModel,
-                        onTagNotWriteable = ::restartActivity,
-                        onTagLost = ::restartActivity,
-                        unknownError = ::restartActivity,
-                        onNfcNotSupported = {
-                            Toast.makeText(
-                                this,
-                                getString(R.string.nfc_not_supported_solution),
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                            finish()
-                        },
-                        onWriteSuccessful = {
-                            Toast.makeText(
-                                this,
-                                getString(R.string.nfc_write_success),
-                                Toast.LENGTH_SHORT,
-                            )
-                                .show()
-                            finish()
-                        },
-                    )
+//                    WriteDevice(
+//                        viewModel = viewModel,
+//                        onTagNotWriteable = ::restartActivity,
+//                        onTagLost = ::restartActivity,
+//                        unknownError = ::restartActivity,
+//                        onNfcNotSupported = {
+//                            Toast.makeText(
+//                                this,
+//                                getString(R.string.nfc_not_supported_solution),
+//                                Toast.LENGTH_SHORT,
+//                            ).show()
+//                            finish()
+//                        },
+//                        onWriteSuccessful = {
+//                            Toast.makeText(
+//                                this,
+//                                getString(R.string.nfc_write_success),
+//                                Toast.LENGTH_SHORT,
+//                            )
+//                                .show()
+//                            finish()
+//                        },
+//                    )
                 }
             }
         }

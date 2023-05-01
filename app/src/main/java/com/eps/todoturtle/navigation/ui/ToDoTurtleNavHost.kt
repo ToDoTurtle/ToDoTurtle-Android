@@ -72,7 +72,7 @@ fun ToDoTurtleNavHost(
         notes(noteScreenViewModel)
         devices(navController, devicesViewModel)
         writeDevice(navController, nfcWriteViewModel)
-        deviceConfiguration(navController, nfcWriteViewModel)
+        deviceConfiguration(navController)
         settings(dataStore)
         invite()
     }
@@ -129,11 +129,13 @@ fun NavGraphBuilder.devices(navController: NavHostController, devicesViewModel: 
     }
 }
 
-fun NavGraphBuilder.deviceConfiguration(navController: NavHostController, nfcWriteViewModel: NfcWriteViewModel) {
+fun NavGraphBuilder.deviceConfiguration(
+    navController: NavHostController,
+) {
     composable(
         DEVICE_CONFIGURATION,
     ) {
-        DeviceConfigurationScreen(nfcWriteViewModel) {
+        DeviceConfigurationScreen {
             navController.navigate(DEVICES_WRITE_SUCCESSFUL)
         }
     }
@@ -173,20 +175,20 @@ fun NavGraphBuilder.writeDevice(
             viewModel = nfcWriteViewModel,
             onNfcNotSupported = { navController.navigateSingleTopTo(NOTES) },
             onTagLost = {
-                nfcWriteViewModel.finishNfc()
+                nfcWriteViewModel.finishWriteNfc()
                 navController.navigateSingleTopTo(WRITE_DEVICE)
             },
             onTagNotWriteable = {
-                nfcWriteViewModel.finishNfc()
+                nfcWriteViewModel.finishWriteNfc()
                 navController.navigateSingleTopTo(DEVICES_NORMAL)
             },
             unknownError = {
-                nfcWriteViewModel.finishNfc()
+                nfcWriteViewModel.finishWriteNfc()
                 navController.navigateSingleTopTo(WRITE_DEVICE)
             },
             onWriteSuccessful = {
-                nfcWriteViewModel.finishNfc()
-                navController.navigate(DEVICE_CONFIGURATION)
+                nfcWriteViewModel.finishWriteNfc()
+                navController.navigateSingleTopTo(DEVICE_CONFIGURATION)
             },
         )
     }

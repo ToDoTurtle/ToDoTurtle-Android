@@ -5,92 +5,47 @@ import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.eps.todoturtle.nfc.logic.NfcWriteDevice.Init.NfcWriteDevice
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.runBlocking
+import com.eps.todoturtle.nfc.logic.sensor.NfcDevice
+import kotlinx.coroutines.flow.StateFlow
 import java.util.UUID
 
-class NfcWriteViewModel private constructor(
-    componentActivity: ComponentActivity,
-    val showIconDialog: () -> Unit,
-    val iconFlow: Flow<Int?>,
-) : ViewModel() {
+class NfcWriteViewModel private constructor() : ViewModel() {
 
-    private val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private var getNfcWriteDevice: () -> NfcWriteDevice = {
-        componentActivity.NfcWriteDevice(DeviceInformation(UUID.randomUUID().toString()))
-    }
-    private var nfcWriteDevice = getNfcWriteDevice()
-    private var nfcAction: () -> Unit = getNfcOpenAction(componentActivity)
-    private var callback: (WriteOperationStatus) -> Unit = {}
+    private var deviceInformation = DeviceInformation(UUID.randomUUID().toString())
 
-    fun onNfcOperation(callback: (WriteOperationStatus) -> Unit) {
-        this.callback = callback
-        startCorroutine()
-    }
+    private lateinit var nfcDevice: NfcDevice
+    private lateinit var openNfcSettings: () -> Unit
+    lateinit var writeResults: StateFlow<WriteOperationStatus?>
+        private set
+    lateinit var status: StateFlow<NfcStatus>
+        private set
 
-    fun startCorroutine() {
-        nfcWriteDevice.operationResults.onEach {
-            runBlocking(Dispatchers.Main) {
-                this@NfcWriteViewModel.callback(it)
-            }
-        }.launchIn(lifecycleScope)
+    fun showNfcSettings() = openNfcSettings()
+
+    private fun setActivity(componentActivity: ComponentActivity) {
+        with(componentActivity) {
+            openNfcSettings = getNfcOpenAction()
+            nfcDevice = NfcDevice(this, deviceInformation)
+            writeResults = nfcDevice.writeResults
+            status = nfcDevice.status
+        }
     }
 
-    fun goToNfcSettings() {
-        nfcAction()
-    }
-
-    fun setActivity(componentActivity: ComponentActivity) {
-        nfcAction = getNfcOpenAction(componentActivity)
-        nfcWriteDevice =
-            componentActivity.NfcWriteDevice(DeviceInformation(UUID.randomUUID().toString()))
-        getNfcWriteDevice =
-            { componentActivity.NfcWriteDevice(DeviceInformation(UUID.randomUUID().toString())) }
-    }
-
-    private fun getNfcOpenAction(componentActivity: ComponentActivity): () -> Unit = {
-        startActivity(componentActivity, Intent(Settings.ACTION_NFC_SETTINGS), null)
-    }
-
-    fun finishNfc() {
-        nfcWriteDevice = getNfcWriteDevice()
-        startCorroutine()
+    fun finishWriteNfc() {
+        deviceInformation = DeviceInformation(UUID.randomUUID().toString())
+        nfcDevice.resetWriteNfc(deviceInformation)
     }
 
     object INIT {
-        @Suppress("UNCHECKED_CAST")
-        private class NfcWriteViewModelFactory(
-            private val context: ComponentActivity,
-            private val showIconDialog: () -> Unit,
-            private val iconFlow: Flow<Int?>,
-        ) :
-            ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return NfcWriteViewModel(context, showIconDialog, iconFlow) as T
-            }
-        }
-
-        fun ComponentActivity.getNfcWriteModel(
-            iconFlow: Flow<Int?>,
-            showIconDialog: () -> Unit,
-        ): NfcWriteViewModel {
-            val viewModel = ViewModelProvider(
-                this,
-                NfcWriteViewModelFactory(
-                    this,
-                    showIconDialog,
-                    iconFlow,
-                ),
-            )[NfcWriteViewModel::class.java]
+        fun ComponentActivity.getNfcWriteModel(): NfcWriteViewModel {
+            val viewModel = NfcWriteViewModel()
             viewModel.setActivity(this)
             return viewModel
         }
     }
+
+    private fun ComponentActivity.getNfcOpenAction(): () -> Unit = {
+        startActivity(this, Intent(Settings.ACTION_NFC_SETTINGS), null)
+    }
+
 }

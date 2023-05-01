@@ -20,12 +20,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 @Composable
-fun DeviceConfigurationScreen(nfcWriteDevice: NfcWriteViewModel, onSave: () -> Unit) {
+fun DeviceConfigurationScreen(onSave: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,7 +35,7 @@ fun DeviceConfigurationScreen(nfcWriteDevice: NfcWriteViewModel, onSave: () -> U
         var description by rememberSaveable { mutableStateOf("") }
         DeviceNameChooser(deviceName) { deviceName = it }
         DescriptionChooser(description) { description = it }
-        IconChooser { nfcWriteDevice.showIconDialog() }
+        IconChooser { }
         SaveButton(onSave)
     }
 }

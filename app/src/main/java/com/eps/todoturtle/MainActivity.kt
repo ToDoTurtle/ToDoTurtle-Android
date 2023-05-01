@@ -41,12 +41,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback {
                     permissionRequester = permissionRequester,
                     noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = DevicesViewModel(),
-                    nfcWriteViewModel = getNfcWriteModel(callBackIcons) {
-                        iconDialog.show(
-                            supportFragmentManager,
-                            ICON_DIALOG_TAG,
-                        )
-                    },
+                    nfcWriteViewModel = getNfcWriteModel(),
                     profileViewModel = profileViewModel,
                     dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },
