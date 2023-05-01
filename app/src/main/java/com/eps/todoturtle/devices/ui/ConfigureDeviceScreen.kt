@@ -20,11 +20,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 @Composable
-fun DeviceConfigurationScreen(onSave: () -> Unit) {
+fun DeviceConfigurationScreen(
+    devicesViewModel: DevicesViewModel,
+    onSave: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -35,7 +39,7 @@ fun DeviceConfigurationScreen(onSave: () -> Unit) {
         var description by rememberSaveable { mutableStateOf("") }
         DeviceNameChooser(deviceName) { deviceName = it }
         DescriptionChooser(description) { description = it }
-        IconChooser { }
+        IconChooser { devicesViewModel.showIconSelection() }
         SaveButton(onSave)
     }
 }
