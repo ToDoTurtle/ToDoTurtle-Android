@@ -1,5 +1,6 @@
 package com.eps.todoturtle.nfc.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,32 +21,49 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eps.todoturtle.devices.logic.DeviceBuildError
 import com.eps.todoturtle.devices.logic.DevicesViewModel
+import com.eps.todoturtle.devices.logic.NFCDevice
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
 @Composable
 fun DeviceConfigurationScreen(
     devicesViewModel: DevicesViewModel,
-    onSave: () -> Unit
+    onDeviceSaved: (NFCDevice) -> Unit
 ) {
+    val deviceSaved by devicesViewModel.deviceCreated.collectAsStateWithLifecycle(initialValue = null)
+    Log.e("DeviceConfigurationScreen", "deviceSaved: $deviceSaved")
+//    if (deviceSaved == null)
+        DeviceForm(devicesViewModel = devicesViewModel)
+//    else
+        deviceSaved?.let { onDeviceSaved(it) }
+}
+
+@Composable
+fun DeviceForm(devicesViewModel: DevicesViewModel) {
+    val errors by devicesViewModel.deviceErrors.collectAsStateWithLifecycle()
+    val iconError: Boolean = errors.contains(DeviceBuildError.NON_ICON)
+    val nameError: Boolean = errors.contains(DeviceBuildError.NAME_EMPTY)
+    val descriptionError: Boolean = errors.contains(DeviceBuildError.DESCRIPTION_EMPTY)
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
     ) {
-        var deviceName by rememberSaveable { mutableStateOf("") }
-        var description by rememberSaveable { mutableStateOf("") }
-        DeviceNameChooser(deviceName) { deviceName = it }
-        DescriptionChooser(description) { description = it }
+        var deviceName by rememberSaveable { devicesViewModel.deviceBuilder.name }
+        var description by rememberSaveable { devicesViewModel.deviceBuilder.description }
+        DeviceNameChooser(deviceName, nameError) { deviceName = it }
+        DescriptionChooser(description, descriptionError) { description = it }
         IconChooser { devicesViewModel.showIconSelection() }
-        SaveButton(onSave)
+        SaveButton { devicesViewModel.buildDevice() }
     }
 }
 
 @Composable
-fun DeviceNameChooser(value: String, onChange: (String) -> Unit) {
+fun DeviceNameChooser(value: String, isError: Boolean, onChange: (String) -> Unit) {
     Text(
         text = "Device Name",
         fontWeight = FontWeight.Bold,
@@ -55,13 +73,14 @@ fun DeviceNameChooser(value: String, onChange: (String) -> Unit) {
     TextField(
         value = value,
         onValueChange = onChange,
+        isError = isError,
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
     )
 }
 
 @Composable
-fun DescriptionChooser(value: String, onChange: (String) -> Unit) {
+fun DescriptionChooser(value: String, isError: Boolean, onChange: (String) -> Unit) {
     Text(
         text = "Description",
         fontWeight = FontWeight.Bold,
@@ -70,6 +89,7 @@ fun DescriptionChooser(value: String, onChange: (String) -> Unit) {
     )
     TextField(
         value = value,
+        isError = isError,
         onValueChange = onChange,
         modifier = Modifier.fillMaxWidth(),
     )

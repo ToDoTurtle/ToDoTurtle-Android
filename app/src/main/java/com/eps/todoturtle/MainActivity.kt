@@ -18,14 +18,16 @@ import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivity {
     private val permissionsToRequest = listOf(CameraPermissionProvider(this))
     private lateinit var permissionRequester: PermissionRequester
 
-    private val currentIcon: MutableStateFlow<Int?> = MutableStateFlow(null)
+    private val currentIcon: Channel<Int> = Channel(UNLIMITED)
     private lateinit var iconDialog: IconDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +60,9 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         get() = (application as App).iconPack
 
     override fun onIconDialogIconsSelected(dialog: IconDialog, icons: List<Icon>) {
-        this.currentIcon.value = icons.last().id
+        runBlocking(Dispatchers.IO) {
+            currentIcon.send(icons.last().id)
+        }
     }
 
     companion object {
@@ -69,5 +73,6 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         iconDialog.show(supportFragmentManager, ICON_DIALOG_TAG)
     }
 
-    override fun getIconFlow(): Flow<Int?> = currentIcon
+    override fun getIconChannel(): Channel<Int> = currentIcon
+
 }
