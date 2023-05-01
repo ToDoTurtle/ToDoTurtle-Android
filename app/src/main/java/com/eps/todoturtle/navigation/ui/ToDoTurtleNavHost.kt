@@ -136,8 +136,8 @@ fun NavGraphBuilder.deviceConfiguration(
     composable(
         DEVICE_CONFIGURATION,
     ) {
-        DeviceConfigurationScreen(devicesViewModel){
-            navController.navigate(DEVICES_WRITE_SUCCESSFUL)
+        DeviceConfigurationScreen(devicesViewModel) {
+            navController.navigateSingleTopTo(DEVICES_WRITE_SUCCESSFUL)
         }
     }
 }

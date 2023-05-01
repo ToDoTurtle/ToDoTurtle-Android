@@ -1,8 +1,8 @@
 package com.eps.todoturtle.devices.logic
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.channels.Channel
 
 interface DeviceIconActivity {
     fun startIconSelectionLambda(): () -> Unit
-    fun getIconFlow(): Flow<Int?>
+    fun getIconChannel(): Channel<Int>
 }
