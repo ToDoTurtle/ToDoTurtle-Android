@@ -72,7 +72,7 @@ fun ToDoTurtleNavHost(
         notes(noteScreenViewModel)
         devices(navController, devicesViewModel)
         writeDevice(navController, nfcWriteViewModel)
-        deviceConfiguration(navController)
+        deviceConfiguration(devicesViewModel, navController)
         settings(dataStore)
         invite()
     }
@@ -130,12 +130,13 @@ fun NavGraphBuilder.devices(navController: NavHostController, devicesViewModel: 
 }
 
 fun NavGraphBuilder.deviceConfiguration(
+    devicesViewModel: DevicesViewModel,
     navController: NavHostController,
 ) {
     composable(
         DEVICE_CONFIGURATION,
     ) {
-        DeviceConfigurationScreen {
+        DeviceConfigurationScreen(devicesViewModel){
             navController.navigate(DEVICES_WRITE_SUCCESSFUL)
         }
     }

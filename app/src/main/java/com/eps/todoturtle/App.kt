@@ -11,7 +11,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        // Load the icon pack on application start.
         loadIconPack()
     }
 
