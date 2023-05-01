@@ -1,9 +1,8 @@
-package com.eps.todoturtle.nfc.logic.sensor
+package com.eps.todoturtle.nfc.logic.state
 
 import android.nfc.NfcAdapter
 import androidx.activity.ComponentActivity
-import com.eps.todoturtle.nfc.logic.NfcStatus
-import com.eps.todoturtle.nfc.logic.sensor.NfcChangesDetector.Companion.NfcBroadcastReceivr
+import com.eps.todoturtle.nfc.logic.state.NfcChangesDetector.Companion.NfcBroadcastReceivr
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class NfcStatusInformer(

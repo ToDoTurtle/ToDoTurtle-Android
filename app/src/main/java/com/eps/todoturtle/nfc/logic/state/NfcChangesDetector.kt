@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nfc.logic.sensor
+package com.eps.todoturtle.nfc.logic.state
 
 import android.app.Activity
 import android.content.BroadcastReceiver
