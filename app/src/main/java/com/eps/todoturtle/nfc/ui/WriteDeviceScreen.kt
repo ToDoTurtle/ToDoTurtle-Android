@@ -73,9 +73,7 @@ fun NfcStatusScreen(
     when (status) {
         NfcStatus.NFC_NOT_ENABLED -> NfcNotEnabled { onNfcNotEnabled() }
         NfcStatus.NFC_NOT_SUPPORTED -> NfcNotSupported { onNfcNotSupported() }
-        NfcStatus.NFC_WORKING -> {
-            onNfcEnabled()
-        }
+        NfcStatus.NFC_WORKING -> onNfcEnabled()
     }
 }
 
@@ -94,7 +92,7 @@ fun WriteDevice(
         WriteOperationStatus.NOT_WRITABLE -> TagNotWriteable(onTagNotWriteable)
         WriteOperationStatus.TAG_LOST -> TagLost(onTagLost)
         WriteOperationStatus.UNKNOWN_ERROR -> UnknownError(unknownError)
-        null -> LoadingAnimation()
+        null -> WaitForNfcTag()
     }
 }
 
