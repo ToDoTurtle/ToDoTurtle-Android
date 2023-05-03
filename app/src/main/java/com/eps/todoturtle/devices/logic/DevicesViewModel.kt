@@ -2,6 +2,8 @@ package com.eps.todoturtle.devices.logic
 
 import android.graphics.drawable.Drawable
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.Dispatchers
@@ -15,11 +17,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.runBlocking
 
-class DevicesViewModel private constructor(private val repository: DeviceRepository) : ViewModel() {
+class DevicesViewModel private constructor(repository: DeviceRepository) : ViewModel() {
 
     private lateinit var iconToDrawable: (id: Int) -> Drawable?
     private lateinit var iconSelection: () -> Unit
     private lateinit var iconChannel: Channel<Int>
+
+    private val repository = DeviceStateRepository(repository)
 
     private val scope = SupervisorJob() + Dispatchers.IO
     val deviceBuilder = DeviceBuilder()
@@ -28,16 +32,7 @@ class DevicesViewModel private constructor(private val repository: DeviceReposit
     private val deviceCreator: Channel<NFCDevice> = Channel()
     val deviceCreated: Flow<NFCDevice> = deviceCreator.receiveAsFlow()
 
-    fun getDevices(): Collection<NFCDevice> {
-        return runBlocking(Dispatchers.IO) {
-            repository.getAll()
-        }
-    }
-
-    val devicesCount: Int
-        get() = runBlocking(Dispatchers.IO) {
-            repository.size()
-        }
+    fun getDevices(): SnapshotStateList<NFCDevice> = repository.getAll()
 
     private fun setIconSelection(iconSelection: () -> Unit) {
         this.iconSelection = iconSelection

@@ -15,7 +15,4 @@ class InMemoryDeviceRepository: DeviceRepository {
     override suspend fun remove(device: NFCDevice) {
         devices.remove(device)
     }
-
-    override suspend fun size(): Int = devices.size
-
 }

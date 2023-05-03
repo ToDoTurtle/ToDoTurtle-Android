@@ -33,7 +33,6 @@ fun DeviceConfigurationScreen(
     onDeviceSaved: (NFCDevice) -> Unit
 ) {
     val deviceSaved by devicesViewModel.deviceCreated.collectAsStateWithLifecycle(initialValue = null)
-    Log.e("DeviceConfigurationScreen", "deviceSaved: $deviceSaved")
 //    if (deviceSaved == null)
         DeviceForm(devicesViewModel = devicesViewModel)
 //    else
