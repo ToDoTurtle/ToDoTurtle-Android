@@ -34,6 +34,7 @@ fun Drawer(
     drawerState: DrawerState,
     onItemClick: (Destination) -> Unit,
     toDoCount: Int,
+    devicesCount: Int,
     selectedItem: Destination,
     content: @Composable () -> Unit,
 ) {
@@ -58,7 +59,7 @@ fun Drawer(
                 DevicesItem(
                     isSelected = selectedItem == Devices,
                     onItemClick = { onItemClick(Devices) },
-                    badge = "0",
+                    badge = devicesCount.toString(),
                 )
                 ProfileItem(
                     isSelected = selectedItem == Profile,

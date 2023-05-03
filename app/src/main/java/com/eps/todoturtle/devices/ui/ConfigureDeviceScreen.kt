@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -58,7 +57,7 @@ fun DeviceForm(devicesViewModel: DevicesViewModel) {
         DeviceNameChooser(deviceName, nameError) { deviceName = it }
         DescriptionChooser(description, descriptionError) { description = it }
         IconChooser { devicesViewModel.showIconSelection() }
-        SaveButton { devicesViewModel.buildDevice() }
+        SaveButton { devicesViewModel.saveDevice() }
     }
 }
 

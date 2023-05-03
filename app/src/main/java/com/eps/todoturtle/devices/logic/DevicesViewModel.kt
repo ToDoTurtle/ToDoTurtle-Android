@@ -1,9 +1,9 @@
 package com.eps.todoturtle.devices.logic
 
-import android.util.Log
+import android.graphics.drawable.Drawable
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
-import com.eps.todoturtle.R
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
@@ -15,8 +15,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.runBlocking
 
-class DevicesViewModel private constructor() : ViewModel() {
+class DevicesViewModel private constructor(private val repository: DeviceRepository) : ViewModel() {
 
+    private lateinit var iconToDrawable: (id: Int) -> Drawable?
     private lateinit var iconSelection: () -> Unit
     private lateinit var iconChannel: Channel<Int>
 
@@ -27,24 +28,16 @@ class DevicesViewModel private constructor() : ViewModel() {
     private val deviceCreator: Channel<NFCDevice> = Channel()
     val deviceCreated: Flow<NFCDevice> = deviceCreator.receiveAsFlow()
 
-    fun getDevices(): List<NFCDevice> {
-        return listOf(
-            NFCDevice(
-                name = "Car",
-                description = "My car",
-                identifier = "1234567890",
-                iconResId = R.drawable.car,
-                true,
-            ),
-            NFCDevice(
-                name = "Kitchen",
-                description = "My Kitchen",
-                identifier = "1234567890",
-                iconResId = R.drawable.headphones,
-                false,
-            ),
-        )
+    fun getDevices(): Collection<NFCDevice> {
+        return runBlocking(Dispatchers.IO) {
+            repository.getAll()
+        }
     }
+
+    val devicesCount: Int
+        get() = runBlocking(Dispatchers.IO) {
+            repository.size()
+        }
 
     private fun setIconSelection(iconSelection: () -> Unit) {
         this.iconSelection = iconSelection
@@ -56,28 +49,59 @@ class DevicesViewModel private constructor() : ViewModel() {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun buildDevice() {
+    fun saveDevice() {
         if (!iconChannel.isEmpty)
             runBlocking { deviceBuilder.iconResId = iconChannel.receive() }
         else
             deviceBuilder.iconResId = null
         when (val result = deviceBuilder.build()) {
             is DeviceBuildResult.Success -> {
-                runBlocking(Dispatchers.IO) { deviceCreator.send(result.device) }
+                runBlocking(Dispatchers.IO) {
+                    repository.add(result.device)
+                    deviceCreator.send(result.device)
+                }
             }
-            is DeviceBuildResult.Failure -> { deviceErrors.value = result.errors }
+
+            is DeviceBuildResult.Failure -> {
+                deviceErrors.value = result.errors
+            }
         }
     }
 
     fun showIconSelection() = iconSelection()
 
+    fun getDrawable(resourceId: Int): Drawable? = iconToDrawable(resourceId)
+
     companion object {
-        fun <T> T.getDevicesViewModel(): DevicesViewModel where T : DeviceIconActivity, T : ComponentActivity {
-            val viewModel = DevicesViewModel()
+        @Suppress("UNCHECKED_CAST")
+        private class NfcWriteViewModelFactory(
+            val repository: DeviceRepository
+        ) :
+            ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return DevicesViewModel(repository) as T
+            }
+        }
+
+        fun <T> T.getDevicesViewModel(
+            repository: DeviceRepository
+        ): DevicesViewModel where T : DeviceIconActivity, T : ComponentActivity {
+            val viewModel = ViewModelProvider(
+                this,
+                NfcWriteViewModelFactory(
+                    repository
+                ),
+            )[DevicesViewModel::class.java]
             viewModel.setIconSelection(this.startIconSelectionLambda())
             viewModel.setIconChannel(this.getIconChannel())
+            viewModel.setIdToDrawableConverter(this.getIconDrawable())
             return viewModel
         }
+
+    }
+
+    private fun setIdToDrawableConverter(iconDrawable: (id: Int) -> Drawable?) {
+        this.iconToDrawable = iconDrawable
     }
 
 }
