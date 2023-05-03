@@ -55,8 +55,8 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
                     repository.add(result.device)
                     deviceCreator.send(result.device)
                 }
+                deviceBuilder.clean()
             }
-
             is DeviceBuildResult.Failure -> {
                 deviceErrors.value = result.errors
             }
