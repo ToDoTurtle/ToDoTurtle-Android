@@ -3,9 +3,9 @@ package com.eps.todoturtle.devices.logic
 import android.graphics.drawable.Drawable
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.eps.todoturtle.devices.infra.DeviceStateRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob

@@ -1,5 +1,7 @@
-package com.eps.todoturtle.devices.logic
+package com.eps.todoturtle.devices.infra
 
+import com.eps.todoturtle.devices.logic.DeviceRepository
+import com.eps.todoturtle.devices.logic.NFCDevice
 import okhttp3.internal.toImmutableList
 
 class InMemoryDeviceRepository: DeviceRepository {
