@@ -10,9 +10,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -28,25 +29,25 @@ fun ProfileOutlinedText(
     label: Int,
     topPadding: Int,
     isPassword: Boolean = false,
-    error: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) },
     onClick: (String) -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current
+    var error: Boolean by rememberSaveable { mutableStateOf(false) }
 
     OutlinedTextField(
         modifier = Modifier.padding(top = topPadding.dp),
         value = text,
         onValueChange = {
             onClick(it)
-            error.value = false
+            error = false
         },
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         singleLine = true,
-        isError = error.value,
+        isError = error,
         trailingIcon = {
-            if (error.value) {
+            if (error) {
                 Icon(
                     Icons.Filled.Warning,
                     stringResource(id = R.string.profile_error_desc),

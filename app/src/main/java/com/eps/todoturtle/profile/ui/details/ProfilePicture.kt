@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -27,7 +29,7 @@ fun ProfilePicture(
     profilePicture: Bitmap,
     onChange: (Bitmap) -> Unit,
 ) {
-    val shouldShowDialog = rememberSaveable { mutableStateOf(false) }
+    var shouldShowDialog by rememberSaveable { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -45,18 +47,18 @@ fun ProfilePicture(
                 bitmap = profilePicture.asImageBitmap(),
                 contentDescription = stringResource(id = R.string.profile_profile_picture_desc),
                 modifier = Modifier
-                    .clickable { shouldShowDialog.value = true }
+                    .clickable { shouldShowDialog = true }
                     .size(400.dp),
                 contentScale = ContentScale.Crop,
             )
-            if (shouldShowDialog.value) {
+            if (shouldShowDialog) {
                 ChangeProfilePictureDialog(
                     hasPermissions = hasPermissions,
                     requestPermissions = requestPermissions,
-                    shouldShowDialog = shouldShowDialog,
                     profilePicture = profilePicture,
                 ) {
                     onChange(it)
+                    shouldShowDialog = false
                 }
             }
         }

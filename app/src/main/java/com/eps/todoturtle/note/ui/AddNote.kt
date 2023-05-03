@@ -186,7 +186,6 @@ fun CompleteAddNoteForm(
     var descriptionText by remember { mutableStateOf("") }
     var choosingNotification by remember { mutableStateOf(false) }
     var choosingDeadline by remember { mutableStateOf(false) }
-
     if (choosingNotification || choosingDeadline) {
         DatePickerDialog(
             onDismissRequest = {
@@ -222,9 +221,8 @@ fun CompleteAddNoteForm(
             trailingIcon = {
                 ClearTextIcon(
                     onClick = {
-                        if (titleText.isNotEmpty())
-                            titleText = ""
-                    }
+                        if (titleText.isNotEmpty()) titleText = ""
+                    },
                 )
             },
         )
@@ -238,9 +236,10 @@ fun CompleteAddNoteForm(
             trailingIcon = {
                 ClearTextIcon(
                     onClick = {
-                        if (descriptionText.isNotEmpty())
+                        if (descriptionText.isNotEmpty()) {
                             descriptionText = ""
-                    }
+                        }
+                    },
                 )
             },
         )
@@ -346,9 +345,10 @@ fun QuickAddNoteForm(
             trailingIcon = {
                 ClearTextIcon(
                     onClick = {
-                        if (titleText.isNotEmpty())
+                        if (titleText.isNotEmpty()) {
                             titleText = ""
-                    }
+                        }
+                    },
                 )
             },
         )

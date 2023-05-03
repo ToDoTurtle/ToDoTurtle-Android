@@ -22,9 +22,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -42,17 +43,13 @@ private const val IMAGE_INPUT = "image/*"
 fun ChangeProfilePictureDialog(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
-    shouldShowDialog: MutableState<Boolean>,
     profilePicture: Bitmap,
     onChange: (Bitmap) -> Unit,
 ) {
-    val tempChosenImage = remember { mutableStateOf(profilePicture) }
+    var tempChosenImage by remember { mutableStateOf(profilePicture) }
 
     Dialog(
-        onDismissRequest = {
-            shouldShowDialog.value = false
-            onChange(tempChosenImage.value)
-        },
+        onDismissRequest = { onChange(tempChosenImage) },
     ) {
         Card(
             modifier = Modifier
@@ -64,7 +61,7 @@ fun ChangeProfilePictureDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 CenteredPicture(
-                    bitmap = tempChosenImage.value,
+                    bitmap = tempChosenImage,
                     description = R.string.profile_profile_picture_desc,
                     modifier = Modifier
                         .fillMaxWidth(fraction = 0.5f)
@@ -76,8 +73,9 @@ fun ChangeProfilePictureDialog(
                 DialogOptions(
                     hasPermissions = hasPermissions,
                     requestPermissions = requestPermissions,
-                    tempChosenImage = tempChosenImage,
-                )
+                ) {
+                    tempChosenImage = it
+                }
             }
         }
     }
@@ -85,15 +83,15 @@ fun ChangeProfilePictureDialog(
 
 @Composable
 private fun DialogOptions(
-    tempChosenImage: MutableState<Bitmap>,
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
+    onImageChange: (Bitmap) -> Unit,
 ) {
     val context = LocalContext.current
 
     val cameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) {
-            it?.let { tempChosenImage.value = it }
+            it?.let { onImageChange(it) }
         }
 
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
@@ -103,12 +101,11 @@ private fun DialogOptions(
                 @Suppress("DEPRECATION")
                 // It was deprecated in API 29, the alternative was introduced in API 28. The check is already done.
                 bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
-                tempChosenImage.value = bitmap
             } else {
                 val source = ImageDecoder.createSource(context.contentResolver, it)
                 bitmap = ImageDecoder.decodeBitmap(source)
             }
-            bitmap?.let { tempChosenImage.value = bitmap }
+            bitmap?.let { onImageChange(bitmap) }
         }
     }
 
