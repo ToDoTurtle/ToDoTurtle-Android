@@ -95,4 +95,5 @@ dependencies {
     // Select icons
     implementation "com.maltaisn:icondialog:3.3.0"
     implementation "com.maltaisn:iconpack-default:1.1.0"
+    implementation "com.google.accompanist:accompanist-drawablepainter:0.28.0" //0.28.0
 }

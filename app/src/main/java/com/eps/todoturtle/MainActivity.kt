@@ -1,10 +1,12 @@
 package com.eps.todoturtle
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
+import com.eps.todoturtle.devices.logic.InMemoryDeviceRepository
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
@@ -17,11 +19,13 @@ import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
+import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.maltaisn.icondialog.pack.IconPack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.runBlocking
+
 
 class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivity {
     private val permissionsToRequest = listOf(CameraPermissionProvider(this))
@@ -46,7 +50,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                 App(
                     permissionRequester = permissionRequester,
                     noteScreenViewModel = noteScreenViewModel,
-                    devicesViewModel = getDevicesViewModel(),
+                    devicesViewModel = getDevicesViewModel(InMemoryDeviceRepository()),
                     nfcWriteViewModel = getNfcWriteModel(),
                     profileViewModel = profileViewModel,
                     dataStore = dataStore,
@@ -61,7 +65,8 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
 
     override fun onIconDialogIconsSelected(dialog: IconDialog, icons: List<Icon>) {
         runBlocking(Dispatchers.IO) {
-            currentIcon.send(icons.last().id)
+            val icon = icons.last().id
+            currentIcon.send(icon)
         }
     }
 
@@ -75,4 +80,10 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
 
     override fun getIconChannel(): Channel<Int> = currentIcon
 
+    override fun getIconDrawable(): (Int) -> Drawable? = ::getIconD
+
+    private fun getIconD(id: Int): Drawable? {
+        val iconDrawableLoader = IconDrawableLoader(this)
+        return iconDialogIconPack?.getIconDrawable(id, iconDrawableLoader)
+    }
 }

@@ -1,5 +1,7 @@
 package com.eps.todoturtle.nfc.ui
 
+import android.graphics.drawable.Drawable
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -29,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,6 +42,7 @@ import com.eps.todoturtle.note.ui.AddNoteFormDialog
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 @Composable
 fun DeviceScreen(
@@ -52,6 +54,7 @@ fun DeviceScreen(
     DeviceScreenLayout(
         devices = devicesViewModel.getDevices(),
         newDeviceAdded,
+        @Composable { id: Int -> devicesViewModel.getDrawable(id) },
         onNewDeviceAddedOkay,
         onAddDevice,
     )
@@ -59,8 +62,9 @@ fun DeviceScreen(
 
 @Composable
 fun DeviceScreenLayout(
-    devices: List<NFCDevice>,
+    devices: Collection<NFCDevice>,
     newDeviceAdded: Boolean,
+    iconToDrawableConverter: @Composable (Int) -> Drawable?,
     onNewDeviceAddedOkay: () -> Unit,
     addDevice: () -> Unit,
 ) {
@@ -72,7 +76,7 @@ fun DeviceScreenLayout(
             }
         },
     ) {
-        NFCDeviceList(devices)
+        NFCDeviceList(devices.toList(), iconToDrawableConverter)
     }
 }
 
@@ -88,27 +92,30 @@ fun AddDeviceButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun NFCDeviceList(devices: List<NFCDevice>) {
+fun NFCDeviceList(
+    devices: List<NFCDevice>,
+    iconToDrawableConverter: @Composable (Int) -> Drawable?
+) {
     LazyColumn(
         modifier = Modifier.padding(4.dp),
     ) {
         items(devices.size) { index ->
-            NFCDeviceListItem(device = devices[index])
+            NFCDeviceListItem(device = devices[index], iconToDrawableConverter)
         }
     }
 }
 
 @Composable
-fun NFCDeviceListItem(device: NFCDevice) {
+fun NFCDeviceListItem(device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> Drawable?) {
     Card(
         modifier = Modifier.padding(4.dp),
     ) {
-        DeviceCard(device = device)
+        DeviceCard(device = device, iconToDrawableConverter)
     }
 }
 
 @Composable
-fun DeviceCard(device: NFCDevice) {
+fun DeviceCard(device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> Drawable?) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -116,7 +123,7 @@ fun DeviceCard(device: NFCDevice) {
             .padding(16.dp),
     ) {
         var inDialog by rememberSaveable { mutableStateOf(false) }
-        DeviceIcon(device = device)
+        DeviceIcon(iconToDrawableConverter, device = device)
         DeviceInformation(device = device)
         EditDeviceButton(alreadyConfigured = device.configured) {
             inDialog = true
@@ -132,9 +139,9 @@ fun DeviceCard(device: NFCDevice) {
 }
 
 @Composable
-fun DeviceIcon(device: NFCDevice) {
+fun DeviceIcon(iconToDrawableConverter: @Composable (Int) -> Drawable?, device: NFCDevice) {
     Icon(
-        painter = painterResource(id = device.iconResId),
+        painter = rememberDrawablePainter(drawable = iconToDrawableConverter(device.iconResId)),
         contentDescription = null,
         tint = colorScheme.onSurface,
         modifier = Modifier
@@ -214,6 +221,12 @@ fun DevicesPreview() {
                 ),
             ),
             false,
+            iconToDrawableConverter = @Composable { id ->
+                AppCompatResources.getDrawable(
+                    LocalContext.current,
+                    id
+                )
+            },
             {},
         ) {}
     }

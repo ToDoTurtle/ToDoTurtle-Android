@@ -62,6 +62,7 @@ fun App(
         DrawerContainer(
             drawerState = drawerState,
             toDoCount = noteScreenViewModel.toDoNotes.size,
+            devicesCount = devicesViewModel.devicesCount,
             shouldShowMenu = shouldShowMenu.value,
             onItemClick = { destination ->
                 scope.launch { drawerState.close() }
@@ -98,6 +99,7 @@ fun App(
 fun DrawerContainer(
     drawerState: DrawerState,
     toDoCount: Int,
+    devicesCount: Int,
     onItemClick: (Destination) -> Unit,
     shouldShowMenu: Boolean,
     content: @Composable () -> Unit,
@@ -108,6 +110,7 @@ fun DrawerContainer(
         Drawer(
             drawerState = drawerState,
             toDoCount = toDoCount,
+            devicesCount = devicesCount,
             onItemClick = { destination ->
                 selectedItem = destination
                 onItemClick(destination)

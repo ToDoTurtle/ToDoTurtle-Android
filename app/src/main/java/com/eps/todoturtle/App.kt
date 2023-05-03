@@ -17,6 +17,7 @@ class App : Application() {
     private fun loadIconPack() {
         val loader = IconPackLoader(this)
         val iconPack = createDefaultIconPack(loader)
+        iconPack.icons
         iconPack.loadDrawables(loader.drawableLoader)
         this.iconPack = iconPack
     }
