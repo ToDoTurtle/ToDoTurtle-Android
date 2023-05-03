@@ -80,7 +80,7 @@ fun AddNoteFormDialog(
     viewModel: NotesViewModel,
 ) {
     Dialog(
-        onDismissRequest = { onDismissRequest() } // TODO: Viewmodel function call
+        onDismissRequest = { onDismissRequest(); viewModel.clearNoteFields() }
     ) {
         Card {
             AddNoteForm(
@@ -105,10 +105,6 @@ fun AddNoteForm(
     var choosingDeadline by remember { mutableStateOf(false) }
     var choosingDeadlineTime by remember { mutableStateOf(false) }
 
-    // TODO: Viewmodel states
-    var titleValue by remember { mutableStateOf("") }
-    var descriptionValue by remember { mutableStateOf("") }
-
     val (titleFocusRequester, descriptionFocusRequester) = remember { FocusRequester.createRefs() }
 
     Column(
@@ -120,21 +116,21 @@ fun AddNoteForm(
         NoteFormTitle()
         Spacer(Modifier.height(8.dp))
         NoteFormTitleTextField(
-            value = titleValue,
-            onValueChange = { titleValue = it }, // TODO: Viewmodel function call
+            value = viewModel.noteTitle.value,
+            onValueChange = { viewModel.noteTitle.value = it },
             focusRequester = titleFocusRequester,
         )
         NoteFormDescriptionTextField(
-            value = descriptionValue,
-            onValueChange = { descriptionValue = it }, // TODO: Viewmodel function call
+            value = viewModel.noteDescription.value,
+            onValueChange = { viewModel.noteDescription.value = it },
             focusRequester = descriptionFocusRequester,
         )
         NoteFormIconTray(
             onAddNotificationClick = { choosingNotification = true },
             onAddDeadlineClick = { choosingDeadline = true },
             onAddMetadataClick = {},
-            onCloseClick = { onCloseClick() }, // TODO: Viewmodel function call
-            onDoneClick = { onDoneClick() }, // TODO: Viewmodel function call
+            onCloseClick = { onCloseClick(); viewModel.clearNoteFields() },
+            onDoneClick = { onDoneClick(); viewModel.addNote() },
         )
     }
 
@@ -151,7 +147,7 @@ fun AddNoteForm(
         onAddNotificationClick = { chosenTime ->
             choosingNotification = false
             choosingNotificationTime = false
-            // TODO: Viewmodel function call
+            viewModel.notificationTime = chosenTime
         },
         onNextClick = {
             choosingNotificationTime = true
@@ -171,7 +167,7 @@ fun AddNoteForm(
         onAddDeadlineClick = { chosenTime ->
             choosingDeadline = false
             choosingDeadlineTime = false
-            // TODO: Viewmodel function call
+            viewModel.deadlineTime = chosenTime
         },
         onNextClick = {
             choosingDeadlineTime = true

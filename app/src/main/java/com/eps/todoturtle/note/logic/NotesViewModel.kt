@@ -1,36 +1,29 @@
 package com.eps.todoturtle.note.logic
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.eps.todoturtle.shared.logic.forms.ChosenTime
+import kotlinx.coroutines.flow.MutableStateFlow
 
 private const val OFFSET = 100
 const val EPS_LAT = 41.608440
 const val EPS_LON = 0.623380
 
 
-class NotesViewModel(noteRepository: NoteRepository) : ViewModel() {
+class NotesViewModel(val noteRepository: NoteRepository) : ViewModel() {
     private val _toDoNotes = getToDoNotes().toMutableStateList()
     private val _doneNotes = getDoneNotes().toMutableStateList()
-
-    val toDoNotes: List<BaseNote>
-        get() = _toDoNotes
-
-    val doneNotes: List<BaseNote>
-        get() = _doneNotes
-
-    fun doNote(item: BaseNote) {
-        _doneNotes.remove(item)
-        _toDoNotes.add(0, item)
-    }
-
-    fun undoNote(item: BaseNote) {
-        _toDoNotes.remove(item)
-        _doneNotes.add(0, item)
-    }
+    private val noteBuilder = NoteBuilder()
+    var noteTitle = mutableStateOf("")
+    var noteDescription = mutableStateOf("")
+    var notificationTime: ChosenTime? = null
+    var deadlineTime: ChosenTime? = null
+    val noteErrors: MutableStateFlow<Collection<NoteBuildError>> = MutableStateFlow(emptyList())
 
     companion object {
         val NoteScreenFactory: ViewModelProvider.Factory = viewModelFactory {
@@ -50,6 +43,44 @@ class NotesViewModel(noteRepository: NoteRepository) : ViewModel() {
                 )
             }
         }
+    }
+
+    fun addNote() {
+        noteBuilder.title.value = noteTitle.value
+        noteBuilder.description.value = noteDescription.value
+        when (val result = noteBuilder.build()) {
+            is NoteBuildResult.Success -> {
+                _toDoNotes.add(0, result.note)
+                clearNoteFields()
+            }
+
+            is NoteBuildResult.Failure -> {
+                noteErrors.value = result.errors
+            }
+        }
+    }
+
+    fun clearNoteFields() {
+        noteTitle.value = ""
+        noteDescription.value = ""
+        notificationTime = null
+        deadlineTime = null
+    }
+
+    val toDoNotes: List<BaseNote>
+        get() = _toDoNotes
+
+    val doneNotes: List<BaseNote>
+        get() = _doneNotes
+
+    fun doNote(item: BaseNote) {
+        _doneNotes.remove(item)
+        _toDoNotes.add(0, item)
+    }
+
+    fun undoNote(item: BaseNote) {
+        _toDoNotes.remove(item)
+        _doneNotes.add(0, item)
     }
 
 }
@@ -92,6 +123,8 @@ data class Note(
     override val id: Int,
     override val title: String,
     override val description: String,
+    val notificationTime: ChosenTime? = null,
+    val deadlineTime: ChosenTime? = null,
 ) : BaseNote(id, title, description)
 
 data class MapNote(
