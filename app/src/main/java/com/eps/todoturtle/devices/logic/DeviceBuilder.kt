@@ -8,7 +8,7 @@ sealed class DeviceBuildResult {
 }
 
 class DeviceBuilder {
-    private val identifier: String = ""
+    var identifier: String = ""
     var name = mutableStateOf("")
     var description = mutableStateOf("")
     var iconResId: Int? = null
@@ -26,6 +26,13 @@ class DeviceBuilder {
         val device =
             NFCDevice(name.value, description.value, identifier, iconResId!!, configured)
         return DeviceBuildResult.Success(device)
+    }
+
+    fun clean() {
+        identifier = ""
+        name = mutableStateOf("")
+        description = mutableStateOf("")
+        iconResId = null
     }
 
 }
