@@ -62,7 +62,7 @@ fun App(
         DrawerContainer(
             drawerState = drawerState,
             toDoCount = noteScreenViewModel.toDoNotes.size,
-            devicesCount = devicesViewModel.devicesCount,
+            devicesCount = devicesViewModel.getDevices().size,
             shouldShowMenu = shouldShowMenu.value,
             onItemClick = { destination ->
                 scope.launch { drawerState.close() }
