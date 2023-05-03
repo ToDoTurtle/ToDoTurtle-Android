@@ -1,23 +1,15 @@
 package com.eps.todoturtle.note.ui
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
@@ -25,7 +17,6 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,7 +24,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
@@ -46,7 +36,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -54,70 +43,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
+import com.eps.todoturtle.note.logic.NoteScreenViewModel
 import com.eps.todoturtle.shared.logic.forms.ChosenTime
 import com.eps.todoturtle.shared.ui.ClearTextIcon
 import com.eps.todoturtle.shared.ui.FormOutlinedTextField
 import com.eps.todoturtle.shared.ui.FormTextField
 import com.eps.todoturtle.shared.ui.ResourceIcon
-import com.eps.todoturtle.ui.theme.formContainer
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.eps.todoturtle.ui.theme.onFormContainer
-
-@Composable
-fun AddNoteMenu(
-    onAddClick: () -> Unit,
-    onDoneClick: () -> Unit,
-    onCancelClick: () -> Unit,
-) {
-    var isFormVisible by rememberSaveable { mutableStateOf(false) }
-    var noteText by remember { mutableStateOf("") }
-    Box(
-        modifier = Modifier
-            .offset(y = 10.dp)
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioNoBouncy,
-                    stiffness = Spring.StiffnessLow,
-                ),
-            ),
-    ) {
-        if (isFormVisible) {
-            FormContainer(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .offset(x = 20.dp)
-                    .fillMaxWidth(),
-            ) {
-                QuickAddNoteForm(
-                    onCloseClick = {
-                        isFormVisible = false
-                        onCancelClick()
-                    },
-                    onDoneClick = {
-                        isFormVisible = false
-                        onDoneClick()
-                    },
-                    onAddNotificationClick = {},
-                    onAddDeadlineClick = {},
-                )
-            }
-        } else {
-            AddNoteButton(
-                modifier = Modifier
-                    .offset(y = -10.dp)
-                    .scale(0.8f),
-                onClick = {
-                    isFormVisible = true
-                    onAddClick()
-                },
-            )
-        }
-    }
-}
 
 @Composable
 fun AddNoteButton(
@@ -126,9 +62,7 @@ fun AddNoteButton(
 ) {
     FloatingActionButton(
         containerColor = MaterialTheme.colorScheme.noteScreenButton,
-        modifier = modifier
-            .scale(1.25f)
-            .padding(8.dp),
+        modifier = modifier,
         onClick = onClick,
     ) {
         Icon(
@@ -138,44 +72,21 @@ fun AddNoteButton(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun FormContainer(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
-    Card(
-        shape = MaterialTheme.shapes.medium,
-        modifier = modifier
-            .wrapContentHeight()
-            .wrapContentWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.formContainer,
-            contentColor = MaterialTheme.colorScheme.onFormContainer,
-        ),
-        elevation = CardDefaults.elevatedCardElevation(),
-    ) {
-        content()
-    }
-}
-
 @Composable
 fun AddNoteFormDialog(
     onDismissRequest: () -> Unit = {},
     onDoneClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
-    onAddNotificationClick: (ChosenTime) -> Unit = {},
-    onAddDeadlineClick: (ChosenTime) -> Unit = {},
+    viewModel: NoteScreenViewModel,
 ) {
     Dialog(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = { onDismissRequest() } // TODO: Viewmodel function call
     ) {
         Card {
             AddNoteForm(
                 onCloseClick = onCloseClick,
                 onDoneClick = onDoneClick,
-                onAddNotificationClick = onAddNotificationClick,
-                onAddDeadlineClick = onAddDeadlineClick,
+                viewModel = viewModel,
             )
         }
     }
@@ -187,16 +98,16 @@ fun AddNoteForm(
     modifier: Modifier = Modifier,
     onCloseClick: () -> Unit,
     onDoneClick: () -> Unit,
-    onAddNotificationClick: (ChosenTime) -> Unit,
-    onAddDeadlineClick: (ChosenTime) -> Unit,
+    viewModel: NoteScreenViewModel,
 ) {
-    var titleValue by remember { mutableStateOf("") }
-    var descriptionValue by remember { mutableStateOf("") }
-
     var choosingNotification by remember { mutableStateOf(false) }
     var choosingNotificationTime by remember { mutableStateOf(false) }
     var choosingDeadline by remember { mutableStateOf(false) }
     var choosingDeadlineTime by remember { mutableStateOf(false) }
+
+    // TODO: Viewmodel states
+    var titleValue by remember { mutableStateOf("") }
+    var descriptionValue by remember { mutableStateOf("") }
 
     val (titleFocusRequester, descriptionFocusRequester) = remember { FocusRequester.createRefs() }
 
@@ -210,20 +121,20 @@ fun AddNoteForm(
         Spacer(Modifier.height(8.dp))
         NoteFormTitleTextField(
             value = titleValue,
-            onValueChange = { titleValue = it },
+            onValueChange = { titleValue = it }, // TODO: Viewmodel function call
             focusRequester = titleFocusRequester,
         )
         NoteFormDescriptionTextField(
             value = descriptionValue,
-            onValueChange = { descriptionValue = it },
+            onValueChange = { descriptionValue = it }, // TODO: Viewmodel function call
             focusRequester = descriptionFocusRequester,
         )
         NoteFormIconTray(
             onAddNotificationClick = { choosingNotification = true },
             onAddDeadlineClick = { choosingDeadline = true },
             onAddMetadataClick = {},
-            onCloseClick = onCloseClick,
-            onDoneClick = onDoneClick,
+            onCloseClick = { onCloseClick() }, // TODO: Viewmodel function call
+            onDoneClick = { onDoneClick() }, // TODO: Viewmodel function call
         )
     }
 
@@ -240,7 +151,7 @@ fun AddNoteForm(
         onAddNotificationClick = { chosenTime ->
             choosingNotification = false
             choosingNotificationTime = false
-            onAddNotificationClick(chosenTime)
+            // TODO: Viewmodel function call
         },
         onNextClick = {
             choosingNotificationTime = true
@@ -260,7 +171,7 @@ fun AddNoteForm(
         onAddDeadlineClick = { chosenTime ->
             choosingDeadline = false
             choosingDeadlineTime = false
-            onAddDeadlineClick(chosenTime)
+            // TODO: Viewmodel function call
         },
         onNextClick = {
             choosingDeadlineTime = true
@@ -612,26 +523,6 @@ fun RowScope.FormCreationAlert(onCloseClick: () -> Unit, onDoneClick: () -> Unit
             Icon(
                 Icons.Default.Done,
                 contentDescription = stringResource(R.string.note_quick_form_done_button),
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun NoteFormPreview() {
-    Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-    ) {
-        FormContainer {
-            AddNoteForm(
-                onCloseClick = { },
-                onDoneClick = { },
-                onAddNotificationClick = { },
-                onAddDeadlineClick = { },
             )
         }
     }

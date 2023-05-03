@@ -20,15 +20,10 @@ fun NoteScreen(
     viewModel: NoteScreenViewModel,
 ) {
     var inHistory by rememberSaveable { mutableStateOf(false) }
+    var isFormVisible by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
-        floatingActionButton = {
-            AddNoteMenu(
-                onAddClick = {},
-                onDoneClick = {},
-                onCancelClick = {},
-            )
-        },
+        floatingActionButton = { AddNoteButton(onClick = { isFormVisible = true }) },
     ) {
         Column(
             horizontalAlignment = Alignment.End,
@@ -46,6 +41,15 @@ fun NoteScreen(
                 },
             )
         }
+    }
+
+    if (isFormVisible) {
+        AddNoteFormDialog(
+            onCloseClick = { isFormVisible = false },
+            onDoneClick = { isFormVisible = false },
+            onDismissRequest = { isFormVisible = false },
+            viewModel = viewModel,
+        )
     }
 }
 
