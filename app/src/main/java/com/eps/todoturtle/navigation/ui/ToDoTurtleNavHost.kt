@@ -16,10 +16,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.eps.todoturtle.devices.logic.DevicesViewModel
+import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
+import com.eps.todoturtle.devices.ui.DeviceScreen
 import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
-import com.eps.todoturtle.nfc.ui.DeviceConfigurationScreen
-import com.eps.todoturtle.devices.ui.DeviceScreen
 import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.ui.NoteScreen
@@ -123,7 +123,7 @@ fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModel) {
 fun NavGraphBuilder.devices(
     navController: NavHostController,
     devicesViewModel: DevicesViewModel,
-    deviceScreenNoteViewModel: NotesViewModel
+    deviceScreenNoteViewModel: NotesViewModel,
 ) {
     composable(
         DEVICES,
@@ -134,7 +134,7 @@ fun NavGraphBuilder.devices(
             devicesViewModel = devicesViewModel,
             noteScreenViewModel = deviceScreenNoteViewModel,
             navController,
-            newDeviceAdded
+            newDeviceAdded,
         )
     }
 }

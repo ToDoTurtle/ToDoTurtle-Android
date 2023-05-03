@@ -14,12 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eps.todoturtle.R
-import com.eps.todoturtle.nfc.logic.state.NfcStatus
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
+import com.eps.todoturtle.nfc.logic.state.NfcStatus
 import com.eps.todoturtle.nfc.logic.write.WriteOperation
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
-
 
 @Composable
 fun WriteDevice(
@@ -33,14 +32,14 @@ fun WriteDevice(
     NfcStatusScreen(
         viewModel = viewModel,
         onNfcNotEnabled = viewModel::showNfcSettings,
-        onNfcNotSupported = onNfcNotSupported
+        onNfcNotSupported = onNfcNotSupported,
     ) {
         WritingScreen(
             viewModel = viewModel,
             onTagNotWriteable = onTagNotWriteable,
             onTagLost = onTagLost,
             unknownError = unknownError,
-            onWriteSuccessful = onWriteSuccessful
+            onWriteSuccessful = onWriteSuccessful,
         )
     }
 }
@@ -67,7 +66,7 @@ fun NfcStatusScreen(
     viewModel: NfcWriteViewModel,
     onNfcNotEnabled: () -> Unit = {},
     onNfcNotSupported: () -> Unit = {},
-    onNfcEnabled: @Composable () -> Unit
+    onNfcEnabled: @Composable () -> Unit,
 ) {
     val status by viewModel.status.collectAsStateWithLifecycle()
     when (status) {

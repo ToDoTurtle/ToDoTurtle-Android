@@ -17,13 +17,13 @@ import androidx.lifecycle.LifecycleOwner
 class NfcChangesDetector private constructor(
     private val activity: Activity,
     private val onDisabled: () -> Unit = {},
-    private val onEnabled: () -> Unit = {}
+    private val onEnabled: () -> Unit = {},
 ) : DefaultLifecycleObserver, BroadcastReceiver() {
 
     companion object {
-        fun ComponentActivity.NfcBroadcastReceivr(
+        fun ComponentActivity.nfcBroadcastReceivr(
             onDisabled: () -> Unit = {},
-            onEnabled: () -> Unit = {}
+            onEnabled: () -> Unit = {},
         ): NfcChangesDetector {
             val receiver = NfcChangesDetector(this, onDisabled, onEnabled)
             lifecycle.addObserver(receiver)
@@ -55,5 +55,4 @@ class NfcChangesDetector private constructor(
         super.onDestroy(owner)
         activity.unregisterReceiver(this)
     }
-
 }

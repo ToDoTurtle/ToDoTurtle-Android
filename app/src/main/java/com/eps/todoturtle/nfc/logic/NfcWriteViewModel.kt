@@ -49,5 +49,4 @@ class NfcWriteViewModel private constructor() : ViewModel() {
     private fun ComponentActivity.getNfcOpenAction(): () -> Unit = {
         startActivity(this, Intent(Settings.ACTION_NFC_SETTINGS), null)
     }
-
 }

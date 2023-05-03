@@ -4,7 +4,7 @@ import com.eps.todoturtle.devices.logic.DeviceRepository
 import com.eps.todoturtle.devices.logic.NFCDevice
 import okhttp3.internal.toImmutableList
 
-class InMemoryDeviceRepository: DeviceRepository {
+class InMemoryDeviceRepository : DeviceRepository {
 
     private val devices = mutableListOf<NFCDevice>()
 

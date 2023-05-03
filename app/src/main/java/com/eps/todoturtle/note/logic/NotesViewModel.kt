@@ -14,7 +14,6 @@ private const val OFFSET = 100
 const val EPS_LAT = 41.608440
 const val EPS_LON = 0.623380
 
-
 class NotesViewModel(val noteRepository: NoteRepository) : ViewModel() {
     private val _toDoNotes = getToDoNotes().toMutableStateList()
     private val _doneNotes = getDoneNotes().toMutableStateList()
@@ -82,7 +81,6 @@ class NotesViewModel(val noteRepository: NoteRepository) : ViewModel() {
         _toDoNotes.remove(item)
         _doneNotes.add(0, item)
     }
-
 }
 
 private fun getToDoNotes(): List<BaseNote> =
@@ -91,7 +89,7 @@ private fun getToDoNotes(): List<BaseNote> =
             Note(
                 i,
                 title = "Note $i",
-                description = "Description of note $i"
+                description = "Description of note $i",
             )
         } else {
             MapNote(
@@ -109,7 +107,7 @@ private fun getDoneNotes(): List<BaseNote> =
         Note(
             id = i + OFFSET,
             title = "Note ${i + OFFSET}",
-            description = "Description of note ${i + OFFSET}"
+            description = "Description of note ${i + OFFSET}",
         )
     }
 

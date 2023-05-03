@@ -80,7 +80,7 @@ fun AddNoteFormDialog(
     viewModel: NotesViewModel,
 ) {
     Dialog(
-        onDismissRequest = { onDismissRequest(); viewModel.clearNoteFields() }
+        onDismissRequest = { onDismissRequest(); viewModel.clearNoteFields() },
     ) {
         Card {
             AddNoteForm(

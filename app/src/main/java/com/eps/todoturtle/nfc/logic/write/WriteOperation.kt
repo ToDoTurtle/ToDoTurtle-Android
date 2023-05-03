@@ -5,6 +5,5 @@ enum class WriteOperation {
     NOT_WRITABLE,
     TAG_LOST,
     MESSAGE_FORMAT_ERROR,
-    UNKNOWN_ERROR
+    UNKNOWN_ERROR,
 }
-

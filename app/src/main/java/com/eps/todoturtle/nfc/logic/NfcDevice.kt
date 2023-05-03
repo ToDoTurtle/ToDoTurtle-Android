@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class NfcDevice(
     val activity: ComponentActivity,
-    information: DeviceInformation
+    information: DeviceInformation,
 ) {
     private val nfcStatusInformer: NfcStatusInformer = NfcStatusInformer(activity)
     private val writer = NfcWriterInformer(activity, information)
@@ -24,5 +24,4 @@ class NfcDevice(
         writeResult.value = null
         writer.message = newInformationToWrite
     }
-
 }

@@ -7,7 +7,6 @@ import android.nfc.tech.Ndef
 import com.eps.todoturtle.nfc.logic.NfcParcelable
 import java.io.IOException
 
-
 object NfcTagWriter {
 
     fun write(tag: Tag?, message: NfcParcelable): WriteOperation {
@@ -33,7 +32,6 @@ object NfcTagWriter {
             WriteOperation.UNKNOWN_ERROR
         }
     }
-
 }
 
 fun Ndef.write(content: NfcParcelable) {

@@ -41,9 +41,8 @@ class DeviceStateRepository(private val repository: DeviceRepository) {
 
     private fun getAllFromRepository() = runBlocking(Dispatchers.IO) { repository.getAll() }
 
-
     private fun assertCacheIsLoadedOperation(
-        operation: suspend () -> Unit
+        operation: suspend () -> Unit,
     ) {
         cacheDataIfNotLoaded()
         runBlocking(Dispatchers.IO) {

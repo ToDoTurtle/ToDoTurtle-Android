@@ -17,5 +17,4 @@ class NfcWriterInformer(
             writeResults.value = NfcTagWriter.write(tag, message)
         }
     }
-
 }

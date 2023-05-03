@@ -16,12 +16,15 @@ class DeviceBuilder {
 
     fun build(): DeviceBuildResult {
         val errors: MutableList<DeviceBuildError> = mutableListOf()
-        if (name.value.isBlank() || name.value.isEmpty())
+        if (name.value.isBlank() || name.value.isEmpty()) {
             errors.add(DeviceBuildError.NAME_EMPTY)
-        if (description.value.isBlank() || description.value.isEmpty())
+        }
+        if (description.value.isBlank() || description.value.isEmpty()) {
             errors.add(DeviceBuildError.DESCRIPTION_EMPTY)
-        if (iconResId == null)
+        }
+        if (iconResId == null) {
             errors.add(DeviceBuildError.NON_ICON)
+        }
         if (errors.isNotEmpty()) return DeviceBuildResult.Failure(errors)
         val device =
             NFCDevice(name.value, description.value, identifier, iconResId!!, configured)
@@ -34,5 +37,4 @@ class DeviceBuilder {
         description = mutableStateOf("")
         iconResId = null
     }
-
 }

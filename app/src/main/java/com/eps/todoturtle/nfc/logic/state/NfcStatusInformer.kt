@@ -2,7 +2,7 @@ package com.eps.todoturtle.nfc.logic.state
 
 import android.nfc.NfcAdapter
 import androidx.activity.ComponentActivity
-import com.eps.todoturtle.nfc.logic.state.NfcChangesDetector.Companion.NfcBroadcastReceivr
+import com.eps.todoturtle.nfc.logic.state.NfcChangesDetector.Companion.nfcBroadcastReceivr
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class NfcStatusInformer(
@@ -11,14 +11,13 @@ class NfcStatusInformer(
 ) {
 
     init {
-        activity.NfcBroadcastReceivr(
+        activity.nfcBroadcastReceivr(
             onDisabled = { nfcStatus.value = NfcStatus.NFC_NOT_ENABLED },
             onEnabled = { nfcStatus.value = NfcStatus.NFC_WORKING },
         )
     }
 
     val nfcStatus: MutableStateFlow<NfcStatus> = MutableStateFlow(nfcAdapter.status)
-
 }
 
 val NfcAdapter?.status: NfcStatus

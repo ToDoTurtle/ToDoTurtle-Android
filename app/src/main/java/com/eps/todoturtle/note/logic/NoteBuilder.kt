@@ -17,12 +17,15 @@ class NoteBuilder {
 
     fun build(): NoteBuildResult {
         val errors: MutableList<NoteBuildError> = mutableListOf()
-        if (title.value.isBlank() || title.value.isEmpty())
+        if (title.value.isBlank() || title.value.isEmpty()) {
             errors.add(NoteBuildError.TITLE_EMPTY)
-        if (description.value.isTooLong())
+        }
+        if (description.value.isTooLong()) {
             errors.add(NoteBuildError.DESCRIPTION_TOO_LONG)
-        if (title.value.isTooLong())
+        }
+        if (title.value.isTooLong()) {
             errors.add(NoteBuildError.TITLE_TOO_LONG)
+        }
         if (errors.isNotEmpty()) return NoteBuildResult.Failure(errors)
         val note =
             Note(
@@ -30,10 +33,8 @@ class NoteBuilder {
                 title.value,
                 description.value,
                 notificationTime,
-                deadlineTime
+                deadlineTime,
             )
         return NoteBuildResult.Success(note)
     }
-
 }
-

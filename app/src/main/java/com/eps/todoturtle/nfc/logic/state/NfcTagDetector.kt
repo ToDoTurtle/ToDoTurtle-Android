@@ -15,7 +15,7 @@ import androidx.lifecycle.LifecycleOwner
 class NfcTagDetector private constructor(
     private val activity: Activity,
     private val nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(activity),
-    private val callBack: (Tag?) -> Unit
+    private val callBack: (Tag?) -> Unit,
 ) : NfcAdapter.ReaderCallback, DefaultLifecycleObserver {
 
     companion object {
@@ -37,11 +37,11 @@ class NfcTagDetector private constructor(
             activity,
             this,
             NfcAdapter.FLAG_READER_NFC_A or
-                    NfcAdapter.FLAG_READER_NFC_B or
-                    NfcAdapter.FLAG_READER_NFC_F or
-                    NfcAdapter.FLAG_READER_NFC_V or
-                    NfcAdapter.FLAG_READER_NFC_BARCODE or
-                    NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS,
+                NfcAdapter.FLAG_READER_NFC_B or
+                NfcAdapter.FLAG_READER_NFC_F or
+                NfcAdapter.FLAG_READER_NFC_V or
+                NfcAdapter.FLAG_READER_NFC_BARCODE or
+                NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS,
             options,
         )
     }
@@ -50,5 +50,4 @@ class NfcTagDetector private constructor(
         super.onPause(owner)
         nfcAdapter?.disableReaderMode(activity)
     }
-
 }
