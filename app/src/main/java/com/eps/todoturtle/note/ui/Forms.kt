@@ -46,7 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
-import com.eps.todoturtle.note.logic.NoteScreenViewModel
+import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.shared.logic.forms.ChosenTime
 import com.eps.todoturtle.shared.ui.ClearTextIcon
 import com.eps.todoturtle.shared.ui.FormOutlinedTextField
@@ -77,7 +77,7 @@ fun AddNoteFormDialog(
     onDismissRequest: () -> Unit = {},
     onDoneClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
-    viewModel: NoteScreenViewModel,
+    viewModel: NotesViewModel,
 ) {
     Dialog(
         onDismissRequest = { onDismissRequest() } // TODO: Viewmodel function call
@@ -98,7 +98,7 @@ fun AddNoteForm(
     modifier: Modifier = Modifier,
     onCloseClick: () -> Unit,
     onDoneClick: () -> Unit,
-    viewModel: NoteScreenViewModel,
+    viewModel: NotesViewModel,
 ) {
     var choosingNotification by remember { mutableStateOf(false) }
     var choosingNotificationTime by remember { mutableStateOf(false) }

@@ -3,12 +3,13 @@ package com.eps.todoturtle
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
 import com.eps.todoturtle.devices.infra.InMemoryDeviceRepository
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
-import com.eps.todoturtle.note.logic.NoteScreenViewModel
+import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.providers.CameraPermissionProvider
 import com.eps.todoturtle.profile.logic.ProfileViewModel
@@ -38,7 +39,8 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         super.onCreate(savedInstanceState)
 
         permissionRequester = PermissionRequester(this, permissionsToRequest)
-        val noteScreenViewModel = NoteScreenViewModel(this)
+        val noteScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
+        val deviceScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.DeviceScreenFactory }
         val profileViewModel = ProfileViewModel(this)
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
@@ -49,8 +51,9 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
             ToDoTurtleTheme(dataStore) {
                 App(
                     permissionRequester = permissionRequester,
-                    noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = getDevicesViewModel(InMemoryDeviceRepository()),
+                    noteScreenViewModel = noteScreenNoteViewModel,
+                    deviceScreenNoteViewModel = deviceScreenNoteViewModel,
                     nfcWriteViewModel = getNfcWriteModel(),
                     profileViewModel = profileViewModel,
                     dataStore = dataStore,

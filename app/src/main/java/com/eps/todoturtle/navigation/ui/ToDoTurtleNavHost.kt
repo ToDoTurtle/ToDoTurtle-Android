@@ -15,13 +15,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.devices.logic.DevicesViewModel
+import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.DeviceConfigurationScreen
-import com.eps.todoturtle.nfc.ui.DeviceScreen
+import com.eps.todoturtle.devices.ui.DeviceScreen
 import com.eps.todoturtle.nfc.ui.WriteDevice
-import com.eps.todoturtle.note.logic.NoteScreenViewModel
+import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
@@ -48,8 +48,9 @@ fun ToDoTurtleNavHost(
     navController: NavHostController,
     permissionRequester: PermissionRequester,
     shouldShowMenu: MutableState<Boolean>,
-    noteScreenViewModel: NoteScreenViewModel,
+    noteScreenViewModel: NotesViewModel,
     profileViewModel: ProfileViewModel,
+    deviceScreenNoteViewModel: NotesViewModel,
     devicesViewModel: DevicesViewModel,
     nfcWriteViewModel: NfcWriteViewModel,
     dataStore: DataStore<AppPreferences>,
@@ -70,7 +71,7 @@ fun ToDoTurtleNavHost(
             hasCameraPermission,
         )
         notes(noteScreenViewModel)
-        devices(navController, devicesViewModel)
+        devices(navController, devicesViewModel, deviceScreenNoteViewModel)
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
         settings(dataStore)
@@ -111,7 +112,7 @@ fun NavGraphBuilder.profile(
     }
 }
 
-fun NavGraphBuilder.notes(noteScreenViewModel: NoteScreenViewModel) {
+fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModel) {
     composable(NOTES) {
         NoteScreen(
             viewModel = noteScreenViewModel,
@@ -119,13 +120,22 @@ fun NavGraphBuilder.notes(noteScreenViewModel: NoteScreenViewModel) {
     }
 }
 
-fun NavGraphBuilder.devices(navController: NavHostController, devicesViewModel: DevicesViewModel) {
+fun NavGraphBuilder.devices(
+    navController: NavHostController,
+    devicesViewModel: DevicesViewModel,
+    deviceScreenNoteViewModel: NotesViewModel
+) {
     composable(
         DEVICES,
         arguments = listOf(navArgument(DEVICES_WRITE_SUCCESSFUL_PARAM) { type = NavType.BoolType }),
     ) {
         val newDeviceAdded = it.arguments?.getBoolean(DEVICES_WRITE_SUCCESSFUL_PARAM) ?: false
-        DeviceScreen(devicesViewModel = devicesViewModel, navController, newDeviceAdded)
+        DeviceScreen(
+            devicesViewModel = devicesViewModel,
+            noteScreenViewModel = deviceScreenNoteViewModel,
+            navController,
+            newDeviceAdded
+        )
     }
 }
 
@@ -145,12 +155,14 @@ fun NavGraphBuilder.deviceConfiguration(
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
+    noteScreenViewModel: NotesViewModel,
     navController: NavHostController,
     newDeviceAdded: Boolean = false,
 ) {
     var deviceAdded by rememberSaveable { mutableStateOf(newDeviceAdded) }
     DeviceScreen(
         devicesViewModel = devicesViewModel,
+        notesViewModel = noteScreenViewModel,
         newDeviceAdded = deviceAdded,
         onNewDeviceAddedOkay = { deviceAdded = false },
         onAddDevice = {

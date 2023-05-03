@@ -33,7 +33,7 @@ import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
-import com.eps.todoturtle.note.logic.NoteScreenViewModel
+import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.profile.logic.ProfileViewModel
@@ -43,7 +43,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun App(
     permissionRequester: PermissionRequester,
-    noteScreenViewModel: NoteScreenViewModel,
+    noteScreenViewModel: NotesViewModel,
+    deviceScreenNoteViewModel: NotesViewModel,
     profileViewModel: ProfileViewModel,
     devicesViewModel: DevicesViewModel,
     nfcWriteViewModel: NfcWriteViewModel,
@@ -85,6 +86,7 @@ fun App(
                     shouldShowMenu = shouldShowMenu,
                     noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = devicesViewModel,
+                    deviceScreenNoteViewModel = deviceScreenNoteViewModel,
                     nfcWriteViewModel = nfcWriteViewModel,
                     dataStore = dataStore,
                     profileViewModel = profileViewModel,

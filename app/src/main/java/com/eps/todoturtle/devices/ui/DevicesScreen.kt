@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nfc.ui
+package com.eps.todoturtle.devices.ui
 
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
+import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.ui.AddNoteFormDialog
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
@@ -47,6 +48,7 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
+    notesViewModel: NotesViewModel,
     newDeviceAdded: Boolean = false,
     onNewDeviceAddedOkay: () -> Unit = {},
     onAddDevice: () -> Unit = {},
@@ -57,6 +59,7 @@ fun DeviceScreen(
         @Composable { id: Int -> devicesViewModel.getDrawable(id) },
         onNewDeviceAddedOkay,
         onAddDevice,
+        notesViewModel,
     )
 }
 
@@ -67,6 +70,7 @@ fun DeviceScreenLayout(
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
     onNewDeviceAddedOkay: () -> Unit,
     addDevice: () -> Unit,
+    notesViewModel: NotesViewModel,
 ) {
     Scaffold(
         floatingActionButton = { AddDeviceButton(onClick = addDevice) },
@@ -76,7 +80,7 @@ fun DeviceScreenLayout(
             }
         },
     ) {
-        NFCDeviceList(devices.toList(), iconToDrawableConverter)
+        NFCDeviceList(devices.toList(), iconToDrawableConverter, notesViewModel)
     }
 }
 
@@ -94,28 +98,29 @@ fun AddDeviceButton(onClick: () -> Unit) {
 @Composable
 fun NFCDeviceList(
     devices: List<NFCDevice>,
-    iconToDrawableConverter: @Composable (Int) -> Drawable?
+    iconToDrawableConverter: @Composable (Int) -> Drawable?,
+    notesViewModel: NotesViewModel
 ) {
     LazyColumn(
         modifier = Modifier.padding(4.dp),
     ) {
         items(devices.size) { index ->
-            NFCDeviceListItem(device = devices[index], iconToDrawableConverter)
+            NFCDeviceListItem(notesViewModel = notesViewModel, device = devices[index], iconToDrawableConverter)
         }
     }
 }
 
 @Composable
-fun NFCDeviceListItem(device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> Drawable?) {
+fun NFCDeviceListItem(notesViewModel: NotesViewModel, device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> Drawable?) {
     Card(
         modifier = Modifier.padding(4.dp),
     ) {
-        DeviceCard(device = device, iconToDrawableConverter)
+        DeviceCard(device = device, notesViewModel = notesViewModel, iconToDrawableConverter =  iconToDrawableConverter)
     }
 }
 
 @Composable
-fun DeviceCard(device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> Drawable?) {
+fun DeviceCard(notesViewModel: NotesViewModel, device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> Drawable?) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -133,6 +138,7 @@ fun DeviceCard(device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> 
                 onDismissRequest = { inDialog = false },
                 onDoneClick = { inDialog = false },
                 onCloseClick = { inDialog = false },
+                viewModel = notesViewModel,
             )
         }
     }
@@ -198,36 +204,30 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun DevicesPreview() {
-    ToDoTurtleTheme(LocalContext.current.dataStore) {
-        DeviceScreenLayout(
-            devices = listOf(
-                NFCDevice(
-                    name = "Car",
-                    description = "My car",
-                    identifier = "1234567890",
-                    iconResId = R.drawable.car,
-                    true,
-                ),
-                NFCDevice(
-                    name = "Kitchen",
-                    description = "My Kitchen",
-                    identifier = "1234567890",
-                    iconResId = R.drawable.headphones,
-                    false,
-                ),
-            ),
-            false,
-            iconToDrawableConverter = @Composable { id ->
-                AppCompatResources.getDrawable(
-                    LocalContext.current,
-                    id
-                )
-            },
-            {},
-        ) {}
-    }
-}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun DevicesPreview() {
+//    ToDoTurtleTheme(LocalContext.current.dataStore) {
+//        DeviceScreenLayout(
+//            devices = listOf(
+//                NFCDevice(
+//                    name = "Car",
+//                    description = "My car",
+//                    identifier = "1234567890",
+//                    iconResId = R.drawable.car,
+//                    true,
+//                ),
+//                NFCDevice(
+//                    name = "Kitchen",
+//                    description = "My Kitchen",
+//                    identifier = "1234567890",
+//                    iconResId = R.drawable.headphones,
+//                    false,
+//                ),
+//            ),
+//            false,
+//            {},
+//        ) {}
+//    }
+//}
