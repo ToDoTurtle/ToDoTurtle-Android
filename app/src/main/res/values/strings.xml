@@ -41,4 +41,10 @@
     <string name="approach_nfc_tag">Approach the NFC tag close to the phone</string>
     <string name="nfc_write_success">Tag has been successfully written!</string>
     <string name="add_note_form_title">Add a note</string>
+    <string name="add_notification_confirmation">Add notification</string>
+    <string name="add_deadline_confirmation">Add deadline</string>
+    <string name="choose_time">Choose time</string>
+    <string name="next">Continue</string>
+    <string name="date">Date</string>
+    <string name="go_back_to_date_picker_icon_desc">Button to go back to date picker</string>
 </resources>

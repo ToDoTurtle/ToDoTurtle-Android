@@ -74,4 +74,10 @@
 <!--    <string name="unknown_error_nfc_solution">La operación de escritura no ha ido bien, por favor, inténtalo de nuevo</string>-->
 <!--    <string name="approach_nfc_tag">Acerca la tarjeta NFC al teléfono</string>-->
 <!--    <string name="nfc_write_success">¡La tarjeta se ha escrito correctamente con NFC!</string>-->
+    <string name="add_notification_confirmation">Añadir notificación</string>
+    <string name="add_deadline_confirmation">Añadir fecha límite</string>
+    <string name="choose_time">Escoger hora</string>
+    <string name="next">Continuar</string>
+    <string name="date">Fecha</string>
+    <string name="go_back_to_date_picker_icon_desc">Button to go back to date picker</string>
 </resources>

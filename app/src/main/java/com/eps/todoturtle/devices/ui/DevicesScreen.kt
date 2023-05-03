@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
-import com.eps.todoturtle.note.ui.CompleteAddNoteFormDialog
+import com.eps.todoturtle.note.ui.AddNoteFormDialog
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
@@ -122,7 +122,7 @@ fun DeviceCard(device: NFCDevice) {
             inDialog = true
         }
         if (inDialog) {
-            CompleteAddNoteFormDialog(
+            AddNoteFormDialog(
                 onDismissRequest = { inDialog = false },
                 onDoneClick = { inDialog = false },
                 onCloseClick = { inDialog = false },
