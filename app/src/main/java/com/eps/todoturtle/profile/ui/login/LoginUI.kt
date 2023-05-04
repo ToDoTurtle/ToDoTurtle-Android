@@ -28,6 +28,7 @@ import com.eps.todoturtle.profile.ui.shared.CenteredPicture
 import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
+import com.eps.todoturtle.profile.ui.signup.SignUpDialog
 import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 
 @Composable
@@ -80,10 +81,12 @@ fun LoginContent(
         password = it
         wrongLogin = false
     }
-    SignUpText(text = R.string.profile_sign_up) {
+    SignUpText(text = R.string.sign_up) {
         shouldShowSignUp = true
     }
-//    if (shouldShowSignUp) SignUpDialog
+    if (shouldShowSignUp) SignUpDialog {
+        shouldShowSignUp = false
+    }
     Button(
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 5.dp,
