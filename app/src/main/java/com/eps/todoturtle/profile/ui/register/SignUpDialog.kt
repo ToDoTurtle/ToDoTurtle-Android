@@ -29,6 +29,7 @@ fun SignUpDialog(
     userAuth: UserAuth,
     onDismiss: () -> Unit,
 ) {
+    val context = LocalContext.current
     var mail by rememberSaveable { mutableStateOf("") }
     var mailError by rememberSaveable { mutableStateOf(false) }
     var password by rememberSaveable { mutableStateOf("") }

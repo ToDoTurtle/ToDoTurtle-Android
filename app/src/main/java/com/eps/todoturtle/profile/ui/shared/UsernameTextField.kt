@@ -42,7 +42,7 @@ fun UsernameTextField(
         label = { Text(stringResource(id = label)) },
         supportingText = {
             if (error) Text(
-                stringResource(id = errorMessage),
+                text = stringResource(id = errorMessage),
                 color = MaterialTheme.colorScheme.error,
             )
         }

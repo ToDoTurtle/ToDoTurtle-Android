@@ -48,9 +48,11 @@ fun ToDoTurtleNavHost(
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
 ) {
+    val startDestination = if (userAuth.isLoggedIn()) Destinations.NOTES else Destinations.LOGIN
+
     NavHost(
         navController = navController,
-        startDestination = Destinations.LOGIN.route,
+        startDestination = startDestination.route,
         modifier = modifier,
     ) {
         login(navController, shouldShowMenu, userAuth)
@@ -59,6 +61,7 @@ fun ToDoTurtleNavHost(
             navController,
             profileViewModel,
             shouldShowMenu,
+            userAuth,
             hasCameraPermission,
         )
         notes(noteScreenViewModel)
@@ -88,19 +91,20 @@ fun NavGraphBuilder.profile(
     navController: NavHostController,
     profileViewModel: ProfileViewModel,
     shouldShowMenu: MutableState<Boolean>,
+    userAuth: UserAuth,
     hasCameraPermission: () -> Boolean,
 ) {
     composable(Destinations.PROFILE.route) {
         RequestPermissionContext(permissionRequester) {
             DetailsUI(
-                onSignOutClick = {
-                    navController.navigateSingleTopTo(Destinations.LOGIN.route)
-                    shouldShowMenu.value = false
-                },
                 requestPermissions = { requestPermissions() },
                 hasPermissions = { hasCameraPermission() },
                 profileViewModel = profileViewModel,
-            )
+            ) {
+                userAuth.logout()
+                navController.navigateSingleTopTo(Destinations.LOGIN.route)
+                shouldShowMenu.value = false
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +31,9 @@ import com.eps.todoturtle.profile.ui.shared.ProfileUI
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
 import com.eps.todoturtle.profile.ui.register.SignUpDialog
 import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginUI(
@@ -48,6 +52,7 @@ fun LoginContent(
     onSignInClick: () -> Unit,
     login: (() -> Boolean)? = null,
 ) {
+    val context = LocalContext.current
     var wrongLogin by rememberSaveable { mutableStateOf(false) }
     var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -98,12 +103,7 @@ fun LoginContent(
             disabledElevation = 0.dp,
         ),
         onClick = {
-            if (loginMethod()) {
-                wrongLogin = false
-                onSignInClick()
-            } else {
-                wrongLogin = true
-            }
+            wrongLogin = userAuth.login(username, password)
         },
     ) {
         Text(text = stringResource(id = R.string.profile_sign_in))

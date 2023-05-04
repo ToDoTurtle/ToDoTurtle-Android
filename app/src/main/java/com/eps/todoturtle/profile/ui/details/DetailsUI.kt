@@ -16,16 +16,17 @@ import com.eps.todoturtle.profile.ui.shared.ProfileUI
 fun DetailsUI(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
-    onSignOutClick: () -> Unit,
     profileViewModel: ProfileViewModel,
+    onSignOutClick: () -> Unit,
 ) {
     ProfileUI {
         DetailsContent(
             hasPermissions = hasPermissions,
             requestPermissions = requestPermissions,
-            onSignOutClick = onSignOutClick,
             profileViewModel = profileViewModel,
-        )
+        ) {
+            onSignOutClick()
+        }
     }
 }
 
@@ -33,8 +34,8 @@ fun DetailsUI(
 fun DetailsContent(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
-    onSignOutClick: () -> Unit,
     profileViewModel: ProfileViewModel,
+    onSignOutClick: () -> Unit,
 ) {
     val details = profileViewModel.details.collectAsState().value
 
@@ -54,7 +55,9 @@ fun DetailsContent(
     HostageTypeProfileField(details.hostage) {
         profileViewModel.changeHostageType(it)
     }
-    SignOutProfileButton(onSignOutClick)
+    SignOutProfileButton {
+        onSignOutClick()
+    }
     Spacer(modifier = Modifier.size(5.dp))
 }
 
