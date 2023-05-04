@@ -57,7 +57,7 @@ fun App(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val shouldShowMenu = rememberSaveable { mutableStateOf(false) }
+    val shouldShowMenu = rememberSaveable { mutableStateOf(userAuth.isLoggedIn()) }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
