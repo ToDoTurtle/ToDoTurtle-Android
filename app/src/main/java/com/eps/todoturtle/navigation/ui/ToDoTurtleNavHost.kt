@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.eps.todoturtle.devices.logic.DevicesViewModel
+import com.eps.todoturtle.navigation.logic.Destinations
 import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
 import com.eps.todoturtle.devices.ui.DeviceScreen
 import com.eps.todoturtle.invite.ui.InviteUI
@@ -31,18 +32,6 @@ import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.details.DetailsUI
 import com.eps.todoturtle.profile.ui.login.LoginUI
-
-private const val LOGIN = "login"
-private const val PROFILE = "profile"
-private const val NOTES = "notes"
-private const val SETTINGS = "settings"
-private const val WRITE_DEVICE = "write_device"
-private const val INVITE = "invite"
-private const val DEVICES_WRITE_SUCCESSFUL_PARAM = "write_successful"
-private const val DEVICES = "devices/{$DEVICES_WRITE_SUCCESSFUL_PARAM}"
-const val DEVICES_WRITE_SUCCESSFUL = "devices/true"
-const val DEVICES_NORMAL = "devices/false"
-private const val DEVICE_CONFIGURATION = "device_configuration"
 
 @Composable
 fun ToDoTurtleNavHost(
@@ -61,7 +50,7 @@ fun ToDoTurtleNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = LOGIN,
+        startDestination = Destinations.LOGIN.route,
         modifier = modifier,
     ) {
         login(navController, shouldShowMenu, userAuth)
@@ -86,9 +75,9 @@ fun NavGraphBuilder.login(
     shouldShowMenu: MutableState<Boolean>,
     userAuth: UserAuth,
 ) {
-    composable(LOGIN) {
+    composable(Destinations.LOGIN.route) {
         LoginUI(userAuth = userAuth) {
-            navController.navigateFromLogin(NOTES)
+            navController.navigateFromLogin(Destinations.NOTES.route)
             shouldShowMenu.value = true
         }
     }
@@ -101,11 +90,11 @@ fun NavGraphBuilder.profile(
     shouldShowMenu: MutableState<Boolean>,
     hasCameraPermission: () -> Boolean,
 ) {
-    composable(PROFILE) {
+    composable(Destinations.PROFILE.route) {
         RequestPermissionContext(permissionRequester) {
             DetailsUI(
                 onSignOutClick = {
-                    navController.navigateSingleTopTo(LOGIN)
+                    navController.navigateSingleTopTo(Destinations.LOGIN.route)
                     shouldShowMenu.value = false
                 },
                 requestPermissions = { requestPermissions() },
@@ -117,7 +106,7 @@ fun NavGraphBuilder.profile(
 }
 
 fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModelInt) {
-    composable(NOTES) {
+    composable(Destinations.NOTES.route) {
         NoteScreen(
             viewModel = noteScreenViewModel,
         )
@@ -130,10 +119,10 @@ fun NavGraphBuilder.devices(
     deviceScreenNoteViewModel: NotesViewModelInt,
 ) {
     composable(
-        DEVICES,
-        arguments = listOf(navArgument(DEVICES_WRITE_SUCCESSFUL_PARAM) { type = NavType.BoolType }),
+        Destinations.DEVICES.route,
+        arguments = listOf(navArgument(Destinations.DEVICES_WRITE_SUCCESSFUL_PARAM.route) { type = NavType.BoolType }),
     ) {
-        val newDeviceAdded = it.arguments?.getBoolean(DEVICES_WRITE_SUCCESSFUL_PARAM) ?: false
+        val newDeviceAdded = it.arguments?.getBoolean(Destinations.DEVICES_WRITE_SUCCESSFUL_PARAM.route) ?: false
         DeviceScreen(
             devicesViewModel = devicesViewModel,
             noteScreenViewModel = deviceScreenNoteViewModel,
@@ -148,10 +137,10 @@ fun NavGraphBuilder.deviceConfiguration(
     navController: NavHostController,
 ) {
     composable(
-        DEVICE_CONFIGURATION,
+        Destinations.DEVICE_CONFIGURATION.route,
     ) {
         DeviceConfigurationScreen(devicesViewModel) {
-            navController.navigateSingleTopTo(DEVICES_WRITE_SUCCESSFUL)
+            navController.navigateSingleTopTo(Destinations.DEVICES_WRITE_SUCCESSFUL.route)
         }
     }
 }
@@ -170,9 +159,9 @@ fun DeviceScreen(
         newDeviceAdded = deviceAdded,
         onNewDeviceAddedOkay = { deviceAdded = false },
         onAddDevice = {
-            navController.navigate(WRITE_DEVICE) {
-                navController.graph.startDestinationRoute?.let { _ ->
-                    popUpTo(DEVICES_NORMAL) {
+            navController.navigate(Destinations.WRITE_DEVICE.route) {
+                navController.graph.startDestinationRoute?.let {
+                    popUpTo(Destinations.DEVICES_NORMAL.route) {
                         saveState = true
                     }
                 }
@@ -187,38 +176,38 @@ fun NavGraphBuilder.writeDevice(
     navController: NavHostController,
     nfcWriteViewModel: NfcWriteViewModel,
 ) {
-    composable(WRITE_DEVICE) {
+    composable(Destinations.WRITE_DEVICE.route) {
         WriteDevice(
             viewModel = nfcWriteViewModel,
-            onNfcNotSupported = { navController.navigateSingleTopTo(NOTES) },
+            onNfcNotSupported = { navController.navigateSingleTopTo(Destinations.NOTES.route) },
             onTagLost = {
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(WRITE_DEVICE)
+                navController.navigateSingleTopTo(Destinations.WRITE_DEVICE.route)
             },
             onTagNotWriteable = {
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(DEVICES_NORMAL)
+                navController.navigateSingleTopTo(Destinations.DEVICES_NORMAL.route)
             },
             unknownError = {
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(WRITE_DEVICE)
+                navController.navigateSingleTopTo(Destinations.WRITE_DEVICE.route)
             },
             onWriteSuccessful = {
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(DEVICE_CONFIGURATION)
+                navController.navigateSingleTopTo(Destinations.DEVICE_CONFIGURATION.route)
             },
         )
     }
 }
 
 private fun NavGraphBuilder.settings(dataStore: DataStore<AppPreferences>) {
-    composable(SETTINGS) {
+    composable(Destinations.SETTINGS.route) {
         PreferenceUI(dataStore = dataStore)
     }
 }
 
 fun NavGraphBuilder.invite() {
-    composable(INVITE) {
+    composable(Destinations.INVITE.route) {
         InviteUI()
     }
 }
