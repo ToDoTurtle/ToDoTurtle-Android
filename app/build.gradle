@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -96,4 +97,9 @@ dependencies {
     implementation "com.maltaisn:icondialog:3.3.0"
     implementation "com.maltaisn:iconpack-default:1.1.0"
     implementation "com.google.accompanist:accompanist-drawablepainter:0.28.0" //0.28.0
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
 }
