@@ -3,6 +3,7 @@
     <string name="profile_username">Username</string>
     <string name="profile_mail">Mail</string>
     <string name="profile_hostage">Hostage type</string>
+    <string name="profile_error_field">Error</string>
 
     <!--    Defaults    -->
     <string name="profile_default_username" translatable="false">John Doe</string>

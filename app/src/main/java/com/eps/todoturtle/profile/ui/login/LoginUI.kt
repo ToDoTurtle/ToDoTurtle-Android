@@ -22,7 +22,9 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.mock.MockValues
 import com.eps.todoturtle.profile.ui.shared.CenteredPicture
+import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
+import com.eps.todoturtle.profile.ui.shared.UsernameTextField
 import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 
 @Composable
@@ -56,16 +58,24 @@ fun LoginContent(
         innerImagePadding = 15.dp,
     )
     WelcomeMessage()
-    LoginOutlinedText(
-        text = username,
+    UsernameTextField(
         label = R.string.profile_login_username,
-        error = wrongLogin,
-    )
-    LoginOutlinedPassword(
-        text = password,
+        errorMessage = R.string.login_wrong_username_or_password,
+        username = username.value,
+        error = wrongLogin.value,
+    ) {
+        username.value = it
+        wrongLogin.value = false
+    }
+    PasswordTextField(
         label = R.string.profile_login_password,
-        error = wrongLogin,
-    )
+        errorMessage = R.string.login_wrong_username_or_password,
+        password = password.value,
+        error = wrongLogin.value,
+    ) {
+        password.value = it
+        wrongLogin.value = false
+    }
     Button(
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 5.dp,
