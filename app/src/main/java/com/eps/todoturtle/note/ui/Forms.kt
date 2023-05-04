@@ -46,6 +46,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
+import com.eps.todoturtle.map.ui.MapView
+import com.eps.todoturtle.note.logic.Location
 import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.shared.logic.forms.ChosenTime
 import com.eps.todoturtle.shared.ui.ClearTextIcon
@@ -104,6 +106,7 @@ fun AddNoteForm(
     viewModel: NotesViewModel,
     @StringRes titleTextId: Int = R.string.add_note_form_title,
 ) {
+    var choosingLocation by remember { mutableStateOf(false) }
     var choosingNotification by remember { mutableStateOf(false) }
     var choosingNotificationTime by remember { mutableStateOf(false) }
     var choosingDeadline by remember { mutableStateOf(false) }
@@ -132,7 +135,7 @@ fun AddNoteForm(
         NoteFormIconTray(
             onAddNotificationClick = { choosingNotification = true },
             onAddDeadlineClick = { choosingDeadline = true },
-            onAddMetadataClick = {},
+            onAddLocationClick = { choosingLocation = true },
             onCloseClick = { onCloseClick(); viewModel.clearNoteFields() },
             onDoneClick = { onDoneClick(); viewModel.addNote() },
         )
@@ -151,7 +154,7 @@ fun AddNoteForm(
         onAddNotificationClick = { chosenTime ->
             choosingNotification = false
             choosingNotificationTime = false
-            viewModel.notificationTime = chosenTime
+            viewModel.noteNotificationTime = chosenTime
         },
         onNextClick = {
             choosingNotificationTime = true
@@ -171,13 +174,50 @@ fun AddNoteForm(
         onAddDeadlineClick = { chosenTime ->
             choosingDeadline = false
             choosingDeadlineTime = false
-            viewModel.deadlineTime = chosenTime
+            viewModel.noteDeadlineTime = chosenTime
         },
         onNextClick = {
             choosingDeadlineTime = true
         },
     )
+
+    AddLocationDialog(
+        choosingLocation = choosingLocation,
+        onDismissRequest = {
+            choosingLocation = false
+        },
+        onCancelClick = {
+            choosingLocation = false
+        },
+        onAddLocationClick = { location ->
+            choosingLocation = false
+            viewModel.noteLocation = location
+        },
+    )
 }
+
+@Composable
+fun AddLocationDialog(
+    choosingLocation: Boolean,
+    onDismissRequest: () -> Unit = {},
+    onCancelClick: () -> Unit = {},
+    onAddLocationClick: (Location) -> Unit = {},
+) {
+    if(!choosingLocation) return
+    Dialog(
+        onDismissRequest = onDismissRequest,
+    ) {
+        Card(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .fillMaxWidth(),
+        ) {
+            MapView {
+            }
+        }
+    }
+}
+
 
 @Composable
 fun AddNotificationDialog(
@@ -387,7 +427,7 @@ fun NoteFormDescriptionTextField(
 fun NoteFormIconTray(
     onAddNotificationClick: () -> Unit,
     onAddDeadlineClick: () -> Unit,
-    onAddMetadataClick: () -> Unit,
+    onAddLocationClick: () -> Unit,
     onCloseClick: () -> Unit,
     onDoneClick: () -> Unit,
 ) {
@@ -408,7 +448,7 @@ fun NoteFormIconTray(
                     imageId = R.drawable.add_deadline_filled,
                 )
             }
-            IconButton(onClick = onAddMetadataClick) {
+            IconButton(onClick = onAddLocationClick) {
                 Icon(
                     Icons.Default.AddCircle,
                     contentDescription = stringResource(id = R.string.more_icon_desc),

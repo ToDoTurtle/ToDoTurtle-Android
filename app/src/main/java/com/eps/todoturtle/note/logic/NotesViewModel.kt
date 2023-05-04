@@ -18,11 +18,12 @@ class NotesViewModel(val noteRepository: NoteRepository) : ViewModel() {
     private val _toDoNotes = getToDoNotes().toMutableStateList()
     private val _doneNotes = getDoneNotes().toMutableStateList()
     private val noteBuilder = NoteBuilder()
+    val noteErrors: MutableStateFlow<Collection<NoteBuildError>> = MutableStateFlow(emptyList())
     var noteTitle = mutableStateOf("")
     var noteDescription = mutableStateOf("")
-    var notificationTime: ChosenTime? = null
-    var deadlineTime: ChosenTime? = null
-    val noteErrors: MutableStateFlow<Collection<NoteBuildError>> = MutableStateFlow(emptyList())
+    var noteNotificationTime: ChosenTime? = null
+    var noteDeadlineTime: ChosenTime? = null
+    var noteLocation: Location? = null
 
     companion object {
         val NoteScreenFactory: ViewModelProvider.Factory = viewModelFactory {
@@ -62,8 +63,8 @@ class NotesViewModel(val noteRepository: NoteRepository) : ViewModel() {
     fun clearNoteFields() {
         noteTitle.value = ""
         noteDescription.value = ""
-        notificationTime = null
-        deadlineTime = null
+        noteNotificationTime = null
+        noteDeadlineTime = null
     }
 
     val toDoNotes: List<BaseNote>
