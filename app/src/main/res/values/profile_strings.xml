@@ -30,4 +30,9 @@
     <string name="profile_login_picture_desc">Login picture</string>
     <string name="profile_wrong_login_desc">Wrong login picture (cross)</string>
     <string name="profile_error_desc">Error icon</string>
+
+    <!--    Sign up strings   -->
+    <string name="profile_sign_up_mail">Mail</string>
+    <string name="profile_sign_up_password">Password</string>
+    <string name="profile_sign_up">Don\'t have an account? Sign up</string>
 </resources>

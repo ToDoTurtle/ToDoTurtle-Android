@@ -1,5 +1,7 @@
 package com.eps.todoturtle.profile.ui.login
 
+import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -7,12 +9,13 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -42,12 +45,13 @@ fun LoginContent(
     onSignInClick: () -> Unit,
     login: (() -> Boolean)? = null,
 ) {
-    val wrongLogin = rememberSaveable { mutableStateOf(false) }
-    val username = rememberSaveable { mutableStateOf("") }
-    val password = rememberSaveable { mutableStateOf("") }
+    var wrongLogin by rememberSaveable { mutableStateOf(false) }
+    var username by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
     val loginMethod = login ?: {
-        username.value == MockValues.USERNAME.getValue() && password.value == MockValues.PASSWORD.getValue()
+        username == MockValues.USERNAME.getValue() && password == MockValues.PASSWORD.getValue()
     }
+    var shouldShowSignUp by rememberSaveable { mutableStateOf(false) }
 
     Spacer(modifier = Modifier.size(20.dp))
     CenteredPicture(
@@ -61,21 +65,25 @@ fun LoginContent(
     UsernameTextField(
         label = R.string.profile_login_username,
         errorMessage = R.string.login_wrong_username_or_password,
-        username = username.value,
-        error = wrongLogin.value,
+        username = username,
+        error = wrongLogin,
     ) {
-        username.value = it
-        wrongLogin.value = false
+        username = it
+        wrongLogin = false
     }
     PasswordTextField(
         label = R.string.profile_login_password,
         errorMessage = R.string.login_wrong_username_or_password,
-        password = password.value,
-        error = wrongLogin.value,
+        password = password,
+        error = wrongLogin,
     ) {
-        password.value = it
-        wrongLogin.value = false
+        password = it
+        wrongLogin = false
     }
+    SignUpText(text = R.string.profile_sign_up) {
+        shouldShowSignUp = true
+    }
+//    if (shouldShowSignUp) SignUpDialog
     Button(
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 5.dp,
@@ -84,10 +92,10 @@ fun LoginContent(
         ),
         onClick = {
             if (loginMethod()) {
-                wrongLogin.value = false
+                wrongLogin = false
                 onSignInClick()
             } else {
-                wrongLogin.value = true
+                wrongLogin = true
             }
         },
     ) {
@@ -96,7 +104,6 @@ fun LoginContent(
     Spacer(modifier = Modifier.size(5.dp))
 }
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun WelcomeMessage() {
     Text(
@@ -115,6 +122,17 @@ fun WelcomeMessage() {
                 append("\n" + stringResource(id = R.string.spaced_app_name))
             }
         },
+    )
+}
+
+@Composable
+fun SignUpText(
+    @StringRes text: Int,
+    onSignInClick: () -> Unit,
+) {
+    Text(
+        text = stringResource(id = text),
+        modifier = Modifier.clickable { onSignInClick() },
     )
 }
 
