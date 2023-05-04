@@ -1,4 +1,4 @@
-package com.eps.todoturtle.profile.ui.signup
+package com.eps.todoturtle.profile.ui.register
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -61,7 +61,6 @@ fun SignUpDialog(
                     password = it
                     passwordError = false
                 }
-                val context = LocalContext.current
                 SignUpButton {
                     if (UserAuth.invalidMail(mail)) {
                         mailError = true
@@ -71,7 +70,7 @@ fun SignUpDialog(
                         passwordError = true
                         return@SignUpButton
                     }
-                    Toast.makeText(context, "Successfull sign up", Toast.LENGTH_SHORT).show()
+                    userAuth.registerUser(mail, password)
                     onDismiss()
                 }
             }
