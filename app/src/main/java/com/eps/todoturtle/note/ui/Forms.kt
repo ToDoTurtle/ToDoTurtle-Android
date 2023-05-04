@@ -77,8 +77,9 @@ fun AddNoteFormDialog(
     onDismissRequest: () -> Unit = {},
     onDoneClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
-    viewModel: NotesViewModel,
+    viewModel: NotesViewModel? = null,
 ) {
+    if (viewModel == null) return
     Dialog(
         onDismissRequest = { onDismissRequest(); viewModel.clearNoteFields() },
     ) {

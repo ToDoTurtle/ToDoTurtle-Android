@@ -29,14 +29,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
 import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.ui.AddNoteFormDialog
+import com.eps.todoturtle.shared.logic.extensions.dataStore
+import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
@@ -65,7 +69,7 @@ fun DeviceScreenLayout(
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
     onNewDeviceAddedOkay: () -> Unit,
     addDevice: () -> Unit,
-    notesViewModel: NotesViewModel,
+    notesViewModel: NotesViewModel? = null,
 ) {
     Scaffold(
         floatingActionButton = { AddDeviceButton(onClick = addDevice) },
@@ -94,7 +98,7 @@ fun AddDeviceButton(onClick: () -> Unit) {
 fun NFCDeviceList(
     devices: List<NFCDevice>,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
-    notesViewModel: NotesViewModel,
+    notesViewModel: NotesViewModel? = null,
 ) {
     LazyColumn(
         modifier = Modifier.padding(4.dp),
@@ -111,7 +115,7 @@ fun NFCDeviceList(
 
 @Composable
 fun NFCDeviceListItem(
-    notesViewModel: NotesViewModel,
+    notesViewModel: NotesViewModel? = null,
     device: NFCDevice,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
 ) {
@@ -128,7 +132,7 @@ fun NFCDeviceListItem(
 
 @Composable
 fun DeviceCard(
-    notesViewModel: NotesViewModel,
+    notesViewModel: NotesViewModel? = null,
     device: NFCDevice,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
 ) {
@@ -215,30 +219,32 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
         }
     }
 }
-//
-// @Preview(showBackground = true)
-// @Composable
-// fun DevicesPreview() {
-//    ToDoTurtleTheme(LocalContext.current.dataStore) {
-//        DeviceScreenLayout(
-//            devices = listOf(
-//                NFCDevice(
-//                    name = "Car",
-//                    description = "My car",
-//                    identifier = "1234567890",
-//                    iconResId = R.drawable.car,
-//                    true,
-//                ),
-//                NFCDevice(
-//                    name = "Kitchen",
-//                    description = "My Kitchen",
-//                    identifier = "1234567890",
-//                    iconResId = R.drawable.headphones,
-//                    false,
-//                ),
-//            ),
-//            false,
-//            {},
-//        ) {}
-//    }
-// }
+
+@Preview(showBackground = true)
+@Composable
+fun DevicesPreview() {
+    ToDoTurtleTheme(LocalContext.current.dataStore) {
+        DeviceScreenLayout(
+            devices = listOf(
+                NFCDevice(
+                    name = "Car",
+                    description = "My car",
+                    identifier = "1234567890",
+                    iconResId = R.drawable.car,
+                    true,
+                ),
+                NFCDevice(
+                    name = "Kitchen",
+                    description = "My Kitchen",
+                    identifier = "1234567890",
+                    iconResId = R.drawable.headphones,
+                    false,
+                ),
+            ),
+            false,
+            @Composable { null },
+            {},
+            {},
+        )
+    }
+}
