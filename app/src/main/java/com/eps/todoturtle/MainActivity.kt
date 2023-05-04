@@ -13,10 +13,14 @@ import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.providers.CameraPermissionProvider
 import com.eps.todoturtle.profile.logic.ProfileViewModel
+import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.shared.logic.extensions.hasCameraPermission
 import com.eps.todoturtle.ui.App
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
@@ -34,6 +38,8 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
     private val currentIcon: Channel<Int> = Channel(UNLIMITED)
     private lateinit var iconDialog: IconDialog
 
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,6 +52,9 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
             ?: IconDialog.newInstance(IconDialogSettings())
         theme.applyStyle(R.style.AppTheme, true)
 
+        auth = Firebase.auth
+        val userAuth = UserAuth(auth)
+
         setContent {
             ToDoTurtleTheme(dataStore) {
                 App(
@@ -57,6 +66,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     profileViewModel = profileViewModel,
                     dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },
+                    userAuth = userAuth,
                 )
             }
         }

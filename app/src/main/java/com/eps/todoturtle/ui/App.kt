@@ -37,6 +37,7 @@ import com.eps.todoturtle.note.logic.NotesViewModelInt
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.profile.logic.ProfileViewModel
+import com.eps.todoturtle.profile.logic.UserAuth
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,6 +51,7 @@ fun App(
     nfcWriteViewModel: NfcWriteViewModel,
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
+    userAuth: UserAuth,
 ) {
     val navController = rememberNavController()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -91,6 +93,7 @@ fun App(
                     dataStore = dataStore,
                     profileViewModel = profileViewModel,
                     hasCameraPermission = { hasCameraPermission() },
+                    userAuth = userAuth,
                 )
             }
         }

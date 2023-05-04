@@ -28,6 +28,7 @@ import com.eps.todoturtle.permissions.logic.RequestPermissionContext
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.preferences.ui.PreferenceUI
 import com.eps.todoturtle.profile.logic.ProfileViewModel
+import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.details.DetailsUI
 import com.eps.todoturtle.profile.ui.login.LoginUI
 
@@ -56,13 +57,14 @@ fun ToDoTurtleNavHost(
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
     modifier: Modifier = Modifier,
+    userAuth: UserAuth,
 ) {
     NavHost(
         navController = navController,
         startDestination = LOGIN,
         modifier = modifier,
     ) {
-        login(navController, shouldShowMenu)
+        login(navController, shouldShowMenu, userAuth)
         profile(
             permissionRequester,
             navController,
@@ -79,14 +81,16 @@ fun ToDoTurtleNavHost(
     }
 }
 
-fun NavGraphBuilder.login(navController: NavHostController, shouldShowMenu: MutableState<Boolean>) {
+fun NavGraphBuilder.login(
+    navController: NavHostController,
+    shouldShowMenu: MutableState<Boolean>,
+    userAuth: UserAuth,
+) {
     composable(LOGIN) {
-        LoginUI(
-            onSignInClick = {
-                navController.navigateFromLogin(NOTES)
-                shouldShowMenu.value = true
-            },
-        )
+        LoginUI(userAuth = userAuth) {
+            navController.navigateFromLogin(NOTES)
+            shouldShowMenu.value = true
+        }
     }
 }
 

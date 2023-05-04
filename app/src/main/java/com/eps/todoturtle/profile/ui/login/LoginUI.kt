@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.mock.MockValues
+import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.shared.CenteredPicture
 import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
@@ -34,15 +35,17 @@ import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 @Composable
 fun LoginUI(
     modifier: Modifier = Modifier,
+    userAuth: UserAuth,
     onSignInClick: () -> Unit,
 ) {
     ProfileUI(modifier = modifier) {
-        LoginContent(onSignInClick)
+        LoginContent(userAuth, onSignInClick)
     }
 }
 
 @Composable
 fun LoginContent(
+    userAuth: UserAuth,
     onSignInClick: () -> Unit,
     login: (() -> Boolean)? = null,
 ) {
@@ -84,7 +87,9 @@ fun LoginContent(
     SignUpText(text = R.string.sign_up) {
         shouldShowSignUp = true
     }
-    if (shouldShowSignUp) SignUpDialog {
+    if (shouldShowSignUp) SignUpDialog(
+        userAuth,
+    ) {
         shouldShowSignUp = false
     }
     Button(
@@ -137,10 +142,4 @@ fun SignUpText(
         text = stringResource(id = text),
         modifier = Modifier.clickable { onSignInClick() },
     )
-}
-
-@Preview
-@Composable
-fun LoginUIPreview() {
-    LoginUI(onSignInClick = { })
 }

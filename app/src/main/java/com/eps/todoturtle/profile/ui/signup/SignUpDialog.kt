@@ -20,11 +20,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
+import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
 
 @Composable
 fun SignUpDialog(
+    userAuth: UserAuth,
     onDismiss: () -> Unit,
 ) {
     var mail by rememberSaveable { mutableStateOf("") }
@@ -61,7 +63,16 @@ fun SignUpDialog(
                 }
                 val context = LocalContext.current
                 SignUpButton {
-                    Toast.makeText(context, "Sign up clicked", Toast.LENGTH_SHORT).show()
+                    if (UserAuth.invalidMail(mail)) {
+                        mailError = true
+                        return@SignUpButton
+                    }
+                    if (UserAuth.invalidPassword(password)) {
+                        passwordError = true
+                        return@SignUpButton
+                    }
+                    Toast.makeText(context, "Successfull sign up", Toast.LENGTH_SHORT).show()
+                    onDismiss()
                 }
             }
         }
