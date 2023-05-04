@@ -475,9 +475,9 @@ fun QuickAddNoteForm(
             labelId = R.string.note_form_title_field,
             onValueChange = { newText -> titleText = newText },
             trailingIcon = {
-                ClearTextIcon(onClick = {
-                    if (titleText.isNotEmpty()) titleText = ""
-                })
+                ClearTextIcon(
+                    onClick = { if (titleText.isNotEmpty()) titleText = "" },
+                )
             },
         )
     }
