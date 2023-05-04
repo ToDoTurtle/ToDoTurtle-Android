@@ -78,6 +78,7 @@ fun AddNoteFormDialog(
     onDoneClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
     viewModel: NotesViewModel? = null,
+    @StringRes titleTextId: Int = R.string.add_note_form_title,
 ) {
     if (viewModel == null) return
     Dialog(
@@ -88,6 +89,7 @@ fun AddNoteFormDialog(
                 onCloseClick = onCloseClick,
                 onDoneClick = onDoneClick,
                 viewModel = viewModel,
+                titleTextId = titleTextId,
             )
         }
     }
@@ -100,6 +102,7 @@ fun AddNoteForm(
     onCloseClick: () -> Unit,
     onDoneClick: () -> Unit,
     viewModel: NotesViewModel,
+    @StringRes titleTextId: Int = R.string.add_note_form_title,
 ) {
     var choosingNotification by remember { mutableStateOf(false) }
     var choosingNotificationTime by remember { mutableStateOf(false) }
@@ -114,7 +117,7 @@ fun AddNoteForm(
             .fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceEvenly,
     ) {
-        NoteFormTitle()
+        NoteFormTitle(titleTextId = titleTextId)
         Spacer(Modifier.height(8.dp))
         NoteFormTitleTextField(
             value = viewModel.noteTitle.value,
@@ -318,9 +321,12 @@ fun DateTimePickerDialog(
 }
 
 @Composable
-fun NoteFormTitle() {
+fun NoteFormTitle(
+    modifier: Modifier = Modifier,
+    @StringRes titleTextId: Int = R.string.add_note_form_title,
+) {
     Text(
-        text = stringResource(id = R.string.add_note_form_title),
+        text = stringResource(titleTextId),
         style = MaterialTheme.typography.headlineSmall.copy(
             color = MaterialTheme.colorScheme.onFormContainer,
             fontWeight = FontWeight.Bold,

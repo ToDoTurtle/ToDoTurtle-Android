@@ -154,6 +154,7 @@ fun DeviceCard(
                 onDoneClick = { inDialog = false },
                 onCloseClick = { inDialog = false },
                 viewModel = notesViewModel,
+                titleTextId = R.string.link_note,
             )
         }
     }
