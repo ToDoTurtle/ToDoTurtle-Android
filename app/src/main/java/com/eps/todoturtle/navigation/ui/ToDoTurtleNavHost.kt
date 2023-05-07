@@ -16,6 +16,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.eps.todoturtle.devices.logic.DevicesViewModel
+import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
+import com.eps.todoturtle.devices.ui.DeviceScreen
+import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.navigation.logic.Destinations
 import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
 import com.eps.todoturtle.devices.ui.DeviceScreen

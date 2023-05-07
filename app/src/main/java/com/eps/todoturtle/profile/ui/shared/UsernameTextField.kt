@@ -1,7 +1,7 @@
 package com.eps.todoturtle.profile.ui.shared
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
@@ -35,19 +35,23 @@ fun UsernameTextField(
         singleLine = true,
         isError = error,
         trailingIcon = {
-            if (error) Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.form_error),
-                contentDescription = stringResource(id = R.string.profile_error_field),
-                tint = MaterialTheme.colorScheme.error,
-            )
+            if (error) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.form_error),
+                    contentDescription = stringResource(id = R.string.profile_error_field),
+                    tint = MaterialTheme.colorScheme.error,
+                )
+            }
         },
         label = { Text(stringResource(id = label)) },
         supportingText = {
-            if (error) Text(
-                modifier = Modifier.fillMaxSize(0.8f),
-                text = errorMessage,
-                color = MaterialTheme.colorScheme.error,
-            )
-        }
+            if (error) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(0.8f),
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        },
     )
 }

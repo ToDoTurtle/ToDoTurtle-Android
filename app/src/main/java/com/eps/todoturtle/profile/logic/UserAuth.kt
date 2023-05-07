@@ -1,14 +1,11 @@
 package com.eps.todoturtle.profile.logic
 
-import android.content.Context
 import android.util.Patterns
-import android.widget.Toast
-import androidx.compose.foundation.gestures.rememberTransformableState
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.tasks.await
 
 class UserAuth(
-    private val context: Context,
     private val auth: FirebaseAuth,
 ) {
     companion object {
@@ -19,13 +16,12 @@ class UserAuth(
             password.length < 8
     }
 
-    fun registerUser(mail: String, password: String) {
-        auth.createUserWithEmailAndPassword(mail, password).addOnFailureListener {
-            Toast.makeText(
-                context,
-                it.message,
-                Toast.LENGTH_SHORT
-            ).show()
+    suspend fun registerUser(mail: String, password: String): Pair<Boolean, String> {
+        return try {
+            auth.createUserWithEmailAndPassword(mail, password).await()
+            true to ""
+        } catch (exception: FirebaseAuthException) {
+            false to exception.message.toString()
         }
     }
 
@@ -33,7 +29,7 @@ class UserAuth(
         return try {
             auth.signInWithEmailAndPassword(mail, password).await()
             return true to ""
-        } catch (exception: Exception) {
+        } catch (exception: FirebaseAuthException) {
             false to exception.message.toString()
         }
     }

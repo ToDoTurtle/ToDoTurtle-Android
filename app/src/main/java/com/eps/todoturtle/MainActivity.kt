@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         theme.applyStyle(R.style.AppTheme, true)
 
         auth = Firebase.auth
-        val userAuth = UserAuth(this.baseContext, auth)
+        val userAuth = UserAuth(auth)
 
         setContent {
             ToDoTurtleTheme(dataStore) {

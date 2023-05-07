@@ -1,6 +1,5 @@
 package com.eps.todoturtle.profile.ui.register
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,10 +8,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,15 +23,17 @@ import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
+import kotlinx.coroutines.launch
 
 @Composable
-fun SignUpDialog(
+fun RegisterDialog(
     userAuth: UserAuth,
     onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
     var mail by rememberSaveable { mutableStateOf("") }
     var mailError by rememberSaveable { mutableStateOf(false) }
+    var errorMessage by rememberSaveable { mutableStateOf(context.getString(R.string.sign_up_mail_error)) }
     var password by rememberSaveable { mutableStateOf("") }
     var passwordError by rememberSaveable { mutableStateOf(false) }
 
@@ -46,7 +48,7 @@ fun SignUpDialog(
             ) {
                 UsernameTextField(
                     label = R.string.sign_up_mail,
-                    errorMessage = stringResource(id = R.string.sign_up_mail_error),
+                    errorMessage = errorMessage,
                     username = mail,
                     error = mailError,
                 ) {
@@ -62,6 +64,7 @@ fun SignUpDialog(
                     password = it
                     passwordError = false
                 }
+                val scope = rememberCoroutineScope()
                 SignUpButton {
                     if (UserAuth.invalidMail(mail)) {
                         mailError = true
@@ -71,8 +74,14 @@ fun SignUpDialog(
                         passwordError = true
                         return@SignUpButton
                     }
-                    userAuth.registerUser(mail, password)
-                    onDismiss()
+                    scope.launch {
+                        val registerResult = userAuth.registerUser(mail, password)
+                        if (registerResult.first) {
+                            errorMessage = registerResult.second
+                        } else {
+                            onDismiss()
+                        }
+                    }
                 }
             }
         }
@@ -81,7 +90,7 @@ fun SignUpDialog(
 
 @Composable
 fun SignUpButton(onClick: () -> Unit) {
-    Button(onClick = {onClick()}) {
+    Button(onClick = { onClick() }) {
         Text(text = stringResource(id = R.string.sign_up_confirm))
     }
 }

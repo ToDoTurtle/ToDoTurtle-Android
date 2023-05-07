@@ -10,10 +10,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,16 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.mock.MockValues
 import com.eps.todoturtle.profile.logic.UserAuth
+import com.eps.todoturtle.profile.ui.register.RegisterDialog
 import com.eps.todoturtle.profile.ui.shared.CenteredPicture
 import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
-import com.eps.todoturtle.profile.ui.register.SignUpDialog
 import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -42,7 +39,7 @@ fun LoginUI(
     onSignInClick: () -> Unit,
 ) {
     ProfileUI(modifier = modifier) {
-        LoginContent(userAuth, onSignInClick)
+        LoginContent(userAuth) { onSignInClick() }
     }
 }
 
@@ -50,9 +47,7 @@ fun LoginUI(
 fun LoginContent(
     userAuth: UserAuth,
     onSignInClick: () -> Unit,
-    login: (() -> Boolean)? = null,
 ) {
-    val context = LocalContext.current
     var wrongLogin by rememberSaveable { mutableStateOf(false) }
     var errorMessage by rememberSaveable { mutableStateOf("") }
     var username by rememberSaveable { mutableStateOf("") }
@@ -87,10 +82,12 @@ fun LoginContent(
     SignUpText(text = R.string.sign_up) {
         shouldShowSignUp = true
     }
-    if (shouldShowSignUp) SignUpDialog(
-        userAuth,
-    ) {
-        shouldShowSignUp = false
+    if (shouldShowSignUp) {
+        RegisterDialog(
+            userAuth,
+        ) {
+            shouldShowSignUp = false
+        }
     }
     val scope = rememberCoroutineScope()
     Button(
