@@ -46,7 +46,7 @@ fun SignUpDialog(
             ) {
                 UsernameTextField(
                     label = R.string.sign_up_mail,
-                    errorMessage = R.string.sign_up_mail_error,
+                    errorMessage = stringResource(id = R.string.sign_up_mail_error),
                     username = mail,
                     error = mailError,
                 ) {
@@ -55,7 +55,7 @@ fun SignUpDialog(
                 }
                 PasswordTextField(
                     label = R.string.sign_up_password,
-                    errorMessage = R.string.sign_up_password_error,
+                    errorMessage = stringResource(id = R.string.sign_up_password_error),
                     password = password,
                     error = passwordError,
                 ) {

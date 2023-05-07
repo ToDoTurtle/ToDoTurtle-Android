@@ -54,11 +54,9 @@ fun LoginContent(
 ) {
     val context = LocalContext.current
     var wrongLogin by rememberSaveable { mutableStateOf(false) }
+    var errorMessage by rememberSaveable { mutableStateOf("") }
     var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
-    val loginMethod = login ?: {
-        username == MockValues.USERNAME.getValue() && password == MockValues.PASSWORD.getValue()
-    }
     var shouldShowSignUp by rememberSaveable { mutableStateOf(false) }
 
     Spacer(modifier = Modifier.size(20.dp))
@@ -72,7 +70,7 @@ fun LoginContent(
     WelcomeMessage()
     UsernameTextField(
         label = R.string.profile_login_username,
-        errorMessage = R.string.login_wrong_username_or_password,
+        errorMessage = errorMessage,
         username = username,
         error = wrongLogin,
     ) {
@@ -81,9 +79,7 @@ fun LoginContent(
     }
     PasswordTextField(
         label = R.string.profile_login_password,
-        errorMessage = R.string.login_wrong_username_or_password,
         password = password,
-        error = wrongLogin,
     ) {
         password = it
         wrongLogin = false
@@ -108,6 +104,7 @@ fun LoginContent(
                 val loginResult = userAuth.login(username, password)
                 if (!loginResult.first) {
                     wrongLogin = true
+                    errorMessage = loginResult.second
                 } else {
                     onSignInClick()
                 }
