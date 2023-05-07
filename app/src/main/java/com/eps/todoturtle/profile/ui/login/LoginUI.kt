@@ -96,6 +96,7 @@ fun LoginContent(
     ) {
         shouldShowSignUp = false
     }
+    val scope = rememberCoroutineScope()
     Button(
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 5.dp,
@@ -103,7 +104,14 @@ fun LoginContent(
             disabledElevation = 0.dp,
         ),
         onClick = {
-            wrongLogin = userAuth.login(username, password)
+            scope.launch {
+                val loginResult = userAuth.login(username, password)
+                if (!loginResult.first) {
+                    wrongLogin = true
+                } else {
+                    onSignInClick()
+                }
+            }
         },
     ) {
         Text(text = stringResource(id = R.string.profile_sign_in))

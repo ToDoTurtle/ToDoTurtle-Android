@@ -29,14 +29,13 @@ class UserAuth(
         }
     }
 
-    fun login(mail: String, password: String): Boolean {
-        return auth.signInWithEmailAndPassword(mail, password).addOnFailureListener {
-            Toast.makeText(
-                context,
-                it.message,
-                Toast.LENGTH_SHORT
-            ).show()
-        }.isSuccessful
+    suspend fun login(mail: String, password: String): Pair<Boolean, String> {
+        return try {
+            auth.signInWithEmailAndPassword(mail, password).await()
+            return true to ""
+        } catch (exception: Exception) {
+            false to exception.message.toString()
+        }
     }
 
     fun isLoggedIn(): Boolean = auth.currentUser != null
