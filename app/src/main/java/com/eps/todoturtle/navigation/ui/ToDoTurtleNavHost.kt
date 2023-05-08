@@ -23,6 +23,7 @@ import com.eps.todoturtle.navigation.logic.Destinations
 import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
 import com.eps.todoturtle.devices.ui.DeviceScreen
 import com.eps.todoturtle.invite.ui.InviteUI
+import com.eps.todoturtle.navigation.logic.DEVICE_WRITE_SUCCESSFUL_PARAMETER
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.note.logic.NotesViewModelInt
@@ -127,9 +128,9 @@ fun NavGraphBuilder.devices(
 ) {
     composable(
         Destinations.DEVICES.route,
-        arguments = listOf(navArgument(Destinations.DEVICES_WRITE_SUCCESSFUL_PARAM.route) { type = NavType.BoolType }),
+        arguments = listOf(navArgument(DEVICE_WRITE_SUCCESSFUL_PARAMETER) { type = NavType.BoolType }),
     ) {
-        val newDeviceAdded = it.arguments?.getBoolean(Destinations.DEVICES_WRITE_SUCCESSFUL_PARAM.route) ?: false
+        val newDeviceAdded = it.arguments?.getBoolean(DEVICE_WRITE_SUCCESSFUL_PARAMETER) ?: false
         DeviceScreen(
             devicesViewModel = devicesViewModel,
             noteScreenViewModel = deviceScreenNoteViewModel,

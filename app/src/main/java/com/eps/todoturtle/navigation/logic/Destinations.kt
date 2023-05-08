@@ -1,5 +1,7 @@
 package com.eps.todoturtle.navigation.logic
 
+const val DEVICE_WRITE_SUCCESSFUL_PARAMETER = "write_successful"
+
 enum class Destinations(val route: String) {
     LOGIN("login"),
     PROFILE("profile"),
@@ -7,8 +9,7 @@ enum class Destinations(val route: String) {
     SETTINGS("settings"),
     WRITE_DEVICE("write_device"),
     INVITE("invite"),
-    DEVICES_WRITE_SUCCESSFUL_PARAM("write_successful"),
-    DEVICES("devices/{$DEVICES_WRITE_SUCCESSFUL_PARAM}"),
+    DEVICES("DEVICES/{$DEVICE_WRITE_SUCCESSFUL_PARAMETER}"),
     DEVICES_WRITE_SUCCESSFUL("devices/true"),
     DEVICES_NORMAL("devices/false"),
     DEVICE_CONFIGURATION("device_configuration"),
