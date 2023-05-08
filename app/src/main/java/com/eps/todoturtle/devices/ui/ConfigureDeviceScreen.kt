@@ -1,6 +1,5 @@
 package com.eps.todoturtle.nfc.ui
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,9 +33,9 @@ fun DeviceConfigurationScreen(
 ) {
     val deviceSaved by devicesViewModel.deviceCreated.collectAsStateWithLifecycle(initialValue = null)
 //    if (deviceSaved == null)
-        DeviceForm(devicesViewModel = devicesViewModel)
+    DeviceForm(devicesViewModel = devicesViewModel)
 //    else
-        deviceSaved?.let { onDeviceSaved(it) }
+    deviceSaved?.let { onDeviceSaved(it) }
 }
 
 @Composable

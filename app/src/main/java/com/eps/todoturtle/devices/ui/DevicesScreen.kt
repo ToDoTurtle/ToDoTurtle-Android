@@ -2,6 +2,8 @@ package com.eps.todoturtle.nfc.ui
 
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -38,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
+import com.eps.todoturtle.devices.ui.BottomSheet
 import com.eps.todoturtle.note.ui.AddNoteFormDialog
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
@@ -105,13 +108,18 @@ fun NFCDeviceList(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NFCDeviceListItem(device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> Drawable?) {
+    val showBottomSheet = rememberSaveable { mutableStateOf(false) }
     Card(
-        modifier = Modifier.padding(4.dp),
+        modifier = Modifier.padding(4.dp).combinedClickable(onLongClick = {
+            showBottomSheet.value = true
+        }){  },
     ) {
         DeviceCard(device = device, iconToDrawableConverter)
     }
+    BottomSheet(showBottomSheet)
 }
 
 @Composable
