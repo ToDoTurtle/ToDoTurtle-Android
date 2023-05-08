@@ -21,7 +21,7 @@ import com.eps.todoturtle.devices.ui.DeviceScreen
 import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.WriteDevice
-import com.eps.todoturtle.note.logic.NotesViewModel
+import com.eps.todoturtle.note.logic.NotesViewModelInt
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
@@ -48,9 +48,9 @@ fun ToDoTurtleNavHost(
     navController: NavHostController,
     permissionRequester: PermissionRequester,
     shouldShowMenu: MutableState<Boolean>,
-    noteScreenViewModel: NotesViewModel,
+    noteScreenViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
-    deviceScreenNoteViewModel: NotesViewModel,
+    deviceScreenNoteViewModel: NotesViewModelInt,
     devicesViewModel: DevicesViewModel,
     nfcWriteViewModel: NfcWriteViewModel,
     dataStore: DataStore<AppPreferences>,
@@ -112,7 +112,7 @@ fun NavGraphBuilder.profile(
     }
 }
 
-fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModel) {
+fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModelInt) {
     composable(NOTES) {
         NoteScreen(
             viewModel = noteScreenViewModel,
@@ -123,7 +123,7 @@ fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModel) {
 fun NavGraphBuilder.devices(
     navController: NavHostController,
     devicesViewModel: DevicesViewModel,
-    deviceScreenNoteViewModel: NotesViewModel,
+    deviceScreenNoteViewModel: NotesViewModelInt,
 ) {
     composable(
         DEVICES,
@@ -155,7 +155,7 @@ fun NavGraphBuilder.deviceConfiguration(
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
-    noteScreenViewModel: NotesViewModel,
+    noteScreenViewModel: NotesViewModelInt,
     navController: NavHostController,
     newDeviceAdded: Boolean = false,
 ) {

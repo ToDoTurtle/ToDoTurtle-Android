@@ -4,7 +4,7 @@ import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePickerState
 
-data class ChosenTime(
+data class Timestamp(
     val date: Long,
     val hour: Int,
     val minute: Int,
@@ -14,8 +14,8 @@ data class ChosenTime(
         fun fromStates(
             datePickerState: DatePickerState,
             timePickerState: TimePickerState,
-        ): ChosenTime {
-            return ChosenTime(
+        ): Timestamp {
+            return Timestamp(
                 date = datePickerState.selectedDateMillis!!,
                 hour = timePickerState.hour,
                 minute = timePickerState.minute,

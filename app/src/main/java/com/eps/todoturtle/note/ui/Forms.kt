@@ -48,8 +48,8 @@ import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
 import com.eps.todoturtle.map.ui.MapView
 import com.eps.todoturtle.note.logic.Location
-import com.eps.todoturtle.note.logic.NotesViewModel
-import com.eps.todoturtle.shared.logic.forms.ChosenTime
+import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.shared.logic.forms.Timestamp
 import com.eps.todoturtle.shared.ui.ClearTextIcon
 import com.eps.todoturtle.shared.ui.FormOutlinedTextField
 import com.eps.todoturtle.shared.ui.FormTextField
@@ -79,10 +79,9 @@ fun AddNoteFormDialog(
     onDismissRequest: () -> Unit = {},
     onDoneClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
-    viewModel: NotesViewModel? = null,
+    viewModel: NotesViewModelInt,
     @StringRes titleTextId: Int = R.string.add_note_form_title,
 ) {
-    if (viewModel == null) return
     Dialog(
         onDismissRequest = { onDismissRequest(); viewModel.clearNoteFields() },
     ) {
@@ -99,19 +98,19 @@ fun AddNoteFormDialog(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AddNoteForm(
+fun AddNoteFormBody(
     modifier: Modifier = Modifier,
+    @StringRes titleTextId: Int,
+    titleValue: String,
+    onTitleValueChange: (String) -> Unit,
+    descriptionValue: String,
+    onDescriptionValueChange: (String) -> Unit,
+    onAddNotificationClick: () -> Unit,
+    onAddDeadlineClick: () -> Unit,
+    onAddLocationClick: () -> Unit,
     onCloseClick: () -> Unit,
     onDoneClick: () -> Unit,
-    viewModel: NotesViewModel,
-    @StringRes titleTextId: Int = R.string.add_note_form_title,
 ) {
-    var choosingLocation by remember { mutableStateOf(false) }
-    var choosingNotification by remember { mutableStateOf(false) }
-    var choosingNotificationTime by remember { mutableStateOf(false) }
-    var choosingDeadline by remember { mutableStateOf(false) }
-    var choosingDeadlineTime by remember { mutableStateOf(false) }
-
     val (titleFocusRequester, descriptionFocusRequester) = remember { FocusRequester.createRefs() }
 
     Column(
@@ -123,23 +122,51 @@ fun AddNoteForm(
         NoteFormTitle(titleTextId = titleTextId)
         Spacer(Modifier.height(8.dp))
         NoteFormTitleTextField(
-            value = viewModel.noteTitle.value,
-            onValueChange = { viewModel.noteTitle.value = it },
+            value = titleValue,
+            onValueChange = { onTitleValueChange(it) },
             focusRequester = titleFocusRequester,
         )
         NoteFormDescriptionTextField(
-            value = viewModel.noteDescription.value,
-            onValueChange = { viewModel.noteDescription.value = it },
+            value = descriptionValue,
+            onValueChange = { onDescriptionValueChange(it) },
             focusRequester = descriptionFocusRequester,
         )
         NoteFormIconTray(
-            onAddNotificationClick = { choosingNotification = true },
-            onAddDeadlineClick = { choosingDeadline = true },
-            onAddLocationClick = { choosingLocation = true },
-            onCloseClick = { onCloseClick(); viewModel.clearNoteFields() },
-            onDoneClick = { onDoneClick(); viewModel.addNote() },
+            onAddNotificationClick = onAddNotificationClick,
+            onAddDeadlineClick = onAddDeadlineClick,
+            onAddLocationClick = onAddLocationClick,
+            onCloseClick = onCloseClick,
+            onDoneClick = onDoneClick,
         )
     }
+}
+
+@Composable
+fun AddNoteForm(
+    modifier: Modifier = Modifier,
+    onCloseClick: () -> Unit,
+    onDoneClick: () -> Unit,
+    viewModel: NotesViewModelInt,
+    @StringRes titleTextId: Int = R.string.add_note_form_title,
+) {
+    var choosingLocation by remember { mutableStateOf(false) }
+    var choosingNotification by remember { mutableStateOf(false) }
+    var choosingNotificationTime by remember { mutableStateOf(false) }
+    var choosingDeadline by remember { mutableStateOf(false) }
+    var choosingDeadlineTime by remember { mutableStateOf(false) }
+
+    AddNoteFormBody(
+        titleTextId = titleTextId,
+        titleValue = viewModel.noteTitle.value,
+        onTitleValueChange = { viewModel.noteTitle.value = it },
+        descriptionValue = viewModel.noteDescription.value,
+        onDescriptionValueChange = { viewModel.noteDescription.value = it },
+        onAddNotificationClick = { choosingNotification = true },
+        onAddDeadlineClick = { choosingDeadline = true },
+        onAddLocationClick = { choosingLocation = true },
+        onCloseClick = { onCloseClick(); viewModel.clearNoteFields() },
+        onDoneClick = { onDoneClick(); viewModel.addNote() },
+    )
 
     AddNotificationDialog(
         choosingDate = choosingNotification,
@@ -203,7 +230,7 @@ fun AddLocationDialog(
     onCancelClick: () -> Unit = {},
     onAddLocationClick: (Location) -> Unit = {},
 ) {
-    if(!choosingLocation) return
+    if (!choosingLocation) return
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
@@ -218,7 +245,6 @@ fun AddLocationDialog(
     }
 }
 
-
 @Composable
 fun AddNotificationDialog(
     modifier: Modifier = Modifier,
@@ -226,7 +252,7 @@ fun AddNotificationDialog(
     choosingTime: Boolean,
     onDismissRequest: () -> Unit = {},
     onBackClick: () -> Unit = {},
-    onAddNotificationClick: (ChosenTime) -> Unit = {},
+    onAddNotificationClick: (Timestamp) -> Unit = {},
     onNextClick: () -> Unit = {},
 ) {
     DateTimePickerDialog(
@@ -248,7 +274,7 @@ fun AddDeadlineDialog(
     choosingTime: Boolean,
     onDismissRequest: () -> Unit = {},
     onBackClick: () -> Unit = {},
-    onAddDeadlineClick: (ChosenTime) -> Unit = {},
+    onAddDeadlineClick: (Timestamp) -> Unit = {},
     onNextClick: () -> Unit = {},
 ) {
     DateTimePickerDialog(
@@ -320,7 +346,7 @@ fun DateTimePickerDialog(
     choosingTime: Boolean,
     onDismissRequest: () -> Unit = {},
     onBackClick: () -> Unit = {},
-    onConfirmClick: (ChosenTime) -> Unit = {},
+    onConfirmClick: (Timestamp) -> Unit = {},
     onNextClick: () -> Unit = {},
     @StringRes confirmationRequestTextId: Int,
 ) {
@@ -340,7 +366,7 @@ fun DateTimePickerDialog(
                     ConfirmDateTimeButton(
                         confirmationRequestTextId = confirmationRequestTextId,
                         onClick = {
-                            onConfirmClick(ChosenTime.fromStates(datePickerState, timePickerState))
+                            onConfirmClick(Timestamp.fromStates(datePickerState, timePickerState))
                         },
                     )
                 }

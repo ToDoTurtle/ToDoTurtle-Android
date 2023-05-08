@@ -37,7 +37,8 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
-import com.eps.todoturtle.note.logic.NotesViewModel
+import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.StubNotesViewModel
 import com.eps.todoturtle.note.ui.AddNoteFormDialog
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
@@ -47,7 +48,7 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
-    notesViewModel: NotesViewModel,
+    notesViewModel: NotesViewModelInt,
     newDeviceAdded: Boolean = false,
     onNewDeviceAddedOkay: () -> Unit = {},
     onAddDevice: () -> Unit = {},
@@ -69,7 +70,7 @@ fun DeviceScreenLayout(
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
     onNewDeviceAddedOkay: () -> Unit,
     addDevice: () -> Unit,
-    notesViewModel: NotesViewModel? = null,
+    notesViewModel: NotesViewModelInt,
 ) {
     Scaffold(
         floatingActionButton = { AddDeviceButton(onClick = addDevice) },
@@ -98,7 +99,7 @@ fun AddDeviceButton(onClick: () -> Unit) {
 fun NFCDeviceList(
     devices: List<NFCDevice>,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
-    notesViewModel: NotesViewModel? = null,
+    notesViewModel: NotesViewModelInt,
 ) {
     LazyColumn(
         modifier = Modifier.padding(4.dp),
@@ -115,7 +116,7 @@ fun NFCDeviceList(
 
 @Composable
 fun NFCDeviceListItem(
-    notesViewModel: NotesViewModel? = null,
+    notesViewModel: NotesViewModelInt,
     device: NFCDevice,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
 ) {
@@ -132,7 +133,7 @@ fun NFCDeviceListItem(
 
 @Composable
 fun DeviceCard(
-    notesViewModel: NotesViewModel? = null,
+    notesViewModel: NotesViewModelInt,
     device: NFCDevice,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
 ) {
@@ -246,6 +247,7 @@ fun DevicesPreview() {
             @Composable { null },
             {},
             {},
+            StubNotesViewModel(),
         )
     }
 }

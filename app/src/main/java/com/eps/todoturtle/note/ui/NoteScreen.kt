@@ -13,11 +13,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.eps.todoturtle.note.logic.NotesViewModel
+import com.eps.todoturtle.note.logic.NotesViewModelInt
 
 @Composable
 fun NoteScreen(
-    viewModel: NotesViewModel,
+    viewModel: NotesViewModelInt,
 ) {
     var inHistory by rememberSaveable { mutableStateOf(false) }
     var isFormVisible by rememberSaveable { mutableStateOf(false) }
@@ -55,7 +55,7 @@ fun NoteScreen(
 
 @Composable
 fun NoteScreenHeadline(
-    viewModel: NotesViewModel,
+    viewModel: NotesViewModelInt,
     inHistory: Boolean,
     onHistoryToggle: () -> Unit,
 ) {

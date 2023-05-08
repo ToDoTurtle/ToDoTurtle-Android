@@ -2,7 +2,7 @@ package com.eps.todoturtle.note.logic
 
 import androidx.compose.runtime.mutableStateOf
 import com.eps.todoturtle.shared.logic.extensions.isTooLong
-import com.eps.todoturtle.shared.logic.forms.ChosenTime
+import com.eps.todoturtle.shared.logic.forms.Timestamp
 
 sealed class NoteBuildResult {
     data class Success(val note: Note) : NoteBuildResult()
@@ -12,8 +12,8 @@ sealed class NoteBuildResult {
 class NoteBuilder {
     var title = mutableStateOf("")
     var description = mutableStateOf("")
-    var notificationTime: ChosenTime? = null
-    var deadlineTime: ChosenTime? = null
+    var notificationTime: Timestamp? = null
+    var deadlineTime: Timestamp? = null
 
     fun build(): NoteBuildResult {
         val errors: MutableList<NoteBuildError> = mutableListOf()
