@@ -32,6 +32,10 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
     private val deviceCreator: Channel<NFCDevice> = Channel()
     val deviceCreated: Flow<NFCDevice> = deviceCreator.receiveAsFlow()
 
+    fun delete(device: NFCDevice) {
+        repository.remove(device)
+    }
+
     fun getDevices(): SnapshotStateList<NFCDevice> = repository.getAll()
 
     private fun setIconSelection(iconSelection: () -> Unit) {

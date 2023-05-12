@@ -12,18 +12,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,11 +34,14 @@ import androidx.compose.ui.unit.sp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.NFCDevice
 import com.eps.todoturtle.nfc.ui.DeviceIcon
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(openState: MutableState<Boolean>, bottomSheetState: SheetState, composable: @Composable () -> Unit) {
+fun BottomSheet(
+    openState: MutableState<Boolean>,
+    bottomSheetState: SheetState,
+    composable: @Composable () -> Unit
+) {
     var openBottomSheet by rememberSaveable { openState }
     if (openBottomSheet) {
         ModalBottomSheet(
@@ -57,7 +57,9 @@ fun BottomSheet(openState: MutableState<Boolean>, bottomSheetState: SheetState, 
 fun deviceMenu(
     device: NFCDevice,
     drawableConverter: @Composable (Int) -> Drawable?,
-    onCloseListener: () -> Unit
+    onEditListener: (NFCDevice) -> Unit = {},
+    onDeleteListener: (NFCDevice) -> Unit = {},
+    onCloseListener: () -> Unit = {}
 ): @Composable () -> Unit {
     return {
         Column(
@@ -66,10 +68,14 @@ fun deviceMenu(
                 .padding(vertical = 8.dp)
         ) {
             NoteCardInfo(device = device, drawableConverter)
-            optionMenu(icon = Icons.Filled.Edit, text = "Edit") {
-            }
-            optionMenu(icon = Icons.Filled.Delete, text = "Delete") {
-            }
+            optionMenu(
+                icon = Icons.Filled.Edit,
+                text = "Edit",
+                onEditClicked = { onEditListener(device) })
+            optionMenu(
+                icon = Icons.Filled.Delete,
+                text = "Delete",
+                onEditClicked = { onDeleteListener(device) })
             optionMenu(icon = Icons.Filled.Close, text = "Close", onEditClicked = onCloseListener)
         }
     }

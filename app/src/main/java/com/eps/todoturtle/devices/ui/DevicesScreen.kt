@@ -28,7 +28,6 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -64,6 +63,8 @@ fun DeviceScreen(
         devices = devicesViewModel.getDevices(),
         newDeviceAdded,
         @Composable { id: Int -> devicesViewModel.getDrawable(id) },
+        { },
+        {device -> devicesViewModel.delete(device) },
         onNewDeviceAddedOkay,
         onAddDevice,
     )
@@ -74,8 +75,10 @@ fun DeviceScreenLayout(
     devices: Collection<NFCDevice>,
     newDeviceAdded: Boolean,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
-    onNewDeviceAddedOkay: () -> Unit,
-    addDevice: () -> Unit,
+    onEditListener: (NFCDevice) -> Unit = {},
+    onDeleteListener: (NFCDevice) -> Unit = {},
+    onNewDeviceAddedOkay: () -> Unit = {},
+    addDevice: () -> Unit = {},
 ) {
     Scaffold(
         floatingActionButton = { AddDeviceButton(onClick = addDevice) },
@@ -85,7 +88,12 @@ fun DeviceScreenLayout(
             }
         },
     ) {
-        NFCDeviceList(devices.toList(), iconToDrawableConverter)
+        NFCDeviceList(
+            devices.toList(),
+            onEditListener,
+            onDeleteListener,
+            iconToDrawableConverter
+        )
     }
 }
 
@@ -103,20 +111,32 @@ fun AddDeviceButton(onClick: () -> Unit) {
 @Composable
 fun NFCDeviceList(
     devices: List<NFCDevice>,
+    onEditListener: (NFCDevice) -> Unit,
+    onDeleteListener: (NFCDevice) -> Unit,
     iconToDrawableConverter: @Composable (Int) -> Drawable?
 ) {
     LazyColumn(
         modifier = Modifier.padding(4.dp),
     ) {
         items(devices.size) { index ->
-            NFCDeviceListItem(device = devices[index], iconToDrawableConverter)
+            NFCDeviceListItem(
+                device = devices[index],
+                onEditListener,
+                onDeleteListener,
+                iconToDrawableConverter
+            )
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun NFCDeviceListItem(device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> Drawable?) {
+fun NFCDeviceListItem(
+    device: NFCDevice,
+    onEditListener: (NFCDevice) -> Unit,
+    onDeleteListener: (NFCDevice) -> Unit,
+    iconToDrawableConverter: @Composable (Int) -> Drawable?
+) {
     val showBottomSheet = rememberSaveable { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
@@ -129,15 +149,22 @@ fun NFCDeviceListItem(device: NFCDevice, iconToDrawableConverter: @Composable (I
     ) {
         DeviceCard(device = device, iconToDrawableConverter)
     }
-    BottomSheet(showBottomSheet, bottomSheetState, deviceMenu(drawableConverter = iconToDrawableConverter, device = device) {
-        scope.launch {
-            bottomSheetState.hide()
-        }.invokeOnCompletion {
-            if (!bottomSheetState.isVisible) {
-                showBottomSheet.value = false
-            }
-        }
-    })
+    BottomSheet(
+        showBottomSheet, bottomSheetState, deviceMenu(
+            drawableConverter = iconToDrawableConverter, device = device,
+            onEditListener = onEditListener,
+            onDeleteListener = onDeleteListener,
+            onCloseListener = {
+                scope.launch {
+                    bottomSheetState.hide()
+                }.invokeOnCompletion {
+                    if (!bottomSheetState.isVisible) {
+                        showBottomSheet.value = false
+                    }
+                }
+            },
+        )
+    )
 }
 
 @Composable
