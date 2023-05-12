@@ -102,4 +102,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // Logic
+    implementation 'org.eps:todoturtle:1.0-SNAPSHOT'
 }
