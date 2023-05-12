@@ -1,12 +1,21 @@
 package com.eps.todoturtle.devices.infra
 
+import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DeviceRepository
 import com.eps.todoturtle.devices.logic.NFCDevice
 import okhttp3.internal.toImmutableList
 
-class InMemoryDeviceRepository: DeviceRepository {
+class InMemoryDeviceRepository : DeviceRepository {
 
-    private val devices = mutableListOf<NFCDevice>()
+    private val devices = mutableListOf<NFCDevice>(
+        NFCDevice(
+            name = "Test",
+            description = "Dummy Description",
+            identifier = "fakeidentifier",
+            iconResId = R.drawable.car,
+            configured = false
+        )
+    )
 
     override suspend fun getAll(): Collection<NFCDevice> = devices.toImmutableList()
 

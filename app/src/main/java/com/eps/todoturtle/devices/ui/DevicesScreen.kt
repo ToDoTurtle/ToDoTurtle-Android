@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,9 +26,12 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,11 +45,13 @@ import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
 import com.eps.todoturtle.devices.ui.BottomSheet
+import com.eps.todoturtle.devices.ui.deviceMenu
 import com.eps.todoturtle.note.ui.AddNoteFormDialog
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import kotlinx.coroutines.launch
 
 @Composable
 fun DeviceScreen(
@@ -108,18 +114,30 @@ fun NFCDeviceList(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun NFCDeviceListItem(device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> Drawable?) {
     val showBottomSheet = rememberSaveable { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
     Card(
-        modifier = Modifier.padding(4.dp).combinedClickable(onLongClick = {
-            showBottomSheet.value = true
-        }){  },
+        modifier = Modifier
+            .padding(4.dp)
+            .combinedClickable(onLongClick = {
+                showBottomSheet.value = true
+            }) { },
     ) {
         DeviceCard(device = device, iconToDrawableConverter)
     }
-    BottomSheet(showBottomSheet)
+    BottomSheet(showBottomSheet, bottomSheetState, deviceMenu(drawableConverter = iconToDrawableConverter, device = device) {
+        scope.launch {
+            bottomSheetState.hide()
+        }.invokeOnCompletion {
+            if (!bottomSheetState.isVisible) {
+                showBottomSheet.value = false
+            }
+        }
+    })
 }
 
 @Composable
