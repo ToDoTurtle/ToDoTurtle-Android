@@ -15,8 +15,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.eps.todoturtle.invite.ui.InviteUI
+import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION
+import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAM
+import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAMS
 import com.eps.todoturtle.devices.logic.DevicesViewModel
+import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.DeviceConfigurationScreen
 import com.eps.todoturtle.nfc.ui.DeviceScreen
@@ -41,7 +44,6 @@ private const val DEVICES_WRITE_SUCCESSFUL_PARAM = "write_successful"
 private const val DEVICES = "devices/{$DEVICES_WRITE_SUCCESSFUL_PARAM}"
 const val DEVICES_WRITE_SUCCESSFUL = "devices/true"
 const val DEVICES_NORMAL = "devices/false"
-private const val DEVICE_CONFIGURATION = "device_configuration"
 
 @Composable
 fun ToDoTurtleNavHost(
@@ -135,9 +137,13 @@ fun NavGraphBuilder.deviceConfiguration(
 ) {
     composable(
         DEVICE_CONFIGURATION,
+        arguments = listOf(navArgument(DEVICE_CONFIGURATION_PARAM) { type = NavType.StringType }),
     ) {
-        DeviceConfigurationScreen(devicesViewModel) {
-            navController.navigateSingleTopTo(DEVICES_WRITE_SUCCESSFUL)
+        val configurationType = DEVICE_CONFIGURATION_PARAMS.fromString(it.arguments?.getString(DEVICE_CONFIGURATION_PARAM))
+        configurationType?.let {
+            DeviceConfigurationScreen(devicesViewModel, it) {
+                navController.navigateSingleTopTo(DEVICES_WRITE_SUCCESSFUL)
+            }
         }
     }
 }
@@ -152,6 +158,17 @@ fun DeviceScreen(
     DeviceScreen(
         devicesViewModel = devicesViewModel,
         newDeviceAdded = deviceAdded,
+        onEditDevice = {
+            navController.navigate(DEVICE_CONFIGURATION_PARAMS.EDIT.getUri()) {
+                navController.graph.startDestinationRoute?.let { _ ->
+                    popUpTo(DEVICES_NORMAL) {
+                        saveState = true
+                    }
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        },
         onNewDeviceAddedOkay = { deviceAdded = false },
         onAddDevice = {
             navController.navigate(WRITE_DEVICE) {
@@ -189,7 +206,7 @@ fun NavGraphBuilder.writeDevice(
             },
             onWriteSuccessful = {
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(DEVICE_CONFIGURATION)
+                navController.navigateSingleTopTo(DEVICE_CONFIGURATION_PARAMS.NEW.getUri())
             },
         )
     }

@@ -1,5 +1,6 @@
 package com.eps.todoturtle.devices.logic
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
 sealed class DeviceBuildResult {
@@ -7,14 +8,19 @@ sealed class DeviceBuildResult {
     data class Failure(val errors: Collection<DeviceBuildError>) : DeviceBuildResult()
 }
 
-class DeviceBuilder {
-    var identifier: String = ""
-    var name = mutableStateOf("")
-    var description = mutableStateOf("")
-    var iconResId: Int? = null
-    private val configured: Boolean = false
+class DeviceBuilder(
+    var identifier: String,
+    var name: MutableState<String> = mutableStateOf(""),
+    var description: MutableState<String> = mutableStateOf(""),
+    var iconResId: Int? = null,
+    private val configured: Boolean = false,
+) {
+
+    private var alreadyBuild: Boolean = false
 
     fun build(): DeviceBuildResult {
+        if (alreadyBuild)
+            throw Error("Programming Error: Building a Device 2 times with the same builder")
         val errors: MutableList<DeviceBuildError> = mutableListOf()
         if (name.value.isBlank() || name.value.isEmpty())
             errors.add(DeviceBuildError.NAME_EMPTY)
@@ -24,15 +30,9 @@ class DeviceBuilder {
             errors.add(DeviceBuildError.NON_ICON)
         if (errors.isNotEmpty()) return DeviceBuildResult.Failure(errors)
         val device =
-            NFCDevice(name.value, description.value, identifier, iconResId!!, configured)
+            NFCDevice(name.value, description.value, identifier!!, iconResId!!, configured)
+        alreadyBuild = true
         return DeviceBuildResult.Success(device)
-    }
-
-    fun clean() {
-        identifier = ""
-        name = mutableStateOf("")
-        description = mutableStateOf("")
-        iconResId = null
     }
 
 }

@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAMS
 import com.eps.todoturtle.devices.logic.DeviceBuildError
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
@@ -29,17 +30,16 @@ import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 @Composable
 fun DeviceConfigurationScreen(
     devicesViewModel: DevicesViewModel,
+    configuration: DEVICE_CONFIGURATION_PARAMS,
     onDeviceSaved: (NFCDevice) -> Unit
 ) {
     val deviceSaved by devicesViewModel.deviceCreated.collectAsStateWithLifecycle(initialValue = null)
-//    if (deviceSaved == null)
-    DeviceForm(devicesViewModel = devicesViewModel)
-//    else
+    DeviceForm(devicesViewModel = devicesViewModel, configuration)
     deviceSaved?.let { onDeviceSaved(it) }
 }
 
 @Composable
-fun DeviceForm(devicesViewModel: DevicesViewModel) {
+fun DeviceForm(devicesViewModel: DevicesViewModel, configuration: DEVICE_CONFIGURATION_PARAMS) {
     val errors by devicesViewModel.deviceErrors.collectAsStateWithLifecycle()
     val iconError: Boolean = errors.contains(DeviceBuildError.NON_ICON)
     val nameError: Boolean = errors.contains(DeviceBuildError.NAME_EMPTY)
@@ -55,7 +55,12 @@ fun DeviceForm(devicesViewModel: DevicesViewModel) {
         DeviceNameChooser(deviceName, nameError) { deviceName = it }
         DescriptionChooser(description, descriptionError) { description = it }
         IconChooser { devicesViewModel.showIconSelection() }
-        SaveButton { devicesViewModel.saveDevice() }
+        SaveButton {
+            when (configuration) {
+                DEVICE_CONFIGURATION_PARAMS.NEW -> devicesViewModel.saveDevice()
+                DEVICE_CONFIGURATION_PARAMS.EDIT -> devicesViewModel.updateDevice()
+            }
+        }
     }
 }
 
