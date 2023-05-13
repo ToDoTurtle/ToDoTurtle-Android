@@ -116,7 +116,19 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
     }
 
     fun updateDevice() {
-        TODO("Not yet implemented")
+        when (val result = deviceBuilder.build()) {
+            is DeviceBuildResult.Success -> {
+                runBlocking(Dispatchers.IO) {
+                    repository.remove(result.device)
+                    repository.add(result.device)
+                    deviceCreator.send(result.device)
+                }
+                deviceBuilder = DeviceBuilder(UUID.randomUUID().toString())
+            }
+            is DeviceBuildResult.Failure -> {
+                deviceErrors.value = result.errors
+            }
+        }
     }
 
 }

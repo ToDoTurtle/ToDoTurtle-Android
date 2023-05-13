@@ -24,6 +24,7 @@ class InMemoryDeviceRepository : DeviceRepository {
     }
 
     override suspend fun remove(device: NFCDevice) {
-        devices.remove(device)
+        val currentDevice = devices.find { it.identifier == device.identifier }
+        devices.remove(currentDevice)
     }
 }
