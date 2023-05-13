@@ -34,6 +34,7 @@ import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.profile.logic.ProfileViewModel
@@ -43,7 +44,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(
-    permissionRequester: PermissionRequester,
+    hasLocationPermision: () -> Boolean,
+    locationClient: LocationClient,
+    locationPermissionRequester: PermissionRequester,
+    cameraPermissionRequester: PermissionRequester,
     noteScreenViewModel: NotesViewModelInt,
     deviceScreenNoteViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
@@ -84,7 +88,10 @@ fun App(
                 ToDoTurtleNavHost(
                     modifier = Modifier.padding(innerPadding),
                     navController = navController,
-                    permissionRequester = permissionRequester,
+                    hasLocationPermission = { hasLocationPermision() },
+                    locationClient = locationClient,
+                    locationPermissionRequester = locationPermissionRequester,
+                    cameraPermissionRequester = cameraPermissionRequester,
                     shouldShowMenu = shouldShowMenu,
                     noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = devicesViewModel,

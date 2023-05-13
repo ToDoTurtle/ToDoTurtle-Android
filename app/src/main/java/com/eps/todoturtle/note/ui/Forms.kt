@@ -47,8 +47,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
 import com.eps.todoturtle.map.ui.MapView
-import com.eps.todoturtle.note.logic.Location
 import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.location.Location
+import com.eps.todoturtle.note.logic.location.LocationClient
+import com.eps.todoturtle.permissions.logic.PermissionRequester
+import com.eps.todoturtle.permissions.logic.RequestPermissionContext
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 import com.eps.todoturtle.shared.ui.ClearTextIcon
 import com.eps.todoturtle.shared.ui.FormOutlinedTextField
@@ -56,6 +59,10 @@ import com.eps.todoturtle.shared.ui.FormTextField
 import com.eps.todoturtle.shared.ui.ResourceIcon
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.eps.todoturtle.ui.theme.onFormContainer
+import com.google.android.gms.tasks.Tasks
+import org.osmdroid.util.GeoPoint
+
+private val DEFAULT_GEOPOINT = GeoPoint(28.7041, 77.1025)
 
 @Composable
 fun AddNoteButton(
@@ -76,6 +83,9 @@ fun AddNoteButton(
 
 @Composable
 fun AddNoteFormDialog(
+    locationClient: LocationClient,
+    requestPermisions: () -> Unit,
+    hasLocationPermission: () -> Boolean,
     onDismissRequest: () -> Unit = {},
     onDoneClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
@@ -87,6 +97,9 @@ fun AddNoteFormDialog(
     ) {
         Card {
             AddNoteForm(
+                locationClient = locationClient,
+                hasPermisions = hasLocationPermission,
+                requestPermisions = requestPermisions,
                 onCloseClick = onCloseClick,
                 onDoneClick = onDoneClick,
                 viewModel = viewModel,
@@ -144,6 +157,9 @@ fun AddNoteFormBody(
 @Composable
 fun AddNoteForm(
     modifier: Modifier = Modifier,
+    locationClient: LocationClient,
+    hasPermisions: () -> Boolean,
+    requestPermisions: () -> Unit,
     onCloseClick: () -> Unit,
     onDoneClick: () -> Unit,
     viewModel: NotesViewModelInt,
@@ -163,7 +179,10 @@ fun AddNoteForm(
         onDescriptionValueChange = { viewModel.noteDescription.value = it },
         onAddNotificationClick = { choosingNotification = true },
         onAddDeadlineClick = { choosingDeadline = true },
-        onAddLocationClick = { choosingLocation = true },
+        onAddLocationClick = {
+            if (hasPermisions()) choosingLocation = true
+            else requestPermisions()
+        },
         onCloseClick = { onCloseClick(); viewModel.clearNoteFields() },
         onDoneClick = { onDoneClick(); viewModel.addNote() },
     )
@@ -210,6 +229,7 @@ fun AddNoteForm(
 
     AddLocationDialog(
         choosingLocation = choosingLocation,
+        locationClient = locationClient,
         onDismissRequest = {
             choosingLocation = false
         },
@@ -226,11 +246,13 @@ fun AddNoteForm(
 @Composable
 fun AddLocationDialog(
     choosingLocation: Boolean,
+    locationClient: LocationClient,
     onDismissRequest: () -> Unit = {},
     onCancelClick: () -> Unit = {},
     onAddLocationClick: (Location) -> Unit = {},
 ) {
     if (!choosingLocation) return
+    var location by remember { mutableStateOf<GeoPoint>(DEFAULT_GEOPOINT) }
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
@@ -239,8 +261,13 @@ fun AddLocationDialog(
                 .padding(horizontal = 16.dp, vertical = 16.dp)
                 .fillMaxWidth(),
         ) {
-            MapView {
+            locationClient.getCurrentLocation().onSuccessTask { newLocation ->
+                location = GeoPoint(newLocation.latitude, newLocation.longitude)
+                Tasks.forResult(newLocation)
             }
+            LocationPicker(
+                source = GeoPoint(location.latitude, location.longitude),
+            )
         }
     }
 }

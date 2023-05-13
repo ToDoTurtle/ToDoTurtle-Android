@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.eps.todoturtle.note.logic.location.Location
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 import kotlinx.coroutines.flow.MutableStateFlow
 

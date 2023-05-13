@@ -39,7 +39,10 @@ import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
 import com.eps.todoturtle.note.logic.NotesViewModelInt
 import com.eps.todoturtle.note.logic.StubNotesViewModel
+import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.note.ui.AddNoteFormDialog
+import com.eps.todoturtle.permissions.logic.PermissionRequester
+import com.eps.todoturtle.permissions.logic.RequestPermissionContext
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
@@ -47,6 +50,9 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 @Composable
 fun DeviceScreen(
+    locationClient: LocationClient,
+    hasLocationPermission: () -> Boolean,
+    locationPermissionRequester: PermissionRequester,
     devicesViewModel: DevicesViewModel,
     notesViewModel: NotesViewModelInt,
     newDeviceAdded: Boolean = false,
@@ -54,6 +60,9 @@ fun DeviceScreen(
     onAddDevice: () -> Unit = {},
 ) {
     DeviceScreenLayout(
+        locationClient = locationClient,
+        hasLocationPermission = hasLocationPermission,
+        locationPermissionRequester = locationPermissionRequester,
         devices = devicesViewModel.getDevices(),
         newDeviceAdded,
         @Composable { id: Int -> devicesViewModel.getDrawable(id) },
@@ -65,6 +74,9 @@ fun DeviceScreen(
 
 @Composable
 fun DeviceScreenLayout(
+    locationClient: LocationClient,
+    hasLocationPermission: () -> Boolean,
+    locationPermissionRequester: PermissionRequester,
     devices: Collection<NFCDevice>,
     newDeviceAdded: Boolean,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
@@ -80,7 +92,14 @@ fun DeviceScreenLayout(
             }
         },
     ) {
-        NFCDeviceList(devices.toList(), iconToDrawableConverter, notesViewModel)
+        NFCDeviceList(
+            locationClient,
+            hasLocationPermission,
+            locationPermissionRequester,
+            devices.toList(),
+            iconToDrawableConverter,
+            notesViewModel,
+        )
     }
 }
 
@@ -97,6 +116,9 @@ fun AddDeviceButton(onClick: () -> Unit) {
 
 @Composable
 fun NFCDeviceList(
+    locationClient: LocationClient,
+    hasLocationPermission: () -> Boolean,
+    locationPermissionRequester: PermissionRequester,
     devices: List<NFCDevice>,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
     notesViewModel: NotesViewModelInt,
@@ -106,6 +128,9 @@ fun NFCDeviceList(
     ) {
         items(devices.size) { index ->
             NFCDeviceListItem(
+                locationClient = locationClient,
+                hasLocationPermission = hasLocationPermission,
+                locationPermissionRequester = locationPermissionRequester,
                 notesViewModel = notesViewModel,
                 device = devices[index],
                 iconToDrawableConverter,
@@ -116,6 +141,9 @@ fun NFCDeviceList(
 
 @Composable
 fun NFCDeviceListItem(
+    locationClient: LocationClient,
+    hasLocationPermission: () -> Boolean,
+    locationPermissionRequester: PermissionRequester,
     notesViewModel: NotesViewModelInt,
     device: NFCDevice,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
@@ -124,6 +152,9 @@ fun NFCDeviceListItem(
         modifier = Modifier.padding(4.dp),
     ) {
         DeviceCard(
+            locationClient = locationClient,
+            hasLocationPermission = hasLocationPermission,
+            locationPermissionRequester = locationPermissionRequester,
             device = device,
             notesViewModel = notesViewModel,
             iconToDrawableConverter = iconToDrawableConverter,
@@ -133,6 +164,9 @@ fun NFCDeviceListItem(
 
 @Composable
 fun DeviceCard(
+    locationClient: LocationClient,
+    hasLocationPermission: () -> Boolean,
+    locationPermissionRequester: PermissionRequester,
     notesViewModel: NotesViewModelInt,
     device: NFCDevice,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
@@ -150,13 +184,18 @@ fun DeviceCard(
             inDialog = true
         }
         if (inDialog) {
-            AddNoteFormDialog(
-                onDismissRequest = { inDialog = false },
-                onDoneClick = { inDialog = false },
-                onCloseClick = { inDialog = false },
-                viewModel = notesViewModel,
-                titleTextId = R.string.link_note,
-            )
+            RequestPermissionContext(locationPermissionRequester) {
+                AddNoteFormDialog(
+                    locationClient = locationClient,
+                    hasLocationPermission = hasLocationPermission,
+                    requestPermisions = { requestPermissions() },
+                    onDismissRequest = { inDialog = false },
+                    onDoneClick = { inDialog = false },
+                    onCloseClick = { inDialog = false },
+                    viewModel = notesViewModel,
+                    titleTextId = R.string.link_note,
+                )
+            }
         }
     }
 }
@@ -222,32 +261,32 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DevicesPreview() {
-    ToDoTurtleTheme(LocalContext.current.dataStore) {
-        DeviceScreenLayout(
-            devices = listOf(
-                NFCDevice(
-                    name = "Car",
-                    description = "My car",
-                    identifier = "1234567890",
-                    iconResId = R.drawable.car,
-                    true,
-                ),
-                NFCDevice(
-                    name = "Kitchen",
-                    description = "My Kitchen",
-                    identifier = "1234567890",
-                    iconResId = R.drawable.headphones,
-                    false,
-                ),
-            ),
-            false,
-            @Composable { null },
-            {},
-            {},
-            StubNotesViewModel(),
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DevicesPreview() {
+//    ToDoTurtleTheme(LocalContext.current.dataStore) {
+//        DeviceScreenLayout(
+//            devices = listOf(
+//                NFCDevice(
+//                    name = "Car",
+//                    description = "My car",
+//                    identifier = "1234567890",
+//                    iconResId = R.drawable.car,
+//                    true,
+//                ),
+//                NFCDevice(
+//                    name = "Kitchen",
+//                    description = "My Kitchen",
+//                    identifier = "1234567890",
+//                    iconResId = R.drawable.headphones,
+//                    false,
+//                ),
+//            ),
+//            false,
+//            @Composable { null },
+//            {},
+//            {},
+//            StubNotesViewModel(),
+//        )
+//    }
+//}

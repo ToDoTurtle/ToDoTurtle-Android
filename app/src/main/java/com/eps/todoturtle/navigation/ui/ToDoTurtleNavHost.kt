@@ -24,6 +24,7 @@ import com.eps.todoturtle.navigation.logic.Destinations
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
@@ -36,8 +37,11 @@ import com.eps.todoturtle.profile.ui.login.LoginUI
 
 @Composable
 fun ToDoTurtleNavHost(
+    locationClient: LocationClient,
+    hasLocationPermission: () -> Boolean,
+    locationPermissionRequester: PermissionRequester,
     navController: NavHostController,
-    permissionRequester: PermissionRequester,
+    cameraPermissionRequester: PermissionRequester,
     shouldShowMenu: MutableState<Boolean>,
     noteScreenViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
@@ -58,15 +62,27 @@ fun ToDoTurtleNavHost(
     ) {
         login(navController, shouldShowMenu, userAuth)
         profile(
-            permissionRequester,
+            cameraPermissionRequester,
             navController,
             profileViewModel,
             shouldShowMenu,
             userAuth,
             hasCameraPermission,
         )
-        notes(noteScreenViewModel)
-        devices(navController, devicesViewModel, deviceScreenNoteViewModel)
+        notes(
+            noteScreenViewModel,
+            locationClient,
+            locationPermissionRequester,
+            hasLocationPermission
+        )
+        devices(
+            navController,
+            devicesViewModel,
+            deviceScreenNoteViewModel,
+            locationClient,
+            locationPermissionRequester,
+            hasLocationPermission
+        )
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
         settings(dataStore)
@@ -110,10 +126,18 @@ fun NavGraphBuilder.profile(
     }
 }
 
-fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModelInt) {
+fun NavGraphBuilder.notes(
+    noteScreenViewModel: NotesViewModelInt,
+    locationClient: LocationClient,
+    locationPermissionRequester: PermissionRequester,
+    hasLocationPermission: () -> Boolean,
+) {
     composable(Destinations.NOTES.route) {
         NoteScreen(
             viewModel = noteScreenViewModel,
+            locationClient = locationClient,
+            locationPermissionRequester = locationPermissionRequester,
+            hasLocationPermission = hasLocationPermission,
         )
     }
 }
@@ -122,10 +146,15 @@ fun NavGraphBuilder.devices(
     navController: NavHostController,
     devicesViewModel: DevicesViewModel,
     deviceScreenNoteViewModel: NotesViewModelInt,
+    locationClient: LocationClient,
+    locationPermissionRequester: PermissionRequester,
+    hasLocationPermission: () -> Boolean,
 ) {
     composable(
         Destinations.DEVICES.route,
-        arguments = listOf(navArgument(DEVICE_WRITE_SUCCESSFUL_PARAMETER) { type = NavType.BoolType }),
+        arguments = listOf(navArgument(DEVICE_WRITE_SUCCESSFUL_PARAMETER) {
+            type = NavType.BoolType
+        }),
     ) {
         val newDeviceAdded = it.arguments?.getBoolean(DEVICE_WRITE_SUCCESSFUL_PARAMETER) ?: false
         DeviceScreen(
@@ -133,6 +162,9 @@ fun NavGraphBuilder.devices(
             noteScreenViewModel = deviceScreenNoteViewModel,
             navController,
             newDeviceAdded,
+            locationClient = locationClient,
+            locationPermissionRequester = locationPermissionRequester,
+            hasLocationPermission = hasLocationPermission,
         )
     }
 }
@@ -156,9 +188,15 @@ fun DeviceScreen(
     noteScreenViewModel: NotesViewModelInt,
     navController: NavHostController,
     newDeviceAdded: Boolean = false,
+    locationClient: LocationClient,
+    hasLocationPermission: () -> Boolean,
+    locationPermissionRequester: PermissionRequester,
 ) {
     var deviceAdded by rememberSaveable { mutableStateOf(newDeviceAdded) }
     DeviceScreen(
+        locationClient = locationClient,
+        locationPermissionRequester = locationPermissionRequester,
+        hasLocationPermission = hasLocationPermission,
         devicesViewModel = devicesViewModel,
         notesViewModel = noteScreenViewModel,
         newDeviceAdded = deviceAdded,

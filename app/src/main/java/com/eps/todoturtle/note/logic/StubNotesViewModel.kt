@@ -1,6 +1,7 @@
 package com.eps.todoturtle.note.logic
 
 import androidx.compose.runtime.mutableStateOf
+import com.eps.todoturtle.note.logic.location.Location
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 
 class StubNotesViewModel : NotesViewModelInt {
