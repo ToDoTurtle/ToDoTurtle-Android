@@ -39,4 +39,8 @@
     <string name="sign_up_confirm">Sign up</string>
     <string name="sign_up">Don\'t have an account? Sign up</string>
     <string name="sign_up_error_registration">An error occurred during registration. Make sure your email is not already in use. If that\'s not the case, contact the developers</string>
+    <string name="addtional_sign_ups">Or Sign Up Using</string>
+    <string name="google_desc">Google icon</string>
+    <string name="github_desc">Github icon</string>
+    <string name="yahoo_desc">Yahoo icon</string>
 </resources>
