@@ -45,7 +45,6 @@ fun ToDoTurtleNavHost(
     shouldShowMenu: MutableState<Boolean>,
     noteScreenViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
-    deviceScreenNoteViewModel: NotesViewModelInt,
     devicesViewModel: DevicesViewModel,
     nfcWriteViewModel: NfcWriteViewModel,
     dataStore: DataStore<AppPreferences>,
@@ -70,7 +69,7 @@ fun ToDoTurtleNavHost(
             hasCameraPermission,
         )
         notes(noteScreenViewModel)
-        devices(navController, devicesViewModel, deviceScreenNoteViewModel)
+        devices(navController, devicesViewModel)
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
         settings(dataStore)
@@ -125,7 +124,6 @@ fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModelInt) {
 fun NavGraphBuilder.devices(
     navController: NavHostController,
     devicesViewModel: DevicesViewModel,
-    deviceScreenNoteViewModel: NotesViewModelInt,
 ) {
     composable(
         Destinations.DEVICES.route,
@@ -136,7 +134,6 @@ fun NavGraphBuilder.devices(
         val newDeviceAdded = it.arguments?.getBoolean(DEVICE_WRITE_SUCCESSFUL_PARAMETER) ?: false
         DeviceScreen(
             devicesViewModel = devicesViewModel,
-            noteScreenViewModel = deviceScreenNoteViewModel,
             navController = navController,
             newDeviceAdded = newDeviceAdded,
         )
@@ -178,14 +175,12 @@ fun NavGraphBuilder.deviceConfiguration(
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
-    noteScreenViewModel: NotesViewModelInt,
     navController: NavHostController,
     newDeviceAdded: Boolean = false,
 ) {
     var deviceAdded by rememberSaveable { mutableStateOf(newDeviceAdded) }
     DeviceScreen(
         devicesViewModel = devicesViewModel,
-        notesViewModel = noteScreenViewModel,
         newDeviceAdded = deviceAdded,
         onEditDevice = {
             navController.navigate(DEVICE_CONFIGURATION_PARAMS.EDIT.getUri(it.identifier)) {

@@ -88,7 +88,6 @@ fun App(
                     shouldShowMenu = shouldShowMenu,
                     noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = devicesViewModel,
-                    deviceScreenNoteViewModel = deviceScreenNoteViewModel,
                     nfcWriteViewModel = nfcWriteViewModel,
                     dataStore = dataStore,
                     profileViewModel = profileViewModel,
