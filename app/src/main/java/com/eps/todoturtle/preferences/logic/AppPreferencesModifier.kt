@@ -19,6 +19,12 @@ class AppPreferencesModifier(
         muteModifier.updateMute(mute)
     }
 
+    suspend fun updateOnlyWifi(onlyWifi: Boolean) {
+        dataStore.updateData { preferences ->
+            preferences.copy(onlyWifi = onlyWifi)
+        }
+    }
+
     suspend fun updateTheme(theme: PreferenceEnum<Themes>) {
         dataStore.updateData { preferences ->
             preferences.copy(theme = theme.getValue())

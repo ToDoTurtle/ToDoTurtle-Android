@@ -62,6 +62,21 @@ fun PreferenceUI(
                     }
                 }
             }
+            PreferenceGroup(
+                R.string.preference_category_network,
+            ) {
+                PreferenceSwitch(
+                    icon = R.drawable.only_wifi,
+                    iconDesc = R.string.preference_wifi_image_desc,
+                    text = R.string.preferences_only_wifi_desc,
+                    checked = currentPreferences.onlyWifi,
+                    onCheckedChange = {
+                        coroutineScope.launch {
+                            preferenceMod.updateOnlyWifi(it)
+                        }
+                    },
+                )
+            }
         }
     }
 }

@@ -50,4 +50,7 @@
     <string name="link_note">Link a note</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="preference_category_network">Network</string>
+    <string name="preferences_only_wifi_desc">Only use wifi</string>
+    <string name="preference_wifi_image_desc">Icon that describes phono data usage</string>
 </resources>
