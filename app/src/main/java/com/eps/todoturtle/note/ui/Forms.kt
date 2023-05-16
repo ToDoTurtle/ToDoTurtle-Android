@@ -263,23 +263,29 @@ fun AddLocationDialog(
                 location = newLocation.toGeoPoint()
                 Tasks.forResult(newLocation)
             }
+            Spacer(Modifier.padding(8.dp))
             LocationPicker(
-                source = if (location != null) GeoPoint(
-                    location!!.latitude,
-                    location!!.longitude
-                ) else null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
+                source = location
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(8.dp),
                 horizontalArrangement = Arrangement.End,
             ) {
                 TextButton(onClick = onCancelClick) {
                     Text(text = stringResource(id = R.string.cancel))
                 }
                 if (location != null) {
-                    TextButton(onClick = { onAddLocationClick(location!!) }) {
+                    TextButton(onClick = { onAddLocationClick(location!!) }, enabled = true) {
+                        Text(text = stringResource(id = R.string.confirm))
+                    }
+                } else {
+                    TextButton(
+                        onClick = { onAddLocationClick(location!!) }, enabled = false,) {
                         Text(text = stringResource(id = R.string.confirm))
                     }
                 }

@@ -18,7 +18,7 @@ fun rememberMapViewWithLifecycle(): MapView {
     val mapView = remember {
         MapView(context).apply {
             id = R.id.location_picker_map
-            clipToOutline = true
+            clipToOutline = false
         }
     }
 

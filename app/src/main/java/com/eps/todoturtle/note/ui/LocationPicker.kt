@@ -41,7 +41,7 @@ fun LocationPicker(
     ) {
         it.controller.apply {
             setZoom(15.0)
-            animateTo(source, 18.0, 1000L)
+            animateTo(source, 19.0, 1000L)
         }
         if (source != null) it.addMarker(source)
     }
