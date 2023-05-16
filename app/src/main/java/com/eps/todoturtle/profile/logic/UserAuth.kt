@@ -5,15 +5,16 @@ import android.util.Patterns
 import android.widget.Toast
 import com.eps.todoturtle.MainActivity
 import com.eps.todoturtle.R
+import com.eps.todoturtle.profile.ui.register.providers.GithubKeys
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.OAuthProvider
 import kotlinx.coroutines.tasks.await
 
 class UserAuth(
-    val context: Context,
-    val activity: MainActivity,
-    val auth: FirebaseAuth,  // FIXME: Make me privakte again
+    private val activity: MainActivity,
+    private val auth: FirebaseAuth,  // FIXME: Make me private again
 ) {
     companion object {
         fun invalidMail(mail: String): Boolean =
@@ -51,12 +52,26 @@ class UserAuth(
         }
     }
 
+    suspend fun loginWithGithub(username: String): Pair<Boolean, String> {
+        val provider = OAuthProvider.newBuilder(GithubKeys.PROVIDER.toString())
+            .addCustomParameter(GithubKeys.LOGIN_PARAM.toString(), username)
+            .setScopes(listOf(GithubKeys.SCOPE.toString()))
+            .build()
+
+        return try {
+            auth.startActivityForSignInWithProvider(activity, provider).await()
+            true to ""
+        } catch (exception: FirebaseAuthException) {
+            false to exception.message.toString()
+        }
+    }
+
     fun isLoggedIn(): Boolean = auth.currentUser != null
 
     fun logout() = auth.signOut()
 
     fun errorToast() {
-        val errorMessage = context.getString(R.string.additional_sign_up_error)
-        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+        val errorMessage = activity.baseContext.getString(R.string.additional_sign_up_error)
+        Toast.makeText(activity.baseContext, errorMessage, Toast.LENGTH_SHORT).show()
     }
 }
