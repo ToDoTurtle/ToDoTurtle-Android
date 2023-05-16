@@ -5,5 +5,4 @@ data class NFCDevice(
     val description: String,
     val identifier: String,
     val iconResId: Int,
-    val configured: Boolean,
 )

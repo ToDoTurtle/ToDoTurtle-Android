@@ -13,7 +13,6 @@ class DeviceBuilder(
     var name: MutableState<String> = mutableStateOf(""),
     var description: MutableState<String> = mutableStateOf(""),
     var iconResId: Int? = null,
-    private val configured: Boolean = false,
 ) {
 
     private var alreadyBuild: Boolean = false
@@ -33,7 +32,7 @@ class DeviceBuilder(
         }
         if (errors.isNotEmpty()) return DeviceBuildResult.Failure(errors)
         val device =
-            NFCDevice(name.value, description.value, identifier!!, iconResId!!, configured)
+            NFCDevice(name.value, description.value, identifier, iconResId!!)
         alreadyBuild = true
         return DeviceBuildResult.Success(device)
     }

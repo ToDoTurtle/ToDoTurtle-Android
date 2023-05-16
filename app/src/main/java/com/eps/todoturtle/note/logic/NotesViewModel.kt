@@ -34,15 +34,6 @@ class NotesViewModel(val noteRepository: NoteRepository) : ViewModel(), NotesVie
                 )
             }
         }
-
-        val DeviceScreenFactory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val savedStateHandle = createSavedStateHandle()
-                NotesViewModel(
-                    noteRepository = DeviceScreenNoteRepository(),
-                )
-            }
-        }
     }
 
     override fun addNote() {

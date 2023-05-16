@@ -30,32 +30,100 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eps.todoturtle.R
+import com.eps.todoturtle.action.logic.ActionViewModel
+import com.eps.todoturtle.action.logic.NoteAction
+import com.eps.todoturtle.action.logic.NoteActionBuilderError
 import com.eps.todoturtle.note.ui.AddDeadlineDialog
 import com.eps.todoturtle.note.ui.AddNotificationDialog
 import com.eps.todoturtle.note.ui.NoteFormDescriptionTextField
 import com.eps.todoturtle.note.ui.NoteFormTitle
 import com.eps.todoturtle.note.ui.NoteFormTitleTextField
+import com.eps.todoturtle.shared.logic.forms.Timestamp
 import com.eps.todoturtle.shared.ui.ResourceIcon
 
 @Composable
 fun LinkNoteFormDialog(
+    actionViewModel: ActionViewModel,
     onDismissRequest: () -> Unit = {},
     onDoneClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
+    onSavedAction: (NoteAction) -> Unit = {},
     @StringRes titleTextId: Int = R.string.add_note_form_title,
 ) {
+    var title by rememberSaveable { mutableStateOf(actionViewModel.builder.title) }
+    var description by rememberSaveable { mutableStateOf(actionViewModel.builder.description) }
+    val errors by actionViewModel.actionBuildErrors.collectAsStateWithLifecycle()
+    var saveLocation by rememberSaveable { mutableStateOf(actionViewModel.builder.getLocation) }
+    var deadline by rememberSaveable { mutableStateOf(actionViewModel.builder.deadline) }
+    var notification by rememberSaveable { mutableStateOf(actionViewModel.builder.notification) }
+    LinkNoteFormDialog(
+        title = title,
+        description = description,
+        errors = errors,
+        onTitleChange = {
+            title = it
+            actionViewModel.builder.title = it
+        },
+        onDescriptionChange = {
+            description = it
+            actionViewModel.builder.description = it
+        },
+        onDismissRequest = onDismissRequest,
+        onDoneClick = onDoneClick,
+        onCloseClick = onCloseClick,
+        onLocationSettingChange = {
+            saveLocation = it
+            actionViewModel.builder.getLocation = it
+        },
+        getLocation = saveLocation,
+        onAddDeadlineClick = {
+            deadline = it
+            actionViewModel.builder.deadline = it
+        },
+        onAddNotificationClick = {
+            notification = it
+            actionViewModel.builder.notification = it
+        }
+    )
+    val action by actionViewModel.actionCreated.collectAsStateWithLifecycle(initialValue = null)
+    action?.let { onSavedAction(it) }
+}
+
+@Composable
+fun LinkNoteFormDialog(
+    title: String,
+    description: String,
+    errors: List<NoteActionBuilderError>,
+    @StringRes titleTextId: Int = R.string.add_note_form_title,
+    onTitleChange: (String) -> Unit = {},
+    onDescriptionChange: (String) -> Unit = {},
+    onDismissRequest: () -> Unit = {},
+    onDoneClick: () -> Unit = {},
+    onCloseClick: () -> Unit = {},
+    onLocationSettingChange: (Boolean) -> Unit = {},
+    getLocation: Boolean = false,
+    onAddDeadlineClick: (Timestamp) -> Unit = {},
+    onAddNotificationClick: (Timestamp) -> Unit = {}
+) {
     Dialog(
-        onDismissRequest = { onDismissRequest() },
+        onDismissRequest = onDismissRequest,
     ) {
         Card {
-            LinkNoteForm(onDoneClick = {
-                onDoneClick()
-
-            }, onCloseClick = {
-                onCloseClick()
-                onDismissRequest()
-            })
+            LinkNoteForm(
+                title = title,
+                description = description,
+                errors = errors,
+                onTitleChange = onTitleChange,
+                onDescriptionChange = onDescriptionChange,
+                onDoneClick = onDoneClick,
+                onCloseClick = onCloseClick,
+                onLocationSettingChange = onLocationSettingChange,
+                getLocation = getLocation,
+                onAddDeadlineClick = onAddDeadlineClick,
+                onAddNotificationClick = onAddNotificationClick
+            )
         }
     }
 }
@@ -64,8 +132,17 @@ fun LinkNoteFormDialog(
 @Composable
 fun LinkNoteForm(
     modifier: Modifier = Modifier,
+    title: String,
+    errors: List<NoteActionBuilderError>,
+    description: String,
+    onTitleChange: (String) -> Unit = {},
+    onDescriptionChange: (String) -> Unit = {},
     onDoneClick: () -> Unit = {},
-    onCloseClick: () -> Unit = {}
+    onCloseClick: () -> Unit = {},
+    onLocationSettingChange: (Boolean) -> Unit = {},
+    getLocation: Boolean = false,
+    onAddDeadlineClick: (Timestamp) -> Unit = {},
+    onAddNotificationClick: (Timestamp) -> Unit = {}
 ) {
     val (titleFocusRequester, descriptionFocusRequester) = remember { FocusRequester.createRefs() }
     var choosingNotification by remember { mutableStateOf(false) }
@@ -81,16 +158,20 @@ fun LinkNoteForm(
         NoteFormTitle(titleTextId = R.string.add_note_form_title)
         Spacer(Modifier.height(8.dp))
         NoteFormTitleTextField(
-            value = "Dummy",
-            onValueChange = { },
+            value = title,
+            hasError = errors.contains(NoteActionBuilderError.EMPTY_TITLE),
+            errorMessage = "Title cannot be empty",
+            onValueChange = onTitleChange,
             focusRequester = titleFocusRequester,
         )
         NoteFormDescriptionTextField(
-            value = "Dummy",
-            onValueChange = {},
+            value = description,
+            hasError = errors.contains(NoteActionBuilderError.EMPTY_DESCRIPTION),
+            errorMessage = "Description cannot be empty",
+            onValueChange = onDescriptionChange,
             focusRequester = descriptionFocusRequester,
         )
-        LocationFetchSwitch(checkedChanged = {})
+        LocationFetchSwitch(checkedChanged = onLocationSettingChange, checked = getLocation)
         NoteFormIconTray(
             onAddNotificationClick = { choosingNotification = true },
             onAddDeadlineClick = { choosingDeadline = true },
@@ -111,7 +192,7 @@ fun LinkNoteForm(
         onAddNotificationClick = { chosenTime ->
             choosingNotification = false
             choosingNotificationTime = false
-//            viewModel.noteNotificationTime = chosenTime
+            onAddNotificationClick(chosenTime)
         },
         onNextClick = {
             choosingNotificationTime = true
@@ -131,7 +212,7 @@ fun LinkNoteForm(
         onAddDeadlineClick = { chosenTime ->
             choosingDeadline = false
             choosingDeadlineTime = false
-//            viewModel.noteDeadlineTime = chosenTime
+            onAddDeadlineClick(chosenTime)
         },
         onNextClick = {
             choosingDeadlineTime = true
@@ -140,8 +221,7 @@ fun LinkNoteForm(
 }
 
 @Composable
-fun LocationFetchSwitch(checkedChanged: (Boolean) -> Unit) {
-    var checked by rememberSaveable { mutableStateOf(false) }
+fun LocationFetchSwitch(checked: Boolean = false, checkedChanged: (Boolean) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround,
@@ -151,7 +231,6 @@ fun LocationFetchSwitch(checkedChanged: (Boolean) -> Unit) {
         Switch(
             checked = checked,
             onCheckedChange = { changed ->
-                checked = changed
                 checkedChanged(changed)
             },
         )
@@ -206,5 +285,5 @@ fun NoteFormIconTray(
 @Preview(showBackground = true)
 @Composable
 fun LinkNoteFormPreview() {
-    LinkNoteFormDialog()
+    LinkNoteFormDialog(title = "Test", description = "This is a test desc", errors = emptyList())
 }

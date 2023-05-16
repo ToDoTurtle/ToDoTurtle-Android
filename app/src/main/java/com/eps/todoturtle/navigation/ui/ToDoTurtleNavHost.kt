@@ -15,6 +15,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.eps.todoturtle.action.logic.ActionViewModel
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_ID
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAM
@@ -47,6 +48,7 @@ fun ToDoTurtleNavHost(
     profileViewModel: ProfileViewModel,
     devicesViewModel: DevicesViewModel,
     nfcWriteViewModel: NfcWriteViewModel,
+    actionsViewModel: ActionViewModel,
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
     modifier: Modifier = Modifier,
@@ -69,7 +71,7 @@ fun ToDoTurtleNavHost(
             hasCameraPermission,
         )
         notes(noteScreenViewModel)
-        devices(navController, devicesViewModel)
+        devices(navController, devicesViewModel, actionsViewModel)
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
         settings(dataStore)
@@ -124,6 +126,7 @@ fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModelInt) {
 fun NavGraphBuilder.devices(
     navController: NavHostController,
     devicesViewModel: DevicesViewModel,
+    actionsViewModel: ActionViewModel,
 ) {
     composable(
         Destinations.DEVICES.route,
@@ -136,6 +139,7 @@ fun NavGraphBuilder.devices(
             devicesViewModel = devicesViewModel,
             navController = navController,
             newDeviceAdded = newDeviceAdded,
+            actionsViewModel = actionsViewModel,
         )
     }
 }
@@ -177,11 +181,13 @@ fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
     navController: NavHostController,
     newDeviceAdded: Boolean = false,
+    actionsViewModel: ActionViewModel,
 ) {
     var deviceAdded by rememberSaveable { mutableStateOf(newDeviceAdded) }
     DeviceScreen(
         devicesViewModel = devicesViewModel,
         newDeviceAdded = deviceAdded,
+        actionViewModel = actionsViewModel,
         onEditDevice = {
             navController.navigate(DEVICE_CONFIGURATION_PARAMS.EDIT.getUri(it.identifier)) {
                 navController.graph.startDestinationRoute?.let { _ ->

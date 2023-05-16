@@ -40,6 +40,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
+import com.eps.todoturtle.action.infra.InMemoryActionRepository
+import com.eps.todoturtle.action.logic.ActionViewModel
 import com.eps.todoturtle.action.ui.LinkNoteFormDialog
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
@@ -52,6 +54,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
+    actionViewModel: ActionViewModel,
     newDeviceAdded: Boolean = false,
     onEditDevice: (NFCDevice) -> Unit = {},
     onNewDeviceAddedOkay: () -> Unit = {},
@@ -59,6 +62,7 @@ fun DeviceScreen(
 ) {
     DeviceScreenLayout(
         devices = devicesViewModel.getDevices(),
+        actionViewModel = actionViewModel,
         newDeviceAdded,
         @Composable { id: Int -> devicesViewModel.getDrawable(id) },
         { device ->
@@ -74,6 +78,7 @@ fun DeviceScreen(
 @Composable
 fun DeviceScreenLayout(
     devices: Collection<NFCDevice>,
+    actionViewModel: ActionViewModel,
     newDeviceAdded: Boolean,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
     onEditListener: (NFCDevice) -> Unit = {},
@@ -89,7 +94,13 @@ fun DeviceScreenLayout(
             }
         },
     ) {
-        NFCDeviceList(devices.toList(), onEditListener, onDeleteListener, iconToDrawableConverter)
+        NFCDeviceList(
+            devices.toList(),
+            actionViewModel = actionViewModel,
+            onEditListener,
+            onDeleteListener,
+            iconToDrawableConverter
+        )
     }
 }
 
@@ -107,6 +118,7 @@ fun AddDeviceButton(onClick: () -> Unit) {
 @Composable
 fun NFCDeviceList(
     devices: List<NFCDevice>,
+    actionViewModel: ActionViewModel,
     onEditListener: (NFCDevice) -> Unit,
     onDeleteListener: (NFCDevice) -> Unit,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
@@ -117,6 +129,7 @@ fun NFCDeviceList(
         items(devices.size) { index ->
             NFCDeviceListItem(
                 device = devices[index],
+                actionViewModel = actionViewModel,
                 onEditListener,
                 onDeleteListener,
                 iconToDrawableConverter,
@@ -129,6 +142,7 @@ fun NFCDeviceList(
 @Composable
 fun NFCDeviceListItem(
     device: NFCDevice,
+    actionViewModel: ActionViewModel,
     onEditListener: (NFCDevice) -> Unit,
     onDeleteListener: (NFCDevice) -> Unit,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
@@ -145,6 +159,7 @@ fun NFCDeviceListItem(
     ) {
         DeviceCard(
             device = device,
+            actionViewModel = actionViewModel,
             iconToDrawableConverter = iconToDrawableConverter,
         )
     }
@@ -153,6 +168,7 @@ fun NFCDeviceListItem(
             drawableConverter = iconToDrawableConverter, device = device,
             onEditListener = onEditListener,
             onDeleteListener = onDeleteListener,
+            onDeleteActionListener = {actionViewModel.removeAction(it)},
             onCloseListener = {
                 scope.launch {
                     bottomSheetState.hide()
@@ -169,6 +185,7 @@ fun NFCDeviceListItem(
 @Composable
 fun DeviceCard(
     device: NFCDevice,
+    actionViewModel: ActionViewModel,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
 ) {
     Row(
@@ -177,17 +194,30 @@ fun DeviceCard(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        var inDialog by rememberSaveable { mutableStateOf(false) }
+        var inEditDeviceDialog by rememberSaveable { mutableStateOf(false) }
         DeviceIcon(iconToDrawableConverter, device = device)
         DeviceInformation(device = device)
-        EditDeviceButton(alreadyConfigured = device.configured) {
-            inDialog = true
+        EditDeviceButton(alreadyConfigured = actionViewModel.getAction(device.identifier) != null) {
+            inEditDeviceDialog = true
         }
-        if (inDialog) {
+        if (inEditDeviceDialog) {
+            actionViewModel.loadActionForDevice(device.identifier)
             LinkNoteFormDialog(
-                onDismissRequest = { inDialog = false },
-                onDoneClick = { inDialog = false },
-                onCloseClick = { inDialog = false })
+                actionViewModel = actionViewModel,
+                onDismissRequest = {
+                    inEditDeviceDialog = false
+                    actionViewModel.abortAction()
+                },
+                onDoneClick = {
+                    actionViewModel.saveAction(device.identifier)
+                },
+                onSavedAction = {
+                    inEditDeviceDialog = false
+                },
+                onCloseClick = {
+                    actionViewModel.abortAction()
+                    inEditDeviceDialog = false
+                })
         }
     }
 }
@@ -264,16 +294,15 @@ fun DevicesPreview() {
                     description = "My car",
                     identifier = "1234567890",
                     iconResId = R.drawable.car,
-                    true,
                 ),
                 NFCDevice(
                     name = "Kitchen",
                     description = "My Kitchen",
                     identifier = "1234567890",
                     iconResId = R.drawable.headphones,
-                    false,
                 ),
             ),
+            actionViewModel = ActionViewModel(InMemoryActionRepository()),
             false,
             iconToDrawableConverter = @Composable { null },
         )

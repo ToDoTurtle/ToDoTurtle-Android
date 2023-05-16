@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.datastore.core.DataStore
 import androidx.navigation.compose.rememberNavController
+import com.eps.todoturtle.action.logic.ActionViewModel
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.navigation.logic.Destination
 import com.eps.todoturtle.navigation.logic.Devices
@@ -45,8 +46,8 @@ import kotlinx.coroutines.launch
 fun App(
     permissionRequester: PermissionRequester,
     noteScreenViewModel: NotesViewModelInt,
-    deviceScreenNoteViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
+    actionsViewModel: ActionViewModel,
     devicesViewModel: DevicesViewModel,
     nfcWriteViewModel: NfcWriteViewModel,
     dataStore: DataStore<AppPreferences>,
@@ -88,6 +89,7 @@ fun App(
                     shouldShowMenu = shouldShowMenu,
                     noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = devicesViewModel,
+                    actionsViewModel = actionsViewModel,
                     nfcWriteViewModel = nfcWriteViewModel,
                     dataStore = dataStore,
                     profileViewModel = profileViewModel,

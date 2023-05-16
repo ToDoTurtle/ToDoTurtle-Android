@@ -13,7 +13,6 @@ class InMemoryDeviceRepository : DeviceRepository {
             description = "Dummy Description",
             identifier = "fakeidentifier",
             iconResId = R.drawable.car,
-            configured = false
         )
     )
 

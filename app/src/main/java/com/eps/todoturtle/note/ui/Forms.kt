@@ -405,6 +405,8 @@ fun NoteFormTitle(
 fun NoteFormTitleTextField(
     modifier: Modifier = Modifier,
     value: String,
+    hasError: Boolean = false,
+    errorMessage: String = "",
     onValueChange: (String) -> Unit,
     focusRequester: FocusRequester,
 ) {
@@ -414,6 +416,8 @@ fun NoteFormTitleTextField(
             .focusRequester(focusRequester),
         value = value,
         singleLine = true,
+        hasError = hasError,
+        errorMessage = errorMessage,
         maxLines = 1,
         onValueChange = { onValueChange(it) },
         labelId = R.string.note_form_title_field,
@@ -429,6 +433,8 @@ fun NoteFormTitleTextField(
 fun NoteFormDescriptionTextField(
     modifier: Modifier = Modifier,
     value: String,
+    hasError: Boolean = false,
+    errorMessage: String = "",
     onValueChange: (String) -> Unit,
     focusRequester: FocusRequester,
 ) {
@@ -440,6 +446,8 @@ fun NoteFormDescriptionTextField(
         singleLine = false,
         maxLines = 3,
         onValueChange = { onValueChange(it) },
+        hasError = hasError,
+        errorMessage = errorMessage,
         labelId = R.string.note_form_description_field,
         trailingIcon = {
             if (value.isNotEmpty()) {

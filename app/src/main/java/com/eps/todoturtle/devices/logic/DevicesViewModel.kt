@@ -76,7 +76,6 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
             name = mutableStateOf( nfcDevice.name),
             description = mutableStateOf(nfcDevice.description),
             iconResId = nfcDevice.iconResId,
-            configured = nfcDevice.configured
         )
     }
 

@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.eps.todoturtle.action.infra.InMemoryActionRepository
+import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
 import com.eps.todoturtle.devices.infra.InMemoryDeviceRepository
 import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
 
         permissionRequester = PermissionRequester(this, permissionsToRequest)
         val noteScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
-        val deviceScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.DeviceScreenFactory }
+        val actionsViewModel = getActionViewModel(InMemoryActionRepository())
         val profileViewModel = ProfileViewModel(this)
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
@@ -61,7 +63,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     permissionRequester = permissionRequester,
                     devicesViewModel = getDevicesViewModel(InMemoryDeviceRepository()),
                     noteScreenViewModel = noteScreenNoteViewModel,
-                    deviceScreenNoteViewModel = deviceScreenNoteViewModel,
+                    actionsViewModel = actionsViewModel,
                     nfcWriteViewModel = getNfcWriteModel(),
                     profileViewModel = profileViewModel,
                     dataStore = dataStore,
