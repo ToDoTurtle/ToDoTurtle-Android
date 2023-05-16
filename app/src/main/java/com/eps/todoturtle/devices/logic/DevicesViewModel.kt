@@ -51,10 +51,11 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun saveDevice() {
-        if (!iconChannel.isEmpty)
+        if (!iconChannel.isEmpty) {
             runBlocking { deviceBuilder.iconResId = iconChannel.receive() }
-        else
+        } else {
             deviceBuilder.iconResId = null
+        }
         when (val result = deviceBuilder.build()) {
             is DeviceBuildResult.Success -> {
                 runBlocking(Dispatchers.IO) {
@@ -86,7 +87,7 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
     companion object {
         @Suppress("UNCHECKED_CAST")
         private class NfcWriteViewModelFactory(
-            val repository: DeviceRepository
+            val repository: DeviceRepository,
         ) :
             ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -95,12 +96,12 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
         }
 
         fun <T> T.getDevicesViewModel(
-            repository: DeviceRepository
+            repository: DeviceRepository,
         ): DevicesViewModel where T : DeviceIconActivity, T : ComponentActivity {
             val viewModel = ViewModelProvider(
                 this,
                 NfcWriteViewModelFactory(
-                    repository
+                    repository,
                 ),
             )[DevicesViewModel::class.java]
             viewModel.setIconSelection(this.startIconSelectionLambda())
@@ -108,7 +109,6 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
             viewModel.setIdToDrawableConverter(this.getIconDrawable())
             return viewModel
         }
-
     }
 
     private fun setIdToDrawableConverter(iconDrawable: (id: Int) -> Drawable?) {

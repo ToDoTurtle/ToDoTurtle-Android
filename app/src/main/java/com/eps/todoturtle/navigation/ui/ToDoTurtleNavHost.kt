@@ -20,60 +20,57 @@ import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_ID
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAM
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAMS
 import com.eps.todoturtle.devices.logic.DevicesViewModel
+import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
+import com.eps.todoturtle.devices.ui.DeviceScreen
 import com.eps.todoturtle.invite.ui.InviteUI
+import com.eps.todoturtle.navigation.logic.DEVICE_WRITE_SUCCESSFUL_PARAMETER
+import com.eps.todoturtle.navigation.logic.Destinations
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
-import com.eps.todoturtle.nfc.ui.DeviceConfigurationScreen
-import com.eps.todoturtle.nfc.ui.DeviceScreen
 import com.eps.todoturtle.nfc.ui.WriteDevice
-import com.eps.todoturtle.note.logic.NoteScreenViewModel
+import com.eps.todoturtle.note.logic.NotesViewModelInt
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.preferences.ui.PreferenceUI
 import com.eps.todoturtle.profile.logic.ProfileViewModel
+import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.details.DetailsUI
 import com.eps.todoturtle.profile.ui.login.LoginUI
-
-private const val LOGIN = "login"
-private const val PROFILE = "profile"
-private const val NOTES = "notes"
-private const val SETTINGS = "settings"
-private const val WRITE_DEVICE = "write_device"
-private const val INVITE = "invite"
-private const val DEVICES_WRITE_SUCCESSFUL_PARAM = "write_successful"
-private const val DEVICES = "devices/{$DEVICES_WRITE_SUCCESSFUL_PARAM}"
-const val DEVICES_WRITE_SUCCESSFUL = "devices/true"
-const val DEVICES_NORMAL = "devices/false"
 
 @Composable
 fun ToDoTurtleNavHost(
     navController: NavHostController,
     permissionRequester: PermissionRequester,
     shouldShowMenu: MutableState<Boolean>,
-    noteScreenViewModel: NoteScreenViewModel,
+    noteScreenViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
+    deviceScreenNoteViewModel: NotesViewModelInt,
     devicesViewModel: DevicesViewModel,
     nfcWriteViewModel: NfcWriteViewModel,
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
     modifier: Modifier = Modifier,
+    userAuth: UserAuth,
 ) {
+    val startDestination = if (userAuth.isLoggedIn()) Destinations.NOTES else Destinations.LOGIN
+
     NavHost(
         navController = navController,
-        startDestination = LOGIN,
+        startDestination = startDestination.route,
         modifier = modifier,
     ) {
-        login(navController, shouldShowMenu)
+        login(navController, shouldShowMenu, userAuth)
         profile(
             permissionRequester,
             navController,
             profileViewModel,
             shouldShowMenu,
+            userAuth,
             hasCameraPermission,
         )
         notes(noteScreenViewModel)
-        devices(navController, devicesViewModel)
+        devices(navController, devicesViewModel, deviceScreenNoteViewModel)
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
         settings(dataStore)
@@ -81,14 +78,16 @@ fun ToDoTurtleNavHost(
     }
 }
 
-fun NavGraphBuilder.login(navController: NavHostController, shouldShowMenu: MutableState<Boolean>) {
-    composable(LOGIN) {
-        LoginUI(
-            onSignInClick = {
-                navController.navigateFromLogin(NOTES)
-                shouldShowMenu.value = true
-            },
-        )
+fun NavGraphBuilder.login(
+    navController: NavHostController,
+    shouldShowMenu: MutableState<Boolean>,
+    userAuth: UserAuth,
+) {
+    composable(Destinations.LOGIN.route) {
+        LoginUI(userAuth = userAuth) {
+            navController.navigateFromLogin(Destinations.NOTES.route)
+            shouldShowMenu.value = true
+        }
     }
 }
 
@@ -97,38 +96,50 @@ fun NavGraphBuilder.profile(
     navController: NavHostController,
     profileViewModel: ProfileViewModel,
     shouldShowMenu: MutableState<Boolean>,
+    userAuth: UserAuth,
     hasCameraPermission: () -> Boolean,
 ) {
-    composable(PROFILE) {
+    composable(Destinations.PROFILE.route) {
         RequestPermissionContext(permissionRequester) {
             DetailsUI(
-                onSignOutClick = {
-                    navController.navigateSingleTopTo(LOGIN)
-                    shouldShowMenu.value = false
-                },
                 requestPermissions = { requestPermissions() },
                 hasPermissions = { hasCameraPermission() },
                 profileViewModel = profileViewModel,
-            )
+            ) {
+                userAuth.logout()
+                navController.navigateSingleTopTo(Destinations.LOGIN.route)
+                shouldShowMenu.value = false
+            }
         }
     }
 }
 
-fun NavGraphBuilder.notes(noteScreenViewModel: NoteScreenViewModel) {
-    composable(NOTES) {
+fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModelInt) {
+    composable(Destinations.NOTES.route) {
         NoteScreen(
             viewModel = noteScreenViewModel,
         )
     }
 }
 
-fun NavGraphBuilder.devices(navController: NavHostController, devicesViewModel: DevicesViewModel) {
+fun NavGraphBuilder.devices(
+    navController: NavHostController,
+    devicesViewModel: DevicesViewModel,
+    deviceScreenNoteViewModel: NotesViewModelInt,
+) {
     composable(
-        DEVICES,
-        arguments = listOf(navArgument(DEVICES_WRITE_SUCCESSFUL_PARAM) { type = NavType.BoolType }),
+        Destinations.DEVICES.route,
+        arguments = listOf(navArgument(DEVICE_WRITE_SUCCESSFUL_PARAMETER) {
+            type = NavType.BoolType
+        }),
     ) {
-        val newDeviceAdded = it.arguments?.getBoolean(DEVICES_WRITE_SUCCESSFUL_PARAM) ?: false
-        DeviceScreen(devicesViewModel = devicesViewModel, navController, newDeviceAdded)
+        val newDeviceAdded = it.arguments?.getBoolean(DEVICE_WRITE_SUCCESSFUL_PARAMETER) ?: false
+        DeviceScreen(
+            devicesViewModel = devicesViewModel,
+            noteScreenViewModel = deviceScreenNoteViewModel,
+            navController = navController,
+            newDeviceAdded = newDeviceAdded,
+        )
     }
 }
 
@@ -150,7 +161,7 @@ fun NavGraphBuilder.deviceConfiguration(
         devicesViewModel.deviceBuilder.identifier = deviceId
         configurationType?.let {
             DeviceConfigurationScreen(devicesViewModel, it) {
-                navController.navigateSingleTopTo(DEVICES_WRITE_SUCCESSFUL)
+                navController.navigateSingleTopTo(Destinations.DEVICES_WRITE_SUCCESSFUL.route)
             }
         }
     }
@@ -159,17 +170,19 @@ fun NavGraphBuilder.deviceConfiguration(
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
+    noteScreenViewModel: NotesViewModelInt,
     navController: NavHostController,
     newDeviceAdded: Boolean = false,
 ) {
     var deviceAdded by rememberSaveable { mutableStateOf(newDeviceAdded) }
     DeviceScreen(
         devicesViewModel = devicesViewModel,
+        notesViewModel = noteScreenViewModel,
         newDeviceAdded = deviceAdded,
         onEditDevice = {
             navController.navigate(DEVICE_CONFIGURATION_PARAMS.EDIT.getUri(it.identifier)) {
                 navController.graph.startDestinationRoute?.let { _ ->
-                    popUpTo(DEVICES_NORMAL) {
+                    popUpTo(Destinations.DEVICES_NORMAL.route) {
                         saveState = true
                     }
                 }
@@ -179,9 +192,9 @@ fun DeviceScreen(
         },
         onNewDeviceAddedOkay = { deviceAdded = false },
         onAddDevice = {
-            navController.navigate(WRITE_DEVICE) {
-                navController.graph.startDestinationRoute?.let { _ ->
-                    popUpTo(DEVICES_NORMAL) {
+            navController.navigate(Destinations.WRITE_DEVICE.route) {
+                navController.graph.startDestinationRoute?.let {
+                    popUpTo(Destinations.DEVICES_NORMAL.route) {
                         saveState = true
                     }
                 }
@@ -196,21 +209,21 @@ fun NavGraphBuilder.writeDevice(
     navController: NavHostController,
     nfcWriteViewModel: NfcWriteViewModel,
 ) {
-    composable(WRITE_DEVICE) {
+    composable(Destinations.WRITE_DEVICE.route) {
         WriteDevice(
             viewModel = nfcWriteViewModel,
-            onNfcNotSupported = { navController.navigateSingleTopTo(NOTES) },
+            onNfcNotSupported = { navController.navigateSingleTopTo(Destinations.NOTES.route) },
             onTagLost = {
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(WRITE_DEVICE)
+                navController.navigateSingleTopTo(Destinations.WRITE_DEVICE.route)
             },
             onTagNotWriteable = {
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(DEVICES_NORMAL)
+                navController.navigateSingleTopTo(Destinations.DEVICES_NORMAL.route)
             },
             unknownError = {
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(WRITE_DEVICE)
+                navController.navigateSingleTopTo(Destinations.WRITE_DEVICE.route)
             },
             onWriteSuccessful = { id ->
                 nfcWriteViewModel.finishWriteNfc()
@@ -221,13 +234,13 @@ fun NavGraphBuilder.writeDevice(
 }
 
 private fun NavGraphBuilder.settings(dataStore: DataStore<AppPreferences>) {
-    composable(SETTINGS) {
+    composable(Destinations.SETTINGS.route) {
         PreferenceUI(dataStore = dataStore)
     }
 }
 
 fun NavGraphBuilder.invite() {
-    composable(INVITE) {
+    composable(Destinations.INVITE.route) {
         InviteUI()
     }
 }

@@ -1,39 +1,15 @@
 package com.eps.todoturtle.navigation.logic
 
-import com.eps.todoturtle.R
-import com.eps.todoturtle.navigation.ui.DEVICES_NORMAL
+const val DEVICE_WRITE_SUCCESSFUL_PARAMETER = "write_successful"
 
-const val NOTES_ROUTE = "notes"
-const val PROFILE_ROUTE = "profile"
-const val SETTINGS_ROUTE = "settings"
-const val INVITE_ROUTE = "invite"
-
-sealed class Destination {
-    abstract val route: String
-    abstract val labelId: Int
-}
-
-object Notes : Destination() {
-    override val route = NOTES_ROUTE
-    override val labelId = R.string.drawer_notes
-}
-
-object Profile : Destination() {
-    override val route = PROFILE_ROUTE
-    override val labelId = R.string.drawer_profile
-}
-
-object Devices : Destination() {
-    override val route = DEVICES_NORMAL
-    override val labelId = R.string.drawer_devices
-}
-
-object Settings : Destination() {
-    override val route = SETTINGS_ROUTE
-    override val labelId = R.string.drawer_settings
-}
-
-object Invite : Destination() {
-    override val route = INVITE_ROUTE
-    override val labelId = R.string.drawer_invite
+enum class Destinations(val route: String) {
+    LOGIN("login"),
+    PROFILE("profile"),
+    NOTES("notes"),
+    SETTINGS("settings"),
+    WRITE_DEVICE("write_device"),
+    INVITE("invite"),
+    DEVICES("DEVICES/{$DEVICE_WRITE_SUCCESSFUL_PARAMETER}"),
+    DEVICES_WRITE_SUCCESSFUL("devices/true"),
+    DEVICES_NORMAL("devices/false"),
 }

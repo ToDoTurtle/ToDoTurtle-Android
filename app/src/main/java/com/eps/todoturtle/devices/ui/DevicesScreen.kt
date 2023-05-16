@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nfc.ui
+package com.eps.todoturtle.devices.ui
 
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
@@ -45,6 +45,8 @@ import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
 import com.eps.todoturtle.devices.ui.BottomSheet
 import com.eps.todoturtle.devices.ui.deviceMenu
+import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.StubNotesViewModel
 import com.eps.todoturtle.note.ui.AddNoteFormDialog
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
@@ -55,6 +57,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
+    notesViewModel: NotesViewModelInt,
     newDeviceAdded: Boolean = false,
     onEditDevice: (NFCDevice) -> Unit = {},
     onNewDeviceAddedOkay: () -> Unit = {},
@@ -71,6 +74,7 @@ fun DeviceScreen(
         { device -> devicesViewModel.delete(device) },
         onNewDeviceAddedOkay,
         onAddDevice,
+        notesViewModel,
     )
 }
 
@@ -83,6 +87,7 @@ fun DeviceScreenLayout(
     onDeleteListener: (NFCDevice) -> Unit = {},
     onNewDeviceAddedOkay: () -> Unit = {},
     addDevice: () -> Unit = {},
+    notesViewModel: NotesViewModelInt,
 ) {
     Scaffold(
         floatingActionButton = { AddDeviceButton(onClick = addDevice) },
@@ -92,12 +97,7 @@ fun DeviceScreenLayout(
             }
         },
     ) {
-        NFCDeviceList(
-            devices.toList(),
-            onEditListener,
-            onDeleteListener,
-            iconToDrawableConverter
-        )
+        NFCDeviceList(devices.toList(), onEditListener, onDeleteListener, iconToDrawableConverter, notesViewModel)
     }
 }
 
@@ -117,7 +117,8 @@ fun NFCDeviceList(
     devices: List<NFCDevice>,
     onEditListener: (NFCDevice) -> Unit,
     onDeleteListener: (NFCDevice) -> Unit,
-    iconToDrawableConverter: @Composable (Int) -> Drawable?
+    iconToDrawableConverter: @Composable (Int) -> Drawable?,
+    notesViewModel: NotesViewModelInt,
 ) {
     LazyColumn(
         modifier = Modifier.padding(4.dp),
@@ -127,7 +128,8 @@ fun NFCDeviceList(
                 device = devices[index],
                 onEditListener,
                 onDeleteListener,
-                iconToDrawableConverter
+                iconToDrawableConverter,
+                notesViewModel = notesViewModel,
             )
         }
     }
@@ -139,7 +141,8 @@ fun NFCDeviceListItem(
     device: NFCDevice,
     onEditListener: (NFCDevice) -> Unit,
     onDeleteListener: (NFCDevice) -> Unit,
-    iconToDrawableConverter: @Composable (Int) -> Drawable?
+    iconToDrawableConverter: @Composable (Int) -> Drawable?,
+    notesViewModel: NotesViewModelInt,
 ) {
     val showBottomSheet = rememberSaveable { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -151,7 +154,11 @@ fun NFCDeviceListItem(
                 showBottomSheet.value = true
             }) { },
     ) {
-        DeviceCard(device = device, iconToDrawableConverter)
+        DeviceCard(
+            device = device,
+            notesViewModel = notesViewModel,
+            iconToDrawableConverter = iconToDrawableConverter,
+        )
     }
     BottomSheet(
         showBottomSheet, bottomSheetState, deviceMenu(
@@ -172,7 +179,11 @@ fun NFCDeviceListItem(
 }
 
 @Composable
-fun DeviceCard(device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> Drawable?) {
+fun DeviceCard(
+    notesViewModel: NotesViewModelInt,
+    device: NFCDevice,
+    iconToDrawableConverter: @Composable (Int) -> Drawable?,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -190,6 +201,8 @@ fun DeviceCard(device: NFCDevice, iconToDrawableConverter: @Composable (Int) -> 
                 onDismissRequest = { inDialog = false },
                 onDoneClick = { inDialog = false },
                 onCloseClick = { inDialog = false },
+                viewModel = notesViewModel,
+                titleTextId = R.string.link_note,
             )
         }
     }
@@ -278,13 +291,8 @@ fun DevicesPreview() {
                 ),
             ),
             false,
-            iconToDrawableConverter = @Composable { id ->
-                AppCompatResources.getDrawable(
-                    LocalContext.current,
-                    id
-                )
-            },
-            {},
-        ) {}
+            iconToDrawableConverter =  @Composable { null },
+            notesViewModel = StubNotesViewModel(),
+        )
     }
 }

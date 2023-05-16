@@ -22,7 +22,6 @@ import com.eps.todoturtle.nfc.logic.write.WriteOperation
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 
-
 @Composable
 fun WriteDevice(
     viewModel: NfcWriteViewModel,
@@ -35,14 +34,14 @@ fun WriteDevice(
     NfcStatusScreen(
         viewModel = viewModel,
         onNfcNotEnabled = viewModel::showNfcSettings,
-        onNfcNotSupported = onNfcNotSupported
+        onNfcNotSupported = onNfcNotSupported,
     ) {
         WritingScreen(
             viewModel = viewModel,
             onTagNotWriteable = onTagNotWriteable,
             onTagLost = onTagLost,
             unknownError = unknownError,
-            onWriteSuccessful = onWriteSuccessful
+            onWriteSuccessful = onWriteSuccessful,
         )
     }
 }
@@ -69,7 +68,7 @@ fun NfcStatusScreen(
     viewModel: NfcWriteViewModel,
     onNfcNotEnabled: () -> Unit = {},
     onNfcNotSupported: () -> Unit = {},
-    onNfcEnabled: @Composable () -> Unit
+    onNfcEnabled: @Composable () -> Unit,
 ) {
     val status by viewModel.status.collectAsStateWithLifecycle()
     when (status) {

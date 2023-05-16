@@ -1,4 +1,4 @@
-package com.eps.todoturtle.nfc.ui
+package com.eps.todoturtle.devices.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

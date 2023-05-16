@@ -11,13 +11,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.eps.todoturtle.App
-import com.eps.todoturtle.R
-import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
-import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.maltaisn.icondialog.IconDialog
-import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
 import kotlinx.coroutines.flow.MutableStateFlow

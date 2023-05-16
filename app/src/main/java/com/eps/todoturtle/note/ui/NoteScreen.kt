@@ -13,22 +13,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.eps.todoturtle.note.logic.NoteScreenViewModel
+import com.eps.todoturtle.note.logic.NotesViewModelInt
 
 @Composable
 fun NoteScreen(
-    viewModel: NoteScreenViewModel,
+    viewModel: NotesViewModelInt,
 ) {
     var inHistory by rememberSaveable { mutableStateOf(false) }
+    var isFormVisible by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
-        floatingActionButton = {
-            AddNoteMenu(
-                onAddClick = {},
-                onDoneClick = {},
-                onCancelClick = {},
-            )
-        },
+        floatingActionButton = { AddNoteButton(onClick = { isFormVisible = true }) },
     ) {
         Column(
             horizontalAlignment = Alignment.End,
@@ -47,11 +42,20 @@ fun NoteScreen(
             )
         }
     }
+
+    if (isFormVisible) {
+        AddNoteFormDialog(
+            onCloseClick = { isFormVisible = false },
+            onDoneClick = { isFormVisible = false },
+            onDismissRequest = { isFormVisible = false },
+            viewModel = viewModel,
+        )
+    }
 }
 
 @Composable
 fun NoteScreenHeadline(
-    viewModel: NoteScreenViewModel,
+    viewModel: NotesViewModelInt,
     inHistory: Boolean,
     onHistoryToggle: () -> Unit,
 ) {

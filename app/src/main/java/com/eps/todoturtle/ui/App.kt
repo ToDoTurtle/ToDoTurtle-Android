@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.datastore.core.DataStore
 import androidx.navigation.compose.rememberNavController
+import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.navigation.logic.Destination
 import com.eps.todoturtle.navigation.logic.Devices
 import com.eps.todoturtle.navigation.logic.Invite
@@ -31,30 +32,32 @@ import com.eps.todoturtle.navigation.ui.Drawer
 import com.eps.todoturtle.navigation.ui.ToDoTurtleNavHost
 import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
-import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
-import com.eps.todoturtle.note.logic.NoteScreenViewModel
+import com.eps.todoturtle.note.logic.NotesViewModelInt
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.profile.logic.ProfileViewModel
+import com.eps.todoturtle.profile.logic.UserAuth
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(
     permissionRequester: PermissionRequester,
-    noteScreenViewModel: NoteScreenViewModel,
+    noteScreenViewModel: NotesViewModelInt,
+    deviceScreenNoteViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
     devicesViewModel: DevicesViewModel,
     nfcWriteViewModel: NfcWriteViewModel,
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
+    userAuth: UserAuth,
 ) {
     val navController = rememberNavController()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val shouldShowMenu = rememberSaveable { mutableStateOf(false) }
+    val shouldShowMenu = rememberSaveable { mutableStateOf(userAuth.isLoggedIn()) }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
@@ -85,10 +88,12 @@ fun App(
                     shouldShowMenu = shouldShowMenu,
                     noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = devicesViewModel,
+                    deviceScreenNoteViewModel = deviceScreenNoteViewModel,
                     nfcWriteViewModel = nfcWriteViewModel,
                     dataStore = dataStore,
                     profileViewModel = profileViewModel,
                     hasCameraPermission = { hasCameraPermission() },
+                    userAuth = userAuth,
                 )
             }
         }

@@ -3,6 +3,7 @@
     <string name="profile_username">Username</string>
     <string name="profile_mail">Mail</string>
     <string name="profile_hostage">Hostage type</string>
+    <string name="profile_error_field">Error</string>
 
     <!--    Defaults    -->
     <string name="profile_default_username" translatable="false">John Doe</string>
@@ -29,4 +30,13 @@
     <string name="profile_login_picture_desc">Login picture</string>
     <string name="profile_wrong_login_desc">Wrong login picture (cross)</string>
     <string name="profile_error_desc">Error icon</string>
+
+    <!--    Sign up strings   -->
+    <string name="sign_up_mail">Mail</string>
+    <string name="sign_up_mail_error">Mail must have a valid format</string>
+    <string name="sign_up_password">Password</string>
+    <string name="sign_up_password_error">Password must be at least 8 characters long</string>
+    <string name="sign_up_confirm">Sign up</string>
+    <string name="sign_up">Don\'t have an account? Sign up</string>
+    <string name="sign_up_error_registration">An error occurred during registration. Make sure your email is not already in use. If that\'s not the case, contact the developers</string>
 </resources>

@@ -11,6 +11,13 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {url "https://jitpack.io"}
+        maven {
+            url = uri("https://maven.pkg.github.com/ToDoTurtle/ToDoTurtle")
+            credentials {
+                username = "ToDoTurtle"
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
 rootProject.name = "ToDoTurtle"
