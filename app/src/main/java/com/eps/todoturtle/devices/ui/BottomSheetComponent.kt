@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.NFCDevice
-import com.eps.todoturtle.nfc.ui.DeviceIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

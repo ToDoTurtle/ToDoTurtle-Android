@@ -161,7 +161,15 @@ fun NavGraphBuilder.deviceConfiguration(
         devicesViewModel.deviceBuilder.identifier = deviceId
         configurationType?.let {
             DeviceConfigurationScreen(devicesViewModel, it) {
-                navController.navigateSingleTopTo(Destinations.DEVICES_WRITE_SUCCESSFUL.route)
+                navController.navigate(Destinations.DEVICES_WRITE_SUCCESSFUL.route) {
+                    navController.graph.startDestinationRoute?.let { _ ->
+                        popUpTo(Destinations.DEVICES_NORMAL.route) {
+                            saveState = true
+                        }
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
             }
         }
     }
