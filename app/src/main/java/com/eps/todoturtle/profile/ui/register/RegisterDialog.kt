@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.logic.UserAuth
+import com.eps.todoturtle.profile.ui.register.providers.GithubButton
 import com.eps.todoturtle.profile.ui.register.providers.GoogleButton
 import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
@@ -123,14 +124,8 @@ fun AdditionalSignUpButton(userAuth: UserAuth, onSuccessfulRegister: () -> Unit)
         GoogleButton(userAuth = userAuth) {
             onSuccessfulRegister()
         }
-        Button(onClick = { /*TODO*/ }) {
-            Icon(
-                painter = painterResource(id = R.drawable.github),
-                contentDescription = stringResource(
-                    id = R.string.github_desc
-                ),
-                modifier = Modifier.size(24.dp)
-            )
+        GithubButton(userAuth = userAuth) {
+            onSuccessfulRegister()
         }
         Button(onClick = { /*TODO*/ }) {
             Icon(

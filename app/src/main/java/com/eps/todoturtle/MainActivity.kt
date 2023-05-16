@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         theme.applyStyle(R.style.AppTheme, true)
 
         auth = Firebase.auth
-        val userAuth = UserAuth(this, auth)
+        val userAuth = UserAuth(this, this@MainActivity,  auth)
 
         locationClient = DefaultLocationClient(
             applicationContext,
