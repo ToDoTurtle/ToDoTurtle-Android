@@ -29,7 +29,7 @@ fun LocationPickerMapView(
 @Composable
 fun LocationPicker(
     modifier: Modifier = Modifier,
-    source: GeoPoint,
+    source: GeoPoint?,
 ) {
     LocationPickerMapView(
         modifier = modifier
@@ -43,7 +43,7 @@ fun LocationPicker(
             setZoom(15.0)
             animateTo(source, 18.0, 1000L)
         }
-        it.addMarker(source)
+        if (source != null) it.addMarker(source)
     }
 }
 

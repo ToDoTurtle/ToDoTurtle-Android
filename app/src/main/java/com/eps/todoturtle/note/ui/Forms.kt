@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
@@ -46,12 +47,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
-import com.eps.todoturtle.map.ui.MapView
 import com.eps.todoturtle.note.logic.NotesViewModelInt
-import com.eps.todoturtle.note.logic.location.Location
 import com.eps.todoturtle.note.logic.location.LocationClient
-import com.eps.todoturtle.permissions.logic.PermissionRequester
-import com.eps.todoturtle.permissions.logic.RequestPermissionContext
+import com.eps.todoturtle.note.logic.location.toGeoPoint
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 import com.eps.todoturtle.shared.ui.ClearTextIcon
 import com.eps.todoturtle.shared.ui.FormOutlinedTextField
@@ -249,10 +247,10 @@ fun AddLocationDialog(
     locationClient: LocationClient,
     onDismissRequest: () -> Unit = {},
     onCancelClick: () -> Unit = {},
-    onAddLocationClick: (Location) -> Unit = {},
+    onAddLocationClick: (GeoPoint) -> Unit = {},
 ) {
     if (!choosingLocation) return
-    var location by remember { mutableStateOf<GeoPoint>(DEFAULT_GEOPOINT) }
+    var location by remember { mutableStateOf<GeoPoint?>(null) }
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
@@ -262,12 +260,30 @@ fun AddLocationDialog(
                 .fillMaxWidth(),
         ) {
             locationClient.getCurrentLocation().onSuccessTask { newLocation ->
-                location = GeoPoint(newLocation.latitude, newLocation.longitude)
+                location = newLocation.toGeoPoint()
                 Tasks.forResult(newLocation)
             }
             LocationPicker(
-                source = GeoPoint(location.latitude, location.longitude),
+                source = if (location != null) GeoPoint(
+                    location!!.latitude,
+                    location!!.longitude
+                ) else null,
             )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                TextButton(onClick = onCancelClick) {
+                    Text(text = stringResource(id = R.string.cancel))
+                }
+                if (location != null) {
+                    TextButton(onClick = { onAddLocationClick(location!!) }) {
+                        Text(text = stringResource(id = R.string.confirm))
+                    }
+                }
+            }
         }
     }
 }

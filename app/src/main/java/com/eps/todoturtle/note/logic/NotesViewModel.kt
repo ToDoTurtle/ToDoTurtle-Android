@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.eps.todoturtle.note.logic.location.Location
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.osmdroid.util.GeoPoint
 
 private const val OFFSET = 100
 const val EPS_LAT = 41.608440
@@ -24,7 +24,7 @@ class NotesViewModel(val noteRepository: NoteRepository) : ViewModel(), NotesVie
     override var noteDescription = mutableStateOf("")
     override var noteNotificationTime: Timestamp? = null
     override var noteDeadlineTime: Timestamp? = null
-    override var noteLocation: Location? = null
+    override var noteLocation: GeoPoint? = null
 
     companion object {
         val NoteScreenFactory: ViewModelProvider.Factory = viewModelFactory {
