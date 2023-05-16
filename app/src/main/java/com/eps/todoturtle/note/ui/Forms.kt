@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -256,14 +257,12 @@ fun AddLocationDialog(
     ) {
         Card(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 16.dp)
                 .fillMaxWidth(),
         ) {
             locationClient.getCurrentLocation().onSuccessTask { newLocation ->
                 location = newLocation.toGeoPoint()
                 Tasks.forResult(newLocation)
             }
-            Spacer(Modifier.padding(8.dp))
             LocationPicker(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -279,15 +278,9 @@ fun AddLocationDialog(
                 TextButton(onClick = onCancelClick) {
                     Text(text = stringResource(id = R.string.cancel))
                 }
-                if (location != null) {
-                    TextButton(onClick = { onAddLocationClick(location!!) }, enabled = true) {
-                        Text(text = stringResource(id = R.string.confirm))
-                    }
-                } else {
-                    TextButton(
-                        onClick = { onAddLocationClick(location!!) }, enabled = false,) {
-                        Text(text = stringResource(id = R.string.confirm))
-                    }
+                TextButton(
+                    onClick = { onAddLocationClick(location!!) }, enabled = location != null,) {
+                    Text(text = stringResource(id = R.string.confirm))
                 }
             }
         }
@@ -525,7 +518,7 @@ fun NoteFormIconTray(
             }
             IconButton(onClick = onAddLocationClick) {
                 Icon(
-                    Icons.Default.AddCircle,
+                    Icons.Default.LocationOn,
                     contentDescription = stringResource(id = R.string.more_icon_desc),
                 )
             }
@@ -546,102 +539,6 @@ fun NoteFormIconTray(
                     contentDescription = stringResource(R.string.note_quick_form_done_button),
                 )
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun QuickAddNoteForm(
-    modifier: Modifier = Modifier,
-    onCloseClick: () -> Unit,
-    onDoneClick: () -> Unit,
-    onAddNotificationClick: () -> Unit,
-    onAddDeadlineClick: () -> Unit,
-) {
-    var titleText by rememberSaveable { mutableStateOf("") }
-    var choosingNotification by remember { mutableStateOf(false) }
-    var choosingDeadline by remember { mutableStateOf(false) }
-
-    if (choosingNotification || choosingDeadline) {
-        DatePickerDialog(
-            onDismissRequest = {
-                choosingNotification = false
-                choosingDeadline = false
-            },
-            confirmButton = {},
-        ) {
-            DatePicker(state = rememberDatePickerState())
-        }
-    }
-
-    Column(
-        modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 16.dp)
-            .fillMaxWidth(),
-    ) {
-        Row {
-            DateOptions({ choosingNotification = true }, { choosingDeadline = true })
-            FormCreationAlert(onCloseClick = onCloseClick, onDoneClick = onDoneClick)
-        }
-        FormTextField(
-            modifier = Modifier.padding(bottom = 8.dp),
-            value = titleText,
-            labelId = R.string.note_form_title_field,
-            onValueChange = { newText -> titleText = newText },
-            trailingIcon = {
-                ClearTextIcon(
-                    onClick = { if (titleText.isNotEmpty()) titleText = "" },
-                )
-            },
-        )
-    }
-}
-
-@Composable
-fun RowScope.DateOptions(choosingNotification: () -> Unit, choosingDeadline: () -> Unit) {
-    Row(
-        modifier = Modifier.weight(0.5f),
-        horizontalArrangement = Arrangement.Start,
-    ) {
-        IconButton(onClick = choosingNotification) {
-            ResourceIcon(
-                contentDescriptionId = R.string.add_notification_icon_desc,
-                imageId = R.drawable.add_notification_filled,
-            )
-        }
-        IconButton(onClick = choosingDeadline) {
-            ResourceIcon(
-                contentDescriptionId = R.string.add_deadline_icon_desc,
-                imageId = R.drawable.add_deadline_filled,
-            )
-        }
-        IconButton(onClick = { }) {
-            Icon(
-                Icons.Default.AddCircle,
-                contentDescription = stringResource(id = R.string.more_icon_desc),
-            )
-        }
-    }
-}
-
-@Composable
-fun RowScope.FormCreationAlert(onCloseClick: () -> Unit, onDoneClick: () -> Unit) {
-    Row(
-        modifier = Modifier.weight(0.5f),
-        horizontalArrangement = Arrangement.End,
-    ) {
-        IconButton(onClick = onCloseClick) {
-            Icon(
-                Icons.Default.Close,
-                contentDescription = stringResource(R.string.quick_note_form_close_button_desc),
-            )
-        }
-        IconButton(onClick = onDoneClick) {
-            Icon(
-                Icons.Default.Done,
-                contentDescription = stringResource(R.string.note_quick_form_done_button),
-            )
         }
     }
 }
