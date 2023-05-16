@@ -2,6 +2,7 @@ package com.eps.todoturtle.devices.logic
 
 import android.graphics.drawable.Drawable
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.runBlocking
+import java.util.UUID
 
 class DevicesViewModel private constructor(repository: DeviceRepository) : ViewModel() {
 
@@ -26,11 +28,15 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
     private val repository = DeviceStateRepository(repository)
 
     private val scope = SupervisorJob() + Dispatchers.IO
-    val deviceBuilder = DeviceBuilder()
+    var deviceBuilder = DeviceBuilder(UUID.randomUUID().toString())
 
     val deviceErrors: MutableStateFlow<Collection<DeviceBuildError>> = MutableStateFlow(emptyList())
     private val deviceCreator: Channel<NFCDevice> = Channel()
     val deviceCreated: Flow<NFCDevice> = deviceCreator.receiveAsFlow()
+
+    fun delete(device: NFCDevice) {
+        repository.remove(device)
+    }
 
     fun getDevices(): SnapshotStateList<NFCDevice> = repository.getAll()
 
@@ -56,12 +62,22 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
                     repository.add(result.device)
                     deviceCreator.send(result.device)
                 }
-                deviceBuilder.clean()
+                deviceBuilder = DeviceBuilder(UUID.randomUUID().toString())
             }
             is DeviceBuildResult.Failure -> {
                 deviceErrors.value = result.errors
             }
         }
+    }
+
+    fun setCurrentEditDevice(nfcDevice: NFCDevice) {
+        deviceBuilder = DeviceBuilder(
+            identifier = nfcDevice.identifier,
+            name = mutableStateOf( nfcDevice.name),
+            description = mutableStateOf(nfcDevice.description),
+            iconResId = nfcDevice.iconResId,
+            configured = nfcDevice.configured
+        )
     }
 
     fun showIconSelection() = iconSelection()
@@ -98,4 +114,21 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
     private fun setIdToDrawableConverter(iconDrawable: (id: Int) -> Drawable?) {
         this.iconToDrawable = iconDrawable
     }
+
+    fun updateDevice() {
+        when (val result = deviceBuilder.build()) {
+            is DeviceBuildResult.Success -> {
+                runBlocking(Dispatchers.IO) {
+                    repository.remove(result.device)
+                    repository.add(result.device)
+                    deviceCreator.send(result.device)
+                }
+                deviceBuilder = DeviceBuilder(UUID.randomUUID().toString())
+            }
+            is DeviceBuildResult.Failure -> {
+                deviceErrors.value = result.errors
+            }
+        }
+    }
+
 }

@@ -31,7 +31,8 @@ class DeviceStateRepository(private val repository: DeviceRepository) {
     fun remove(device: NFCDevice) {
         assertCacheIsLoadedOperation {
             this@DeviceStateRepository.repository.remove(device)
-            this@DeviceStateRepository.cached!!.remove(device)
+            val deviceToRemove = cached!!.find { it.identifier == device.identifier }
+            this@DeviceStateRepository.cached!!.remove(deviceToRemove)
         }
     }
 

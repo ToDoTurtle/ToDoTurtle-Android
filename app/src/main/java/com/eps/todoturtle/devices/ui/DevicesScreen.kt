@@ -1,6 +1,9 @@
 package com.eps.todoturtle.devices.ui
 
 import android.graphics.drawable.Drawable
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -14,6 +17,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,9 +26,11 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,6 +43,8 @@ import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
+import com.eps.todoturtle.devices.ui.BottomSheet
+import com.eps.todoturtle.devices.ui.deviceMenu
 import com.eps.todoturtle.note.logic.NotesViewModelInt
 import com.eps.todoturtle.note.logic.StubNotesViewModel
 import com.eps.todoturtle.note.logic.location.LocationClient
@@ -47,6 +55,7 @@ import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import kotlinx.coroutines.launch
 
 @Composable
 fun DeviceScreen(
@@ -56,6 +65,7 @@ fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
     notesViewModel: NotesViewModelInt,
     newDeviceAdded: Boolean = false,
+    onEditDevice: (NFCDevice) -> Unit = {},
     onNewDeviceAddedOkay: () -> Unit = {},
     onAddDevice: () -> Unit = {},
 ) {
@@ -66,6 +76,11 @@ fun DeviceScreen(
         devices = devicesViewModel.getDevices(),
         newDeviceAdded,
         @Composable { id: Int -> devicesViewModel.getDrawable(id) },
+        { device ->
+            devicesViewModel.setCurrentEditDevice(device)
+            onEditDevice(device)
+        },
+        { device -> devicesViewModel.delete(device) },
         onNewDeviceAddedOkay,
         onAddDevice,
         notesViewModel,
@@ -80,8 +95,10 @@ fun DeviceScreenLayout(
     devices: Collection<NFCDevice>,
     newDeviceAdded: Boolean,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
-    onNewDeviceAddedOkay: () -> Unit,
-    addDevice: () -> Unit,
+    onEditListener: (NFCDevice) -> Unit = {},
+    onDeleteListener: (NFCDevice) -> Unit = {},
+    onNewDeviceAddedOkay: () -> Unit = {},
+    addDevice: () -> Unit = {},
     notesViewModel: NotesViewModelInt,
 ) {
     Scaffold(
@@ -97,9 +114,10 @@ fun DeviceScreenLayout(
             hasLocationPermission,
             locationPermissionRequester,
             devices.toList(),
+            onEditListener,
+            onDeleteListener,
             iconToDrawableConverter,
-            notesViewModel,
-        )
+            notesViewModel)
     }
 }
 
@@ -120,6 +138,8 @@ fun NFCDeviceList(
     hasLocationPermission: () -> Boolean,
     locationPermissionRequester: PermissionRequester,
     devices: List<NFCDevice>,
+    onEditListener: (NFCDevice) -> Unit,
+    onDeleteListener: (NFCDevice) -> Unit,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
     notesViewModel: NotesViewModelInt,
 ) {
@@ -133,12 +153,15 @@ fun NFCDeviceList(
                 locationPermissionRequester = locationPermissionRequester,
                 notesViewModel = notesViewModel,
                 device = devices[index],
+                onEditListener,
+                onDeleteListener,
                 iconToDrawableConverter,
             )
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun NFCDeviceListItem(
     locationClient: LocationClient,
@@ -146,10 +169,19 @@ fun NFCDeviceListItem(
     locationPermissionRequester: PermissionRequester,
     notesViewModel: NotesViewModelInt,
     device: NFCDevice,
+    onEditListener: (NFCDevice) -> Unit,
+    onDeleteListener: (NFCDevice) -> Unit,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
 ) {
+    val showBottomSheet = rememberSaveable { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
     Card(
-        modifier = Modifier.padding(4.dp),
+        modifier = Modifier
+            .padding(4.dp)
+            .combinedClickable(onLongClick = {
+                showBottomSheet.value = true
+            }) { },
     ) {
         DeviceCard(
             locationClient = locationClient,
@@ -160,6 +192,22 @@ fun NFCDeviceListItem(
             iconToDrawableConverter = iconToDrawableConverter,
         )
     }
+    BottomSheet(
+        showBottomSheet, bottomSheetState, deviceMenu(
+            drawableConverter = iconToDrawableConverter, device = device,
+            onEditListener = onEditListener,
+            onDeleteListener = onDeleteListener,
+            onCloseListener = {
+                scope.launch {
+                    bottomSheetState.hide()
+                }.invokeOnCompletion {
+                    if (!bottomSheetState.isVisible) {
+                        showBottomSheet.value = false
+                    }
+                }
+            },
+        )
+    )
 }
 
 @Composable
@@ -261,6 +309,7 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
     }
 }
 
+
 //@Preview(showBackground = true)
 //@Composable
 //fun DevicesPreview() {
@@ -283,10 +332,8 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
 //                ),
 //            ),
 //            false,
-//            @Composable { null },
-//            {},
-//            {},
-//            StubNotesViewModel(),
+//            iconToDrawableConverter =  @Composable { null },
+//            notesViewModel = StubNotesViewModel(),
 //        )
 //    }
 //}

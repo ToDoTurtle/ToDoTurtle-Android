@@ -23,7 +23,7 @@ object NfcTagWriter {
     private fun writeWriteableTag(ndefTag: Ndef, message: NfcParcelable): WriteOperation {
         return try {
             ndefTag.write(message)
-            WriteOperation.SUCCESS
+            WriteOperation.SUCCESS(message)
         } catch (_: FormatException) {
             WriteOperation.MESSAGE_FORMAT_ERROR
         } catch (_: TagLostException) {
