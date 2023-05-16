@@ -55,7 +55,7 @@ fun DeviceForm(devicesViewModel: DevicesViewModel, configuration: DEVICE_CONFIGU
         var description by rememberSaveable { devicesViewModel.deviceBuilder.description }
         DeviceNameChooser(deviceName, nameError) { deviceName = it }
         DescriptionChooser(description, descriptionError) { description = it }
-        IconChooser { devicesViewModel.showIconSelection() }
+        IconChooser(iconError) { devicesViewModel.showIconSelection() }
         SaveButton {
             when (configuration) {
                 DEVICE_CONFIGURATION_PARAMS.NEW -> devicesViewModel.saveDevice()
@@ -117,7 +117,7 @@ fun DescriptionChooser(value: String, isError: Boolean, onChange: (String) -> Un
 }
 
 @Composable
-fun IconChooser(onClick: () -> Unit) {
+fun IconChooser(isError: Boolean, onClick: () -> Unit) {
     Text(
         text = "Choose an Icon",
         fontWeight = FontWeight.Bold,
@@ -129,6 +129,9 @@ fun IconChooser(onClick: () -> Unit) {
         modifier = Modifier.fillMaxWidth(),
     ) {
         Text(text = "Choose Icon")
+    }
+    if (isError) {
+        Text(text="Please choose an icon", color = MaterialTheme.colorScheme.error)
     }
 }
 
