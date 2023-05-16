@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.logic.UserAuth
+import com.eps.todoturtle.profile.ui.register.providers.GoogleButton
 import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -119,44 +120,8 @@ fun AdditionalSignUpButton(userAuth: UserAuth, onSuccessfulRegister: () -> Unit)
     Row(
         modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        val scope = rememberCoroutineScope()
-        val context = LocalContext.current
-        val googleLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            it.data?.let {  intent ->
-                val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
-                val account = task.result
-                val token = account?.idToken
-                if (token != null) {
-                    scope.launch {
-                        val googleResult = userAuth.loginWithGoogle(token)
-                        if (!googleResult.first) {
-                            Toast.makeText(context, googleResult.second, Toast.LENGTH_SHORT).show()
-                        } else {
-                            onSuccessfulRegister()
-                        }
-                    }
-                }
-                else {
-                    Toast.makeText(context, "Error loging in, contact the developers", Toast.LENGTH_SHORT).show()
-                }
-                Toast.makeText(context, userAuth.isLoggedIn().toString(), Toast.LENGTH_SHORT).show()
-            }
-        }
-        Button(onClick = {
-            val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("400657329133-3i6r0oul753t5o80o1e77r8ce9eo0u93.apps.googleusercontent.com")
-                .requestEmail()
-                .build()
-            val intent = GoogleSignIn.getClient(context, options).signInIntent
-            googleLauncher.launch(intent)
-        }) {
-            Icon(
-                painter = painterResource(id = R.drawable.google),
-                contentDescription = stringResource(
-                    id = R.string.google_desc
-                ),
-                modifier = Modifier.size(24.dp)
-            )
+        GoogleButton(userAuth = userAuth) {
+            onSuccessfulRegister()
         }
         Button(onClick = { /*TODO*/ }) {
             Icon(

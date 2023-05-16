@@ -1,12 +1,16 @@
 package com.eps.todoturtle.profile.logic
 
+import android.content.Context
 import android.util.Patterns
+import android.widget.Toast
+import com.eps.todoturtle.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 
 class UserAuth(
+    private val context: Context,
     private val auth: FirebaseAuth,
 ) {
     companion object {
@@ -48,4 +52,9 @@ class UserAuth(
     fun isLoggedIn(): Boolean = auth.currentUser != null
 
     fun logout() = auth.signOut()
+
+    fun errorToast() {
+        val errorMessage = context.getString(R.string.additional_sign_up_error)
+        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+    }
 }
