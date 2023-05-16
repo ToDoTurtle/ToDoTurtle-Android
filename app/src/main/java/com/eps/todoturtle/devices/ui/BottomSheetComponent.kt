@@ -39,7 +39,7 @@ import com.eps.todoturtle.devices.logic.NFCDevice
 fun BottomSheet(
     openState: MutableState<Boolean>,
     bottomSheetState: SheetState,
-    composable: @Composable () -> Unit
+    composable: @Composable () -> Unit,
 ) {
     var openBottomSheet by rememberSaveable { openState }
     if (openBottomSheet) {
@@ -58,23 +58,25 @@ fun deviceMenu(
     drawableConverter: @Composable (Int) -> Drawable?,
     onEditListener: (NFCDevice) -> Unit = {},
     onDeleteListener: (NFCDevice) -> Unit = {},
-    onCloseListener: () -> Unit = {}
+    onCloseListener: () -> Unit = {},
 ): @Composable () -> Unit {
     return {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .padding(vertical = 8.dp),
         ) {
             NoteCardInfo(device = device, drawableConverter)
             optionMenu(
                 icon = Icons.Filled.Edit,
                 text = "Edit",
-                onEditClicked = { onEditListener(device) })
+                onEditClicked = { onEditListener(device) },
+            )
             optionMenu(
                 icon = Icons.Filled.Delete,
                 text = "Delete",
-                onEditClicked = { onDeleteListener(device) })
+                onEditClicked = { onDeleteListener(device) },
+            )
             optionMenu(icon = Icons.Filled.Close, text = "Close", onEditClicked = onCloseListener)
         }
     }
@@ -85,11 +87,11 @@ fun NoteCardInfo(device: NFCDevice, drawableConverter: @Composable (Int) -> Draw
     Card(
         modifier = Modifier
             .padding(10.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             DeviceIcon(drawableConverter, device)
             Text(device.name)
@@ -97,7 +99,7 @@ fun NoteCardInfo(device: NFCDevice, drawableConverter: @Composable (Int) -> Draw
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = device.description,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -106,7 +108,7 @@ fun NoteCardInfo(device: NFCDevice, drawableConverter: @Composable (Int) -> Draw
 fun optionMenu(
     icon: ImageVector,
     text: String,
-    onEditClicked: () -> Unit
+    onEditClicked: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.Start,
@@ -123,7 +125,7 @@ fun optionMenu(
         )
         Text(
             text = text,
-            fontSize = 14.sp
+            fontSize = 14.sp,
         )
     }
 }
@@ -137,14 +139,14 @@ fun ShowDeviceLongPressOptions() {
             description = "Dummy Description",
             identifier = "fakeidentifier",
             iconResId = R.drawable.car,
-            configured = false
+            configured = false,
         ),
         drawableConverter = @Composable { id ->
             AppCompatResources.getDrawable(
                 LocalContext.current,
-                id
+                id,
             )
         },
-        onCloseListener = {}
+        onCloseListener = {},
     )
 }

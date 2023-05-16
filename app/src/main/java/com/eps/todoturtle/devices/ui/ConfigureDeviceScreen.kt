@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAMS
 import com.eps.todoturtle.devices.logic.DeviceBuildError
+import com.eps.todoturtle.devices.logic.DeviceConfigurationParams
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
 import com.eps.todoturtle.shared.logic.extensions.dataStore
@@ -30,8 +30,8 @@ import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 @Composable
 fun DeviceConfigurationScreen(
     devicesViewModel: DevicesViewModel,
-    configuration: DEVICE_CONFIGURATION_PARAMS,
-    onDeviceSaved: (NFCDevice) -> Unit
+    configuration: DeviceConfigurationParams,
+    onDeviceSaved: (NFCDevice) -> Unit,
 ) {
     val deviceSaved by devicesViewModel.deviceCreated.collectAsStateWithLifecycle(initialValue = null)
     DeviceForm(devicesViewModel = devicesViewModel, configuration)
@@ -39,7 +39,7 @@ fun DeviceConfigurationScreen(
 }
 
 @Composable
-fun DeviceForm(devicesViewModel: DevicesViewModel, configuration: DEVICE_CONFIGURATION_PARAMS) {
+fun DeviceForm(devicesViewModel: DevicesViewModel, configuration: DeviceConfigurationParams) {
     val errors by devicesViewModel.deviceErrors.collectAsStateWithLifecycle()
     val iconError: Boolean = errors.contains(DeviceBuildError.NON_ICON)
     val nameError: Boolean = errors.contains(DeviceBuildError.NAME_EMPTY)
@@ -57,8 +57,8 @@ fun DeviceForm(devicesViewModel: DevicesViewModel, configuration: DEVICE_CONFIGU
         IconChooser { devicesViewModel.showIconSelection() }
         SaveButton {
             when (configuration) {
-                DEVICE_CONFIGURATION_PARAMS.NEW -> devicesViewModel.saveDevice()
-                DEVICE_CONFIGURATION_PARAMS.EDIT -> devicesViewModel.updateDevice()
+                DeviceConfigurationParams.NEW -> devicesViewModel.saveDevice()
+                DeviceConfigurationParams.EDIT -> devicesViewModel.updateDevice()
             }
         }
     }

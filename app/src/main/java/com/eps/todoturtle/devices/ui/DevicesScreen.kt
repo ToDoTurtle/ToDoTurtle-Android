@@ -1,7 +1,6 @@
 package com.eps.todoturtle.devices.ui
 
 import android.graphics.drawable.Drawable
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
@@ -35,24 +34,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
-import com.eps.todoturtle.devices.ui.BottomSheet
-import com.eps.todoturtle.devices.ui.deviceMenu
 import com.eps.todoturtle.note.logic.NotesViewModelInt
-import com.eps.todoturtle.note.logic.StubNotesViewModel
 import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.note.ui.AddNoteFormDialog
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
-import com.eps.todoturtle.shared.logic.extensions.dataStore
-import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
@@ -117,7 +109,8 @@ fun DeviceScreenLayout(
             onEditListener,
             onDeleteListener,
             iconToDrawableConverter,
-            notesViewModel)
+            notesViewModel,
+        )
     }
 }
 
@@ -193,8 +186,11 @@ fun NFCDeviceListItem(
         )
     }
     BottomSheet(
-        showBottomSheet, bottomSheetState, deviceMenu(
-            drawableConverter = iconToDrawableConverter, device = device,
+        showBottomSheet,
+        bottomSheetState,
+        deviceMenu(
+            drawableConverter = iconToDrawableConverter,
+            device = device,
             onEditListener = onEditListener,
             onDeleteListener = onDeleteListener,
             onCloseListener = {
@@ -206,7 +202,7 @@ fun NFCDeviceListItem(
                     }
                 }
             },
-        )
+        ),
     )
 }
 
@@ -309,10 +305,9 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
     }
 }
 
-
-//@Preview(showBackground = true)
-//@Composable
-//fun DevicesPreview() {
+// @Preview(showBackground = true)
+// @Composable
+// fun DevicesPreview() {
 //    ToDoTurtleTheme(LocalContext.current.dataStore) {
 //        DeviceScreenLayout(
 //            devices = listOf(
@@ -336,4 +331,4 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
 //            notesViewModel = StubNotesViewModel(),
 //        )
 //    }
-//}
+// }

@@ -19,8 +19,9 @@ class DeviceBuilder(
     private var alreadyBuild: Boolean = false
 
     fun build(): DeviceBuildResult {
-        if (alreadyBuild)
+        if (alreadyBuild) {
             throw Error("Programming Error: Building a Device 2 times with the same builder")
+        }
         val errors: MutableList<DeviceBuildError> = mutableListOf()
         if (name.value.isBlank() || name.value.isEmpty()) {
             errors.add(DeviceBuildError.NAME_EMPTY)
@@ -37,5 +38,4 @@ class DeviceBuilder(
         alreadyBuild = true
         return DeviceBuildResult.Success(device)
     }
-
 }

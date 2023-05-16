@@ -13,14 +13,16 @@ class DefaultLocationClient(
 ) : LocationClient {
     @SuppressLint("MissingPermission")
     override fun getCurrentLocation(): Task<Location> {
-        if (!context.hasLocationPermision())
+        if (!context.hasLocationPermision()) {
             throw LocationClient.LocationException("Missing location permission")
-        if (!context.isGpsEnabled() && !context.isNetworkLocationEnabled())
+        }
+        if (!context.isGpsEnabled() && !context.isNetworkLocationEnabled()) {
             throw LocationClient.LocationException("GPS is disabled")
+        }
 
         return client.getCurrentLocation(
             Priority.PRIORITY_HIGH_ACCURACY,
-            null
+            null,
         )
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.eps.todoturtle.devices.infra.InMemoryDeviceRepository
 import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
@@ -36,11 +35,7 @@ import com.maltaisn.icondialog.pack.IconPack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
-import org.osmdroid.util.GeoPoint
 
 class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivity {
     private lateinit var cameraPermissionRequester: PermissionRequester
@@ -58,10 +53,13 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         cameraPermissionRequester =
             PermissionRequester(this, listOf(CameraPermissionProvider(this)))
         locationPermissionRequester =
-            PermissionRequester(this, listOf(
-                FineLocationPermissionProvider(this),
-                CoarseLocationPermissionProvider(this)
-            ))
+            PermissionRequester(
+                this,
+                listOf(
+                    FineLocationPermissionProvider(this),
+                    CoarseLocationPermissionProvider(this),
+                ),
+            )
         val noteScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
         val deviceScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.DeviceScreenFactory }
         val profileViewModel = ProfileViewModel(this)
@@ -75,7 +73,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
 
         locationClient = DefaultLocationClient(
             applicationContext,
-            LocationServices.getFusedLocationProviderClient(applicationContext)
+            LocationServices.getFusedLocationProviderClient(applicationContext),
         )
 
         setContent {

@@ -12,17 +12,16 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
-
 @Composable
 fun LocationPickerMapView(
     modifier: Modifier = Modifier,
-    onLoad: ((map: MapView) -> Unit)? = null
+    onLoad: ((map: MapView) -> Unit)? = null,
 ) {
     val mapViewState = rememberMapViewWithLifecycle()
 
     AndroidView(
         { mapViewState },
-        modifier
+        modifier,
     ) { mapView -> onLoad?.invoke(mapView) }
 }
 

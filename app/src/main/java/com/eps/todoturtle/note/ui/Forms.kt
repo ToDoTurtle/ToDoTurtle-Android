@@ -4,14 +4,12 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.LocationOn
@@ -34,7 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -54,7 +51,6 @@ import com.eps.todoturtle.note.logic.location.toGeoPoint
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 import com.eps.todoturtle.shared.ui.ClearTextIcon
 import com.eps.todoturtle.shared.ui.FormOutlinedTextField
-import com.eps.todoturtle.shared.ui.FormTextField
 import com.eps.todoturtle.shared.ui.ResourceIcon
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.eps.todoturtle.ui.theme.onFormContainer
@@ -179,8 +175,7 @@ fun AddNoteForm(
         onAddNotificationClick = { choosingNotification = true },
         onAddDeadlineClick = { choosingDeadline = true },
         onAddLocationClick = {
-            if (hasPermisions()) choosingLocation = true
-            else requestPermisions()
+            if (hasPermisions()) choosingLocation = true else requestPermisions()
         },
         onCloseClick = { onCloseClick(); viewModel.clearNoteFields() },
         onDoneClick = { onDoneClick(); viewModel.addNote() },
@@ -193,17 +188,13 @@ fun AddNoteForm(
             choosingNotification = false
             choosingNotificationTime = false
         },
-        onBackClick = {
-            choosingNotificationTime = false
-        },
+        onBackClick = { choosingNotificationTime = false },
         onAddNotificationClick = { chosenTime ->
             choosingNotification = false
             choosingNotificationTime = false
             viewModel.noteNotificationTime = chosenTime
         },
-        onNextClick = {
-            choosingNotificationTime = true
-        },
+        onNextClick = { choosingNotificationTime = true },
     )
 
     AddDeadlineDialog(
@@ -213,17 +204,13 @@ fun AddNoteForm(
             choosingDeadline = false
             choosingDeadlineTime = false
         },
-        onBackClick = {
-            choosingDeadlineTime = false
-        },
+        onBackClick = { choosingDeadlineTime = false },
         onAddDeadlineClick = { chosenTime ->
             choosingDeadline = false
             choosingDeadlineTime = false
             viewModel.noteDeadlineTime = chosenTime
         },
-        onNextClick = {
-            choosingDeadlineTime = true
-        },
+        onNextClick = { choosingDeadlineTime = true },
     )
 
     AddLocationDialog(
@@ -267,7 +254,7 @@ fun AddLocationDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp),
-                source = location
+                source = location,
             )
             Row(
                 modifier = Modifier
@@ -279,7 +266,9 @@ fun AddLocationDialog(
                     Text(text = stringResource(id = R.string.cancel))
                 }
                 TextButton(
-                    onClick = { onAddLocationClick(location!!) }, enabled = location != null,) {
+                    onClick = { onAddLocationClick(location!!) },
+                    enabled = location != null,
+                ) {
                     Text(text = stringResource(id = R.string.confirm))
                 }
             }

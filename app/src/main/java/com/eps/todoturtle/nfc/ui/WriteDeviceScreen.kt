@@ -15,9 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DeviceInformation
-import com.eps.todoturtle.devices.logic.NFCDevice
-import com.eps.todoturtle.nfc.logic.state.NfcStatus
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
+import com.eps.todoturtle.nfc.logic.state.NfcStatus
 import com.eps.todoturtle.nfc.logic.write.WriteOperation
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme

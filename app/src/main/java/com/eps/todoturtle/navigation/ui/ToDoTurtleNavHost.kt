@@ -18,7 +18,7 @@ import androidx.navigation.navArgument
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_ID
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAM
-import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAMS
+import com.eps.todoturtle.devices.logic.DeviceConfigurationParams
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
 import com.eps.todoturtle.devices.ui.DeviceScreen
@@ -77,7 +77,7 @@ fun ToDoTurtleNavHost(
             noteScreenViewModel,
             locationClient,
             locationPermissionRequester,
-            hasLocationPermission
+            hasLocationPermission,
         )
         devices(
             navController,
@@ -85,7 +85,7 @@ fun ToDoTurtleNavHost(
             deviceScreenNoteViewModel,
             locationClient,
             locationPermissionRequester,
-            hasLocationPermission
+            hasLocationPermission,
         )
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
@@ -156,9 +156,11 @@ fun NavGraphBuilder.devices(
 ) {
     composable(
         Destinations.DEVICES.route,
-        arguments = listOf(navArgument(DEVICE_WRITE_SUCCESSFUL_PARAMETER) {
-            type = NavType.BoolType
-        }),
+        arguments = listOf(
+            navArgument(DEVICE_WRITE_SUCCESSFUL_PARAMETER) {
+                type = NavType.BoolType
+            },
+        ),
     ) {
         val newDeviceAdded = it.arguments?.getBoolean(DEVICE_WRITE_SUCCESSFUL_PARAMETER) ?: false
         DeviceScreen(
@@ -181,11 +183,11 @@ fun NavGraphBuilder.deviceConfiguration(
         DEVICE_CONFIGURATION,
         arguments = listOf(
             navArgument(DEVICE_CONFIGURATION_PARAM) { type = NavType.StringType },
-            navArgument(DEVICE_CONFIGURATION_ID) { type = NavType.StringType }
+            navArgument(DEVICE_CONFIGURATION_ID) { type = NavType.StringType },
         ),
     ) {
-        val configurationType = DEVICE_CONFIGURATION_PARAMS.fromString(
-            it.arguments?.getString(DEVICE_CONFIGURATION_PARAM)
+        val configurationType = DeviceConfigurationParams.fromString(
+            it.arguments?.getString(DEVICE_CONFIGURATION_PARAM),
         )
         val deviceId: String = it.arguments?.getString(DEVICE_CONFIGURATION_ID)!!
         devicesViewModel.deviceBuilder.identifier = deviceId
@@ -224,7 +226,7 @@ fun DeviceScreen(
         notesViewModel = noteScreenViewModel,
         newDeviceAdded = deviceAdded,
         onEditDevice = {
-            navController.navigate(DEVICE_CONFIGURATION_PARAMS.EDIT.getUri(it.identifier)) {
+            navController.navigate(DeviceConfigurationParams.EDIT.getUri(it.identifier)) {
                 navController.graph.startDestinationRoute?.let { _ ->
                     popUpTo(Destinations.DEVICES_NORMAL.route) {
                         saveState = true
@@ -271,7 +273,7 @@ fun NavGraphBuilder.writeDevice(
             },
             onWriteSuccessful = { id ->
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(DEVICE_CONFIGURATION_PARAMS.NEW.getUri(id))
+                navController.navigateSingleTopTo(DeviceConfigurationParams.NEW.getUri(id))
             },
         )
     }
