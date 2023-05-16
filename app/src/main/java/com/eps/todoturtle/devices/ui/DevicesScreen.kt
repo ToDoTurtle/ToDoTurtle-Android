@@ -56,7 +56,7 @@ import kotlinx.coroutines.launch
 fun DeviceScreen(
     devicesViewModel: DevicesViewModel,
     newDeviceAdded: Boolean = false,
-    onEditDevice: () -> Unit = {},
+    onEditDevice: (NFCDevice) -> Unit = {},
     onNewDeviceAddedOkay: () -> Unit = {},
     onAddDevice: () -> Unit = {},
 ) {
@@ -66,7 +66,7 @@ fun DeviceScreen(
         @Composable { id: Int -> devicesViewModel.getDrawable(id) },
         { device ->
             devicesViewModel.setCurrentEditDevice(device)
-            onEditDevice()
+            onEditDevice(device)
         },
         { device -> devicesViewModel.delete(device) },
         onNewDeviceAddedOkay,

@@ -2,7 +2,8 @@ package com.eps.todoturtle.devices.logic
 
 
 const val DEVICE_CONFIGURATION_PARAM = "configuration_context"
-const val DEVICE_CONFIGURATION = "device_configuration/{$DEVICE_CONFIGURATION_PARAM}"
+const val DEVICE_CONFIGURATION_ID = "configuration_id"
+const val DEVICE_CONFIGURATION = "device_configuration/{$DEVICE_CONFIGURATION_PARAM}/{$DEVICE_CONFIGURATION_ID}"
 
 enum class DEVICE_CONFIGURATION_PARAMS(val value: String) {
     NEW("NEW"),
@@ -16,7 +17,7 @@ enum class DEVICE_CONFIGURATION_PARAMS(val value: String) {
         }
     }
 
-    fun getUri(): String {
-        return "device_configuration/$value"
+    fun getUri(id: String): String {
+        return "device_configuration/$value/$id"
     }
 }
