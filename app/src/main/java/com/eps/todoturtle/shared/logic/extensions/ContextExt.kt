@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.datastore.dataStore
 import com.eps.todoturtle.preferences.logic.AppPreferencesSerializer
 
-private const val DATA_STORE_FN = "user-preferences.json"
+const val DATA_STORE_FN = "user-preferences.json"
 
 fun Context.hasCameraPermission(): Boolean {
     return ContextCompat.checkSelfPermission(

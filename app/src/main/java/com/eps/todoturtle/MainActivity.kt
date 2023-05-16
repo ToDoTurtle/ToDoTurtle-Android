@@ -1,6 +1,7 @@
 package com.eps.todoturtle
 
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -8,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.eps.todoturtle.devices.infra.InMemoryDeviceRepository
 import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
+import com.eps.todoturtle.network.ConnectionChecker
+import com.eps.todoturtle.network.ConnectionCheckerImpl
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.DefaultLocationClient
@@ -35,6 +38,7 @@ import com.maltaisn.icondialog.pack.IconPack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivity {
@@ -47,8 +51,14 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
     private lateinit var auth: FirebaseAuth
     private lateinit var locationClient: LocationClient
 
+    private lateinit var connectionChecker: ConnectionChecker
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        connectionChecker = ConnectionCheckerImpl(this)
 
         cameraPermissionRequester =
             PermissionRequester(this, listOf(CameraPermissionProvider(this)))

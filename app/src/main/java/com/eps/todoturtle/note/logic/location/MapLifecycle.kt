@@ -19,6 +19,7 @@ fun rememberMapViewWithLifecycle(): MapView {
         MapView(context).apply {
             id = R.id.location_picker_map
             clipToOutline = false
+            setMultiTouchControls(true)
         }
     }
 
