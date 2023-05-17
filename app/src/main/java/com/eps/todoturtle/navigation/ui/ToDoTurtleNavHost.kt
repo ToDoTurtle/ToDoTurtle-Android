@@ -37,7 +37,6 @@ import com.eps.todoturtle.preferences.ui.PreferenceUI
 import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.details.DetailsUI
-import com.eps.todoturtle.profile.ui.login.LoginUI
 
 @Composable
 fun ToDoTurtleNavHost(
@@ -57,14 +56,11 @@ fun ToDoTurtleNavHost(
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
 ) {
-    val startDestination = if (userAuth.isLoggedIn()) Destinations.NOTES else Destinations.LOGIN
-
     NavHost(
         navController = navController,
-        startDestination = startDestination.route,
+        startDestination = Destinations.NOTES.route,
         modifier = modifier,
     ) {
-        login(navController, shouldShowMenu, userAuth)
         profile(
             cameraPermissionRequester,
             navController,
@@ -91,19 +87,6 @@ fun ToDoTurtleNavHost(
         deviceConfiguration(devicesViewModel, navController)
         settings(dataStore)
         invite()
-    }
-}
-
-fun NavGraphBuilder.login(
-    navController: NavHostController,
-    shouldShowMenu: MutableState<Boolean>,
-    userAuth: UserAuth,
-) {
-    composable(Destinations.LOGIN.route) {
-        LoginUI(userAuth = userAuth) {
-            navController.navigateFromLogin(Destinations.NOTES.route)
-            shouldShowMenu.value = true
-        }
     }
 }
 
@@ -301,9 +284,3 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         launchSingleTop = true
         restoreState = true
     }
-
-fun NavHostController.navigateFromLogin(route: String) {
-    this.navigate(route) {
-        popUpTo(0)
-    }
-}
