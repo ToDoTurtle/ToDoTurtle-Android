@@ -2,8 +2,11 @@ package com.eps.todoturtle.profile.ui.register
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -21,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.logic.UserAuth
+import com.eps.todoturtle.profile.ui.register.providers.github.GithubButton
+import com.eps.todoturtle.profile.ui.register.providers.google.GoogleButton
 import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
 import kotlinx.coroutines.launch
@@ -29,6 +34,7 @@ import kotlinx.coroutines.launch
 fun RegisterDialog(
     userAuth: UserAuth,
     onDismiss: () -> Unit,
+    onSuccessfulRegister: () -> Unit,
 ) {
     val context = LocalContext.current
     var mail by rememberSaveable { mutableStateOf("") }
@@ -39,7 +45,9 @@ fun RegisterDialog(
 
     Dialog(onDismissRequest = { onDismiss() }) {
         Card(
-            modifier = Modifier.size(300.dp),
+            modifier = Modifier
+                .width(300.dp)
+                .height(400.dp),
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -63,6 +71,10 @@ fun RegisterDialog(
                 ) {
                     password = it
                     passwordError = false
+                }
+                AdditionalSignUpButton(userAuth) {
+                    onDismiss()
+                    onSuccessfulRegister()
                 }
                 val scope = rememberCoroutineScope()
                 SignUpButton {
@@ -92,5 +104,21 @@ fun RegisterDialog(
 fun SignUpButton(onClick: () -> Unit) {
     Button(onClick = { onClick() }) {
         Text(text = stringResource(id = R.string.sign_up_confirm))
+    }
+}
+
+@Composable
+fun AdditionalSignUpButton(userAuth: UserAuth, onSuccessfulRegister: () -> Unit) {
+    Text(text = stringResource(id = R.string.addtional_sign_ups))
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+    ) {
+        GoogleButton(userAuth = userAuth) {
+            onSuccessfulRegister()
+        }
+        GithubButton(userAuth = userAuth) {
+            onSuccessfulRegister()
+        }
     }
 }

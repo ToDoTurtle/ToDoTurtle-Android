@@ -8,15 +8,15 @@ import android.location.LocationManager
 import androidx.core.content.ContextCompat
 import org.osmdroid.util.GeoPoint
 
-fun Context.hasLocationPermision(): Boolean {
+fun Context.hasLocationPermission(): Boolean {
     return ContextCompat.checkSelfPermission(
         this,
         Manifest.permission.ACCESS_FINE_LOCATION,
     ) == PackageManager.PERMISSION_GRANTED &&
         ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-        ) == PackageManager.PERMISSION_GRANTED
+        this,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+    ) == PackageManager.PERMISSION_GRANTED
 }
 
 fun Context.isGpsEnabled(): Boolean {

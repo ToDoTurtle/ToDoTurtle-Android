@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -54,7 +55,7 @@ fun DeviceForm(devicesViewModel: DevicesViewModel, configuration: DeviceConfigur
         var description by rememberSaveable { devicesViewModel.deviceBuilder.description }
         DeviceNameChooser(deviceName, nameError) { deviceName = it }
         DescriptionChooser(description, descriptionError) { description = it }
-        IconChooser { devicesViewModel.showIconSelection() }
+        IconChooser(iconError) { devicesViewModel.showIconSelection() }
         SaveButton {
             when (configuration) {
                 DeviceConfigurationParams.NEW -> devicesViewModel.saveDevice()
@@ -78,6 +79,15 @@ fun DeviceNameChooser(value: String, isError: Boolean, onChange: (String) -> Uni
         isError = isError,
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
+        supportingText = {
+            if (isError) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(0.8f),
+                    text = "Device Name isn't valid",
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        },
     )
 }
 
@@ -94,11 +104,20 @@ fun DescriptionChooser(value: String, isError: Boolean, onChange: (String) -> Un
         isError = isError,
         onValueChange = onChange,
         modifier = Modifier.fillMaxWidth(),
+        supportingText = {
+            if (isError) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(0.8f),
+                    text = "Description cannot be empty",
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        },
     )
 }
 
 @Composable
-fun IconChooser(onClick: () -> Unit) {
+fun IconChooser(isError: Boolean, onClick: () -> Unit) {
     Text(
         text = "Choose an Icon",
         fontWeight = FontWeight.Bold,
@@ -110,6 +129,9 @@ fun IconChooser(onClick: () -> Unit) {
         modifier = Modifier.fillMaxWidth(),
     ) {
         Text(text = "Choose Icon")
+    }
+    if (isError) {
+        Text(text="Please choose an icon", color = MaterialTheme.colorScheme.error)
     }
 }
 

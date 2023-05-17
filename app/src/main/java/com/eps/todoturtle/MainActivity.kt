@@ -6,6 +6,10 @@ import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.eps.todoturtle.action.infra.FirebaseActionRepository
+import com.eps.todoturtle.action.infra.InMemoryActionRepository
+import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
+import com.eps.todoturtle.devices.infra.FirebaseDeviceRepository
 import com.eps.todoturtle.devices.infra.InMemoryDeviceRepository
 import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
@@ -15,7 +19,7 @@ import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.DefaultLocationClient
 import com.eps.todoturtle.note.logic.location.LocationClient
-import com.eps.todoturtle.note.logic.location.hasLocationPermision
+import com.eps.todoturtle.note.logic.location.hasLocationPermission
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.providers.CameraPermissionProvider
 import com.eps.todoturtle.permissions.logic.providers.CoarseLocationPermissionProvider
@@ -72,7 +76,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                 ),
             )
         val noteScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
-        val deviceScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.DeviceScreenFactory }
+        val actionsViewModel = getActionViewModel(FirebaseActionRepository())
         val profileViewModel = ProfileViewModel(this)
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
@@ -80,7 +84,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         theme.applyStyle(R.style.AppTheme, true)
 
         auth = Firebase.auth
-        val userAuth = UserAuth(auth)
+        val userAuth = UserAuth(this@MainActivity, auth)
 
         locationClient = DefaultLocationClient(
             applicationContext,
@@ -90,13 +94,13 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         setContent {
             ToDoTurtleTheme(dataStore) {
                 App(
-                    hasLocationPermision = { hasLocationPermision() },
+                    devicesViewModel = getDevicesViewModel(FirebaseDeviceRepository()),
+                    hasLocationPermision = { hasLocationPermission() },
                     locationClient = locationClient,
                     locationPermissionRequester = locationPermissionRequester,
                     cameraPermissionRequester = cameraPermissionRequester,
-                    devicesViewModel = getDevicesViewModel(InMemoryDeviceRepository()),
                     noteScreenViewModel = noteScreenNoteViewModel,
-                    deviceScreenNoteViewModel = deviceScreenNoteViewModel,
+                    actionsViewModel = actionsViewModel,
                     nfcWriteViewModel = getNfcWriteModel(),
                     profileViewModel = profileViewModel,
                     dataStore = dataStore,

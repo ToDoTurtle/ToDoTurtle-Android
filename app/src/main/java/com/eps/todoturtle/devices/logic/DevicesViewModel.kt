@@ -76,7 +76,6 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
             name = mutableStateOf(nfcDevice.name),
             description = mutableStateOf(nfcDevice.description),
             iconResId = nfcDevice.iconResId,
-            configured = nfcDevice.configured,
         )
     }
 
@@ -115,7 +114,10 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
         this.iconToDrawable = iconDrawable
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun updateDevice() {
+        if (!iconChannel.isEmpty)
+            runBlocking { deviceBuilder.iconResId = iconChannel.receive() }
         when (val result = deviceBuilder.build()) {
             is DeviceBuildResult.Success -> {
                 runBlocking(Dispatchers.IO) {

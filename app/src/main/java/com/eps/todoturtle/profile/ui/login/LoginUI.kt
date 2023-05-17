@@ -98,8 +98,9 @@ fun LoginContent(
     if (shouldShowSignUp) {
         RegisterDialog(
             userAuth,
+            { shouldShowSignUp = false },
         ) {
-            shouldShowSignUp = false
+            onSignInClick()
         }
     }
     val scope = rememberCoroutineScope()

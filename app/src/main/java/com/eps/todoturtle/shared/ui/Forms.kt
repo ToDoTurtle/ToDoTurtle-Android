@@ -2,6 +2,7 @@ package com.eps.todoturtle.shared.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -17,6 +18,8 @@ fun FormOutlinedTextField(
     singleLine: Boolean = true,
     maxLines: Int = 1,
     onValueChange: (String) -> Unit = {},
+    hasError: Boolean = false,
+    errorMessage: String = "",
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     OutlinedTextField(
@@ -25,7 +28,17 @@ fun FormOutlinedTextField(
         singleLine = singleLine,
         maxLines = maxLines,
         onValueChange = { onValueChange(it) },
+        isError = hasError,
         label = { Text(stringResource(id = labelId)) },
+        supportingText = {
+            if (hasError) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(0.8f),
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        },
         trailingIcon = { if (value.isNotEmpty()) trailingIcon?.invoke() },
     )
 }

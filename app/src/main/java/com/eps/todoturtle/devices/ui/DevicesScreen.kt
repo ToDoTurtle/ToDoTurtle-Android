@@ -34,38 +34,35 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
+import com.eps.todoturtle.action.infra.InMemoryActionRepository
+import com.eps.todoturtle.action.logic.ActionViewModel
+import com.eps.todoturtle.action.ui.LinkNoteFormDialog
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
-import com.eps.todoturtle.note.logic.NotesViewModelInt
-import com.eps.todoturtle.note.logic.location.LocationClient
-import com.eps.todoturtle.note.ui.AddNoteFormDialog
-import com.eps.todoturtle.permissions.logic.PermissionRequester
-import com.eps.todoturtle.permissions.logic.RequestPermissionContext
+import com.eps.todoturtle.shared.logic.extensions.dataStore
+import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 
 @Composable
 fun DeviceScreen(
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
     devicesViewModel: DevicesViewModel,
-    notesViewModel: NotesViewModelInt,
+    actionViewModel: ActionViewModel,
     newDeviceAdded: Boolean = false,
     onEditDevice: (NFCDevice) -> Unit = {},
     onNewDeviceAddedOkay: () -> Unit = {},
     onAddDevice: () -> Unit = {},
 ) {
     DeviceScreenLayout(
-        locationClient = locationClient,
-        hasLocationPermission = hasLocationPermission,
-        locationPermissionRequester = locationPermissionRequester,
         devices = devicesViewModel.getDevices(),
+        actionViewModel = actionViewModel,
         newDeviceAdded,
         @Composable { id: Int -> devicesViewModel.getDrawable(id) },
         { device ->
@@ -74,24 +71,20 @@ fun DeviceScreen(
         },
         { device -> devicesViewModel.delete(device) },
         onNewDeviceAddedOkay,
-        onAddDevice,
-        notesViewModel,
+        onAddDevice
     )
 }
 
 @Composable
 fun DeviceScreenLayout(
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
     devices: Collection<NFCDevice>,
+    actionViewModel: ActionViewModel,
     newDeviceAdded: Boolean,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
     onEditListener: (NFCDevice) -> Unit = {},
     onDeleteListener: (NFCDevice) -> Unit = {},
     onNewDeviceAddedOkay: () -> Unit = {},
     addDevice: () -> Unit = {},
-    notesViewModel: NotesViewModelInt,
 ) {
     Scaffold(
         floatingActionButton = { AddDeviceButton(onClick = addDevice) },
@@ -102,14 +95,11 @@ fun DeviceScreenLayout(
         },
     ) {
         NFCDeviceList(
-            locationClient,
-            hasLocationPermission,
-            locationPermissionRequester,
             devices.toList(),
+            actionViewModel = actionViewModel,
             onEditListener,
             onDeleteListener,
-            iconToDrawableConverter,
-            notesViewModel,
+            iconToDrawableConverter
         )
     }
 }
@@ -127,25 +117,19 @@ fun AddDeviceButton(onClick: () -> Unit) {
 
 @Composable
 fun NFCDeviceList(
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
     devices: List<NFCDevice>,
+    actionViewModel: ActionViewModel,
     onEditListener: (NFCDevice) -> Unit,
     onDeleteListener: (NFCDevice) -> Unit,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
-    notesViewModel: NotesViewModelInt,
 ) {
     LazyColumn(
         modifier = Modifier.padding(4.dp),
     ) {
         items(devices.size) { index ->
             NFCDeviceListItem(
-                locationClient = locationClient,
-                hasLocationPermission = hasLocationPermission,
-                locationPermissionRequester = locationPermissionRequester,
-                notesViewModel = notesViewModel,
                 device = devices[index],
+                actionViewModel = actionViewModel,
                 onEditListener,
                 onDeleteListener,
                 iconToDrawableConverter,
@@ -157,11 +141,8 @@ fun NFCDeviceList(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun NFCDeviceListItem(
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
-    notesViewModel: NotesViewModelInt,
     device: NFCDevice,
+    actionViewModel: ActionViewModel,
     onEditListener: (NFCDevice) -> Unit,
     onDeleteListener: (NFCDevice) -> Unit,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
@@ -172,16 +153,13 @@ fun NFCDeviceListItem(
     Card(
         modifier = Modifier
             .padding(4.dp)
-            .combinedClickable(onLongClick = {
-                showBottomSheet.value = true
-            }) { },
+            .combinedClickable(
+                onLongClick = { showBottomSheet.value = true },
+            ) { },
     ) {
         DeviceCard(
-            locationClient = locationClient,
-            hasLocationPermission = hasLocationPermission,
-            locationPermissionRequester = locationPermissionRequester,
             device = device,
-            notesViewModel = notesViewModel,
+            actionViewModel = actionViewModel,
             iconToDrawableConverter = iconToDrawableConverter,
         )
     }
@@ -193,6 +171,7 @@ fun NFCDeviceListItem(
             device = device,
             onEditListener = onEditListener,
             onDeleteListener = onDeleteListener,
+            onDeleteActionListener = {actionViewModel.removeAction(it)},
             onCloseListener = {
                 scope.launch {
                     bottomSheetState.hide()
@@ -208,11 +187,8 @@ fun NFCDeviceListItem(
 
 @Composable
 fun DeviceCard(
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
-    notesViewModel: NotesViewModelInt,
     device: NFCDevice,
+    actionViewModel: ActionViewModel,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
 ) {
     Row(
@@ -221,25 +197,30 @@ fun DeviceCard(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        var inDialog by rememberSaveable { mutableStateOf(false) }
+        var inEditDeviceDialog by rememberSaveable { mutableStateOf(false) }
         DeviceIcon(iconToDrawableConverter, device = device)
         DeviceInformation(device = device)
-        EditDeviceButton(alreadyConfigured = device.configured) {
-            inDialog = true
+        EditDeviceButton(alreadyConfigured = actionViewModel.getAction(device.identifier) != null) {
+            inEditDeviceDialog = true
         }
-        if (inDialog) {
-            RequestPermissionContext(locationPermissionRequester) {
-                AddNoteFormDialog(
-                    locationClient = locationClient,
-                    hasLocationPermission = hasLocationPermission,
-                    requestPermisions = { requestPermissions() },
-                    onDismissRequest = { inDialog = false },
-                    onDoneClick = { inDialog = false },
-                    onCloseClick = { inDialog = false },
-                    viewModel = notesViewModel,
-                    titleTextId = R.string.link_note,
-                )
-            }
+        if (inEditDeviceDialog) {
+            actionViewModel.loadActionForDevice(device.identifier)
+            LinkNoteFormDialog(
+                actionViewModel = actionViewModel,
+                onDismissRequest = {
+                    inEditDeviceDialog = false
+                    actionViewModel.abortAction()
+                },
+                onDoneClick = {
+                    actionViewModel.saveAction(device.identifier)
+                },
+                onSavedAction = {
+                    inEditDeviceDialog = false
+                },
+                onCloseClick = {
+                    actionViewModel.abortAction()
+                    inEditDeviceDialog = false
+                })
         }
     }
 }
@@ -305,30 +286,28 @@ fun NfcWriteSuccessSnackbar(onClose: () -> Unit) {
     }
 }
 
-// @Preview(showBackground = true)
-// @Composable
-// fun DevicesPreview() {
-//    ToDoTurtleTheme(LocalContext.current.dataStore) {
-//        DeviceScreenLayout(
-//            devices = listOf(
-//                NFCDevice(
-//                    name = "Car",
-//                    description = "My car",
-//                    identifier = "1234567890",
-//                    iconResId = R.drawable.car,
-//                    true,
-//                ),
-//                NFCDevice(
-//                    name = "Kitchen",
-//                    description = "My Kitchen",
-//                    identifier = "1234567890",
-//                    iconResId = R.drawable.headphones,
-//                    false,
-//                ),
-//            ),
-//            false,
-//            iconToDrawableConverter =  @Composable { null },
-//            notesViewModel = StubNotesViewModel(),
-//        )
-//    }
-// }
+@Preview(showBackground = true)
+@Composable
+fun DevicesPreview() {
+    ToDoTurtleTheme(LocalContext.current.dataStore) {
+        DeviceScreenLayout(
+            devices = listOf(
+                NFCDevice(
+                    name = "Car",
+                    description = "My car",
+                    identifier = "1234567890",
+                    iconResId = R.drawable.car,
+                ),
+                NFCDevice(
+                    name = "Kitchen",
+                    description = "My Kitchen",
+                    identifier = "1234567890",
+                    iconResId = R.drawable.headphones,
+                ),
+            ),
+            actionViewModel = ActionViewModel(InMemoryActionRepository()),
+            false,
+            iconToDrawableConverter = @Composable { null },
+        )
+    }
+}

@@ -13,8 +13,7 @@ class InMemoryDeviceRepository : DeviceRepository {
             description = "Dummy Description",
             identifier = "fakeidentifier",
             iconResId = R.drawable.car,
-            configured = false,
-        ),
+        )
     )
 
     override suspend fun getAll(): Collection<NFCDevice> = devices.toImmutableList()
