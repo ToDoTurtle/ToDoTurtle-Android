@@ -20,7 +20,12 @@ class FirebaseDeviceRepository : DeviceRepository {
             val name = document.getString(NAME_DEVICE)!!
             val description = document.getString(DESCRIPTION_DEVICE)!!
             val iconResId = document.getLong(ICON_RES_ID_DEVICE)!!.toInt()
-            NFCDevice(id, name, description, iconResId)
+            NFCDevice(
+                identifier = id,
+                name = name,
+                description = description,
+                iconResId = iconResId
+            )
         }.toCollection(mutableListOf())
     }
 
