@@ -8,7 +8,7 @@ enum class Destinations(val route: String) {
     NOTES("notes"),
     SETTINGS("settings"),
     WRITE_DEVICE("write_device"),
-    INVITE("invite"),
+    ABOUT_US("about_us"),
     DEVICES("devices/{$DEVICE_WRITE_SUCCESSFUL_PARAMETER}"),
     DEVICES_WRITE_SUCCESSFUL("devices/true"),
     DEVICES_NORMAL("devices/false"),

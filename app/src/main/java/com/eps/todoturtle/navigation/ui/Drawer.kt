@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
@@ -69,7 +70,7 @@ fun Drawer(
                     isSelected = selectedItem == Settings,
                     onItemClick = { onItemClick(Settings) },
                 )
-                InviteItem(
+                AboutUsItem(
                     isSelected = selectedItem == Invite,
                     onItemClick = { onItemClick(Invite) },
                 )
@@ -145,13 +146,13 @@ fun SettingsItem(
 }
 
 @Composable
-fun InviteItem(
+fun AboutUsItem(
     isSelected: Boolean,
     onItemClick: () -> Unit,
 ) {
     val label = stringResource(Invite.labelId)
     NavigationDrawerItem(
-        icon = { Icon(ImageVector.vectorResource(id = R.drawable.invite), label) },
+        icon = { Icon(Icons.Filled.Info, label) },
         label = { Text(label) },
         selected = isSelected,
         onClick = onItemClick,

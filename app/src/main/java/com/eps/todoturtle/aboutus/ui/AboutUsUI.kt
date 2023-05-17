@@ -1,4 +1,4 @@
-package com.eps.todoturtle.invite.ui
+package com.eps.todoturtle.aboutus.ui
 
 import android.os.Build.VERSION.SDK_INT
 import androidx.compose.foundation.Image
@@ -28,7 +28,7 @@ import com.eps.todoturtle.R
 import com.eps.todoturtle.shared.logic.extensions.RobotoThin
 
 @Composable
-fun InviteUI() {
+fun AboutUsUI() {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
@@ -78,5 +78,5 @@ fun InviteUI() {
 @Preview
 @Composable
 fun PreferenceUIPreview() {
-    InviteUI()
+    AboutUsUI()
 }

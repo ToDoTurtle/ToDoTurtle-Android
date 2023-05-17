@@ -24,7 +24,7 @@ import com.eps.todoturtle.devices.logic.DeviceConfigurationParams
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
 import com.eps.todoturtle.devices.ui.DeviceScreen
-import com.eps.todoturtle.invite.ui.InviteUI
+import com.eps.todoturtle.aboutus.ui.AboutUsUI
 import com.eps.todoturtle.navigation.logic.DEVICE_WRITE_SUCCESSFUL_PARAMETER
 import com.eps.todoturtle.navigation.logic.Destinations
 import com.eps.todoturtle.network.logic.NetworkAvailability
@@ -255,8 +255,8 @@ private fun NavGraphBuilder.settings(dataStore: DataStore<AppPreferences>) {
 }
 
 fun NavGraphBuilder.invite() {
-    composable(Destinations.INVITE.route) {
-        InviteUI()
+    composable(Destinations.ABOUT_US.route) {
+        AboutUsUI()
     }
 }
 

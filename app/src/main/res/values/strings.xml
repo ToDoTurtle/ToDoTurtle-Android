@@ -5,7 +5,7 @@
     <string name="drawer_devices">Devices</string>
     <string name="drawer_profile">Profile</string>
     <string name="drawer_settings">Settings</string>
-    <string name="drawer_invite">Invite a friend</string>
+    <string name="drawer_about_us">About us</string>
     <string name="go_history_icon_desc">Go history</string>
     <string name="go_back_to_notes_icon_desc">Go back to undone notes</string>
     <string name="welcome_message_part1">"Welcome to "</string>
@@ -17,7 +17,7 @@
     <string name="note_form_description_field">Description</string>
     <string name="login_wrong_username_or_password">Wrong password or username doesn\'t exist.</string>
     <string name="clear_text_content_desc">Button to clear the inputted text on a text field.</string>
-    <string name="add_notification_icon_desc">Icon button to add a notification to the note.</string>
+    <string name="add_notification_icon_desc" translatable="false">Icon button to add a notification to the note.</string>
     <string name="add_deadline_icon_desc">Icon button to add a deadline to the note.</string>
     <string name="more_icon_desc">Icon button to see more options.</string>
     <string name="quick_note_form_close_button_desc">Close button to dismiss the current note creation.</string>

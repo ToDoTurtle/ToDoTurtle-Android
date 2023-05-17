@@ -28,6 +28,6 @@ object Settings : Destination() {
 }
 
 object Invite : Destination() {
-    override val route = Destinations.INVITE.route
-    override val labelId = R.string.drawer_invite
+    override val route = Destinations.ABOUT_US.route
+    override val labelId = R.string.drawer_about_us
 }
