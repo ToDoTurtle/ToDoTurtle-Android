@@ -74,4 +74,5 @@ class UserAuth(
     }
 
     fun getActivityContext() = activity.baseContext
+    fun getUid() = auth.currentUser!!.uid
 }

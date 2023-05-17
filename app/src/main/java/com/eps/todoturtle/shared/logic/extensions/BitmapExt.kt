@@ -2,6 +2,7 @@ package com.eps.todoturtle.shared.logic.extensions
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import androidx.core.content.ContextCompat
 import com.eps.todoturtle.shared.logic.exceptions.DrawableNotFoundException
@@ -15,3 +16,5 @@ fun bitmapFrom(drawableId: Int, context: Context): Bitmap {
     drawable.draw(canvas)
     return bitmap
 }
+
+fun bitmapFrom(bytes: ByteArray) = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
