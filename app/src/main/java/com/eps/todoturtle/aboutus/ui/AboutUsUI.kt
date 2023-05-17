@@ -14,10 +14,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.eps.todoturtle.aboutus.logic.client.APIClient
 import com.eps.todoturtle.shared.logic.extensions.RobotoThin
 
@@ -35,19 +39,19 @@ fun AboutUsUI() {
             val client = APIClient()
             val text by produceState(initialValue = "") { value = client.getText() }
             val imageUrl by produceState(initialValue = "") { value = client.getImageUrl() }
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = text,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-                fontSize = 30.sp,
-                fontFamily = FontFamily.RobotoThin,
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null ,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier,
             )
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = imageUrl,
+                text = text,
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 fontSize = 30.sp,
