@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.eps.todoturtle.action.infra.InMemoryActionRepository
 import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
+import com.eps.todoturtle.devices.infra.FirebaseDeviceRepository
 import com.eps.todoturtle.devices.infra.InMemoryDeviceRepository
 import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
             ToDoTurtleTheme(dataStore) {
                 App(
                     permissionRequester = permissionRequester,
-                    devicesViewModel = getDevicesViewModel(InMemoryDeviceRepository()),
+                    devicesViewModel = getDevicesViewModel(FirebaseDeviceRepository()),
                     noteScreenViewModel = noteScreenNoteViewModel,
                     actionsViewModel = actionsViewModel,
                     nfcWriteViewModel = getNfcWriteModel(),
