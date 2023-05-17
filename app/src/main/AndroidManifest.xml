@@ -55,7 +55,7 @@
                 android:resource="@xml/nfcfilter" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".InitialActivity"
             android:exported="true"
             android:theme="@style/Theme.ToDoTurtle">
             <intent-filter>
@@ -63,6 +63,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ToDoTurtle">
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ToDoTurtle">
         </activity>
     </application>
 
