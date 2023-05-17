@@ -12,7 +12,7 @@ import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.DefaultLocationClient
 import com.eps.todoturtle.note.logic.location.LocationClient
-import com.eps.todoturtle.note.logic.location.hasLocationPermision
+import com.eps.todoturtle.note.logic.location.hasLocationPermission
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.providers.CameraPermissionProvider
 import com.eps.todoturtle.permissions.logic.providers.CoarseLocationPermissionProvider
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         theme.applyStyle(R.style.AppTheme, true)
 
         auth = Firebase.auth
-        val userAuth = UserAuth(this@MainActivity,  auth)
+        val userAuth = UserAuth(this@MainActivity, auth)
 
         locationClient = DefaultLocationClient(
             applicationContext,
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         setContent {
             ToDoTurtleTheme(dataStore) {
                 App(
-                    hasLocationPermision = { hasLocationPermision() },
+                    hasLocationPermision = { hasLocationPermission() },
                     locationClient = locationClient,
                     locationPermissionRequester = locationPermissionRequester,
                     cameraPermissionRequester = cameraPermissionRequester,

@@ -4,7 +4,7 @@ import android.util.Patterns
 import android.widget.Toast
 import com.eps.todoturtle.MainActivity
 import com.eps.todoturtle.R
-import com.eps.todoturtle.profile.ui.register.providers.GithubKeys
+import com.eps.todoturtle.profile.ui.register.providers.github.GithubKeys
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
@@ -13,7 +13,7 @@ import kotlinx.coroutines.tasks.await
 
 class UserAuth(
     private val activity: MainActivity,
-    private val auth: FirebaseAuth,  // FIXME: Make me private again
+    private val auth: FirebaseAuth,
 ) {
     companion object {
         fun invalidMail(mail: String): Boolean =

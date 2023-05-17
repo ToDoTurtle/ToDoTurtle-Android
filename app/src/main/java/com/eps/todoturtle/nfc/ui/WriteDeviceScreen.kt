@@ -87,16 +87,16 @@ fun WriteDevice(
 ) {
     val deviceStatus by viewModel.writeResults.collectAsStateWithLifecycle()
     when (deviceStatus) {
-        WriteOperation.MESSAGE_FORMAT_ERROR -> ProgrammingError()
-        is WriteOperation.SUCCESS -> {
-            val op = (deviceStatus as WriteOperation.SUCCESS)
+        WriteOperation.MessageFormatError -> ProgrammingError()
+        is WriteOperation.Success -> {
+            val op = (deviceStatus as WriteOperation.Success)
             if (op.device is DeviceInformation) {
                 onWriteSuccessful(op.device.uuid)
             }
         }
-        WriteOperation.NOT_WRITABLE -> TagNotWriteable(onTagNotWriteable)
-        WriteOperation.TAG_LOST -> TagLost(onTagLost)
-        WriteOperation.UNKNOWN_ERROR -> UnknownError(unknownError)
+        WriteOperation.NotWritable -> TagNotWriteable(onTagNotWriteable)
+        WriteOperation.TagLost -> TagLost(onTagLost)
+        WriteOperation.UnknownError -> UnknownError(unknownError)
         null -> WaitForNfcTag()
     }
 }

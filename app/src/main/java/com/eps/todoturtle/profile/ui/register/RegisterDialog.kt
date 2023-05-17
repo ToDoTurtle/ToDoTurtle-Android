@@ -1,19 +1,14 @@
 package com.eps.todoturtle.profile.ui.register
 
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,18 +19,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.logic.UserAuth
-import com.eps.todoturtle.profile.ui.register.providers.GithubButton
-import com.eps.todoturtle.profile.ui.register.providers.GoogleButton
+import com.eps.todoturtle.profile.ui.register.providers.github.GithubButton
+import com.eps.todoturtle.profile.ui.register.providers.google.GoogleButton
 import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import kotlinx.coroutines.launch
 
 @Composable
@@ -119,22 +111,14 @@ fun SignUpButton(onClick: () -> Unit) {
 fun AdditionalSignUpButton(userAuth: UserAuth, onSuccessfulRegister: () -> Unit) {
     Text(text = stringResource(id = R.string.addtional_sign_ups))
     Row(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         GoogleButton(userAuth = userAuth) {
             onSuccessfulRegister()
         }
         GithubButton(userAuth = userAuth) {
             onSuccessfulRegister()
-        }
-        Button(onClick = { /*TODO*/ }) {
-            Icon(
-                painter = painterResource(id = R.drawable.yahoo),
-                contentDescription = stringResource(
-                    id = R.string.yahoo_desc
-                ),
-                modifier = Modifier.size(24.dp)
-            )
         }
     }
 }

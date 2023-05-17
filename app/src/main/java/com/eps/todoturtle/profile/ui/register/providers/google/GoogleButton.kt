@@ -1,4 +1,4 @@
-package com.eps.todoturtle.profile.ui.register.providers
+package com.eps.todoturtle.profile.ui.register.providers.google
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -44,21 +44,23 @@ fun GoogleButton(
             }
         }
 
-    Button(onClick = {
-        val clientId = context.getString(R.string.default_web_client_id)
-        val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(clientId)
-            .requestEmail()
-            .build()
-        val intent = GoogleSignIn.getClient(context, options).signInIntent
-        googleLauncher.launch(intent)
-    }) {
+    Button(
+        onClick = {
+            val clientId = context.getString(R.string.default_web_client_id)
+            val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(clientId)
+                .requestEmail()
+                .build()
+            val intent = GoogleSignIn.getClient(context, options).signInIntent
+            googleLauncher.launch(intent)
+        },
+    ) {
         Icon(
             painter = painterResource(id = R.drawable.google),
             contentDescription = stringResource(
-                id = R.string.google_desc
+                id = R.string.google_desc,
             ),
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
     }
 }

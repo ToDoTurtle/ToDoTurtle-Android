@@ -172,9 +172,9 @@ fun NFCDeviceListItem(
     Card(
         modifier = Modifier
             .padding(4.dp)
-            .combinedClickable(onLongClick = {
-                showBottomSheet.value = true
-            }) { },
+            .combinedClickable(
+                onLongClick = { showBottomSheet.value = true },
+            ) { },
     ) {
         DeviceCard(
             locationClient = locationClient,
