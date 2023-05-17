@@ -81,4 +81,6 @@
     <string name="date">Fecha</string>
     <string name="go_back_to_date_picker_icon_desc">Button to go back to date picker</string>
     <string name="link_note">Vincular una nota</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 </resources>

@@ -73,7 +73,7 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
     fun setCurrentEditDevice(nfcDevice: NFCDevice) {
         deviceBuilder = DeviceBuilder(
             identifier = nfcDevice.identifier,
-            name = mutableStateOf( nfcDevice.name),
+            name = mutableStateOf(nfcDevice.name),
             description = mutableStateOf(nfcDevice.description),
             iconResId = nfcDevice.iconResId,
         )
@@ -132,5 +132,4 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
             }
         }
     }
-
 }

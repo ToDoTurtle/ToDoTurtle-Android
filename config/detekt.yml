@@ -295,7 +295,6 @@ exceptions:
   TooGenericExceptionThrown:
     active: true
     exceptionNames:
-      - 'Error'
       - 'Exception'
       - 'RuntimeException'
       - 'Throwable'

@@ -15,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -35,6 +34,7 @@ import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.profile.logic.ProfileViewModel
@@ -44,7 +44,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(
-    permissionRequester: PermissionRequester,
+    hasLocationPermision: () -> Boolean,
+    locationClient: LocationClient,
+    locationPermissionRequester: PermissionRequester,
+    cameraPermissionRequester: PermissionRequester,
     noteScreenViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
     actionsViewModel: ActionViewModel,
@@ -58,7 +61,6 @@ fun App(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val shouldShowMenu = rememberSaveable { mutableStateOf(userAuth.isLoggedIn()) }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
@@ -67,7 +69,6 @@ fun App(
             drawerState = drawerState,
             toDoCount = noteScreenViewModel.toDoNotes.size,
             devicesCount = devicesViewModel.getDevices().size,
-            shouldShowMenu = shouldShowMenu.value,
             onItemClick = { destination ->
                 scope.launch { drawerState.close() }
                 navController.navigateSingleTopTo(destination.route)
@@ -77,7 +78,6 @@ fun App(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 topBar = {
                     TopBar(
-                        shouldShowMenu = shouldShowMenu.value,
                         onMenuClick = { scope.launch { drawerState.open() } },
                     )
                 },
@@ -85,8 +85,10 @@ fun App(
                 ToDoTurtleNavHost(
                     modifier = Modifier.padding(innerPadding),
                     navController = navController,
-                    permissionRequester = permissionRequester,
-                    shouldShowMenu = shouldShowMenu,
+                    hasLocationPermission = { hasLocationPermision() },
+                    locationClient = locationClient,
+                    locationPermissionRequester = locationPermissionRequester,
+                    cameraPermissionRequester = cameraPermissionRequester,
                     noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = devicesViewModel,
                     actionsViewModel = actionsViewModel,
@@ -107,25 +109,20 @@ fun DrawerContainer(
     toDoCount: Int,
     devicesCount: Int,
     onItemClick: (Destination) -> Unit,
-    shouldShowMenu: Boolean,
     content: @Composable () -> Unit,
 ) {
     val items = listOf(Notes, Devices, Profile, Settings, Invite)
     var selectedItem by remember { mutableStateOf(items[0]) }
-    if (shouldShowMenu) {
-        Drawer(
-            drawerState = drawerState,
-            toDoCount = toDoCount,
-            devicesCount = devicesCount,
-            onItemClick = { destination ->
-                selectedItem = destination
-                onItemClick(destination)
-            },
-            selectedItem = selectedItem,
-        ) {
-            content()
-        }
-    } else {
+    Drawer(
+        drawerState = drawerState,
+        toDoCount = toDoCount,
+        devicesCount = devicesCount,
+        onItemClick = { destination ->
+            selectedItem = destination
+            onItemClick(destination)
+        },
+        selectedItem = selectedItem,
+    ) {
         content()
     }
 }

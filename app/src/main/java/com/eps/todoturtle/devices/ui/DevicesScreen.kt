@@ -153,9 +153,9 @@ fun NFCDeviceListItem(
     Card(
         modifier = Modifier
             .padding(4.dp)
-            .combinedClickable(onLongClick = {
-                showBottomSheet.value = true
-            }) { },
+            .combinedClickable(
+                onLongClick = { showBottomSheet.value = true },
+            ) { },
     ) {
         DeviceCard(
             device = device,
@@ -164,8 +164,11 @@ fun NFCDeviceListItem(
         )
     }
     BottomSheet(
-        showBottomSheet, bottomSheetState, deviceMenu(
-            drawableConverter = iconToDrawableConverter, device = device,
+        showBottomSheet,
+        bottomSheetState,
+        deviceMenu(
+            drawableConverter = iconToDrawableConverter,
+            device = device,
             onEditListener = onEditListener,
             onDeleteListener = onDeleteListener,
             onDeleteActionListener = {actionViewModel.removeAction(it)},
@@ -178,7 +181,7 @@ fun NFCDeviceListItem(
                     }
                 }
             },
-        )
+        ),
     )
 }
 

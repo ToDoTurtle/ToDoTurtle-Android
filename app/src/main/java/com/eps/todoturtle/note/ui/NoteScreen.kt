@@ -14,9 +14,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.location.LocationClient
+import com.eps.todoturtle.permissions.logic.PermissionRequester
+import com.eps.todoturtle.permissions.logic.RequestPermissionContext
 
 @Composable
 fun NoteScreen(
+    locationClient: LocationClient,
+    hasLocationPermission: () -> Boolean,
+    locationPermissionRequester: PermissionRequester,
     viewModel: NotesViewModelInt,
 ) {
     var inHistory by rememberSaveable { mutableStateOf(false) }
@@ -44,12 +50,17 @@ fun NoteScreen(
     }
 
     if (isFormVisible) {
-        AddNoteFormDialog(
-            onCloseClick = { isFormVisible = false },
-            onDoneClick = { isFormVisible = false },
-            onDismissRequest = { isFormVisible = false },
-            viewModel = viewModel,
-        )
+        RequestPermissionContext(locationPermissionRequester) {
+            AddNoteFormDialog(
+                locationClient = locationClient,
+                requestPermisions = { requestPermissions() },
+                hasLocationPermission = hasLocationPermission,
+                onCloseClick = { isFormVisible = false },
+                onDoneClick = { isFormVisible = false },
+                onDismissRequest = { isFormVisible = false },
+                viewModel = viewModel,
+            )
+        }
     }
 }
 

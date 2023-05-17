@@ -1,7 +1,7 @@
 package com.eps.todoturtle.navigation.ui
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -16,10 +16,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.eps.todoturtle.action.logic.ActionViewModel
+import com.eps.todoturtle.LoginActivity
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_ID
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAM
-import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAMS
+import com.eps.todoturtle.devices.logic.DeviceConfigurationParams
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
 import com.eps.todoturtle.devices.ui.DeviceScreen
@@ -29,6 +30,7 @@ import com.eps.todoturtle.navigation.logic.Destinations
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
@@ -37,13 +39,14 @@ import com.eps.todoturtle.preferences.ui.PreferenceUI
 import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.details.DetailsUI
-import com.eps.todoturtle.profile.ui.login.LoginUI
 
 @Composable
 fun ToDoTurtleNavHost(
+    locationClient: LocationClient,
+    hasLocationPermission: () -> Boolean,
+    locationPermissionRequester: PermissionRequester,
     navController: NavHostController,
-    permissionRequester: PermissionRequester,
-    shouldShowMenu: MutableState<Boolean>,
+    cameraPermissionRequester: PermissionRequester,
     noteScreenViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
     devicesViewModel: DevicesViewModel,
@@ -54,24 +57,28 @@ fun ToDoTurtleNavHost(
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
 ) {
-    val startDestination = if (userAuth.isLoggedIn()) Destinations.NOTES else Destinations.LOGIN
-
     NavHost(
         navController = navController,
-        startDestination = startDestination.route,
+        startDestination = Destinations.NOTES.route,
         modifier = modifier,
     ) {
-        login(navController, shouldShowMenu, userAuth)
         profile(
-            permissionRequester,
-            navController,
+            cameraPermissionRequester,
             profileViewModel,
-            shouldShowMenu,
             userAuth,
             hasCameraPermission,
         )
-        notes(noteScreenViewModel)
-        devices(navController, devicesViewModel, actionsViewModel)
+        notes(
+            noteScreenViewModel,
+            locationClient,
+            locationPermissionRequester,
+            hasLocationPermission,
+        )
+        devices(
+            navController,
+            devicesViewModel,
+            actionsViewModel,
+        )
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
         settings(dataStore)
@@ -79,24 +86,9 @@ fun ToDoTurtleNavHost(
     }
 }
 
-fun NavGraphBuilder.login(
-    navController: NavHostController,
-    shouldShowMenu: MutableState<Boolean>,
-    userAuth: UserAuth,
-) {
-    composable(Destinations.LOGIN.route) {
-        LoginUI(userAuth = userAuth) {
-            navController.navigateFromLogin(Destinations.NOTES.route)
-            shouldShowMenu.value = true
-        }
-    }
-}
-
 fun NavGraphBuilder.profile(
     permissionRequester: PermissionRequester,
-    navController: NavHostController,
     profileViewModel: ProfileViewModel,
-    shouldShowMenu: MutableState<Boolean>,
     userAuth: UserAuth,
     hasCameraPermission: () -> Boolean,
 ) {
@@ -108,17 +100,26 @@ fun NavGraphBuilder.profile(
                 profileViewModel = profileViewModel,
             ) {
                 userAuth.logout()
-                navController.navigateSingleTopTo(Destinations.LOGIN.route)
-                shouldShowMenu.value = false
+                val intent = Intent(userAuth.getActivityContext(), LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                userAuth.getActivityContext().startActivity(intent)
             }
         }
     }
 }
 
-fun NavGraphBuilder.notes(noteScreenViewModel: NotesViewModelInt) {
+fun NavGraphBuilder.notes(
+    noteScreenViewModel: NotesViewModelInt,
+    locationClient: LocationClient,
+    locationPermissionRequester: PermissionRequester,
+    hasLocationPermission: () -> Boolean,
+) {
     composable(Destinations.NOTES.route) {
         NoteScreen(
             viewModel = noteScreenViewModel,
+            locationClient = locationClient,
+            locationPermissionRequester = locationPermissionRequester,
+            hasLocationPermission = hasLocationPermission,
         )
     }
 }
@@ -130,9 +131,11 @@ fun NavGraphBuilder.devices(
 ) {
     composable(
         Destinations.DEVICES.route,
-        arguments = listOf(navArgument(DEVICE_WRITE_SUCCESSFUL_PARAMETER) {
-            type = NavType.BoolType
-        }),
+        arguments = listOf(
+            navArgument(DEVICE_WRITE_SUCCESSFUL_PARAMETER) {
+                type = NavType.BoolType
+            },
+        ),
     ) {
         val newDeviceAdded = it.arguments?.getBoolean(DEVICE_WRITE_SUCCESSFUL_PARAMETER) ?: false
         DeviceScreen(
@@ -152,11 +155,11 @@ fun NavGraphBuilder.deviceConfiguration(
         DEVICE_CONFIGURATION,
         arguments = listOf(
             navArgument(DEVICE_CONFIGURATION_PARAM) { type = NavType.StringType },
-            navArgument(DEVICE_CONFIGURATION_ID) { type = NavType.StringType }
+            navArgument(DEVICE_CONFIGURATION_ID) { type = NavType.StringType },
         ),
     ) {
-        val configurationType = DEVICE_CONFIGURATION_PARAMS.fromString(
-            it.arguments?.getString(DEVICE_CONFIGURATION_PARAM)
+        val configurationType = DeviceConfigurationParams.fromString(
+            it.arguments?.getString(DEVICE_CONFIGURATION_PARAM),
         )
         val deviceId: String = it.arguments?.getString(DEVICE_CONFIGURATION_ID)!!
         devicesViewModel.deviceBuilder.identifier = deviceId
@@ -189,7 +192,7 @@ fun DeviceScreen(
         newDeviceAdded = deviceAdded,
         actionViewModel = actionsViewModel,
         onEditDevice = {
-            navController.navigate(DEVICE_CONFIGURATION_PARAMS.EDIT.getUri(it.identifier)) {
+            navController.navigate(DeviceConfigurationParams.EDIT.getUri(it.identifier)) {
                 navController.graph.startDestinationRoute?.let { _ ->
                     popUpTo(Destinations.DEVICES_NORMAL.route) {
                         saveState = true
@@ -236,7 +239,7 @@ fun NavGraphBuilder.writeDevice(
             },
             onWriteSuccessful = { id ->
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(DEVICE_CONFIGURATION_PARAMS.NEW.getUri(id))
+                navController.navigateSingleTopTo(DeviceConfigurationParams.NEW.getUri(id))
             },
         )
     }
@@ -264,9 +267,3 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         launchSingleTop = true
         restoreState = true
     }
-
-fun NavHostController.navigateFromLogin(route: String) {
-    this.navigate(route) {
-        popUpTo(0)
-    }
-}

@@ -14,14 +14,20 @@ import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NotesViewModel
+import com.eps.todoturtle.note.logic.location.DefaultLocationClient
+import com.eps.todoturtle.note.logic.location.LocationClient
+import com.eps.todoturtle.note.logic.location.hasLocationPermission
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.providers.CameraPermissionProvider
+import com.eps.todoturtle.permissions.logic.providers.CoarseLocationPermissionProvider
+import com.eps.todoturtle.permissions.logic.providers.FineLocationPermissionProvider
 import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.shared.logic.extensions.hasCameraPermission
 import com.eps.todoturtle.ui.App
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -36,18 +42,28 @@ import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivity {
-    private val permissionsToRequest = listOf(CameraPermissionProvider(this))
-    private lateinit var permissionRequester: PermissionRequester
+    private lateinit var cameraPermissionRequester: PermissionRequester
+    private lateinit var locationPermissionRequester: PermissionRequester
 
     private val currentIcon: Channel<Int> = Channel(UNLIMITED)
     private lateinit var iconDialog: IconDialog
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var locationClient: LocationClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        permissionRequester = PermissionRequester(this, permissionsToRequest)
+        cameraPermissionRequester =
+            PermissionRequester(this, listOf(CameraPermissionProvider(this)))
+        locationPermissionRequester =
+            PermissionRequester(
+                this,
+                listOf(
+                    FineLocationPermissionProvider(this),
+                    CoarseLocationPermissionProvider(this),
+                ),
+            )
         val noteScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
         val actionsViewModel = getActionViewModel(FirebaseActionRepository())
         val profileViewModel = ProfileViewModel(this)
@@ -57,13 +73,22 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         theme.applyStyle(R.style.AppTheme, true)
 
         auth = Firebase.auth
-        val userAuth = UserAuth(auth)
+        val userAuth = UserAuth(this@MainActivity, auth)
+
+        locationClient = DefaultLocationClient(
+            applicationContext,
+            LocationServices.getFusedLocationProviderClient(applicationContext),
+        )
 
         setContent {
             ToDoTurtleTheme(dataStore) {
                 App(
                     permissionRequester = permissionRequester,
                     devicesViewModel = getDevicesViewModel(FirebaseDeviceRepository()),
+                    hasLocationPermision = { hasLocationPermission() },
+                    locationClient = locationClient,
+                    locationPermissionRequester = locationPermissionRequester,
+                    cameraPermissionRequester = cameraPermissionRequester,
                     noteScreenViewModel = noteScreenNoteViewModel,
                     actionsViewModel = actionsViewModel,
                     nfcWriteViewModel = getNfcWriteModel(),

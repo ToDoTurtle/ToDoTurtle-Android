@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature
         android:name="android.hardware.nfc"
@@ -52,7 +55,8 @@
                 android:resource="@xml/nfcfilter" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".InitialActivity"
+            android:noHistory="true"
             android:exported="true"
             android:theme="@style/Theme.ToDoTurtle">
             <intent-filter>
@@ -60,6 +64,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:noHistory="true"
+            android:exported="true"
+            android:theme="@style/Theme.ToDoTurtle">
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ToDoTurtle">
         </activity>
     </application>
 

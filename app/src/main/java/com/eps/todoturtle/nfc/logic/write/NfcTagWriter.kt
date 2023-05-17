@@ -10,26 +10,26 @@ import java.io.IOException
 object NfcTagWriter {
 
     fun write(tag: Tag?, message: NfcParcelable): WriteOperation {
-        if (tag == null) return WriteOperation.TAG_LOST
+        if (tag == null) return WriteOperation.TagLost
         return writeCorrectTag(tag, message)
     }
 
     private fun writeCorrectTag(tag: Tag, message: NfcParcelable): WriteOperation {
         val ndef = Ndef.get(tag)
-        if (!ndef.isWritable) return WriteOperation.NOT_WRITABLE
+        if (!ndef.isWritable) return WriteOperation.NotWritable
         return writeWriteableTag(ndef, message)
     }
 
     private fun writeWriteableTag(ndefTag: Ndef, message: NfcParcelable): WriteOperation {
         return try {
             ndefTag.write(message)
-            WriteOperation.SUCCESS(message)
+            WriteOperation.Success(message)
         } catch (_: FormatException) {
-            WriteOperation.MESSAGE_FORMAT_ERROR
+            WriteOperation.MessageFormatError
         } catch (_: TagLostException) {
-            WriteOperation.TAG_LOST
+            WriteOperation.TagLost
         } catch (_: IOException) {
-            WriteOperation.UNKNOWN_ERROR
+            WriteOperation.UnknownError
         }
     }
 }

@@ -4,16 +4,15 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -25,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
@@ -32,7 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -46,16 +45,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
-import com.eps.todoturtle.map.ui.MapView
-import com.eps.todoturtle.note.logic.Location
 import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.location.LocationClient
+import com.eps.todoturtle.note.logic.location.toGeoPoint
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 import com.eps.todoturtle.shared.ui.ClearTextIcon
 import com.eps.todoturtle.shared.ui.FormOutlinedTextField
-import com.eps.todoturtle.shared.ui.FormTextField
 import com.eps.todoturtle.shared.ui.ResourceIcon
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.eps.todoturtle.ui.theme.onFormContainer
+import com.google.android.gms.tasks.Tasks
+import org.osmdroid.util.GeoPoint
+
+private val DEFAULT_GEOPOINT = GeoPoint(28.7041, 77.1025)
 
 @Composable
 fun AddNoteButton(
@@ -76,6 +78,9 @@ fun AddNoteButton(
 
 @Composable
 fun AddNoteFormDialog(
+    locationClient: LocationClient,
+    requestPermisions: () -> Unit,
+    hasLocationPermission: () -> Boolean,
     onDismissRequest: () -> Unit = {},
     onDoneClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
@@ -87,6 +92,9 @@ fun AddNoteFormDialog(
     ) {
         Card {
             AddNoteForm(
+                locationClient = locationClient,
+                hasPermisions = hasLocationPermission,
+                requestPermisions = requestPermisions,
                 onCloseClick = onCloseClick,
                 onDoneClick = onDoneClick,
                 viewModel = viewModel,
@@ -144,6 +152,9 @@ fun AddNoteFormBody(
 @Composable
 fun AddNoteForm(
     modifier: Modifier = Modifier,
+    locationClient: LocationClient,
+    hasPermisions: () -> Boolean,
+    requestPermisions: () -> Unit,
     onCloseClick: () -> Unit,
     onDoneClick: () -> Unit,
     viewModel: NotesViewModelInt,
@@ -163,7 +174,9 @@ fun AddNoteForm(
         onDescriptionValueChange = { viewModel.noteDescription.value = it },
         onAddNotificationClick = { choosingNotification = true },
         onAddDeadlineClick = { choosingDeadline = true },
-        onAddLocationClick = { choosingLocation = true },
+        onAddLocationClick = {
+            if (hasPermisions()) choosingLocation = true else requestPermisions()
+        },
         onCloseClick = { onCloseClick(); viewModel.clearNoteFields() },
         onDoneClick = { onDoneClick(); viewModel.addNote() },
     )
@@ -175,17 +188,13 @@ fun AddNoteForm(
             choosingNotification = false
             choosingNotificationTime = false
         },
-        onBackClick = {
-            choosingNotificationTime = false
-        },
+        onBackClick = { choosingNotificationTime = false },
         onAddNotificationClick = { chosenTime ->
             choosingNotification = false
             choosingNotificationTime = false
             viewModel.noteNotificationTime = chosenTime
         },
-        onNextClick = {
-            choosingNotificationTime = true
-        },
+        onNextClick = { choosingNotificationTime = true },
     )
 
     AddDeadlineDialog(
@@ -195,21 +204,18 @@ fun AddNoteForm(
             choosingDeadline = false
             choosingDeadlineTime = false
         },
-        onBackClick = {
-            choosingDeadlineTime = false
-        },
+        onBackClick = { choosingDeadlineTime = false },
         onAddDeadlineClick = { chosenTime ->
             choosingDeadline = false
             choosingDeadlineTime = false
             viewModel.noteDeadlineTime = chosenTime
         },
-        onNextClick = {
-            choosingDeadlineTime = true
-        },
+        onNextClick = { choosingDeadlineTime = true },
     )
 
     AddLocationDialog(
         choosingLocation = choosingLocation,
+        locationClient = locationClient,
         onDismissRequest = {
             choosingLocation = false
         },
@@ -226,20 +232,45 @@ fun AddNoteForm(
 @Composable
 fun AddLocationDialog(
     choosingLocation: Boolean,
+    locationClient: LocationClient,
     onDismissRequest: () -> Unit = {},
     onCancelClick: () -> Unit = {},
-    onAddLocationClick: (Location) -> Unit = {},
+    onAddLocationClick: (GeoPoint) -> Unit = {},
 ) {
     if (!choosingLocation) return
+    var location by remember { mutableStateOf<GeoPoint?>(null) }
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
         Card(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 16.dp)
                 .fillMaxWidth(),
         ) {
-            MapView {
+            locationClient.getCurrentLocation().onSuccessTask { newLocation ->
+                location = newLocation.toGeoPoint()
+                Tasks.forResult(newLocation)
+            }
+            LocationPicker(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
+                source = location,
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                TextButton(onClick = onCancelClick) {
+                    Text(text = stringResource(id = R.string.cancel))
+                }
+                TextButton(
+                    onClick = { onAddLocationClick(location!!) },
+                    enabled = location != null,
+                ) {
+                    Text(text = stringResource(id = R.string.confirm))
+                }
             }
         }
     }
@@ -484,7 +515,7 @@ fun NoteFormIconTray(
             }
             IconButton(onClick = onAddLocationClick) {
                 Icon(
-                    Icons.Default.AddCircle,
+                    Icons.Default.LocationOn,
                     contentDescription = stringResource(id = R.string.more_icon_desc),
                 )
             }
@@ -505,102 +536,6 @@ fun NoteFormIconTray(
                     contentDescription = stringResource(R.string.note_quick_form_done_button),
                 )
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun QuickAddNoteForm(
-    modifier: Modifier = Modifier,
-    onCloseClick: () -> Unit,
-    onDoneClick: () -> Unit,
-    onAddNotificationClick: () -> Unit,
-    onAddDeadlineClick: () -> Unit,
-) {
-    var titleText by rememberSaveable { mutableStateOf("") }
-    var choosingNotification by remember { mutableStateOf(false) }
-    var choosingDeadline by remember { mutableStateOf(false) }
-
-    if (choosingNotification || choosingDeadline) {
-        DatePickerDialog(
-            onDismissRequest = {
-                choosingNotification = false
-                choosingDeadline = false
-            },
-            confirmButton = {},
-        ) {
-            DatePicker(state = rememberDatePickerState())
-        }
-    }
-
-    Column(
-        modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 16.dp)
-            .fillMaxWidth(),
-    ) {
-        Row {
-            DateOptions({ choosingNotification = true }, { choosingDeadline = true })
-            FormCreationAlert(onCloseClick = onCloseClick, onDoneClick = onDoneClick)
-        }
-        FormTextField(
-            modifier = Modifier.padding(bottom = 8.dp),
-            value = titleText,
-            labelId = R.string.note_form_title_field,
-            onValueChange = { newText -> titleText = newText },
-            trailingIcon = {
-                ClearTextIcon(
-                    onClick = { if (titleText.isNotEmpty()) titleText = "" },
-                )
-            },
-        )
-    }
-}
-
-@Composable
-fun RowScope.DateOptions(choosingNotification: () -> Unit, choosingDeadline: () -> Unit) {
-    Row(
-        modifier = Modifier.weight(0.5f),
-        horizontalArrangement = Arrangement.Start,
-    ) {
-        IconButton(onClick = choosingNotification) {
-            ResourceIcon(
-                contentDescriptionId = R.string.add_notification_icon_desc,
-                imageId = R.drawable.add_notification_filled,
-            )
-        }
-        IconButton(onClick = choosingDeadline) {
-            ResourceIcon(
-                contentDescriptionId = R.string.add_deadline_icon_desc,
-                imageId = R.drawable.add_deadline_filled,
-            )
-        }
-        IconButton(onClick = { }) {
-            Icon(
-                Icons.Default.AddCircle,
-                contentDescription = stringResource(id = R.string.more_icon_desc),
-            )
-        }
-    }
-}
-
-@Composable
-fun RowScope.FormCreationAlert(onCloseClick: () -> Unit, onDoneClick: () -> Unit) {
-    Row(
-        modifier = Modifier.weight(0.5f),
-        horizontalArrangement = Arrangement.End,
-    ) {
-        IconButton(onClick = onCloseClick) {
-            Icon(
-                Icons.Default.Close,
-                contentDescription = stringResource(R.string.quick_note_form_close_button_desc),
-            )
-        }
-        IconButton(onClick = onDoneClick) {
-            Icon(
-                Icons.Default.Done,
-                contentDescription = stringResource(R.string.note_quick_form_done_button),
-            )
         }
     }
 }
