@@ -106,8 +106,9 @@ fun LoginContent(
             disabledElevation = 0.dp,
         ),
         onClick = {
-            if (networkAvailability != NetworkAvailability.AVAILABLE) shouldShowNetworkDialog = true
-            else {
+            if (networkAvailability != NetworkAvailability.AVAILABLE) {
+                shouldShowNetworkDialog = true
+            } else {
                 scope.launch {
                     val loginResult = userAuth.login(username, password)
                     if (!loginResult.first) {
@@ -128,7 +129,8 @@ fun LoginContent(
         availability = networkAvailability,
         showDialog = shouldShowNetworkDialog,
         onSettingsClick = {},
-        onDismiss = { shouldShowNetworkDialog = false })
+        onDismiss = { shouldShowNetworkDialog = false },
+    )
 }
 
 @Composable

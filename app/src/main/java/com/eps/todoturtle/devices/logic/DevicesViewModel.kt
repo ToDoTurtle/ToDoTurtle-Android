@@ -116,8 +116,9 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun updateDevice() {
-        if (!iconChannel.isEmpty)
+        if (!iconChannel.isEmpty) {
             runBlocking { deviceBuilder.iconResId = iconChannel.receive() }
+        }
         when (val result = deviceBuilder.build()) {
             is DeviceBuildResult.Success -> {
                 runBlocking(Dispatchers.IO) {

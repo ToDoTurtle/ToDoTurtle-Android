@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
     private lateinit var auth: FirebaseAuth
     private lateinit var locationClient: LocationClient
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

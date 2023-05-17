@@ -71,7 +71,7 @@ fun DeviceScreen(
         },
         { device -> devicesViewModel.delete(device) },
         onNewDeviceAddedOkay,
-        onAddDevice
+        onAddDevice,
     )
 }
 
@@ -99,7 +99,7 @@ fun DeviceScreenLayout(
             actionViewModel = actionViewModel,
             onEditListener,
             onDeleteListener,
-            iconToDrawableConverter
+            iconToDrawableConverter,
         )
     }
 }
@@ -171,7 +171,7 @@ fun NFCDeviceListItem(
             device = device,
             onEditListener = onEditListener,
             onDeleteListener = onDeleteListener,
-            onDeleteActionListener = {actionViewModel.removeAction(it)},
+            onDeleteActionListener = { actionViewModel.removeAction(it) },
             onCloseListener = {
                 scope.launch {
                     bottomSheetState.hide()
@@ -220,7 +220,8 @@ fun DeviceCard(
                 onCloseClick = {
                     actionViewModel.abortAction()
                     inEditDeviceDialog = false
-                })
+                },
+            )
         }
     }
 }

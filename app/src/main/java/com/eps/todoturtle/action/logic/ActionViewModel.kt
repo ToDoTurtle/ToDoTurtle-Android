@@ -81,6 +81,4 @@ class ActionViewModel(private val repository: ActionRepository) : ViewModel() {
             return viewModel
         }
     }
-
-
 }

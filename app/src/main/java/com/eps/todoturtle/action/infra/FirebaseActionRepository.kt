@@ -22,16 +22,17 @@ class FirebaseActionRepository : ActionRepository {
                 DESCRIPTION to noteAction.description,
                 DEADLINE to noteAction.deadline.toFirebaseTimestamp(),
                 NOTIFICATION to noteAction.notification.toFirebaseTimestamp(),
-                GET_LOCATION to noteAction.getLocation
-            )
+                GET_LOCATION to noteAction.getLocation,
+            ),
         ).await()
     }
 
     override suspend fun getActionForDeviceWithId(id: String): NoteAction? {
         val actions = getActionsCollection()
         val action = actions.document(id).get().await()
-        if (!action.exists())
+        if (!action.exists()) {
             return null
+        }
         val title = action.getString(TITLE)!!
         val description = action.getString(DESCRIPTION)!!
         val deadline = action.getTimestamp(DEADLINE).toDomainTimestamp()
@@ -43,8 +44,9 @@ class FirebaseActionRepository : ActionRepository {
     override suspend fun removeLinkForDevice(deviceId: String) {
         val actions = getActionsCollection()
         val action = actions.document(deviceId).get().await()
-        if (action.exists())
+        if (action.exists()) {
             actions.document(deviceId).delete()
+        }
     }
 
     private fun Timestamp?.toFirebaseTimestamp(): com.google.firebase.Timestamp? {
@@ -56,5 +58,4 @@ class FirebaseActionRepository : ActionRepository {
         if (this == null) return null
         return Timestamp(this.toDate().time)
     }
-
 }

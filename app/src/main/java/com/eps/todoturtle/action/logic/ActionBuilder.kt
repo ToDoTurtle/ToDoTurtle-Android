@@ -11,10 +11,12 @@ class ActionBuilder {
 
     fun build(): NoteActionBuilderResult {
         val errors = mutableListOf<NoteActionBuilderError>()
-        if (title.isBlank() || title.isEmpty())
+        if (title.isBlank() || title.isEmpty()) {
             errors.add(NoteActionBuilderError.EMPTY_TITLE)
-        if (description.isBlank() || description.isEmpty())
+        }
+        if (description.isBlank() || description.isEmpty()) {
             errors.add(NoteActionBuilderError.EMPTY_DESCRIPTION)
+        }
         if (errors.isNotEmpty()) return Error(errors)
         return Success(
             NoteAction(
@@ -22,8 +24,8 @@ class ActionBuilder {
                 description!!,
                 deadline,
                 notification,
-                getLocation
-            )
+                getLocation,
+            ),
         )
     }
 
@@ -37,13 +39,11 @@ class ActionBuilder {
 
     fun loadValuesFromAction(action: NoteAction) {
         with(action) {
-           this@ActionBuilder.title = title
+            this@ActionBuilder.title = title
             this@ActionBuilder.description = description
             this@ActionBuilder.deadline = deadline
             this@ActionBuilder.notification = notification
             this@ActionBuilder.getLocation = getLocation
         }
-
     }
-
 }

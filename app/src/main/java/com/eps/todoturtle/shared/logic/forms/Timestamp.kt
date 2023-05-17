@@ -13,9 +13,11 @@ data class Timestamp(
             datePickerState: DatePickerState,
             timePickerState: TimePickerState,
         ): Timestamp {
-            val date = datePickerState.selectedDateMillis!! + timePickerState.hour * 3_600_000L + timePickerState.minute * 60_000L
+            val date = datePickerState.selectedDateMillis!! +
+                timePickerState.hour * 3_600_000L +
+                timePickerState.minute * 60_000L
             return Timestamp(
-                time = date
+                time = date,
             )
         }
     }

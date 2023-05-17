@@ -7,7 +7,6 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.util.Log
-import com.eps.todoturtle.MainActivity
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,32 +15,30 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 enum class NetworkPreference {
     ONLY_WIFI,
-    DATA_AND_WIFI
+    DATA_AND_WIFI,
 }
 
 enum class WifiStatus {
     INTERNET_CONNECTION,
-    ERROR_NO_INTERNET
+    ERROR_NO_INTERNET,
 }
 
 enum class CellularStatus {
     INTERNET_CONNECTION,
-    ERROR_NO_INTERNET
+    ERROR_NO_INTERNET,
 }
 
 enum class NetworkAvailability {
     AVAILABLE,
     ERROR_WIFI_NOT_CONNECTED,
-    ERROR_NOT_CONNECTED
+    ERROR_NOT_CONNECTED,
 }
 
 class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
@@ -59,7 +56,6 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
     private val cellularStatus: Flow<CellularStatus> = cellularStatusChannel.receiveAsFlow()
 
     override val networkAvailability: Flow<NetworkAvailability>
-
 
     init {
         runBlocking(Dispatchers.IO) {
@@ -98,9 +94,9 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
 
     private fun registerForNetworkPreferenceUpdates() {
         context.dataStore.data.onEach { preferences ->
-            if (preferences.onlyWifi)
+            if (preferences.onlyWifi) {
                 networkPreferenceChannel.send(NetworkPreference.ONLY_WIFI)
-            else
+            } else
                 networkPreferenceChannel.send(NetworkPreference.DATA_AND_WIFI)
         }.launchIn(scope)
     }
@@ -121,28 +117,29 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
                 }
 
                 override fun onLost(network: Network) {
-                    runBlocking(Dispatchers.IO){
+                    runBlocking(Dispatchers.IO) {
                         wifiStatusChannel.send(WifiStatus.ERROR_NO_INTERNET)
                     }
                 }
 
                 override fun onCapabilitiesChanged(
                     network: Network,
-                    networkCapabilities: NetworkCapabilities
+                    networkCapabilities: NetworkCapabilities,
                 ) {
                     super.onCapabilitiesChanged(network, networkCapabilities)
-                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET))
+                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
                         runBlocking(Dispatchers.IO) {
                             cellularStatusChannel.send(CellularStatus.INTERNET_CONNECTION)
                         }
-                    else
+                    } else {
                         runBlocking(Dispatchers.IO) {
                             cellularStatusChannel.send(CellularStatus.ERROR_NO_INTERNET)
                         }
+                    }
                 }
-            })
+            },
+        )
     }
-
 
     private fun registerForCellularStateUpdates() {
         val networkRequest = NetworkRequest.Builder()
@@ -167,18 +164,20 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
 
                 override fun onCapabilitiesChanged(
                     network: Network,
-                    networkCapabilities: NetworkCapabilities
+                    networkCapabilities: NetworkCapabilities,
                 ) {
                     super.onCapabilitiesChanged(network, networkCapabilities)
-                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET))
+                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
                         runBlocking(Dispatchers.IO) {
                             cellularStatusChannel.send(CellularStatus.INTERNET_CONNECTION)
                         }
-                    else
+                    } else {
                         runBlocking(Dispatchers.IO) {
                             cellularStatusChannel.send(CellularStatus.ERROR_NO_INTERNET)
                         }
+                    }
                 }
-            })
+            },
+        )
     }
 }

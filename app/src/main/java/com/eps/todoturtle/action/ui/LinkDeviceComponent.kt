@@ -85,7 +85,7 @@ fun LinkNoteFormDialog(
         onAddNotificationClick = {
             notification = it
             actionViewModel.builder.notification = it
-        }
+        },
     )
     val action by actionViewModel.actionCreated.collectAsStateWithLifecycle(initialValue = null)
     action?.let { onSavedAction(it) }
@@ -105,7 +105,7 @@ fun LinkNoteFormDialog(
     onLocationSettingChange: (Boolean) -> Unit = {},
     getLocation: Boolean = false,
     onAddDeadlineClick: (Timestamp) -> Unit = {},
-    onAddNotificationClick: (Timestamp) -> Unit = {}
+    onAddNotificationClick: (Timestamp) -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -122,7 +122,7 @@ fun LinkNoteFormDialog(
                 onLocationSettingChange = onLocationSettingChange,
                 getLocation = getLocation,
                 onAddDeadlineClick = onAddDeadlineClick,
-                onAddNotificationClick = onAddNotificationClick
+                onAddNotificationClick = onAddNotificationClick,
             )
         }
     }
@@ -142,7 +142,7 @@ fun LinkNoteForm(
     onLocationSettingChange: (Boolean) -> Unit = {},
     getLocation: Boolean = false,
     onAddDeadlineClick: (Timestamp) -> Unit = {},
-    onAddNotificationClick: (Timestamp) -> Unit = {}
+    onAddNotificationClick: (Timestamp) -> Unit = {},
 ) {
     val (titleFocusRequester, descriptionFocusRequester) = remember { FocusRequester.createRefs() }
     var choosingNotification by remember { mutableStateOf(false) }

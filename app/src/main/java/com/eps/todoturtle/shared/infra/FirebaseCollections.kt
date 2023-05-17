@@ -34,7 +34,6 @@ fun getDevicesCollection(): CollectionReference {
     return userCollection.collection(DEVICES_COLLECTION)
 }
 
-
 /**
  * Returns the current user's actions collection reference.
  */

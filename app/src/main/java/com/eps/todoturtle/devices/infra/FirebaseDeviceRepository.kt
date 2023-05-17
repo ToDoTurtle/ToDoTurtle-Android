@@ -24,7 +24,7 @@ class FirebaseDeviceRepository : DeviceRepository {
                 identifier = id,
                 name = name,
                 description = description,
-                iconResId = iconResId
+                iconResId = iconResId,
             )
         }.toCollection(mutableListOf())
     }
@@ -36,8 +36,8 @@ class FirebaseDeviceRepository : DeviceRepository {
                 ID_DEVICE to device.identifier,
                 NAME_DEVICE to device.name,
                 DESCRIPTION_DEVICE to device.description,
-                ICON_RES_ID_DEVICE to device.iconResId
-            )
+                ICON_RES_ID_DEVICE to device.iconResId,
+            ),
         ).await()
     }
 
@@ -48,5 +48,4 @@ class FirebaseDeviceRepository : DeviceRepository {
             devices.document(document.id).delete()
         }
     }
-
 }

@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.action.logic.NoteAction
 import com.eps.todoturtle.devices.logic.NFCDevice
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,11 +76,13 @@ fun deviceMenu(
             optionMenu(
                 icon = Icons.Filled.Delete,
                 text = "Delete",
-                onEditClicked = { onDeleteListener(device) })
+                onEditClicked = { onDeleteListener(device) },
+            )
             optionMenu(
                 icon = Icons.Filled.Delete,
                 text = "Delete Action",
-                onEditClicked = { onDeleteActionListener(device.identifier) })
+                onEditClicked = { onDeleteActionListener(device.identifier) },
+            )
             optionMenu(icon = Icons.Filled.Close, text = "Close", onEditClicked = onCloseListener)
         }
     }

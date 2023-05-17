@@ -7,5 +7,5 @@ data class NoteAction(
     val description: String,
     val deadline: Timestamp?,
     val notification: Timestamp?,
-    val getLocation: Boolean
+    val getLocation: Boolean,
 )

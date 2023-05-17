@@ -131,7 +131,7 @@ fun IconChooser(isError: Boolean, onClick: () -> Unit) {
         Text(text = "Choose Icon")
     }
     if (isError) {
-        Text(text="Please choose an icon", color = MaterialTheme.colorScheme.error)
+        Text(text = "Please choose an icon", color = MaterialTheme.colorScheme.error)
     }
 }
 

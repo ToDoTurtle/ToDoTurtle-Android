@@ -58,7 +58,7 @@ fun App(
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
     userAuth: UserAuth,
-    connectionAvailability: Flow<NetworkAvailability>
+    connectionAvailability: Flow<NetworkAvailability>,
 ) {
     val navController = rememberNavController()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()

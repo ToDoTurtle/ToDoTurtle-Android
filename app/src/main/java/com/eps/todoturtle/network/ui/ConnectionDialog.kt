@@ -35,7 +35,8 @@ fun NetworkWarningDialog(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Please connect to Wi-Fi and try again or go to network settings and enable cellular data usage.",
+                    text = "Please connect to Wi-Fi and try again or go to network settings " +
+                        "and enable cellular data usage.",
                 )
             }
         },
