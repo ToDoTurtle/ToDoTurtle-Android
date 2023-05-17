@@ -1,8 +1,8 @@
 buildscript {
     ext {
-        compose_version = '1.4.5'
+        compose_version = '1.4.7'
         nav_version = "2.5.3"
-        kotlin_version = '1.8.20'
+        kotlin_version = '1.8.21'
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-serialization:1.8.21"
