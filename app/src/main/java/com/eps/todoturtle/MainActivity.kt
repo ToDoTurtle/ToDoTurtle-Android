@@ -83,7 +83,6 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         setContent {
             ToDoTurtleTheme(dataStore) {
                 App(
-                    permissionRequester = permissionRequester,
                     devicesViewModel = getDevicesViewModel(FirebaseDeviceRepository()),
                     hasLocationPermision = { hasLocationPermission() },
                     locationClient = locationClient,
