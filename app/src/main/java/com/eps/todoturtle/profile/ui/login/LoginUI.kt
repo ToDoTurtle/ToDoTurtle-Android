@@ -9,7 +9,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,8 +22,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.eps.todoturtle.R
-import com.eps.todoturtle.network.logic.ConnectionChecker
+import com.eps.todoturtle.navigation.logic.Destinations
+import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
+import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.network.ui.NetworkWarningDialog
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.register.RegisterDialog
@@ -33,24 +36,27 @@ import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
 import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @Composable
 fun LoginUI(
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
-    connectionChecker: ConnectionChecker,
+    connectionChecker: Flow<NetworkAvailability>,
+    navController: NavHostController,
     onSignInClick: () -> Unit,
 ) {
     ProfileUI(modifier = modifier) {
-        LoginContent(userAuth, connectionChecker) { onSignInClick() }
+        LoginContent(userAuth, connectionChecker, navController) { onSignInClick() }
     }
 }
 
 @Composable
 fun LoginContent(
     userAuth: UserAuth,
-    connectionChecker: ConnectionChecker,
+    connectionChecker: Flow<NetworkAvailability>,
+    navController: NavHostController,
     onSignInClick: () -> Unit,
 ) {
     var wrongLogin by rememberSaveable { mutableStateOf(false) }
@@ -59,7 +65,7 @@ fun LoginContent(
     var password by rememberSaveable { mutableStateOf("") }
     var shouldShowSignUp by rememberSaveable { mutableStateOf(false) }
     var shouldShowNetworkDialog by rememberSaveable { mutableStateOf(false) }
-    var isNetworkAvailable = connectionChecker.isNetworkAvailable.collectAsState()
+    val networkAvailability by connectionChecker.collectAsStateWithLifecycle(NetworkAvailability.AVAILABLE)
 
     Spacer(modifier = Modifier.size(20.dp))
     CenteredPicture(
@@ -104,7 +110,7 @@ fun LoginContent(
             disabledElevation = 0.dp,
         ),
         onClick = {
-            if (!isNetworkAvailable.value) shouldShowNetworkDialog = true
+            if (networkAvailability != NetworkAvailability.AVAILABLE) shouldShowNetworkDialog = true
             else {
                 scope.launch {
                     val loginResult = userAuth.login(username, password)
@@ -123,9 +129,9 @@ fun LoginContent(
     Spacer(modifier = Modifier.size(5.dp))
 
     NetworkWarningDialog(
+        availability = networkAvailability,
         showDialog = shouldShowNetworkDialog,
-        onSettingsClick = { /*TODO*/ },
-        onRetryClick = {},
+        onSettingsClick = { navController.navigateSingleTopTo(Destinations.SETTINGS.route) },
         onDismiss = { shouldShowNetworkDialog = false })
 }
 

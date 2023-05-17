@@ -33,6 +33,7 @@ import com.eps.todoturtle.navigation.ui.ToDoTurtleNavHost
 import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
 import com.eps.todoturtle.network.logic.ConnectionChecker
+import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.note.logic.NotesViewModelInt
 import com.eps.todoturtle.note.logic.location.LocationClient
@@ -40,6 +41,7 @@ import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.logic.UserAuth
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +59,7 @@ fun App(
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
     userAuth: UserAuth,
-    connectionChecker: ConnectionChecker
+    connectionChecker: Flow<NetworkAvailability>
 ) {
     val navController = rememberNavController()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()

@@ -2,6 +2,7 @@ package com.eps.todoturtle
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -34,9 +35,13 @@ import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.maltaisn.icondialog.pack.IconPack
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivity {
@@ -49,12 +54,12 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
     private lateinit var auth: FirebaseAuth
     private lateinit var locationClient: LocationClient
 
-    private lateinit var connectionChecker: ConnectionChecker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        connectionChecker = ConnectionCheckerImpl(this)
+        val connectionChecker = ConnectionCheckerImpl(this)
+        val flow = connectionChecker.networkAvailability
 
         cameraPermissionRequester =
             PermissionRequester(this, listOf(CameraPermissionProvider(this)))
@@ -97,7 +102,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },
                     userAuth = userAuth,
-                    connectionChecker = connectionChecker,
+                    connectionChecker = flow,
                 )
             }
         }

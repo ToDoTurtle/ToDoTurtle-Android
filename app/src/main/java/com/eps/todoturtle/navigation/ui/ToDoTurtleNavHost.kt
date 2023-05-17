@@ -1,5 +1,6 @@
 package com.eps.todoturtle.navigation.ui
 
+import android.net.Network
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -26,6 +27,7 @@ import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.navigation.logic.DEVICE_WRITE_SUCCESSFUL_PARAMETER
 import com.eps.todoturtle.navigation.logic.Destinations
 import com.eps.todoturtle.network.logic.ConnectionChecker
+import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.note.logic.NotesViewModelInt
@@ -39,6 +41,7 @@ import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.details.DetailsUI
 import com.eps.todoturtle.profile.ui.login.LoginUI
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun ToDoTurtleNavHost(
@@ -57,7 +60,7 @@ fun ToDoTurtleNavHost(
     hasCameraPermission: () -> Boolean,
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
-    connectionChecker: ConnectionChecker
+    connectionChecker: Flow<NetworkAvailability>
 ) {
     val startDestination = if (userAuth.isLoggedIn()) Destinations.NOTES else Destinations.LOGIN
 
@@ -80,7 +83,6 @@ fun ToDoTurtleNavHost(
             locationClient,
             locationPermissionRequester,
             hasLocationPermission,
-//            connectionChecker
         )
         devices(
             navController,
@@ -89,7 +91,6 @@ fun ToDoTurtleNavHost(
             locationClient,
             locationPermissionRequester,
             hasLocationPermission,
-//            connectionChecker
         )
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
@@ -102,10 +103,10 @@ fun NavGraphBuilder.login(
     navController: NavHostController,
     shouldShowMenu: MutableState<Boolean>,
     userAuth: UserAuth,
-    connectionChecker: ConnectionChecker
+    connectionChecker: Flow<NetworkAvailability>
 ) {
     composable(Destinations.LOGIN.route) {
-        LoginUI(userAuth = userAuth, connectionChecker = connectionChecker) {
+        LoginUI(userAuth = userAuth, connectionChecker = connectionChecker, navController = navController) {
             navController.navigateFromLogin(Destinations.NOTES.route)
             shouldShowMenu.value = true
         }

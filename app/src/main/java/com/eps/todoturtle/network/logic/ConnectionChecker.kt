@@ -1,7 +1,7 @@
 package com.eps.todoturtle.network.logic
 
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.Flow
 
 interface ConnectionChecker {
-    val isNetworkAvailable: MutableStateFlow<Boolean>
+    val networkAvailability: Flow<NetworkAvailability>
 }

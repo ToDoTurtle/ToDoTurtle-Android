@@ -11,12 +11,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.network.logic.NetworkAvailability
 
 @Composable
 fun NetworkWarningDialog(
+    availability: NetworkAvailability,
     showDialog: Boolean,
     onSettingsClick: () -> Unit,
-    onRetryClick: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     if (!showDialog) return
