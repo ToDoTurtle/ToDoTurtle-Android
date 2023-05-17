@@ -6,18 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.google.firebase.auth.FirebaseAuth
 
-class InitialActivity: AppCompatActivity() {
+class InitialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val auth = FirebaseAuth.getInstance()
         val userAuth = UserAuth(this@InitialActivity, auth)
 
-        intent = if (!userAuth.isLoggedIn()) {
-            Intent(this, LoginActivity::class.java)
-        } else {
-            Intent(this, MainActivity::class.java)
-        }
+        intent = Intent(
+            this, if (userAuth.isLoggedIn()) MainActivity::class.java else LoginActivity::class.java)
         startActivity(intent)
     }
 }
