@@ -15,7 +15,7 @@ import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class LoginActivity: AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ class LoginActivity: AppCompatActivity() {
             ToDoTurtleTheme(dataStore) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     LoginUI(userAuth = userAuth) {
                         val intent = Intent(this, MainActivity::class.java)

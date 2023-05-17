@@ -14,7 +14,9 @@ class InitialActivity : AppCompatActivity() {
         val userAuth = UserAuth(this@InitialActivity, auth)
 
         intent = Intent(
-            this, if (userAuth.isLoggedIn()) MainActivity::class.java else LoginActivity::class.java)
+            this,
+            if (userAuth.isLoggedIn()) MainActivity::class.java else LoginActivity::class.java,
+        )
         startActivity(intent)
     }
 }
