@@ -16,7 +16,7 @@ import coil.request.ImageRequest
 
 @Composable
 fun AboutUsImage(
-    imageUrl: String
+    imageUrl: String,
 ) {
     Box(
         modifier = Modifier
@@ -35,7 +35,7 @@ fun AboutUsImage(
                     .data(imageUrl)
                     .crossfade(true)
                     .build(),
-                contentDescription = null ,
+                contentDescription = null,
                 contentScale = ContentScale.Crop,
             )
         }

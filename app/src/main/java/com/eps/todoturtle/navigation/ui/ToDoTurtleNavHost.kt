@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.eps.todoturtle.LoginActivity
 import com.eps.todoturtle.action.logic.ActionViewModel
+import com.eps.todoturtle.aboutus.ui.AboutUsUI
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_ID
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAM
@@ -24,7 +25,6 @@ import com.eps.todoturtle.devices.logic.DeviceConfigurationParams
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
 import com.eps.todoturtle.devices.ui.DeviceScreen
-import com.eps.todoturtle.aboutus.ui.AboutUsUI
 import com.eps.todoturtle.navigation.logic.DEVICE_WRITE_SUCCESSFUL_PARAMETER
 import com.eps.todoturtle.navigation.logic.Destinations
 import com.eps.todoturtle.network.logic.NetworkAvailability

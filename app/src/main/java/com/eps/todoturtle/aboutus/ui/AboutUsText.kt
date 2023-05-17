@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 fun AboutUsText(text: String) {
     val scroll = rememberScrollState()
     Text(
-        text  = text,
+        text = text,
         modifier = Modifier
             .height(300.dp)
             .verticalScroll(scroll)
