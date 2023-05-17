@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.eps.todoturtle.action.infra.FirebaseActionRepository
 import com.eps.todoturtle.action.infra.InMemoryActionRepository
 import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
 import com.eps.todoturtle.devices.infra.FirebaseDeviceRepository
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
 
         permissionRequester = PermissionRequester(this, permissionsToRequest)
         val noteScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
-        val actionsViewModel = getActionViewModel(InMemoryActionRepository())
+        val actionsViewModel = getActionViewModel(FirebaseActionRepository())
         val profileViewModel = ProfileViewModel(this)
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
