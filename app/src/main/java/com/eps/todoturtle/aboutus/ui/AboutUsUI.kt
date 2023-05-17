@@ -1,6 +1,7 @@
 package com.eps.todoturtle.aboutus.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
@@ -46,7 +48,7 @@ fun AboutUsUI() {
                     .build(),
                 contentDescription = null ,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier,
+                modifier = Modifier.background(Color.Transparent),
             )
             Text(
                 modifier = Modifier
