@@ -41,19 +41,12 @@ import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DevicesViewModel
 import com.eps.todoturtle.devices.logic.NFCDevice
 import com.eps.todoturtle.note.logic.NotesViewModelInt
-import com.eps.todoturtle.note.logic.location.LocationClient
-import com.eps.todoturtle.note.ui.AddNoteFormDialog
-import com.eps.todoturtle.permissions.logic.PermissionRequester
-import com.eps.todoturtle.permissions.logic.RequestPermissionContext
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 
 @Composable
 fun DeviceScreen(
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
     devicesViewModel: DevicesViewModel,
     notesViewModel: NotesViewModelInt,
     newDeviceAdded: Boolean = false,
@@ -62,9 +55,6 @@ fun DeviceScreen(
     onAddDevice: () -> Unit = {},
 ) {
     DeviceScreenLayout(
-        locationClient = locationClient,
-        hasLocationPermission = hasLocationPermission,
-        locationPermissionRequester = locationPermissionRequester,
         devices = devicesViewModel.getDevices(),
         newDeviceAdded,
         @Composable { id: Int -> devicesViewModel.getDrawable(id) },
@@ -81,9 +71,6 @@ fun DeviceScreen(
 
 @Composable
 fun DeviceScreenLayout(
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
     devices: Collection<NFCDevice>,
     newDeviceAdded: Boolean,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
@@ -102,9 +89,6 @@ fun DeviceScreenLayout(
         },
     ) {
         NFCDeviceList(
-            locationClient,
-            hasLocationPermission,
-            locationPermissionRequester,
             devices.toList(),
             onEditListener,
             onDeleteListener,
@@ -127,9 +111,6 @@ fun AddDeviceButton(onClick: () -> Unit) {
 
 @Composable
 fun NFCDeviceList(
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
     devices: List<NFCDevice>,
     onEditListener: (NFCDevice) -> Unit,
     onDeleteListener: (NFCDevice) -> Unit,
@@ -141,9 +122,6 @@ fun NFCDeviceList(
     ) {
         items(devices.size) { index ->
             NFCDeviceListItem(
-                locationClient = locationClient,
-                hasLocationPermission = hasLocationPermission,
-                locationPermissionRequester = locationPermissionRequester,
                 notesViewModel = notesViewModel,
                 device = devices[index],
                 onEditListener,
@@ -157,9 +135,6 @@ fun NFCDeviceList(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun NFCDeviceListItem(
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
     notesViewModel: NotesViewModelInt,
     device: NFCDevice,
     onEditListener: (NFCDevice) -> Unit,
@@ -177,9 +152,6 @@ fun NFCDeviceListItem(
             ) { },
     ) {
         DeviceCard(
-            locationClient = locationClient,
-            hasLocationPermission = hasLocationPermission,
-            locationPermissionRequester = locationPermissionRequester,
             device = device,
             notesViewModel = notesViewModel,
             iconToDrawableConverter = iconToDrawableConverter,
@@ -208,9 +180,6 @@ fun NFCDeviceListItem(
 
 @Composable
 fun DeviceCard(
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
     notesViewModel: NotesViewModelInt,
     device: NFCDevice,
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
@@ -228,18 +197,7 @@ fun DeviceCard(
             inDialog = true
         }
         if (inDialog) {
-            RequestPermissionContext(locationPermissionRequester) {
-                AddNoteFormDialog(
-                    locationClient = locationClient,
-                    hasLocationPermission = hasLocationPermission,
-                    requestPermisions = { requestPermissions() },
-                    onDismissRequest = { inDialog = false },
-                    onDoneClick = { inDialog = false },
-                    onCloseClick = { inDialog = false },
-                    viewModel = notesViewModel,
-                    titleTextId = R.string.link_note,
-                )
-            }
+            // TODO: Here goes the dialog
         }
     }
 }

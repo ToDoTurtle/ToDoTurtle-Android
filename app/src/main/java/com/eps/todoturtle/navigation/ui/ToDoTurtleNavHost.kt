@@ -77,9 +77,6 @@ fun ToDoTurtleNavHost(
             navController,
             devicesViewModel,
             deviceScreenNoteViewModel,
-            locationClient,
-            locationPermissionRequester,
-            hasLocationPermission,
         )
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
@@ -130,9 +127,6 @@ fun NavGraphBuilder.devices(
     navController: NavHostController,
     devicesViewModel: DevicesViewModel,
     deviceScreenNoteViewModel: NotesViewModelInt,
-    locationClient: LocationClient,
-    locationPermissionRequester: PermissionRequester,
-    hasLocationPermission: () -> Boolean,
 ) {
     composable(
         Destinations.DEVICES.route,
@@ -148,9 +142,6 @@ fun NavGraphBuilder.devices(
             noteScreenViewModel = deviceScreenNoteViewModel,
             navController = navController,
             newDeviceAdded = newDeviceAdded,
-            locationClient = locationClient,
-            locationPermissionRequester = locationPermissionRequester,
-            hasLocationPermission = hasLocationPermission,
         )
     }
 }
@@ -193,15 +184,9 @@ fun DeviceScreen(
     noteScreenViewModel: NotesViewModelInt,
     navController: NavHostController,
     newDeviceAdded: Boolean = false,
-    locationClient: LocationClient,
-    hasLocationPermission: () -> Boolean,
-    locationPermissionRequester: PermissionRequester,
 ) {
     var deviceAdded by rememberSaveable { mutableStateOf(newDeviceAdded) }
     DeviceScreen(
-        locationClient = locationClient,
-        locationPermissionRequester = locationPermissionRequester,
-        hasLocationPermission = hasLocationPermission,
         devicesViewModel = devicesViewModel,
         notesViewModel = noteScreenViewModel,
         newDeviceAdded = deviceAdded,
