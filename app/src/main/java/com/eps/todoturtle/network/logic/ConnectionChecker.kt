@@ -1,4 +1,4 @@
-package com.eps.todoturtle.network
+package com.eps.todoturtle.network.logic
 
 import kotlinx.coroutines.flow.MutableStateFlow
 

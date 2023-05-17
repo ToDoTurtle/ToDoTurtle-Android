@@ -1,4 +1,4 @@
-package com.eps.todoturtle.network
+package com.eps.todoturtle.network.logic
 
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.net.ConnectivityManager
@@ -15,16 +15,14 @@ import kotlinx.coroutines.launch
 class ConnectionCheckerImpl(private val context: MainActivity) : ConnectionChecker {
     private val connectivityManager =
         context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-    private var hasInternetOverWifi = false
+    private var isOnlyWifiSet = false
     override val isNetworkAvailable = MutableStateFlow(false)
-
 
     init {
         registerForNetworkState()
         context.lifecycleScope.launch(Dispatchers.IO) {
             context.dataStore.data.collect { preferences ->
-                isNetworkAvailable.value =
-                    !preferences.onlyWifi || (preferences.onlyWifi && hasInternetOverWifi)
+                isOnlyWifiSet = preferences.onlyWifi
             }
         }
     }
@@ -39,11 +37,11 @@ class ConnectionCheckerImpl(private val context: MainActivity) : ConnectionCheck
             networkRequest,
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
-                    hasInternetOverWifi = true
+                    isNetworkAvailable.value = true
                 }
 
                 override fun onLost(network: Network) {
-                    hasInternetOverWifi = false
+                    isNetworkAvailable.value = !isOnlyWifiSet
                 }
 
                 override fun onCapabilitiesChanged(
@@ -51,7 +49,7 @@ class ConnectionCheckerImpl(private val context: MainActivity) : ConnectionCheck
                     networkCapabilities: NetworkCapabilities
                 ) {
                     super.onCapabilitiesChanged(network, networkCapabilities)
-                    hasInternetOverWifi =
+                    isNetworkAvailable.value =
                         networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                 }
             })

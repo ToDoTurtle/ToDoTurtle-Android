@@ -9,6 +9,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,6 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
+import com.eps.todoturtle.network.logic.ConnectionChecker
+import com.eps.todoturtle.network.ui.NetworkWarningDialog
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.register.RegisterDialog
 import com.eps.todoturtle.profile.ui.shared.CenteredPicture
@@ -36,16 +39,18 @@ import kotlinx.coroutines.launch
 fun LoginUI(
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
+    connectionChecker: ConnectionChecker,
     onSignInClick: () -> Unit,
 ) {
     ProfileUI(modifier = modifier) {
-        LoginContent(userAuth) { onSignInClick() }
+        LoginContent(userAuth, connectionChecker) { onSignInClick() }
     }
 }
 
 @Composable
 fun LoginContent(
     userAuth: UserAuth,
+    connectionChecker: ConnectionChecker,
     onSignInClick: () -> Unit,
 ) {
     var wrongLogin by rememberSaveable { mutableStateOf(false) }
@@ -53,6 +58,8 @@ fun LoginContent(
     var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var shouldShowSignUp by rememberSaveable { mutableStateOf(false) }
+    var shouldShowNetworkDialog by rememberSaveable { mutableStateOf(false) }
+    var isNetworkAvailable = connectionChecker.isNetworkAvailable.collectAsState()
 
     Spacer(modifier = Modifier.size(20.dp))
     CenteredPicture(
@@ -97,13 +104,16 @@ fun LoginContent(
             disabledElevation = 0.dp,
         ),
         onClick = {
-            scope.launch {
-                val loginResult = userAuth.login(username, password)
-                if (!loginResult.first) {
-                    wrongLogin = true
-                    errorMessage = loginResult.second
-                } else {
-                    onSignInClick()
+            if (!isNetworkAvailable.value) shouldShowNetworkDialog = true
+            else {
+                scope.launch {
+                    val loginResult = userAuth.login(username, password)
+                    if (!loginResult.first) {
+                        wrongLogin = true
+                        errorMessage = loginResult.second
+                    } else {
+                        onSignInClick()
+                    }
                 }
             }
         },
@@ -111,6 +121,12 @@ fun LoginContent(
         Text(text = stringResource(id = R.string.profile_sign_in))
     }
     Spacer(modifier = Modifier.size(5.dp))
+
+    NetworkWarningDialog(
+        showDialog = shouldShowNetworkDialog,
+        onSettingsClick = { /*TODO*/ },
+        onRetryClick = {},
+        onDismiss = { shouldShowNetworkDialog = false })
 }
 
 @Composable

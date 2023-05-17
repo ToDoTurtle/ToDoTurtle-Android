@@ -25,6 +25,7 @@ import com.eps.todoturtle.devices.ui.DeviceScreen
 import com.eps.todoturtle.invite.ui.InviteUI
 import com.eps.todoturtle.navigation.logic.DEVICE_WRITE_SUCCESSFUL_PARAMETER
 import com.eps.todoturtle.navigation.logic.Destinations
+import com.eps.todoturtle.network.logic.ConnectionChecker
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.note.logic.NotesViewModelInt
@@ -56,6 +57,7 @@ fun ToDoTurtleNavHost(
     hasCameraPermission: () -> Boolean,
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
+    connectionChecker: ConnectionChecker
 ) {
     val startDestination = if (userAuth.isLoggedIn()) Destinations.NOTES else Destinations.LOGIN
 
@@ -64,7 +66,7 @@ fun ToDoTurtleNavHost(
         startDestination = startDestination.route,
         modifier = modifier,
     ) {
-        login(navController, shouldShowMenu, userAuth)
+        login(navController, shouldShowMenu, userAuth, connectionChecker)
         profile(
             cameraPermissionRequester,
             navController,
@@ -78,6 +80,7 @@ fun ToDoTurtleNavHost(
             locationClient,
             locationPermissionRequester,
             hasLocationPermission,
+//            connectionChecker
         )
         devices(
             navController,
@@ -86,6 +89,7 @@ fun ToDoTurtleNavHost(
             locationClient,
             locationPermissionRequester,
             hasLocationPermission,
+//            connectionChecker
         )
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
@@ -98,9 +102,10 @@ fun NavGraphBuilder.login(
     navController: NavHostController,
     shouldShowMenu: MutableState<Boolean>,
     userAuth: UserAuth,
+    connectionChecker: ConnectionChecker
 ) {
     composable(Destinations.LOGIN.route) {
-        LoginUI(userAuth = userAuth) {
+        LoginUI(userAuth = userAuth, connectionChecker = connectionChecker) {
             navController.navigateFromLogin(Destinations.NOTES.route)
             shouldShowMenu.value = true
         }
