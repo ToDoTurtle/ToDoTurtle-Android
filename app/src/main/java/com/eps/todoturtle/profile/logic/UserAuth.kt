@@ -1,6 +1,5 @@
 package com.eps.todoturtle.profile.logic
 
-import android.content.Context
 import android.util.Patterns
 import android.widget.Toast
 import com.eps.todoturtle.MainActivity
@@ -52,9 +51,8 @@ class UserAuth(
         }
     }
 
-    suspend fun loginWithGithub(username: String): Pair<Boolean, String> {
+    suspend fun loginWithGithub(): Pair<Boolean, String> {
         val provider = OAuthProvider.newBuilder(GithubKeys.PROVIDER.toString())
-            .addCustomParameter(GithubKeys.LOGIN_PARAM.toString(), username)
             .setScopes(listOf(GithubKeys.SCOPE.toString()))
             .build()
 

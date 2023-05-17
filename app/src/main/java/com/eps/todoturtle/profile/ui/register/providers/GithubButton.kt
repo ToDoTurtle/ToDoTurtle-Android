@@ -35,11 +35,22 @@ fun GithubButton(
     userAuth: UserAuth,
     onSuccessfulRegister: () -> Unit,
 ) {
-    var shouldShowGithubDialog by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
     Button(onClick = {
-        shouldShowGithubDialog = true
+        scope.launch {
+            val loginResult = userAuth.loginWithGithub()
+            if (loginResult.first) {
+                onSuccessfulRegister()
+            } else {
+                Toast.makeText(
+                    context,
+                    loginResult.second,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }) {
         Icon(
             painter = painterResource(id = R.drawable.github),
@@ -48,54 +59,5 @@ fun GithubButton(
             ),
             modifier = Modifier.size(24.dp)
         )
-    }
-
-    if (shouldShowGithubDialog) {
-        GithubUsernameDialog(
-            onDismiss = { shouldShowGithubDialog = false },
-        ) {
-            scope.launch {
-                val loginResult = userAuth.loginWithGithub("oriolagobat")
-                if (loginResult.first) {
-                    onSuccessfulRegister()
-                } else {
-                    Toast.makeText(
-                        context,
-                        loginResult.second,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun GithubUsernameDialog(
-    onDismiss: () -> Unit,
-    onClick: () -> Unit,
-) {
-    var username by rememberSaveable { mutableStateOf("") }
-    Dialog(onDismissRequest = { onDismiss() }) {
-        Card(
-            modifier = Modifier
-                .width(300.dp)
-                .height(150.dp)
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly,
-            ) {
-                InputTextField(value = username, label = R.string.github_username) {
-                    username = it
-                }
-                Button(onClick = {
-                    onClick()
-                }) {
-                    Text(text = stringResource(id = R.string.sign_up_confirm))
-                }
-            }
-        }
     }
 }
