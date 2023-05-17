@@ -32,7 +32,6 @@ import com.eps.todoturtle.navigation.ui.Drawer
 import com.eps.todoturtle.navigation.ui.ToDoTurtleNavHost
 import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
-import com.eps.todoturtle.network.logic.ConnectionChecker
 import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.note.logic.NotesViewModelInt
@@ -59,7 +58,7 @@ fun App(
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
     userAuth: UserAuth,
-    connectionChecker: Flow<NetworkAvailability>
+    connectionAvailability: Flow<NetworkAvailability>
 ) {
     val navController = rememberNavController()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -101,7 +100,7 @@ fun App(
                     profileViewModel = profileViewModel,
                     hasCameraPermission = { hasCameraPermission() },
                     userAuth = userAuth,
-                    connectionChecker = connectionChecker,
+                    connectionAvailability = connectionAvailability,
                 )
             }
         }

@@ -2,18 +2,14 @@ package com.eps.todoturtle
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.eps.todoturtle.action.infra.FirebaseActionRepository
-import com.eps.todoturtle.action.infra.InMemoryActionRepository
 import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
 import com.eps.todoturtle.devices.infra.FirebaseDeviceRepository
-import com.eps.todoturtle.devices.infra.InMemoryDeviceRepository
 import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
-import com.eps.todoturtle.network.logic.ConnectionChecker
 import com.eps.todoturtle.network.logic.ConnectionCheckerImpl
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NotesViewModel
@@ -39,13 +35,9 @@ import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.maltaisn.icondialog.pack.IconPack
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivity {
@@ -63,7 +55,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         super.onCreate(savedInstanceState)
 
         val connectionChecker = ConnectionCheckerImpl(this)
-        val flow = connectionChecker.networkAvailability
+        val connectionAvailability = connectionChecker.networkAvailability
 
         cameraPermissionRequester =
             PermissionRequester(this, listOf(CameraPermissionProvider(this)))
@@ -106,7 +98,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },
                     userAuth = userAuth,
-                    connectionChecker = flow,
+                    connectionAvailability = connectionAvailability,
                 )
             }
         }

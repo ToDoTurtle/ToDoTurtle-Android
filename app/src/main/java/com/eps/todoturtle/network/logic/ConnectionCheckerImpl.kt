@@ -1,5 +1,6 @@
 package com.eps.todoturtle.network.logic
 
+import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.net.ConnectivityManager
 import android.net.Network
@@ -43,7 +44,7 @@ enum class NetworkAvailability {
     ERROR_NOT_CONNECTED
 }
 
-class ConnectionCheckerImpl(private val context: MainActivity) : ConnectionChecker {
+class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
     private val connectivityManager =
         context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -97,12 +98,10 @@ class ConnectionCheckerImpl(private val context: MainActivity) : ConnectionCheck
 
     private fun registerForNetworkPreferenceUpdates() {
         context.dataStore.data.onEach { preferences ->
-            Log.e("ConnectionCheckerImpl", "preferences: $preferences 1")
             if (preferences.onlyWifi)
                 networkPreferenceChannel.send(NetworkPreference.ONLY_WIFI)
             else
                 networkPreferenceChannel.send(NetworkPreference.DATA_AND_WIFI)
-            Log.e("ConnectionCheckerImpl", "preferences: $preferences")
         }.launchIn(scope)
     }
 
@@ -117,16 +116,13 @@ class ConnectionCheckerImpl(private val context: MainActivity) : ConnectionCheck
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     runBlocking(Dispatchers.IO) {
-                        Log.e("ConnectionCheckerImpl", "WIFIonAvailable 1")
                         wifiStatusChannel.send(WifiStatus.INTERNET_CONNECTION)
-                        Log.e("ConnectionCheckerImpl", "WIFIonAvailable")
                     }
                 }
 
                 override fun onLost(network: Network) {
                     runBlocking(Dispatchers.IO){
                         wifiStatusChannel.send(WifiStatus.ERROR_NO_INTERNET)
-                        Log.e("ConnectionCheckerImpl", "WIFIonLost")
                     }
                 }
 
@@ -138,12 +134,10 @@ class ConnectionCheckerImpl(private val context: MainActivity) : ConnectionCheck
                     if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET))
                         runBlocking(Dispatchers.IO) {
                             cellularStatusChannel.send(CellularStatus.INTERNET_CONNECTION)
-                            Log.e("ConnectionCheckerImpl", "WIFIonCapabilitiesChanged")
                         }
                     else
                         runBlocking(Dispatchers.IO) {
                             cellularStatusChannel.send(CellularStatus.ERROR_NO_INTERNET)
-                            Log.e("ConnectionCheckerImpl", "WIFIonCapabilitiesChanged")
                         }
                 }
             })
@@ -162,14 +156,12 @@ class ConnectionCheckerImpl(private val context: MainActivity) : ConnectionCheck
                 override fun onAvailable(network: Network) {
                     runBlocking(Dispatchers.IO) {
                         cellularStatusChannel.send(CellularStatus.INTERNET_CONNECTION)
-                        Log.e("ConnectionCheckerImpl", "CELLonAvailable")
                     }
                 }
 
                 override fun onLost(network: Network) {
                     runBlocking(Dispatchers.IO) {
                         cellularStatusChannel.send(CellularStatus.ERROR_NO_INTERNET)
-                        Log.e("ConnectionCheckerImpl", "CELLonLost")
                     }
                 }
 
@@ -181,12 +173,10 @@ class ConnectionCheckerImpl(private val context: MainActivity) : ConnectionCheck
                     if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET))
                         runBlocking(Dispatchers.IO) {
                             cellularStatusChannel.send(CellularStatus.INTERNET_CONNECTION)
-                            Log.e("ConnectionCheckerImpl", "CELLonCapabilitiesChanged")
                         }
                     else
                         runBlocking(Dispatchers.IO) {
                             cellularStatusChannel.send(CellularStatus.ERROR_NO_INTERNET)
-                            Log.e("ConnectionCheckerImpl", "CELLonCapabilitiesChanged")
                         }
                 }
             })

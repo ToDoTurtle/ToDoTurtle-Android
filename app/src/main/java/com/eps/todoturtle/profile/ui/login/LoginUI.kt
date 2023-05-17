@@ -23,10 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.eps.todoturtle.R
-import com.eps.todoturtle.navigation.logic.Destinations
-import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
 import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.network.ui.NetworkWarningDialog
 import com.eps.todoturtle.profile.logic.UserAuth
@@ -43,12 +40,11 @@ import kotlinx.coroutines.launch
 fun LoginUI(
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
-    connectionChecker: Flow<NetworkAvailability>,
-    navController: NavHostController,
+    connectionAvailability: Flow<NetworkAvailability>,
     onSignInClick: () -> Unit,
 ) {
     ProfileUI(modifier = modifier) {
-        LoginContent(userAuth, connectionChecker, navController) { onSignInClick() }
+        LoginContent(userAuth, connectionAvailability) { onSignInClick() }
     }
 }
 
@@ -56,7 +52,6 @@ fun LoginUI(
 fun LoginContent(
     userAuth: UserAuth,
     connectionChecker: Flow<NetworkAvailability>,
-    navController: NavHostController,
     onSignInClick: () -> Unit,
 ) {
     var wrongLogin by rememberSaveable { mutableStateOf(false) }
@@ -132,7 +127,7 @@ fun LoginContent(
     NetworkWarningDialog(
         availability = networkAvailability,
         showDialog = shouldShowNetworkDialog,
-        onSettingsClick = { navController.navigateSingleTopTo(Destinations.SETTINGS.route) },
+        onSettingsClick = {},
         onDismiss = { shouldShowNetworkDialog = false })
 }
 
