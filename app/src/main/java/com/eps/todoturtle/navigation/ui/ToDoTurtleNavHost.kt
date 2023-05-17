@@ -1,7 +1,7 @@
 package com.eps.todoturtle.navigation.ui
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -15,6 +15,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.eps.todoturtle.LoginActivity
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_ID
 import com.eps.todoturtle.devices.logic.DEVICE_CONFIGURATION_PARAM
@@ -45,7 +46,6 @@ fun ToDoTurtleNavHost(
     locationPermissionRequester: PermissionRequester,
     navController: NavHostController,
     cameraPermissionRequester: PermissionRequester,
-    shouldShowMenu: MutableState<Boolean>,
     noteScreenViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
     deviceScreenNoteViewModel: NotesViewModelInt,
@@ -63,9 +63,7 @@ fun ToDoTurtleNavHost(
     ) {
         profile(
             cameraPermissionRequester,
-            navController,
             profileViewModel,
-            shouldShowMenu,
             userAuth,
             hasCameraPermission,
         )
@@ -92,9 +90,7 @@ fun ToDoTurtleNavHost(
 
 fun NavGraphBuilder.profile(
     permissionRequester: PermissionRequester,
-    navController: NavHostController,
     profileViewModel: ProfileViewModel,
-    shouldShowMenu: MutableState<Boolean>,
     userAuth: UserAuth,
     hasCameraPermission: () -> Boolean,
 ) {
@@ -106,8 +102,9 @@ fun NavGraphBuilder.profile(
                 profileViewModel = profileViewModel,
             ) {
                 userAuth.logout()
-                navController.navigateSingleTopTo(Destinations.LOGIN.route)
-                shouldShowMenu.value = false
+                val intent = Intent(userAuth.getActivityContext(), LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                userAuth.getActivityContext().startActivity(intent)
             }
         }
     }

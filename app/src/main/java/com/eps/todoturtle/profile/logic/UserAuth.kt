@@ -72,4 +72,6 @@ class UserAuth(
         val errorMessage = activity.baseContext.getString(R.string.additional_sign_up_error)
         Toast.makeText(activity.baseContext, errorMessage, Toast.LENGTH_SHORT).show()
     }
+
+    fun getActivityContext() = activity.baseContext
 }

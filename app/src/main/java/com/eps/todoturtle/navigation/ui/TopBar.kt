@@ -28,24 +28,21 @@ import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    shouldShowMenu: Boolean = true,
     onMenuClick: () -> Unit,
 ) {
-    if (shouldShowMenu) {
-        CenterAlignedTopAppBar(
-            title = {
-                AppTitle()
-            },
-            navigationIcon = {
-                IconButton(onClick = onMenuClick) {
-                    Icon(
-                        imageVector = Icons.Filled.Menu,
-                        contentDescription = stringResource(R.string.navigation_drawer_open),
-                    )
-                }
-            },
-        )
-    }
+    CenterAlignedTopAppBar(
+        title = {
+            AppTitle()
+        },
+        navigationIcon = {
+            IconButton(onClick = onMenuClick) {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = stringResource(R.string.navigation_drawer_open),
+                )
+            }
+        },
+    )
 }
 
 @Composable

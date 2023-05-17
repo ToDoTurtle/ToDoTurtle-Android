@@ -61,7 +61,6 @@ fun App(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val shouldShowMenu = rememberSaveable { mutableStateOf(userAuth.isLoggedIn()) }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
@@ -70,7 +69,6 @@ fun App(
             drawerState = drawerState,
             toDoCount = noteScreenViewModel.toDoNotes.size,
             devicesCount = devicesViewModel.getDevices().size,
-            shouldShowMenu = shouldShowMenu.value,
             onItemClick = { destination ->
                 scope.launch { drawerState.close() }
                 navController.navigateSingleTopTo(destination.route)
@@ -80,7 +78,6 @@ fun App(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 topBar = {
                     TopBar(
-                        shouldShowMenu = shouldShowMenu.value,
                         onMenuClick = { scope.launch { drawerState.open() } },
                     )
                 },
@@ -92,7 +89,6 @@ fun App(
                     locationClient = locationClient,
                     locationPermissionRequester = locationPermissionRequester,
                     cameraPermissionRequester = cameraPermissionRequester,
-                    shouldShowMenu = shouldShowMenu,
                     noteScreenViewModel = noteScreenViewModel,
                     devicesViewModel = devicesViewModel,
                     deviceScreenNoteViewModel = deviceScreenNoteViewModel,
@@ -113,25 +109,20 @@ fun DrawerContainer(
     toDoCount: Int,
     devicesCount: Int,
     onItemClick: (Destination) -> Unit,
-    shouldShowMenu: Boolean,
     content: @Composable () -> Unit,
 ) {
     val items = listOf(Notes, Devices, Profile, Settings, Invite)
     var selectedItem by remember { mutableStateOf(items[0]) }
-    if (shouldShowMenu) {
-        Drawer(
-            drawerState = drawerState,
-            toDoCount = toDoCount,
-            devicesCount = devicesCount,
-            onItemClick = { destination ->
-                selectedItem = destination
-                onItemClick(destination)
-            },
-            selectedItem = selectedItem,
-        ) {
-            content()
-        }
-    } else {
+    Drawer(
+        drawerState = drawerState,
+        toDoCount = toDoCount,
+        devicesCount = devicesCount,
+        onItemClick = { destination ->
+            selectedItem = destination
+            onItemClick(destination)
+        },
+        selectedItem = selectedItem,
+    ) {
         content()
     }
 }
