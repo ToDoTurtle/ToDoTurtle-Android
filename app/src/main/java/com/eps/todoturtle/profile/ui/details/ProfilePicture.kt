@@ -37,9 +37,9 @@ fun ProfilePicture(
     onChange: (Bitmap) -> Unit,
 ) {
     var shouldShowDialog by rememberSaveable { mutableStateOf(false) }
-    val fetchedProfilePicture = produceState(profilePicture) {
-        value = DetailsPictureStorage(userAuth).getProfileImage()
-    }.value
+    val storage = DetailsPictureStorage(userAuth)
+    val fetchedProfilePicture by produceState(profilePicture) { value = storage.getProfileImage() }
+    val scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -68,6 +68,7 @@ fun ProfilePicture(
                     profilePicture = profilePicture,
                 ) {
                     onChange(it)
+                    scope.launch { storage.setProfileImage(it) }
                     shouldShowDialog = false
                 }
             }
