@@ -33,12 +33,21 @@ class LoginActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    LoginUI(userAuth = userAuth, connectionAvailability = connectionAvailability) {
+                    LoginUI(
+                        userAuth = userAuth,
+                        connectionAvailability = connectionAvailability,
+                        onGoToSettingsClick = { onGoToSettingsClick() }) {
                         val intent = Intent(this, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
                 }
             }
         }
+    }
+
+    private fun onGoToSettingsClick() {
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -41,10 +41,11 @@ fun LoginUI(
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
     connectionAvailability: Flow<NetworkAvailability>,
+    onGoToSettingsClick: () -> Unit,
     onSignInClick: () -> Unit,
 ) {
     ProfileUI(modifier = modifier) {
-        LoginContent(userAuth, connectionAvailability) { onSignInClick() }
+        LoginContent(userAuth, connectionAvailability, onGoToSettingsClick) { onSignInClick() }
     }
 }
 
@@ -52,6 +53,7 @@ fun LoginUI(
 fun LoginContent(
     userAuth: UserAuth,
     connectionChecker: Flow<NetworkAvailability>,
+    onGoToSettingsClick: () -> Unit,
     onSignInClick: () -> Unit,
 ) {
     var wrongLogin by rememberSaveable { mutableStateOf(false) }
@@ -128,7 +130,7 @@ fun LoginContent(
     NetworkWarningDialog(
         availability = networkAvailability,
         showDialog = shouldShowNetworkDialog,
-        onSettingsClick = {},
+        onSettingsClick = onGoToSettingsClick,
         onDismiss = { shouldShowNetworkDialog = false },
     )
 }
