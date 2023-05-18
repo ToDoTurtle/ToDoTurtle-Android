@@ -15,10 +15,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.osmdroid.util.GeoPoint
 
-private const val OFFSET = 100
-const val EPS_LAT = 41.608440
-const val EPS_LON = 0.623380
-
 class NotesViewModel(
     toDoNotesRepository: NoteRepository,
     doneNotesRepository: NoteRepository

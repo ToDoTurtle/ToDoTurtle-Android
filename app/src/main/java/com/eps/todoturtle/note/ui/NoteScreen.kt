@@ -52,9 +52,9 @@ fun NoteScreen(
             )
             NoteList(
                 inHistory = inHistory,
-                notes = if (inHistory) viewModel.doneNotes else viewModel.toDoNotes,
+                notes = if (inHistory) viewModel.getDoneNotes() else viewModel.getToDoNotes(),
                 onCheckClick = { note ->
-                    if (inHistory) viewModel.doNote(note) else viewModel.undoNote(note)
+                    if (inHistory) viewModel.undoNote(note) else viewModel.doNote(note)
                 },
             )
         }
@@ -96,7 +96,7 @@ fun NoteScreenHeadline(
     ) {
         CheckCounter(
             modifier = Modifier.weight(0.1f),
-            count = viewModel.doneNotes.size,
+            count = viewModel.getDoneNotes().size,
             inHistory = inHistory,
         )
         Spacer(modifier = Modifier.weight(0.8f))
