@@ -53,7 +53,7 @@ inline fun <reified T : PreferenceEnum<T>> PreferenceDropdown(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        color = MaterialTheme.colorScheme.primaryContainer,
+        color = MaterialTheme.colorScheme.secondaryContainer,
         shape = RoundedCornerShape(percent = 10),
         onClick = { expanded.value = true },
     ) {
@@ -152,7 +152,7 @@ inline fun <reified T : PreferenceEnum<T>> DropdownMenu(
 ) {
     dropdownScope.ExposedDropdownMenu(
         expanded = expanded.value,
-        modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
+        modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
         onDismissRequest = { expanded.value = false },
     ) {
         enumValues.forEach { value ->

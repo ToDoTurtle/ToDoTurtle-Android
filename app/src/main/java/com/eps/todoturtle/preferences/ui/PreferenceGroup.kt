@@ -41,7 +41,7 @@ internal fun PreferenceGroup(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Surface(
-                color = MaterialTheme.colorScheme.primaryContainer,
+                color = MaterialTheme.colorScheme.secondaryContainer,
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(percent = 4),

@@ -40,7 +40,7 @@ internal fun PreferenceSwitch(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        color = MaterialTheme.colorScheme.primaryContainer,
+        color = MaterialTheme.colorScheme.secondaryContainer,
         shape = RoundedCornerShape(percent = 10),
         onClick = {
             onCheckedChange(!checked)
@@ -69,14 +69,6 @@ internal fun PreferenceSwitch(
                 Spacer(modifier = Modifier.weight(1f))
                 Switch(
                     checked = checked,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = Color.White,
-                        checkedTrackColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        checkedBorderColor = MaterialTheme.colorScheme.primary,
-                        uncheckedThumbColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        uncheckedTrackColor = Color.White,
-                        uncheckedBorderColor = MaterialTheme.colorScheme.primary,
-                    ),
                     onCheckedChange = {
                         onCheckedChange(it)
                     },
