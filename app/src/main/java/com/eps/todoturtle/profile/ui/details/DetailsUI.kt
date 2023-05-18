@@ -37,8 +37,7 @@ fun DetailsContent(
     profileViewModel: ProfileViewModel,
     onSignOutClick: () -> Unit,
 ) {
-//    val details = profileViewModel.details.collectAsState().value
-    val details by profileViewModel.profileDetailsFlow.collectAsStateWithLifecycle(initialValue = profileViewModel.currentDetails)
+    val details by profileViewModel.details.collectAsState()
 
     ProfilePicture(
         hasPermissions = hasPermissions,
