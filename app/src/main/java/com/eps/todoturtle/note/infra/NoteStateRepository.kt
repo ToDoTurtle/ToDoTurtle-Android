@@ -26,7 +26,7 @@ class NoteStateRepository(private val repository: NoteRepository) {
     fun remove(device: Note) {
         assertCacheIsLoadedOperation {
             this@NoteStateRepository.repository.remove(device)
-            val deviceToRemove = cached!!.find { it.id == device.id }
+            val deviceToRemove = cached!!.find { it.identifier == device.identifier }
             this@NoteStateRepository.cached!!.remove(deviceToRemove)
         }
     }

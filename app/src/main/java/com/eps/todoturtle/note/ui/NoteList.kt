@@ -26,7 +26,7 @@ fun NoteList(
         LazyColumn {
             items(
                 items = notes,
-                key = { it.id },
+                key = { it.identifier },
             ) { note ->
                 Box(
                     modifier = Modifier.animateItemPlacement(),

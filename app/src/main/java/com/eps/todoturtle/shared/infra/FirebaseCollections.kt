@@ -10,12 +10,14 @@ import com.google.firebase.ktx.Firebase
  * The database scheme is as follows:
  * users -> {user_id} |-> devices
  *                    |-> actions
- *                    |-> notes
- *                    |-> deleted notes
+ *                    |-> todo notes
+ *                    |-> done notes
  */
 private const val USERS_COLLECTION = "users"
 private const val DEVICES_COLLECTION = "devices"
 private const val ACTIONS_COLLECTION = "actions"
+private const val TODO_NOTES_COLLECTION = "todo-notes"
+private const val DONE_NOTES_COLLECTION = "done-notes"
 
 /**
  * Returns the current user collection reference.
@@ -40,4 +42,21 @@ fun getDevicesCollection(): CollectionReference {
 fun getActionsCollection(): CollectionReference {
     val userCollection = getUserCollection()
     return userCollection.collection(ACTIONS_COLLECTION)
+}
+
+/**
+ * Returns the current user's todo notes collection reference.
+ */
+fun getToDoNotesCollection(): CollectionReference {
+    val userCollection = getUserCollection()
+    return userCollection.collection(TODO_NOTES_COLLECTION)
+}
+
+/**
+ * Returns the current user's done notes collection reference.
+ */
+
+fun getDoneNotesCollection(): CollectionReference {
+    val userCollection = getUserCollection()
+    return userCollection.collection(DONE_NOTES_COLLECTION)
 }
