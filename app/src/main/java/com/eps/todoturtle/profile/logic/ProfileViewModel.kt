@@ -32,7 +32,6 @@ class ProfileViewModel(
         }
     }
 
-
     val details: StateFlow<ProfileDetails> = _details.asStateFlow()
 
     fun changeUsername(newUsername: String) {

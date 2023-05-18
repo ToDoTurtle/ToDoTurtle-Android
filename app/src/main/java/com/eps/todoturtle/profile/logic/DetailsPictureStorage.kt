@@ -12,16 +12,16 @@ class DetailsPictureStorage(
     userId: String,
 ) {
     private val storage = Firebase.storage
-    private val customPictureRef = storage.reference.child("users/${userId}/profilePicture.jpg")
+    private val customPictureRef = storage.reference.child("users/$userId/profilePicture.jpg")
     private val defaultPictureRef = storage.reference.child("default_pfp.jpg")
 
     suspend fun getProfileImage(): Bitmap {
         return bitmapFrom(
             try {
                 customPictureRef.getBytes(Long.MAX_VALUE).await()
-            } catch (exception: StorageException) {
+            } catch (ignored: StorageException) {
                 defaultPictureRef.getBytes(Long.MAX_VALUE).await()
-            }
+            },
         )
     }
 
