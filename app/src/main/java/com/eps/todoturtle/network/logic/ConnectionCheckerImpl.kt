@@ -2,11 +2,14 @@ package com.eps.todoturtle.network.logic
 
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
+import com.eps.todoturtle.SettingsActivity
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -68,7 +71,7 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
         registerForNetworkPreferenceUpdates()
         networkAvailability =
             combine(networkPreference, wifiStatus, cellularStatus) { pref, wifi, cellular ->
-                Log.e("ConnectionCheckerImpl", "pref: $pref, wifi: $wifi, cellular: $cellular")
+                Log.e("ConnectionCheckertmpl", "pref: $pref, wifi: $wifi, cellular: $cellular")
                 when (pref) {
                     NetworkPreference.ONLY_WIFI -> {
                         when (wifi) {
