@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.eps.todoturtle.action.infra.FirebaseActionRepository
 import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
 import com.eps.todoturtle.action.logic.NoteAction
-import com.eps.todoturtle.nfc.ui.AnimatedDisappearingText
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.google.firebase.auth.ktx.auth
@@ -30,22 +29,19 @@ import com.google.firebase.ktx.Firebase
 class ReadNfcActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Firebase.auth.currentUser == null)
+            showMessageAndFinish("Please login to continue")
+
         val id = getId()
-        if (Firebase.auth.currentUser == null) {
-            Toast.makeText(this, "Please login to continue", Toast.LENGTH_SHORT).show()
-            finish()
-        }
-        if (id == null) {
-            Toast.makeText(this, "Error reading id!", Toast.LENGTH_SHORT).show()
-            finish()
-        }
+        if (id == null)
+            showMessageAndFinish("Error reading id!")
+
         val actionRepository = FirebaseActionRepository()
         val viewModel = getActionViewModel(actionRepository)
-        val action = viewModel.actions.get(id)
-        if (action == null) {
-            Toast.makeText(this, "Device doesn't have any action, please configure it for use them", Toast.LENGTH_SHORT).show()
-            finish()
-        }
+        val action = viewModel.actions[id]
+        if (action == null)
+            showMessageAndFinish("Device doesn't have any action, please configure it for use them")
+
         setContent {
             ToDoTurtleTheme(dataStore) {
                 Surface(
@@ -67,6 +63,7 @@ class ReadNfcActivity : ComponentActivity() {
         return null
     }
 
+    @Suppress("DEPRECATION") // Because of the NFC library uses deprecated methods
     private fun getId(intent: Intent): String {
         val parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
         with(parcelables) {
@@ -74,6 +71,11 @@ class ReadNfcActivity : ComponentActivity() {
             val inNdefRecord = inNdefMessage.records
             return String(inNdefRecord[0].payload)
         }
+    }
+
+    private fun showMessageAndFinish(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        finish()
     }
 }
 
@@ -97,12 +99,14 @@ fun ShowAction(action: NoteAction, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     ToDoTurtleTheme(LocalContext.current.dataStore) {
-        ShowAction(NoteAction(
-            title = "Dummy Title",
-            description = "Dummy Description",
-            getLocation = false,
-            deadline = null,
-            notification = null,
-        ))
+        ShowAction(
+            NoteAction(
+                title = "Dummy Title",
+                description = "Dummy Description",
+                getLocation = false,
+                deadline = null,
+                notification = null,
+            )
+        )
     }
 }
