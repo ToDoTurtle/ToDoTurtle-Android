@@ -49,6 +49,21 @@ class FirebaseActionRepository : ActionRepository {
         }
     }
 
+    override suspend fun getAll(): Map<String, NoteAction> {
+        val actions = getActionsCollection()
+        val actionDocs = actions.get().await()
+        val actionMap = HashMap<String, NoteAction>()
+        for (actionDoc in actionDocs) {
+            val title = actionDoc.getString(TITLE)!!
+            val description = actionDoc.getString(DESCRIPTION)!!
+            val deadline = actionDoc.getTimestamp(DEADLINE).toDomainTimestamp()
+            val notification = actionDoc.getTimestamp(NOTIFICATION).toDomainTimestamp()
+            val getLocation = actionDoc.getBoolean(GET_LOCATION)!!
+            actionMap[actionDoc.id] = NoteAction(title, description, deadline, notification, getLocation)
+        }
+        return actionMap
+    }
+
     private fun Timestamp?.toFirebaseTimestamp(): com.google.firebase.Timestamp? {
         if (this == null) return null
         return com.google.firebase.Timestamp(this.time, 0)

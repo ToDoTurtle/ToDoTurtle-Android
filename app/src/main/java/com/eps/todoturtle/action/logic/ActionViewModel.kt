@@ -3,6 +3,7 @@ package com.eps.todoturtle.action.logic
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.eps.todoturtle.action.infra.ActionStateRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.runBlocking
 
-class ActionViewModel(private val repository: ActionRepository) : ViewModel() {
+class ActionViewModel(repository: ActionRepository) : ViewModel() {
 
     val builder: ActionBuilder = ActionBuilder()
 
@@ -18,6 +19,8 @@ class ActionViewModel(private val repository: ActionRepository) : ViewModel() {
         MutableStateFlow(emptyList())
     private val actionCreator: Channel<NoteAction> = Channel()
     val actionCreated: Flow<NoteAction> = actionCreator.receiveAsFlow()
+    private val repository: ActionStateRepository = ActionStateRepository(repository)
+    val actions = this.repository.actionLinkDevice
 
     fun loadActionForDevice(deviceId: String) {
         val action = getAction(deviceId)
@@ -41,7 +44,7 @@ class ActionViewModel(private val repository: ActionRepository) : ViewModel() {
         }
     }
 
-    fun getAction(deviceId: String): NoteAction? {
+    private fun getAction(deviceId: String): NoteAction? {
         return runBlocking(Dispatchers.IO) {
             repository.getActionForDeviceWithId(deviceId)
         }

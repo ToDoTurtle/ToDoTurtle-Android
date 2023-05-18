@@ -198,9 +198,10 @@ fun DeviceCard(
             .padding(16.dp),
     ) {
         var inEditDeviceDialog by rememberSaveable { mutableStateOf(false) }
+        val actions =  actionViewModel.actions
         DeviceIcon(iconToDrawableConverter, device = device)
         DeviceInformation(device = device)
-        EditDeviceButton(alreadyConfigured = actionViewModel.getAction(device.identifier) != null) {
+        EditDeviceButton(alreadyConfigured = actions.get(device.identifier) != null) {
             inEditDeviceDialog = true
         }
         if (inEditDeviceDialog) {

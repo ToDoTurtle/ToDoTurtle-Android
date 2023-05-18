@@ -9,7 +9,6 @@ class InMemoryActionRepository : ActionRepository {
     val actions = HashMap<String, NoteAction>()
 
     override suspend fun linkDeviceWithAction(deviceId: String, noteAction: NoteAction) {
-        Log.e("LINKING", "Device ID: $deviceId with notes: ${noteAction.title}")
         actions[deviceId] = noteAction
     }
 
@@ -21,4 +20,6 @@ class InMemoryActionRepository : ActionRepository {
         if (deviceId !in actions) return
         actions.remove(deviceId)
     }
+
+    override suspend fun getAll(): Map<String, NoteAction> = actions
 }
