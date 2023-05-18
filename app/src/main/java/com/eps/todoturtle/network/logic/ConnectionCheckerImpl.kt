@@ -127,7 +127,9 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
                     networkCapabilities: NetworkCapabilities,
                 ) {
                     super.onCapabilitiesChanged(network, networkCapabilities)
-                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                        && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    ) {
                         runBlocking(Dispatchers.IO) {
                             cellularStatusChannel.send(CellularStatus.INTERNET_CONNECTION)
                         }
@@ -144,7 +146,7 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
     private fun registerForCellularStateUpdates() {
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
             .build()
 
         connectivityManager.registerNetworkCallback(
@@ -167,7 +169,8 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
                     networkCapabilities: NetworkCapabilities,
                 ) {
                     super.onCapabilitiesChanged(network, networkCapabilities)
-                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                        && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
                         runBlocking(Dispatchers.IO) {
                             cellularStatusChannel.send(CellularStatus.INTERNET_CONNECTION)
                         }
