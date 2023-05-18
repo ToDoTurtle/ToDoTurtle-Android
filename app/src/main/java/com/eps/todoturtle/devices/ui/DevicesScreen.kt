@@ -23,10 +23,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,6 +51,7 @@ import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -171,18 +174,25 @@ fun NFCDeviceListItem(
             device = device,
             onEditListener = onEditListener,
             onDeleteListener = onDeleteListener,
-            onDeleteActionListener = { actionViewModel.removeAction(it) },
-            onCloseListener = {
-                scope.launch {
-                    bottomSheetState.hide()
-                }.invokeOnCompletion {
-                    if (!bottomSheetState.isVisible) {
-                        showBottomSheet.value = false
-                    }
-                }
+            onDeleteActionListener = {
+                showBottomSheet.value = false
+                actionViewModel.removeAction(it)
+                actionViewModel.builder.clear()
             },
+            onCloseListener = { bottomSheetState.getOut(scope, showBottomSheet) },
         ),
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+fun SheetState.getOut(scope: CoroutineScope, showBottomSheet: MutableState<Boolean>) {
+    scope.launch {
+        hide()
+    }.invokeOnCompletion {
+        if (isVisible) {
+            showBottomSheet.value = false
+        }
+    }
 }
 
 @Composable
@@ -198,7 +208,7 @@ fun DeviceCard(
             .padding(16.dp),
     ) {
         var inEditDeviceDialog by rememberSaveable { mutableStateOf(false) }
-        val actions =  actionViewModel.actions
+        val actions = actionViewModel.actions
         DeviceIcon(iconToDrawableConverter, device = device)
         DeviceInformation(device = device)
         EditDeviceButton(alreadyConfigured = actions.get(device.identifier) != null) {
