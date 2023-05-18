@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.eps.todoturtle.action.logic.ActionRepository
 import com.eps.todoturtle.devices.infra.DeviceStateRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +20,10 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.runBlocking
 import java.util.UUID
 
-class DevicesViewModel private constructor(repository: DeviceRepository) : ViewModel() {
+class DevicesViewModel private constructor(
+    repository: DeviceRepository,
+    private val actionsRepository: ActionRepository
+) : ViewModel() {
 
     private lateinit var iconToDrawable: (id: Int) -> Drawable?
     private lateinit var iconSelection: () -> Unit
@@ -35,6 +39,11 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
     val deviceCreated: Flow<NFCDevice> = deviceCreator.receiveAsFlow()
 
     fun delete(device: NFCDevice) {
+        runBlocking(Dispatchers.IO) {
+            actionsRepository.getActionForDeviceWithId(device.identifier)?.let {
+                actionsRepository.removeLinkForDevice(device.identifier)
+            }
+        }
         repository.remove(device)
     }
 
@@ -64,6 +73,7 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
                 }
                 deviceBuilder = DeviceBuilder(UUID.randomUUID().toString())
             }
+
             is DeviceBuildResult.Failure -> {
                 deviceErrors.value = result.errors
             }
@@ -87,20 +97,23 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
         @Suppress("UNCHECKED_CAST")
         private class NfcWriteViewModelFactory(
             val repository: DeviceRepository,
+            val actionsRepository: ActionRepository,
         ) :
             ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return DevicesViewModel(repository) as T
+                return DevicesViewModel(repository, actionsRepository) as T
             }
         }
 
         fun <T> T.getDevicesViewModel(
             repository: DeviceRepository,
+            actionsRepository: ActionRepository,
         ): DevicesViewModel where T : DeviceIconActivity, T : ComponentActivity {
             val viewModel = ViewModelProvider(
                 this,
                 NfcWriteViewModelFactory(
                     repository,
+                    actionsRepository,
                 ),
             )[DevicesViewModel::class.java]
             viewModel.setIconSelection(this.startIconSelectionLambda())
@@ -128,6 +141,7 @@ class DevicesViewModel private constructor(repository: DeviceRepository) : ViewM
                 }
                 deviceBuilder = DeviceBuilder(UUID.randomUUID().toString())
             }
+
             is DeviceBuildResult.Failure -> {
                 deviceErrors.value = result.errors
             }

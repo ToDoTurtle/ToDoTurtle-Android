@@ -67,8 +67,10 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                 ),
             )
         val noteScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
-        val actionsViewModel = getActionViewModel(FirebaseActionRepository())
+        val actionsRepository = FirebaseActionRepository()
+        val actionsViewModel = getActionViewModel(actionsRepository)
         val profileViewModel = ProfileViewModel(this)
+        val devicesViewModel = getDevicesViewModel(FirebaseDeviceRepository(), actionsRepository)
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())
@@ -85,7 +87,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         setContent {
             ToDoTurtleTheme(dataStore) {
                 App(
-                    devicesViewModel = getDevicesViewModel(FirebaseDeviceRepository()),
+                    devicesViewModel = devicesViewModel,
                     hasLocationPermision = { hasLocationPermission() },
                     locationClient = locationClient,
                     locationPermissionRequester = locationPermissionRequester,
