@@ -18,7 +18,7 @@
         android:required="false" />
 
     <application
-        android:name=".App"
+        android:name=".IconApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:usesCleartextTraffic="true"

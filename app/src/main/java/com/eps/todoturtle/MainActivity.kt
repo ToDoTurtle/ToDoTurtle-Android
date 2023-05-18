@@ -1,15 +1,22 @@
 package com.eps.todoturtle
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.eps.todoturtle.action.infra.FirebaseActionRepository
 import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
 import com.eps.todoturtle.devices.infra.FirebaseDeviceRepository
 import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
+import com.eps.todoturtle.network.logic.ConnectionChecker
 import com.eps.todoturtle.network.logic.ConnectionCheckerImpl
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NotesViewModel
@@ -38,7 +45,6 @@ import com.maltaisn.icondialog.pack.IconPack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivity {
@@ -51,11 +57,12 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
     private lateinit var auth: FirebaseAuth
     private lateinit var locationClient: LocationClient
 
+    private lateinit var connectionChecker: ConnectionChecker
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val connectionChecker = ConnectionCheckerImpl(this)
-//        val connectionAvailability = connectionChecker.networkAvailability
+        connectionChecker = ConnectionCheckerImpl(this)
+        val connectionAvailability = connectionChecker.networkAvailability
 
         cameraPermissionRequester =
             PermissionRequester(this, listOf(CameraPermissionProvider(this)))
@@ -67,7 +74,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     CoarseLocationPermissionProvider(this),
                 ),
             )
-        val noteScreenNoteViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
+        val notesViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
         val actionsRepository = FirebaseActionRepository()
         val actionsViewModel = getActionViewModel(actionsRepository)
         val profileViewModel = ProfileViewModel(this)
@@ -93,21 +100,24 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     locationClient = locationClient,
                     locationPermissionRequester = locationPermissionRequester,
                     cameraPermissionRequester = cameraPermissionRequester,
-                    noteScreenViewModel = noteScreenNoteViewModel,
+                    notesViewModel = notesViewModel,
                     actionsViewModel = actionsViewModel,
                     nfcWriteViewModel = getNfcWriteModel(),
                     profileViewModel = profileViewModel,
                     dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },
                     userAuth = userAuth,
-                    connectionAvailability = emptyFlow(),
+                    connectionAvailability = connectionAvailability,
+                    onGoSettingsClick = ::onGoToSettingsClick,
+                    onCloseAppClick = ::onCloseAppClick,
+                    reloadActivity = ::reloadActivity,
                 )
             }
         }
     }
 
     override val iconDialogIconPack: IconPack?
-        get() = (application as App).iconPack
+        get() = (application as IconApp).iconPack
 
     override fun onIconDialogIconsSelected(dialog: IconDialog, icons: List<Icon>) {
         runBlocking(Dispatchers.IO) {
@@ -131,5 +141,25 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
     private fun getIconD(id: Int): Drawable? {
         val iconDrawableLoader = IconDrawableLoader(this)
         return iconDialogIconPack?.getIconDrawable(id, iconDrawableLoader)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        connectionChecker.updateFlows()
+    }
+
+    private fun onGoToSettingsClick() {
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun onCloseAppClick() {
+        finish()
+    }
+
+    private fun reloadActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        finish()
+        startActivity(intent)
     }
 }

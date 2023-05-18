@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PreferenceUI(
     dataStore: DataStore<AppPreferences>,
+    reloadActivity: () -> Unit,
 ) {
     val currentPreferences: AppPreferences =
         dataStore.data.collectAsState(initial = AppPreferences()).value
@@ -74,7 +75,9 @@ fun PreferenceUI(
                     icon = R.drawable.only_wifi,
                     iconDesc = R.string.preference_wifi_image_desc,
                     text = R.string.preferences_only_wifi_desc,
+                    preferenceDescription = R.string.app_reload_warning,
                     checked = currentPreferences.onlyWifi,
+                    reload = reloadActivity,
                     onCheckedChange = {
                         coroutineScope.launch {
                             preferenceMod.updateOnlyWifi(it)
@@ -89,7 +92,6 @@ fun PreferenceUI(
 @Composable
 fun PreferenceUIWithoutConnection(
     dataStore: DataStore<AppPreferences>,
-    networkAvailability: Flow<NetworkAvailability>,
 ) {
     val currentPreferences: AppPreferences =
         dataStore.data.collectAsState(initial = AppPreferences()).value
@@ -152,5 +154,5 @@ fun PreferenceUIWithoutConnection(
 @Preview
 @Composable
 fun PreferenceUIPreview() {
-    PreferenceUI(LocalContext.current.dataStore)
+    PreferenceUI(LocalContext.current.dataStore, {})
 }

@@ -4,4 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ConnectionChecker {
     val networkAvailability: Flow<NetworkAvailability>
+    fun updateFlows()
 }

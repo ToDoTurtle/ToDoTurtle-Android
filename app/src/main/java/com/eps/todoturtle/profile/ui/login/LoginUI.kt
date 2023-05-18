@@ -52,7 +52,7 @@ fun LoginUI(
 @Composable
 fun LoginContent(
     userAuth: UserAuth,
-    connectionChecker: Flow<NetworkAvailability>,
+    connectionAvailability: Flow<NetworkAvailability>,
     onGoToSettingsClick: () -> Unit,
     onSignInClick: () -> Unit,
 ) {
@@ -62,7 +62,7 @@ fun LoginContent(
     var password by rememberSaveable { mutableStateOf("") }
     var shouldShowSignUp by rememberSaveable { mutableStateOf(false) }
     var shouldShowNetworkDialog by rememberSaveable { mutableStateOf(false) }
-    val networkAvailability by connectionChecker.collectAsStateWithLifecycle(NetworkAvailability.AVAILABLE)
+    val networkAvailability by connectionAvailability.collectAsStateWithLifecycle(NetworkAvailability.AVAILABLE)
 
     Spacer(modifier = Modifier.size(20.dp))
     CenteredPicture(
@@ -128,9 +128,11 @@ fun LoginContent(
     Spacer(modifier = Modifier.size(5.dp))
 
     NetworkWarningDialog(
-        availability = networkAvailability,
         showDialog = shouldShowNetworkDialog,
+        reason = R.string.action_requires_internet,
         onSettingsClick = onGoToSettingsClick,
+        onSecondaryButtonClick = { shouldShowNetworkDialog = false },
+        secondaryButtonText = R.string.retry,
         onDismiss = { shouldShowNetworkDialog = false },
     )
 }

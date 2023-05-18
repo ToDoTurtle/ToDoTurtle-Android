@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.eps.todoturtle.network.logic.ConnectionChecker
 import com.eps.todoturtle.network.logic.ConnectionCheckerImpl
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.login.LoginUI
@@ -18,15 +19,15 @@ import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var connectionCheckerImpl: ConnectionCheckerImpl
+    private lateinit var connectionChecker: ConnectionChecker
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val auth = Firebase.auth
         val userAuth = UserAuth(this@LoginActivity, auth)
 
-        this.connectionCheckerImpl  =  ConnectionCheckerImpl(this)
-        val connectionAvailability = connectionCheckerImpl.networkAvailability
+        this.connectionChecker  =  ConnectionCheckerImpl(this)
+        val connectionAvailability = connectionChecker.networkAvailability
 
         setContent {
             ToDoTurtleTheme(dataStore) {
@@ -54,7 +55,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        connectionCheckerImpl.updateFlows()
+        connectionChecker.updateFlows()
     }
-
 }
