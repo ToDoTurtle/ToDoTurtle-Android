@@ -4,6 +4,10 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -19,21 +23,22 @@ import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import kotlinx.coroutines.flow.emptyFlow
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var connectionChecker: ConnectionCheckerImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val connectionChecker = ConnectionCheckerImpl(this)
-//        val connectionAvailability = connectionChecker.networkAvailability
+        connectionChecker = ConnectionCheckerImpl(this)
+        val connectionAvailability = connectionChecker.networkAvailability
 
         setContent {
             ToDoTurtleTheme(dataStore) {
-                val scope = rememberCoroutineScope()
-                val snackbarHostState = remember { SnackbarHostState() }
                 Scaffold(
-                    snackbarHost = {
-                        SnackbarHost(hostState = snackbarHostState)
-                    },
+                    floatingActionButton = {
+                        FloatingActionButton(onClick = { onGoHomeClick() }) {
+                            Icon(Icons.Filled.Home, contentDescription = "Go Home")
+                        }
+                    }
                 ) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
@@ -47,5 +52,14 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        connectionChecker.updateFlows()
+    }
+
+    private fun onGoHomeClick() {
+        finish()
     }
 }
