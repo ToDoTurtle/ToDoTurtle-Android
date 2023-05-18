@@ -34,7 +34,7 @@ import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
 import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
-import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
@@ -50,7 +50,7 @@ fun App(
     locationClient: LocationClient,
     locationPermissionRequester: PermissionRequester,
     cameraPermissionRequester: PermissionRequester,
-    notesViewModel: NotesViewModelInt,
+    notesViewModel: NotesViewModel,
     profileViewModel: ProfileViewModel,
     actionsViewModel: ActionViewModel,
     devicesViewModel: DevicesViewModel,

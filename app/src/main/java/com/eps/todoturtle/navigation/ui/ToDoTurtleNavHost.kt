@@ -29,7 +29,7 @@ import com.eps.todoturtle.navigation.logic.Destinations
 import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.WriteDevice
-import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.note.ui.NoteScreen
 import com.eps.todoturtle.permissions.logic.PermissionRequester
@@ -48,7 +48,7 @@ fun ToDoTurtleNavHost(
     locationPermissionRequester: PermissionRequester,
     navController: NavHostController,
     cameraPermissionRequester: PermissionRequester,
-    noteScreenViewModel: NotesViewModelInt,
+    noteScreenViewModel: NotesViewModel,
     profileViewModel: ProfileViewModel,
     devicesViewModel: DevicesViewModel,
     nfcWriteViewModel: NfcWriteViewModel,
@@ -117,7 +117,7 @@ fun NavGraphBuilder.profile(
 }
 
 fun NavGraphBuilder.notes(
-    noteScreenViewModel: NotesViewModelInt,
+    noteScreenViewModel: NotesViewModel,
     locationClient: LocationClient,
     locationPermissionRequester: PermissionRequester,
     hasLocationPermission: () -> Boolean,

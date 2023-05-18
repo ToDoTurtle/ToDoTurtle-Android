@@ -2,7 +2,6 @@ package com.eps.todoturtle.devices.logic
 
 import android.graphics.drawable.Drawable
 import androidx.activity.ComponentActivity
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.runBlocking
-import java.util.UUID
 
 class DevicesViewModel private constructor(
     repository: DeviceRepository,

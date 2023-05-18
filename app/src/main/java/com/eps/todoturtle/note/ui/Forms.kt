@@ -45,7 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.eps.todoturtle.R
-import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.note.logic.location.toGeoPoint
 import com.eps.todoturtle.shared.logic.forms.Timestamp
@@ -84,7 +84,7 @@ fun AddNoteFormDialog(
     onDismissRequest: () -> Unit = {},
     onDoneClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
-    viewModel: NotesViewModelInt,
+    viewModel: NotesViewModel,
     @StringRes titleTextId: Int = R.string.add_note_form_title,
 ) {
     Dialog(
@@ -157,7 +157,7 @@ fun AddNoteForm(
     requestPermisions: () -> Unit,
     onCloseClick: () -> Unit,
     onDoneClick: () -> Unit,
-    viewModel: NotesViewModelInt,
+    viewModel: NotesViewModel,
     @StringRes titleTextId: Int = R.string.add_note_form_title,
 ) {
     var choosingLocation by remember { mutableStateOf(false) }

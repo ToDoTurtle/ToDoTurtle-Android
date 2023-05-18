@@ -17,7 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eps.todoturtle.R
 import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.network.ui.NetworkWarningDialog
-import com.eps.todoturtle.note.logic.NotesViewModelInt
+import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
@@ -31,7 +31,7 @@ fun NoteScreen(
     connectionAvailability: Flow<NetworkAvailability>,
     onGoToSettingsClick: () -> Unit,
     onCloseAppClick: () -> Unit,
-    viewModel: NotesViewModelInt,
+    viewModel: NotesViewModel,
 ) {
     var inHistory by rememberSaveable { mutableStateOf(false) }
     var isFormVisible by rememberSaveable { mutableStateOf(false) }
@@ -86,7 +86,7 @@ fun NoteScreen(
 
 @Composable
 fun NoteScreenHeadline(
-    viewModel: NotesViewModelInt,
+    viewModel: NotesViewModel,
     inHistory: Boolean,
     onHistoryToggle: () -> Unit,
 ) {

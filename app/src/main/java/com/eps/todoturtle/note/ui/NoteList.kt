@@ -13,15 +13,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.eps.todoturtle.note.logic.BaseNote
 import com.eps.todoturtle.note.logic.Note
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteList(
-    notes: List<BaseNote>,
+    notes: List<Note>,
     inHistory: Boolean,
-    onCheckClick: (BaseNote) -> Unit,
+    onCheckClick: (Note) -> Unit,
 ) {
     NoteListContainer(inHistory = inHistory) {
         LazyColumn {

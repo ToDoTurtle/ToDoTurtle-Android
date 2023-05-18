@@ -36,8 +36,6 @@ import androidx.compose.ui.unit.sp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.map.logic.MapLauncher
 import com.eps.todoturtle.map.ui.MapView
-import com.eps.todoturtle.note.logic.BaseNote
-import com.eps.todoturtle.note.logic.MapNote
 import com.eps.todoturtle.note.logic.Note
 import com.eps.todoturtle.ui.theme.activeOnSecondaryContainer
 import com.eps.todoturtle.ui.theme.inactiveOnSecondaryContainer
@@ -46,7 +44,7 @@ import com.eps.todoturtle.ui.theme.onNoteContainer
 
 @Composable
 fun Note(
-    note: BaseNote,
+    note: Note,
     inHistory: Boolean,
     onCheckClick: () -> Unit = {},
 ) {
@@ -62,9 +60,15 @@ fun Note(
         )
         if (isExpanded) {
             val modifier = Modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp)
-            when (note) {
-                is Note -> NoteBody(modifier, note.description)
-                is MapNote -> MapNoteBody(modifier, note.description, note.latitude, note.longitude)
+            note.apply {
+                location?.let {
+                    MapNoteBody(
+                        modifier = modifier,
+                        description = note.description,
+                        latitude = it.latitude,
+                        longitude = it.longitude
+                    )
+                } ?: NoteBody(modifier = modifier, description = note.description)
             }
         }
     }

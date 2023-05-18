@@ -5,7 +5,7 @@ import com.eps.todoturtle.shared.logic.extensions.isTooLong
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 
 sealed class NoteBuildResult {
-    data class Success(val note: Note) : NoteBuildResult()
+    data class Success(val note: NoteIMpl) : NoteBuildResult()
     data class Failure(val errors: Collection<NoteBuildError>) : NoteBuildResult()
 }
 
@@ -28,7 +28,7 @@ class NoteBuilder {
         }
         if (errors.isNotEmpty()) return NoteBuildResult.Failure(errors)
         val note =
-            Note(
+            NoteIMpl(
                 (0..1000000).random(),
                 title.value,
                 description.value,
