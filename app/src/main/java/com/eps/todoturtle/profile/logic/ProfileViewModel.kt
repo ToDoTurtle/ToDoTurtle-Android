@@ -10,7 +10,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class ProfileViewModel(context: Context) : ViewModel() {
+class ProfileViewModel(
+    context: Context,
+    userId: String,
+) : ViewModel() {
+    private val storage = DetailsPictureStorage(userId)
     private val _details = MutableStateFlow(
         ProfileDetails(
             username = context.getString(R.string.profile_default_username),

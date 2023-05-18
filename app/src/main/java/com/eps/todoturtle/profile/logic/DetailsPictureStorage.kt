@@ -9,10 +9,10 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 
 class DetailsPictureStorage(
-    userAuth: UserAuth,
+    userId: String,
 ) {
     private val storage = Firebase.storage
-    private val customPictureRef = storage.reference.child("users/${userAuth.getUid()}/profilePicture.jpg")
+    private val customPictureRef = storage.reference.child("users/${userId}/profilePicture.jpg")
     private val defaultPictureRef = storage.reference.child("default_pfp.jpg")
 
     suspend fun getProfileImage(): Bitmap {

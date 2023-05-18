@@ -13,7 +13,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -23,22 +22,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.profile.logic.DetailsPictureStorage
-import com.eps.todoturtle.profile.logic.UserAuth
-import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
-import kotlinx.coroutines.launch
 
 @Composable
 fun ProfilePicture(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
-    userAuth: UserAuth,
     profilePicture: Bitmap,
     onChange: (Bitmap) -> Unit,
 ) {
     var shouldShowDialog by rememberSaveable { mutableStateOf(false) }
-    val storage = DetailsPictureStorage(userAuth)
-    val fetchedProfilePicture by produceState(profilePicture) { value = storage.getProfileImage() }
     val scope = rememberCoroutineScope()
 
     Box(
@@ -54,7 +46,7 @@ fun ProfilePicture(
             ),
         ) {
             Image(
-                bitmap = fetchedProfilePicture.asImageBitmap(),
+                bitmap = profilePicture.asImageBitmap(),
                 contentDescription = stringResource(id = R.string.profile_profile_picture_desc),
                 modifier = Modifier
                     .clickable { shouldShowDialog = true }
@@ -68,7 +60,6 @@ fun ProfilePicture(
                     profilePicture = profilePicture,
                 ) {
                     onChange(it)
-                    scope.launch { storage.setProfileImage(it) }
                     shouldShowDialog = false
                 }
             }

@@ -64,6 +64,9 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         connectionChecker = ConnectionCheckerImpl(this)
         val connectionAvailability = connectionChecker.networkAvailability
 
+        auth = Firebase.auth
+        val userAuth = UserAuth(this@MainActivity, auth)
+
         cameraPermissionRequester =
             PermissionRequester(this, listOf(CameraPermissionProvider(this)))
         locationPermissionRequester =
@@ -77,15 +80,12 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         val notesViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
         val actionsRepository = FirebaseActionRepository()
         val actionsViewModel = getActionViewModel(actionsRepository)
-        val profileViewModel = ProfileViewModel(this)
+        val profileViewModel = ProfileViewModel(this, userAuth.getUid())
         val devicesViewModel = getDevicesViewModel(FirebaseDeviceRepository(), actionsRepository)
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())
         theme.applyStyle(R.style.AppTheme, true)
-
-        auth = Firebase.auth
-        val userAuth = UserAuth(this@MainActivity, auth)
 
         locationClient = DefaultLocationClient(
             applicationContext,
