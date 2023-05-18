@@ -38,6 +38,7 @@ import com.maltaisn.icondialog.pack.IconPack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivity {
@@ -53,8 +54,8 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val connectionChecker = ConnectionCheckerImpl(this)
-        val connectionAvailability = connectionChecker.networkAvailability
+//        val connectionChecker = ConnectionCheckerImpl(this)
+//        val connectionAvailability = connectionChecker.networkAvailability
 
         cameraPermissionRequester =
             PermissionRequester(this, listOf(CameraPermissionProvider(this)))
@@ -99,7 +100,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },
                     userAuth = userAuth,
-                    connectionAvailability = connectionAvailability,
+                    connectionAvailability = emptyFlow(),
                 )
             }
         }
