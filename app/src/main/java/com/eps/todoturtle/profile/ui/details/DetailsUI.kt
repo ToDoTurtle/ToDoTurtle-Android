@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
@@ -35,7 +37,8 @@ fun DetailsContent(
     profileViewModel: ProfileViewModel,
     onSignOutClick: () -> Unit,
 ) {
-    val details = profileViewModel.details.collectAsState().value
+//    val details = profileViewModel.details.collectAsState().value
+    val details by profileViewModel.profileDetailsFlow.collectAsStateWithLifecycle(initialValue = profileViewModel.currentDetails)
 
     ProfilePicture(
         hasPermissions = hasPermissions,
