@@ -18,14 +18,15 @@ import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var connectionCheckerImpl: ConnectionCheckerImpl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val auth = Firebase.auth
         val userAuth = UserAuth(this@LoginActivity, auth)
 
-        val connectionChecker = ConnectionCheckerImpl(this)
-        val connectionAvailability = connectionChecker.networkAvailability
+        this.connectionCheckerImpl  =  ConnectionCheckerImpl(this)
+        val connectionAvailability = connectionCheckerImpl.networkAvailability
 
         setContent {
             ToDoTurtleTheme(dataStore) {
@@ -50,4 +51,10 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
     }
+
+    override fun onResume() {
+        super.onResume()
+        connectionCheckerImpl.updateFlows()
+    }
+
 }

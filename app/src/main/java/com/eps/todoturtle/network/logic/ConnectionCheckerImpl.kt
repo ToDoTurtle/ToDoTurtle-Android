@@ -2,14 +2,11 @@ package com.eps.todoturtle.network.logic
 
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
-import com.eps.todoturtle.SettingsActivity
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +15,9 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.runBlocking
@@ -49,7 +48,9 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
         context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    private val networkPreferenceChannel: Channel<NetworkPreference> = Channel(UNLIMITED)
+    private val networkPreferenceChannel: Channel<NetworkPreference> = Channel(UNLIMITED, onUndeliveredElement = {
+        Log.e("ConnectionCheckerImpl", "onUndeliveredElement: $it")
+    })
     private val wifiStatusChannel: Channel<WifiStatus> = Channel(UNLIMITED)
     private val cellularStatusChannel: Channel<CellularStatus> = Channel(UNLIMITED)
 
@@ -58,11 +59,14 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
     private val wifiStatus: Flow<WifiStatus> = wifiStatusChannel.receiveAsFlow()
     private val cellularStatus: Flow<CellularStatus> = cellularStatusChannel.receiveAsFlow()
 
+    private var currentSetting: NetworkPreference = NetworkPreference.DATA_AND_WIFI
+    private var currentWifiStatus: WifiStatus = WifiStatus.ERROR_NO_INTERNET
+    private var currentCellularStatus: CellularStatus = CellularStatus.ERROR_NO_INTERNET
+
     override val networkAvailability: Flow<NetworkAvailability>
 
     init {
         runBlocking(Dispatchers.IO) {
-            networkPreferenceChannel.send(NetworkPreference.ONLY_WIFI)
             wifiStatusChannel.send(WifiStatus.ERROR_NO_INTERNET)
             cellularStatusChannel.send(CellularStatus.ERROR_NO_INTERNET)
         }
@@ -98,9 +102,14 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
     private fun registerForNetworkPreferenceUpdates() {
         context.dataStore.data.onEach { preferences ->
             if (preferences.onlyWifi) {
+                currentSetting = NetworkPreference.ONLY_WIFI
                 networkPreferenceChannel.send(NetworkPreference.ONLY_WIFI)
-            } else
+                Log.e("ConnectionCheckerImpl", "ONLYWIFI")
+            } else {
+                currentSetting = NetworkPreference.DATA_AND_WIFI
                 networkPreferenceChannel.send(NetworkPreference.DATA_AND_WIFI)
+                Log.e("ConnectionCheckerImpl", "WIFI_AND_DATA")
+            }
         }.launchIn(scope)
     }
 
@@ -115,13 +124,17 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     runBlocking(Dispatchers.IO) {
+                        currentWifiStatus = WifiStatus.INTERNET_CONNECTION
                         wifiStatusChannel.send(WifiStatus.INTERNET_CONNECTION)
+                        Log.e("ConnectionCheckerImpl", "WIFI AVAILABLE")
                     }
                 }
 
                 override fun onLost(network: Network) {
                     runBlocking(Dispatchers.IO) {
+                        currentWifiStatus = WifiStatus.ERROR_NO_INTERNET
                         wifiStatusChannel.send(WifiStatus.ERROR_NO_INTERNET)
+                        Log.e("ConnectionCheckerImpl", "WIFI LOST")
                     }
                 }
 
@@ -134,11 +147,15 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
                         && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                     ) {
                         runBlocking(Dispatchers.IO) {
-                            cellularStatusChannel.send(CellularStatus.INTERNET_CONNECTION)
+                            currentWifiStatus = WifiStatus.INTERNET_CONNECTION
+                            wifiStatusChannel.send(WifiStatus.INTERNET_CONNECTION)
+                            Log.e("ConnectionCheckerImpl", "WIFI AVAILABLE")
                         }
                     } else {
                         runBlocking(Dispatchers.IO) {
-                            cellularStatusChannel.send(CellularStatus.ERROR_NO_INTERNET)
+                            currentWifiStatus = WifiStatus.ERROR_NO_INTERNET
+                            wifiStatusChannel.send(WifiStatus.ERROR_NO_INTERNET)
+                            Log.e("ConnectionCheckerImpl", "WIFI LOST")
                         }
                     }
                 }
@@ -157,13 +174,17 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     runBlocking(Dispatchers.IO) {
+                        currentCellularStatus = CellularStatus.INTERNET_CONNECTION
                         cellularStatusChannel.send(CellularStatus.INTERNET_CONNECTION)
+                        Log.e("ConnectionCheckerImpl", "CELLULAR AVAILABLE")
                     }
                 }
 
                 override fun onLost(network: Network) {
                     runBlocking(Dispatchers.IO) {
+                        currentCellularStatus = CellularStatus.ERROR_NO_INTERNET
                         cellularStatusChannel.send(CellularStatus.ERROR_NO_INTERNET)
+                        Log.e("ConnectionCheckerImpl", "CELLULAR LOST")
                     }
                 }
 
@@ -173,17 +194,30 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
                 ) {
                     super.onCapabilitiesChanged(network, networkCapabilities)
                     if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                        && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                        && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                    ) {
                         runBlocking(Dispatchers.IO) {
+                            currentCellularStatus = CellularStatus.INTERNET_CONNECTION
                             cellularStatusChannel.send(CellularStatus.INTERNET_CONNECTION)
+                            Log.e("ConnectionCheckerImpl", "CELLULAR AVAILABLE")
                         }
                     } else {
                         runBlocking(Dispatchers.IO) {
+                            currentCellularStatus = CellularStatus.ERROR_NO_INTERNET
                             cellularStatusChannel.send(CellularStatus.ERROR_NO_INTERNET)
+                            Log.e("ConnectionCheckerImpl", "CELLULAR LOST")
                         }
                     }
                 }
             },
         )
+    }
+
+    fun updateFlows() {
+        runBlocking(Dispatchers.IO) {
+            cellularStatusChannel.send(currentCellularStatus)
+            networkPreferenceChannel.send(currentSetting)
+            wifiStatusChannel.send(currentWifiStatus)
+        }
     }
 }

@@ -16,14 +16,15 @@ import com.eps.todoturtle.network.logic.ConnectionCheckerImpl
 import com.eps.todoturtle.preferences.ui.PreferenceUIWithoutConnection
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
+import kotlinx.coroutines.flow.emptyFlow
 
 class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val connectionChecker = ConnectionCheckerImpl(this)
-        val connectionAvailability = connectionChecker.networkAvailability
+//        val connectionChecker = ConnectionCheckerImpl(this)
+//        val connectionAvailability = connectionChecker.networkAvailability
 
         setContent {
             ToDoTurtleTheme(dataStore) {
@@ -40,7 +41,7 @@ class SettingsActivity : AppCompatActivity() {
                     ) {
                         PreferenceUIWithoutConnection(
                             dataStore = dataStore,
-                            networkAvailability = connectionAvailability
+                            networkAvailability = emptyFlow()
                         )
                     }
                 }
