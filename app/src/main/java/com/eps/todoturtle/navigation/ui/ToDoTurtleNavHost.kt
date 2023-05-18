@@ -8,7 +8,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -168,15 +167,7 @@ fun NavGraphBuilder.deviceConfiguration(
         devicesViewModel.deviceBuilder.identifier = deviceId
         configurationType?.let {
             DeviceConfigurationScreen(devicesViewModel, it) {
-                navController.navigate(Destinations.DEVICES_WRITE_SUCCESSFUL.route) {
-                    navController.graph.startDestinationRoute?.let { _ ->
-                        popUpTo(Destinations.DEVICES_NORMAL.route) {
-                            saveState = true
-                        }
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
+                navController.navigateSingleTopTo(Destinations.DEVICES_WRITE_SUCCESSFUL.route)
             }
         }
     }
@@ -195,27 +186,11 @@ fun DeviceScreen(
         newDeviceAdded = deviceAdded,
         actionViewModel = actionsViewModel,
         onEditDevice = {
-            navController.navigate(DeviceConfigurationParams.EDIT.getUri(it.identifier)) {
-                navController.graph.startDestinationRoute?.let { _ ->
-                    popUpTo(Destinations.DEVICES_NORMAL.route) {
-                        saveState = true
-                    }
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
+            navController.navigateSingleTopTo(DeviceConfigurationParams.EDIT.getUri(it.identifier))
         },
         onNewDeviceAddedOkay = { deviceAdded = false },
         onAddDevice = {
-            navController.navigate(Destinations.WRITE_DEVICE.route) {
-                navController.graph.startDestinationRoute?.let {
-                    popUpTo(Destinations.DEVICES_NORMAL.route) {
-                        saveState = true
-                    }
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
+            navController.navigateSingleTopTo(Destinations.WRITE_DEVICE.route)
         },
     )
 }
@@ -242,7 +217,8 @@ fun NavGraphBuilder.writeDevice(
             },
             onWriteSuccessful = { id ->
                 nfcWriteViewModel.finishWriteNfc()
-                navController.navigateSingleTopTo(DeviceConfigurationParams.NEW.getUri(id))
+                val uri = DeviceConfigurationParams.NEW.getUri(id)
+                navController.navigateSingleTopTo(uri)
             },
         )
     }
@@ -263,10 +239,8 @@ fun NavGraphBuilder.invite() {
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
         popUpTo(
-            this@navigateSingleTopTo.graph.findStartDestination().id,
+            route,
         ) {
-            saveState = true
         }
         launchSingleTop = true
-        restoreState = true
     }

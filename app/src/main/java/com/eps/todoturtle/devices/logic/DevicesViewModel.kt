@@ -32,7 +32,7 @@ class DevicesViewModel private constructor(
     private val repository = DeviceStateRepository(repository)
 
     private val scope = SupervisorJob() + Dispatchers.IO
-    var deviceBuilder = DeviceBuilder(UUID.randomUUID().toString())
+    var deviceBuilder = DeviceBuilder()
 
     val deviceErrors: MutableStateFlow<Collection<DeviceBuildError>> = MutableStateFlow(emptyList())
     private val deviceCreator: Channel<NFCDevice> = Channel()
@@ -71,7 +71,7 @@ class DevicesViewModel private constructor(
                     repository.add(result.device)
                     deviceCreator.send(result.device)
                 }
-                deviceBuilder = DeviceBuilder(UUID.randomUUID().toString())
+                deviceBuilder.clear()
             }
 
             is DeviceBuildResult.Failure -> {
@@ -81,12 +81,10 @@ class DevicesViewModel private constructor(
     }
 
     fun setCurrentEditDevice(nfcDevice: NFCDevice) {
-        deviceBuilder = DeviceBuilder(
-            identifier = nfcDevice.identifier,
-            name = mutableStateOf(nfcDevice.name),
-            description = mutableStateOf(nfcDevice.description),
-            iconResId = nfcDevice.iconResId,
-        )
+        deviceBuilder.identifier = nfcDevice.identifier
+        deviceBuilder.name.value = nfcDevice.name
+        deviceBuilder.description.value = nfcDevice.description
+        deviceBuilder.iconResId = nfcDevice.iconResId
     }
 
     fun showIconSelection() = iconSelection()
@@ -139,7 +137,7 @@ class DevicesViewModel private constructor(
                     repository.add(result.device)
                     deviceCreator.send(result.device)
                 }
-                deviceBuilder = DeviceBuilder(UUID.randomUUID().toString())
+                deviceBuilder.clear()
             }
 
             is DeviceBuildResult.Failure -> {

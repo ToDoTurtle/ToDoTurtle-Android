@@ -9,19 +9,16 @@ sealed class DeviceBuildResult {
 }
 
 class DeviceBuilder(
-    var identifier: String,
+    var identifier: String? = null,
     var name: MutableState<String> = mutableStateOf(""),
     var description: MutableState<String> = mutableStateOf(""),
     var iconResId: Int? = null,
 ) {
 
-    private var alreadyBuild: Boolean = false
-
     fun build(): DeviceBuildResult {
-        if (alreadyBuild) {
-            throw Error("Programming Error: Building a Device 2 times with the same builder")
-        }
         val errors: MutableList<DeviceBuildError> = mutableListOf()
+        if (identifier == null)
+            throw Error("Identifier is null")
         if (name.value.isBlank() || name.value.isEmpty()) {
             errors.add(DeviceBuildError.NAME_EMPTY)
         }
@@ -33,8 +30,14 @@ class DeviceBuilder(
         }
         if (errors.isNotEmpty()) return DeviceBuildResult.Failure(errors)
         val device =
-            NFCDevice(name.value, description.value, identifier, iconResId!!)
-        alreadyBuild = true
+            NFCDevice(name.value, description.value, identifier!!, iconResId!!)
         return DeviceBuildResult.Success(device)
+    }
+
+    fun clear() {
+        identifier = null
+        name.value = ""
+        description.value = ""
+        iconResId = null
     }
 }
