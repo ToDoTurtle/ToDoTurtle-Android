@@ -213,7 +213,7 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
         )
     }
 
-    fun updateFlows() {
+    override fun updateFlows() {
         runBlocking(Dispatchers.IO) {
             cellularStatusChannel.send(currentCellularStatus)
             networkPreferenceChannel.send(currentSetting)

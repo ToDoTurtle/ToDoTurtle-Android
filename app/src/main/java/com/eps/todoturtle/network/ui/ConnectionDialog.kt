@@ -1,5 +1,6 @@
 package com.eps.todoturtle.network.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,33 +11,32 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.R
 import com.eps.todoturtle.network.logic.NetworkAvailability
 
 @Composable
 fun NetworkWarningDialog(
-    availability: NetworkAvailability,
     showDialog: Boolean,
+    @StringRes reason: Int,
+    @StringRes secondaryButtonText: Int,
     onSettingsClick: () -> Unit,
+    onSecondaryButtonClick: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     if (!showDialog) return
     AlertDialog(
         onDismissRequest = { onDismiss() },
-        title = {
-            Text(
-                text = "No Internet Connection",
-            )
-        },
+        title = { Text(text = stringResource(R.string.no_internet_connection)) },
         text = {
             Column {
                 Text(
-                    text = "This action requires an internet connection.",
+                    text = stringResource(reason),
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Please connect to Wi-Fi and try again or go to network settings " +
-                        "and enable cellular data usage.",
+                    text = stringResource(R.string.no_internet_warning_body),
                 )
             }
         },
@@ -44,16 +44,16 @@ fun NetworkWarningDialog(
             TextButton(
                 onClick = { onSettingsClick() },
             ) {
-                Text(text = "Go to Settings")
+                Text(text = stringResource(R.string.go_to_settings))
             }
         },
         dismissButton = {
             Row {
                 Spacer(modifier = Modifier.width(8.dp))
                 TextButton(
-                    onClick = { onDismiss() },
+                    onClick = { onSecondaryButtonClick() },
                 ) {
-                    Text(text = "Retry")
+                    Text(text = stringResource(secondaryButtonText))
                 }
             }
         },

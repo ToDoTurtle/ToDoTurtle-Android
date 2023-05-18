@@ -15,18 +15,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.eps.todoturtle.R
 import com.eps.todoturtle.shared.logic.extensions.RobotoThin
+import com.eps.todoturtle.ui.theme.inactiveOnSecondaryContainer
 
 @Composable
 internal fun PreferenceSwitch(
@@ -34,6 +35,8 @@ internal fun PreferenceSwitch(
     @StringRes iconDesc: Int,
     @StringRes text: Int,
     checked: Boolean,
+    @StringRes preferenceDescription: Int? = null,
+    reload: (() -> Unit)? = null,
     onCheckedChange: (Boolean) -> Unit,
 ) {
     Surface(
@@ -58,22 +61,48 @@ internal fun PreferenceSwitch(
                         contentDescription = stringResource(id = iconDesc),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(text),
-                        modifier = Modifier.padding(16.dp),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontFamily = FontFamily.RobotoThin,
-                        textAlign = TextAlign.Start,
-                    )
+                    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        Text(
+                            text = stringResource(text),
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontFamily = FontFamily.RobotoThin,
+                            textAlign = TextAlign.Start,
+                        )
+                        preferenceDescription?.let {
+                            Text(
+                                text = stringResource(R.string.app_reload_warning),
+                                modifier = Modifier.padding(top = 4.dp),
+                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = FontFamily.RobotoThin,
+                                textAlign = TextAlign.Start,
+                            )
+                        }
+                    }
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Switch(
                     checked = checked,
-                    onCheckedChange = {
-                        onCheckedChange(it)
+                    onCheckedChange = {isChecked ->
+                        onCheckedChange(isChecked)
+                        reload?.apply {
+                            if(isChecked) invoke()
+                        }
                     },
                 )
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun PreferenceSwitchPreview() {
+    PreferenceSwitch(
+        icon = android.R.drawable.ic_menu_preferences,
+        iconDesc = R.string.preferences_only_wifi_desc,
+        text = R.string.preferences_only_wifi_desc,
+        preferenceDescription = R.string.app_reload_warning,
+        checked = true,
+        onCheckedChange = {},
+    )
 }

@@ -59,6 +59,9 @@ fun ToDoTurtleNavHost(
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
     connectionAvailability: Flow<NetworkAvailability>,
+    onGoSettingsClick: () -> Unit,
+    onCloseAppClick: () -> Unit,
+    reloadActivity: () -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -76,6 +79,9 @@ fun ToDoTurtleNavHost(
             locationClient,
             locationPermissionRequester,
             hasLocationPermission,
+            onGoSettingsClick,
+            connectionAvailability,
+            onCloseAppClick
         )
         devices(
             navController,
@@ -84,7 +90,7 @@ fun ToDoTurtleNavHost(
         )
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
-        settings(dataStore)
+        settings(dataStore, reloadActivity)
         invite()
     }
 }
@@ -116,6 +122,9 @@ fun NavGraphBuilder.notes(
     locationClient: LocationClient,
     locationPermissionRequester: PermissionRequester,
     hasLocationPermission: () -> Boolean,
+    onGoSettingsClick: () -> Unit,
+    connectionAvailability: Flow<NetworkAvailability>,
+    onCloseAppClick: () -> Unit
 ) {
     composable(Destinations.NOTES.route) {
         NoteScreen(
@@ -123,6 +132,9 @@ fun NavGraphBuilder.notes(
             locationClient = locationClient,
             locationPermissionRequester = locationPermissionRequester,
             hasLocationPermission = hasLocationPermission,
+            connectionAvailability = connectionAvailability,
+            onGoToSettingsClick = onGoSettingsClick,
+            onCloseAppClick = onCloseAppClick
         )
     }
 }
@@ -248,9 +260,12 @@ fun NavGraphBuilder.writeDevice(
     }
 }
 
-private fun NavGraphBuilder.settings(dataStore: DataStore<AppPreferences>) {
+private fun NavGraphBuilder.settings(
+    dataStore: DataStore<AppPreferences>,
+    reloadActivity: () -> Unit
+) {
     composable(Destinations.SETTINGS.route) {
-        PreferenceUI(dataStore = dataStore)
+        PreferenceUI(dataStore = dataStore, reloadActivity = reloadActivity)
     }
 }
 

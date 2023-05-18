@@ -10,7 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.eps.todoturtle.App
+import com.eps.todoturtle.IconApp
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.maltaisn.icondialog.IconDialog
@@ -71,7 +71,7 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback {
     }
 
     override val iconDialogIconPack: IconPack?
-        get() = (application as App).iconPack
+        get() = (application as IconApp).iconPack
 
     override fun onIconDialogIconsSelected(dialog: IconDialog, icons: List<Icon>) {
         this.callBackIcons.value = icons.last().id

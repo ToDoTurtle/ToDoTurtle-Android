@@ -50,7 +50,7 @@ fun App(
     locationClient: LocationClient,
     locationPermissionRequester: PermissionRequester,
     cameraPermissionRequester: PermissionRequester,
-    noteScreenViewModel: NotesViewModelInt,
+    notesViewModel: NotesViewModelInt,
     profileViewModel: ProfileViewModel,
     actionsViewModel: ActionViewModel,
     devicesViewModel: DevicesViewModel,
@@ -59,6 +59,9 @@ fun App(
     hasCameraPermission: () -> Boolean,
     userAuth: UserAuth,
     connectionAvailability: Flow<NetworkAvailability>,
+    onGoSettingsClick: () -> Unit,
+    onCloseAppClick: () -> Unit,
+    reloadActivity: () -> Unit,
 ) {
     val navController = rememberNavController()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -70,7 +73,7 @@ fun App(
     ) {
         DrawerContainer(
             drawerState = drawerState,
-            toDoCount = noteScreenViewModel.toDoNotes.size,
+            toDoCount = notesViewModel.toDoNotes.size,
             devicesCount = devicesViewModel.getDevices().size,
             onItemClick = { destination ->
                 scope.launch { drawerState.close() }
@@ -92,7 +95,7 @@ fun App(
                     locationClient = locationClient,
                     locationPermissionRequester = locationPermissionRequester,
                     cameraPermissionRequester = cameraPermissionRequester,
-                    noteScreenViewModel = noteScreenViewModel,
+                    noteScreenViewModel = notesViewModel,
                     devicesViewModel = devicesViewModel,
                     actionsViewModel = actionsViewModel,
                     nfcWriteViewModel = nfcWriteViewModel,
@@ -101,6 +104,9 @@ fun App(
                     hasCameraPermission = { hasCameraPermission() },
                     userAuth = userAuth,
                     connectionAvailability = connectionAvailability,
+                    onGoSettingsClick = onGoSettingsClick,
+                    onCloseAppClick = onCloseAppClick,
+                    reloadActivity = reloadActivity,
                 )
             }
         }

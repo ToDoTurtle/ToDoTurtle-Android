@@ -23,13 +23,8 @@ import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import kotlinx.coroutines.flow.emptyFlow
 
 class SettingsActivity : AppCompatActivity() {
-    private lateinit var connectionChecker: ConnectionCheckerImpl
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        connectionChecker = ConnectionCheckerImpl(this)
-        val connectionAvailability = connectionChecker.networkAvailability
 
         setContent {
             ToDoTurtleTheme(dataStore) {
@@ -46,17 +41,11 @@ class SettingsActivity : AppCompatActivity() {
                     ) {
                         PreferenceUIWithoutConnection(
                             dataStore = dataStore,
-                            networkAvailability = emptyFlow()
                         )
                     }
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        connectionChecker.updateFlows()
     }
 
     private fun onGoHomeClick() {
