@@ -1,6 +1,7 @@
 package com.eps.todoturtle.note.logic
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,6 +10,8 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.eps.todoturtle.note.infra.NoteStateRepository
 import com.eps.todoturtle.shared.logic.forms.Timestamp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.osmdroid.util.GeoPoint
 
@@ -20,8 +23,6 @@ class NotesViewModel(
     toDoNotesRepository: NoteRepository,
     doneNotesRepository: NoteRepository
 ) : ViewModel() {
-    private val _toDoNotes = getToDoNotes().toMutableStateList()
-    private val _doneNotes = getDoneNotes().toMutableStateList()
     private val noteBuilder = NoteBuilder()
     val noteErrors: MutableStateFlow<Collection<NoteBuildError>> = MutableStateFlow(emptyList())
     var noteTitle = mutableStateOf("")
@@ -45,12 +46,27 @@ class NotesViewModel(
         }
     }
 
-    fun addNote() {
+    fun deleteDone(note: Note) = doneRepository.remove(note)
+
+    fun deleteToDo(note: Note) = toDoRepository.remove(note)
+
+    fun getDoneNotes(): SnapshotStateList<Note> = doneRepository.getAll()
+
+    fun getToDoNotes(): SnapshotStateList<Note> = toDoRepository.getAll()
+
+    private fun addToDo(note: Note) = toDoRepository.add(note)
+    private fun addDone(note: Note) = doneRepository.add(note)
+
+    fun addToDo() {
         noteBuilder.title.value = noteTitle.value
         noteBuilder.description.value = noteDescription.value
+        noteBuilder.notificationTime = noteNotificationTime
+        noteBuilder.deadlineTime = noteDeadlineTime
+        noteBuilder.location = noteLocation
+
         when (val result = noteBuilder.build()) {
             is NoteBuildResult.Success -> {
-                _toDoNotes.add(0, result.note)
+                toDoRepository.add(result.note)
                 clearNoteFields()
             }
 
@@ -65,54 +81,22 @@ class NotesViewModel(
         noteDescription.value = ""
         noteNotificationTime = null
         noteDeadlineTime = null
+        noteErrors.value = emptyList()
     }
 
-    val toDoNotes: List<Note>
-        get() = _toDoNotes
-
-    val doneNotes: List<Note>
-        get() = _doneNotes
-
-    fun doNote(item: Note) {
-        _doneNotes.remove(item)
-        _toDoNotes.add(0, item)
+    fun doNote(note: Note) {
+        deleteToDo(note)
+        addDone(note)
     }
 
     fun undoNote(item: Note) {
-        _toDoNotes.remove(item)
-        _doneNotes.add(0, item)
+        deleteDone(item)
+        addToDo(item)
     }
 }
 
-private fun getToDoNotes(): List<Note> =
-    List(size = 15) { i ->
-        if (i % 2 == 0) {
-            Note(
-                i,
-                title = "Note $i",
-                description = "Description of note $i",
-            )
-        } else {
-            Note(
-                id = i,
-                title = "Note $i",
-                description = "Description of note $i",
-                location = GeoPoint(EPS_LAT, EPS_LON),
-            )
-        }
-    }
-
-private fun getDoneNotes(): List<Note> =
-    List(size = 15) { i ->
-        Note(
-            id = i + OFFSET,
-            title = "Note ${i + OFFSET}",
-            description = "Description of note ${i + OFFSET}",
-        )
-    }
-
 class ToDoNotesRepository : NoteRepository {
-    override suspend fun create(note: Note) {
+    override suspend fun add(note: Note) {
         return
     }
 
@@ -126,7 +110,7 @@ class ToDoNotesRepository : NoteRepository {
 }
 
 class DoneNotesRepository : NoteRepository {
-    override suspend fun create(note: Note) {
+    override suspend fun add(note: Note) {
         return
     }
 

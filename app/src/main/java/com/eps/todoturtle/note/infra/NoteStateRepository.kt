@@ -1,29 +1,33 @@
 package com.eps.todoturtle.note.infra
 
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import com.eps.todoturtle.note.logic.NoteIMpl
+import androidx.compose.runtime.toMutableStateList
+import com.eps.todoturtle.note.logic.Note
 import com.eps.todoturtle.note.logic.NoteRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
-class NoteStateRepository(private val noteRepository: NoteRepository) {
-    private var cached: SnapshotStateList<NoteIMpl>? = null
+class NoteStateRepository(private val repository: NoteRepository) {
 
-    fun getAll(): SnapshotStateList<NFCDevice> {
+    private var cached: SnapshotStateList<Note>? = null
+
+    fun getAll(): SnapshotStateList<Note> {
         cacheDataIfNotLoaded()
         return this.cached!!
     }
 
-    fun add(device: NFCDevice) {
+    fun add(device: Note) {
         assertCacheIsLoadedOperation {
-            this@DeviceStateRepository.repository.add(device)
-            this@DeviceStateRepository.cached!!.add(device)
+            this@NoteStateRepository.repository.add(device)
+            this@NoteStateRepository.cached!!.add(device)
         }
     }
 
-    fun remove(device: NFCDevice) {
+    fun remove(device: Note) {
         assertCacheIsLoadedOperation {
-            this@DeviceStateRepository.repository.remove(device)
-            val deviceToRemove = cached!!.find { it.identifier == device.identifier }
-            this@DeviceStateRepository.cached!!.remove(deviceToRemove)
+            this@NoteStateRepository.repository.remove(device)
+            val deviceToRemove = cached!!.find { it.id == device.id }
+            this@NoteStateRepository.cached!!.remove(deviceToRemove)
         }
     }
 

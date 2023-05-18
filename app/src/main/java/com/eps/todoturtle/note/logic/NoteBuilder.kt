@@ -3,9 +3,11 @@ package com.eps.todoturtle.note.logic
 import androidx.compose.runtime.mutableStateOf
 import com.eps.todoturtle.shared.logic.extensions.isTooLong
 import com.eps.todoturtle.shared.logic.forms.Timestamp
+import org.osmdroid.util.GeoPoint
+import java.util.UUID
 
 sealed class NoteBuildResult {
-    data class Success(val note: NoteIMpl) : NoteBuildResult()
+    data class Success(val note: Note) : NoteBuildResult()
     data class Failure(val errors: Collection<NoteBuildError>) : NoteBuildResult()
 }
 
@@ -14,6 +16,7 @@ class NoteBuilder {
     var description = mutableStateOf("")
     var notificationTime: Timestamp? = null
     var deadlineTime: Timestamp? = null
+    var location: GeoPoint? = null
 
     fun build(): NoteBuildResult {
         val errors: MutableList<NoteBuildError> = mutableListOf()
@@ -28,12 +31,13 @@ class NoteBuilder {
         }
         if (errors.isNotEmpty()) return NoteBuildResult.Failure(errors)
         val note =
-            NoteIMpl(
-                (0..1000000).random(),
+            Note(
+                UUID.randomUUID().toString(),
                 title.value,
                 description.value,
                 notificationTime,
                 deadlineTime,
+                location
             )
         return NoteBuildResult.Success(note)
     }
