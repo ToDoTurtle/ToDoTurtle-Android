@@ -27,7 +27,6 @@ import com.eps.todoturtle.R
 import com.eps.todoturtle.ui.theme.noteScreenButton
 import com.eps.todoturtle.ui.theme.onNoteScreenButton
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HistoryToggle(
     modifier: Modifier = Modifier,
@@ -47,7 +46,7 @@ fun HistoryToggle(
             targetState = inHistory,
         ) {
             Row {
-                if (inHistory) GoBackButton() else GoHistoryButton()
+                if (inHistory) GoBackIcon() else GoHistoryIcon()
             }
         }
     }
@@ -76,25 +75,25 @@ fun HistoryToggleContainer(
 }
 
 @Composable
-fun GoHistoryButton() {
+fun GoHistoryIcon() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.checklist),
         contentDescription = stringResource(R.string.note_history_icon_desc),
         tint = MaterialTheme.colorScheme.onNoteScreenButton,
         modifier = Modifier
-            .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
+            .padding(start = 10.dp, end = 10.dp, top = 6.dp, bottom = 6.dp)
             .scale(scale = 1.2f),
     )
 }
 
 @Composable
-fun GoBackButton() {
+fun GoBackIcon() {
     Icon(
         imageVector = ImageVector.Companion.vectorResource(id = R.drawable.uncheck_list),
         contentDescription = stringResource(R.string.note_notes_icon_desc),
         tint = MaterialTheme.colorScheme.onNoteScreenButton,
         modifier = Modifier
-            .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
+            .padding(start = 10.dp, end = 10.dp, top = 6.dp, bottom = 6.dp)
             .rotate(degrees = 180f)
             .scale(scale = 1.1f),
     )

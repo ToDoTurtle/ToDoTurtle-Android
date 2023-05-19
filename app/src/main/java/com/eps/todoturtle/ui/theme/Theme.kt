@@ -37,7 +37,7 @@ val ColorScheme.noteHeadlineContainer: Color
 
 val ColorScheme.onNoteHeadlineContainer: Color
     @Composable
-    get() = onTertiaryContainer
+    get() = onSurface
 
 val ColorScheme.onNoteScreenButton: Color
     @Composable

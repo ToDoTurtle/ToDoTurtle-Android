@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.eps.todoturtle.note.infra.FirebaseDoneNoteRepository
+import com.eps.todoturtle.note.infra.FirebaseToDoNoteRepository
 import com.eps.todoturtle.note.infra.NoteStateRepository
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 import kotlinx.coroutines.Dispatchers
@@ -35,8 +37,8 @@ class NotesViewModel(
             initializer {
                 val savedStateHandle = createSavedStateHandle()
                 NotesViewModel(
-                    toDoNotesRepository = ToDoNotesRepository(),
-                    doneNotesRepository = DoneNotesRepository()
+                    toDoNotesRepository = FirebaseToDoNoteRepository(),
+                    doneNotesRepository = FirebaseDoneNoteRepository()
                 )
             }
         }
@@ -88,33 +90,5 @@ class NotesViewModel(
     fun undoNote(item: Note) {
         deleteDone(item)
         addToDo(item)
-    }
-}
-
-class ToDoNotesRepository : NoteRepository {
-    override suspend fun add(note: Note) {
-        return
-    }
-
-    override suspend fun getAll(): Collection<Note> {
-        return emptyList()
-    }
-
-    override suspend fun remove(note: Note) {
-        return
-    }
-}
-
-class DoneNotesRepository : NoteRepository {
-    override suspend fun add(note: Note) {
-        return
-    }
-
-    override suspend fun getAll(): Collection<Note> {
-        return emptyList()
-    }
-
-    override suspend fun remove(note: Note) {
-        return
     }
 }
