@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_error_field">Error</string>
+    <string name="sign_up_mail">Correo electrónico</string>
+    <string name="blank_mail_password">El correo electrónico o contraseña no pueden estar vaciós</string>
+    <string name="sign_up_mail_error">El correo electrónico debe tener un formato válido</string>
+    <string name="sign_up_password">Contraseña</string>
+    <string name="sign_up_password_error">La contraseña debe tener al menos 8 carácteres</string>
+    <string name="sign_up_confirm">Registrar-se</string>
+    <string name="sign_up">¿No tienes cuenta? Registrate</string>
+    <string name="sign_up_error_registration">Ha habido un problema durante el registro. Asegurate de que tu correo no está en uso. Si no es el caso, ponte en contacto con un desarollador</string>
+    <string name="additional_sign_up_error">Ha habido un problema durante el registro, ponte en contacto con los desarrolladores</string>
+    <string name="addtional_sign_ups">O registrate con</string>
+    <string name="google_desc">Icono de Google, para realizar el registro con Github</string>
+    <string name="github_desc">Icono de Github, para realizar el registro con Github</string>
+</resources>

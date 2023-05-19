@@ -42,7 +42,6 @@
     <string name="drawer_devices">Dispositivios</string>
     <string name="drawer_profile">Perfil</string>
     <string name="drawer_settings">Configuración</string>
-    <string name="drawer_invite">Invita a un amigo</string>
     <string name="go_history_icon_desc">Ve a el historial</string>
     <string name="go_back_to_notes_icon_desc">Ve a las notas todavía por completar</string>
     <string name="welcome_message_part1">Bienvenido a</string>

@@ -10,7 +10,7 @@
     <string name="drawer_devices">Dispositius</string>
     <string name="drawer_profile">Perfil</string>
     <string name="drawer_settings">Configuració</string>
-    <string name="drawer_invite">Invita un amic</string>
+    <string name="drawer_about_us">Sobre nosaltres</string>
     <string name="go_history_icon_desc">Ves a l\'historial</string>
     <string name="go_back_to_notes_icon_desc">Ves a les notes encara per fer</string>
     <string name="welcome_message_part1">Benvingut a</string>
@@ -57,6 +57,17 @@
     <string name="invite_gif_desc">GIF d\'un home taladrant el terra</string>
     <string name="invite_construction">En construcció…</string>
     <string name="preference_theme_default">Per defecte</string>
+    <string name="title_activity_write_to_device">Escriure etiqueta</string>
+    <string name="add_note_button_description">Botó que mostra a l\'usuari el formulari per a crear una nova nota.</string>
+    <string name="note_form_title_field">Títol</string>
+    <string name="note_form_description_field">Descripció</string>
+    <string name="login_wrong_username_or_password">Contrasenya incorrecta, o bé el nom d\'usuari no existeix.</string>
+    <string name="clear_text_content_desc">Botó per a esborrar el text introduït per l\'usuari.</string>
+    <string name="add_notification_icon_desc">Botó/icona per afegir una notificació a la nota.</string>
+    <string name="add_deadline_icon_desc">Botó/icona per afegir un termini a la nota.</string>
+    <string name="more_icon_desc">Botó/icona per a veure més opcions.</string>
+    <string name="quick_note_form_close_button_desc">Botó de tancament per a cancel·lar la creació d\'una nota</string>
+    <string name="note_quick_form_done_button">Botó d\'acceptar per a completar la creació d\'una nota.</string>
     <string name="programming_error_nfc_tag">Error de programació</string>
     <string name="programing_error_explain_nfc_tag">Ha passat quelcom cosa inesperada, siusplau contacteu amb els desenvolupadors</string>
     <string name="send_error_nfc_tag">Enviar</string>
@@ -66,15 +77,16 @@
     <string name="nfc_not_supported">El teu dispositiu no suporta NFC!</string>
     <string name="nfc_not_supported_solution">No pots utilitzar aquesta funció en el teu dispositiu</string>
     <string name="close">Tancar</string>
-    <string name="nfc_tag_not_supported">La targeta NFC no està suportada!</string>
-    <string name="nfc_tag_not_supported_solution">Si us plau, utilitza una targeta compatible amb NFC. Si ja estàs utilitzant una targeta compatible amb NFC, intenta-ho de nou</string>
+    <string name="nfc_tag_not_supported">La etiqueta NFC no està suportada!</string>
+    <string name="nfc_tag_not_supported_solution">Si us plau, utilitza una etiqueta compatible amb NFC. Si ja estàs utilitzant una targeta compatible amb NFC, intenta-ho de nou</string>
     <string name="move_too_fast">T\'has mogut massa ràpid!</string>
-    <string name="move_too_fast_solution">T\'has mogut massa ràpidament per la targeta NFC, si us plau, intenta-ho de nou</string>
+    <string name="move_too_fast_solution">T\'has mogut massa ràpidament la etiqueta NFC, si us plau, intenta-ho de nou</string>
     <string name="retry">Reintentar</string>
     <string name="unknown_error_nfc">Alguna cosa ha anat malament</string>
     <string name="unknown_error_nfc_solution">L\'operació d\'escriptura no ha anat bé, si us plau, intenta-ho de nou</string>
-    <string name="approach_nfc_tag">Aproxima la targeta NFC al telèfon</string>
-    <string name="nfc_write_success">La targeta s\'ha escrit correctament amb NFC!</string>
+    <string name="approach_nfc_tag">Aproxima la etiqueta NFC al dispositiu</string>
+    <string name="nfc_write_success">La etiqueta s\'ha escrit correctament amb NFC!</string>
+    <string name="add_note_form_title">Afegir una nota</string>
     <string name="add_notification_confirmation">Afegir notificació</string>
     <string name="add_deadline_confirmation">Afegir data límit</string>
     <string name="choose_time">Tria l\'hora</string>
@@ -98,5 +110,18 @@
     <string name="note_form_title_too_long_error">Title too long.</string>
     <string name="note_form_title_empty_error">Title empty.</string>
     <string name="note_form_description_too_long_error">Description is too long.</string>
+    <string name="profile_error_field">Error</string>
+    <string name="sign_up_mail">Correu electrònic</string>
+    <string name="blank_mail_password">El correu electrònic o la contrasenya no poden estar buïts</string>
+    <string name="sign_up_mail_error">El correu electrònic ha de tenir un format vàlid</string>
+    <string name="sign_up_password">Contrasenya</string>
+    <string name="sign_up_password_error">La contrasenya ha de tenir un mínim de 8 caràcters</string>
+    <string name="sign_up_confirm">Registrar-se</string>
+    <string name="sign_up">No tens un compte? Registra\'t</string>
+    <string name="sign_up_error_registration">Hi ha hagut un problema durant el registre. Assegura\'t de que el teu correu no estigui registrat. Si no és el cas, posa\'t en contacte amb els desenvolupdaors</string>
+    <string name="additional_sign_up_error">Hi ha hagut un error durant el registre, posa\'t en contacte amb els desenvolupadors.</string>
+    <string name="addtional_sign_ups">O registra\'t amb</string>
+    <string name="google_desc">Icona de Google, per a registrar-te amb ells</string>
+    <string name="github_desc">Icona de Github</string>
 
 </resources>

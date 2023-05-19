@@ -74,6 +74,19 @@
 <!--    <string name="unknown_error_nfc_solution">La operación de escritura no ha ido bien, por favor, inténtalo de nuevo</string>-->
 <!--    <string name="approach_nfc_tag">Acerca la tarjeta NFC al teléfono</string>-->
 <!--    <string name="nfc_write_success">¡La tarjeta se ha escrito correctamente con NFC!</string>-->
+    <string name="nfc_not_supported">¡Tu dispositivo no soporta la tecnologia NFC!</string>
+    <string name="nfc_not_supported_solution">No puedes usar esta función en tu dispositivo</string>
+    <string name="close">Cerrar</string>
+    <string name="nfc_tag_not_supported">¡La etiqueta NFC no está soportada!</string>
+    <string name="nfc_tag_not_supported_solution">Por favor, usa una etiqueta compatible con NFC. Si ya estás usando una, intentalo de nuevo</string>
+    <string name="move_too_fast">¡Te has movido demasiado rápido!</string>
+    <string name="move_too_fast_solution">Has movido demasiado rápido la etiqueta NFC. Por favor, intentalo de nuevo.</string>
+    <string name="retry">Reintentar</string>
+    <string name="unknown_error_nfc">Alguna cosa ha ido mal</string>
+    <string name="unknown_error_nfc_solution">La operación de escritura no ha ido correctamente. Por favor, intentalo de nuevo.</string>
+    <string name="approach_nfc_tag">Acerca la etiqueta NFC al dispositivo</string>
+    <string name="nfc_write_success">¡La etiqueta se ha escrito correctamente!</string>
+    <string name="add_note_form_title">Añadir una nota</string>
     <string name="add_notification_confirmation">Añadir notificación</string>
     <string name="add_deadline_confirmation">Añadir fecha límite</string>
     <string name="choose_time">Escoger hora</string>
@@ -97,4 +110,16 @@
     <string name="note_form_title_too_long_error">Title too long.</string>
     <string name="note_form_title_empty_error">Title empty.</string>
     <string name="note_form_description_too_long_error">Description is too long.</string>
+    <string name="drawer_about_us">Sobre nosotros</string>
+    <string name="title_activity_write_to_device">Escribir etiqueta</string>
+    <string name="add_note_button_description">Botón que muestra al usuario el formulario para crear una nueva nota.</string>
+    <string name="note_form_title_field">Título</string>
+    <string name="note_form_description_field">Descripción</string>
+    <string name="login_wrong_username_or_password">Contraseña incorrecta, o nombre de usuario no existente.</string>
+    <string name="clear_text_content_desc">Botón para borrar el texto introducido por el usuario.</string>
+    <string name="add_notification_icon_desc">Botón/icono para añadir una notificación a la nota.</string>
+    <string name="add_deadline_icon_desc">Botón/icono para añadir una fecha de vencimiento a la nota.</string>
+    <string name="more_icon_desc">Botón/icono para ver más opciones.</string>
+    <string name="quick_note_form_close_button_desc">Botón de cerrar para cancelar la creación de una nota.</string>
+    <string name="note_quick_form_done_button">Botón de aceptar para completar la creación de una nota.</string>
 </resources>
