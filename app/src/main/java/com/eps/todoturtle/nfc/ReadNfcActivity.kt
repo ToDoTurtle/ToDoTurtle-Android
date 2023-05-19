@@ -87,7 +87,7 @@ class ReadNfcActivity : ComponentActivity() {
                                     val locationClient = DefaultLocationClient(
                                         applicationContext,
                                         LocationServices.getFusedLocationProviderClient(
-                                            applicationContext
+                                            applicationContext,
                                         ),
                                     )
                                     locationClient.getCurrentLocation().await()
@@ -107,7 +107,6 @@ class ReadNfcActivity : ComponentActivity() {
                             }
                             ShowAction(action!!)
                         }
-
                     }
                 }
             }
