@@ -44,7 +44,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eps.todoturtle.R
+import com.eps.todoturtle.note.logic.NoteBuildError
 import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.note.logic.location.toGeoPoint
@@ -107,6 +109,7 @@ fun AddNoteFormDialog(
 @Composable
 fun AddNoteFormBody(
     modifier: Modifier = Modifier,
+    errors: List<NoteBuildError>,
     @StringRes titleTextId: Int,
     titleValue: String,
     onTitleValueChange: (String) -> Unit,
@@ -129,11 +132,14 @@ fun AddNoteFormBody(
         NoteFormTitle(titleTextId = titleTextId)
         Spacer(Modifier.height(8.dp))
         NoteFormTitleTextField(
+            isTitleTooLong = errors.contains(NoteBuildError.TITLE_TOO_LONG),
+            isTitleEmpty = errors.contains(NoteBuildError.TITLE_EMPTY),
             value = titleValue,
             onValueChange = { onTitleValueChange(it) },
             focusRequester = titleFocusRequester,
         )
         NoteFormDescriptionTextField(
+            isDescriptionTooLong = errors.contains(NoteBuildError.DESCRIPTION_TOO_LONG),
             value = descriptionValue,
             onValueChange = { onDescriptionValueChange(it) },
             focusRequester = descriptionFocusRequester,
@@ -164,9 +170,11 @@ fun AddNoteForm(
     var choosingNotificationTime by remember { mutableStateOf(false) }
     var choosingDeadline by remember { mutableStateOf(false) }
     var choosingDeadlineTime by remember { mutableStateOf(false) }
+    val errors by viewModel.noteErrors.collectAsStateWithLifecycle()
 
     AddNoteFormBody(
         titleTextId = titleTextId,
+        errors = errors,
         titleValue = viewModel.noteTitle.value,
         onTitleValueChange = { viewModel.noteTitle.value = it },
         descriptionValue = viewModel.noteDescription.value,
@@ -177,7 +185,10 @@ fun AddNoteForm(
             if (hasPermisions()) choosingLocation = true else requestPermisions()
         },
         onCloseClick = { onCloseClick(); viewModel.clearNoteFields() },
-        onDoneClick = { onDoneClick(); viewModel.addToDo() },
+        onDoneClick = {
+            viewModel.addToDo()
+            if (viewModel.noteErrors.value.isEmpty()) onDoneClick()
+        },
     )
 
     AddNotificationDialog(
@@ -434,9 +445,9 @@ fun NoteFormTitle(
 @Composable
 fun NoteFormTitleTextField(
     modifier: Modifier = Modifier,
+    isTitleTooLong: Boolean,
+    isTitleEmpty: Boolean,
     value: String,
-    hasError: Boolean = false,
-    errorMessage: String = "",
     onValueChange: (String) -> Unit,
     focusRequester: FocusRequester,
 ) {
@@ -446,8 +457,9 @@ fun NoteFormTitleTextField(
             .focusRequester(focusRequester),
         value = value,
         singleLine = true,
-        hasError = hasError,
-        errorMessage = errorMessage,
+        hasError = isTitleTooLong || isTitleEmpty,
+        errorMessage = if (isTitleTooLong) stringResource(R.string.note_form_title_too_long_error)
+        else stringResource(R.string.note_form_title_empty_error),
         maxLines = 1,
         onValueChange = { onValueChange(it) },
         labelId = R.string.note_form_title_field,
@@ -465,9 +477,8 @@ fun NoteFormTitleTextField(
 @Composable
 fun NoteFormDescriptionTextField(
     modifier: Modifier = Modifier,
+    isDescriptionTooLong: Boolean,
     value: String,
-    hasError: Boolean = false,
-    errorMessage: String = "",
     onValueChange: (String) -> Unit,
     focusRequester: FocusRequester,
 ) {
@@ -479,8 +490,8 @@ fun NoteFormDescriptionTextField(
         singleLine = false,
         maxLines = 3,
         onValueChange = { onValueChange(it) },
-        hasError = hasError,
-        errorMessage = errorMessage,
+        hasError = isDescriptionTooLong,
+        errorMessage = stringResource(R.string.note_form_description_too_long_error),
         labelId = R.string.note_form_description_field,
         trailingIcon = {
             if (value.isNotEmpty()) {

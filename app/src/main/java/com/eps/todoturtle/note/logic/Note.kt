@@ -10,4 +10,5 @@ data class Note(
     val notificationTime: Timestamp? = null,
     val deadlineTime: Timestamp? = null,
     val location: GeoPoint? = null,
+    val isNFCGenerated: Boolean = false,
 )

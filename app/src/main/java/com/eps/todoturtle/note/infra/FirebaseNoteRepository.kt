@@ -2,6 +2,7 @@ package com.eps.todoturtle.note.infra
 
 import com.eps.todoturtle.note.logic.Note
 import com.eps.todoturtle.note.logic.NoteRepository
+import com.eps.todoturtle.note.ui.NoteIcons
 import com.eps.todoturtle.shared.infra.getDoneNotesCollection
 import com.eps.todoturtle.shared.infra.getToDoNotesCollection
 import com.eps.todoturtle.shared.logic.forms.Timestamp
@@ -48,7 +49,7 @@ abstract class FirebaseNoteRepository : NoteRepository {
                 description = description,
                 notificationTime = Timestamp.fromGoogleTimestamp(notificationTime),
                 deadlineTime = Timestamp.fromGoogleTimestamp(deadlineTime),
-                location = location?.let { GeoPoint(it.latitude, it.longitude) }
+                location = location?.let { GeoPoint(it.latitude, it.longitude) },
             )
         }.toCollection(mutableListOf())
     }

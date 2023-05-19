@@ -50,15 +50,15 @@ fun Note(
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
-    NoteContainer(
+    ClickableNoteContainer(
         onClick = { isExpanded = !isExpanded },
     ) {
         NoteHead(
-            title = note.title,
+            note = note,
             isChecked = inHistory,
             onCheckClick = { onCheckClick() },
         )
-        if (isExpanded) {
+        if (isExpanded && note.description.isNotEmpty()) {
             val modifier = Modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp)
             note.apply {
                 location?.let {
@@ -75,7 +75,7 @@ fun Note(
 }
 
 @Composable
-fun NoteContainer(
+fun ClickableNoteContainer(
     onClick: () -> Unit,
     content: @Composable () -> Unit,
 ) {
@@ -100,12 +100,7 @@ fun NoteContainer(
 
 @Composable
 fun NoteHead(
-    title: String,
-    icons: NoteIcons = NoteIcons(
-        hasDeadline = true,
-        hasNfc = false,
-        hasNotifications = false,
-    ),
+    note: Note,
     isChecked: Boolean,
     onCheckClick: () -> Unit = {},
 ) {
@@ -124,7 +119,7 @@ fun NoteHead(
                 .padding(end = 4.dp),
         )
         Text(
-            text = title,
+            text = note.title,
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
@@ -141,9 +136,9 @@ fun NoteHead(
                 .weight(weight = 0.1f)
                 .padding(end = 4.dp),
         ) {
-            NotificationsIcon(isActive = icons.hasNotifications)
-            NfcIcon(isActive = icons.hasNfc)
-            DeadlineIcon(isActive = icons.hasDeadline)
+            NotificationsIcon(isActive = note.notificationTime != null)
+            NfcIcon(isActive = note.isNFCGenerated)
+            DeadlineIcon(isActive = note.deadlineTime != null)
         }
     }
 }
@@ -188,9 +183,9 @@ fun MapNoteBody(
 }
 
 data class NoteIcons(
-    val hasNotifications: Boolean,
-    val hasNfc: Boolean,
-    val hasDeadline: Boolean,
+    val hasNotifications: Boolean = false,
+    val hasNfc: Boolean = false,
+    val hasDeadline: Boolean = false,
 )
 
 @Composable

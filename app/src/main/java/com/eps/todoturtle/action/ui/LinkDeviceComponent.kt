@@ -50,7 +50,7 @@ fun LinkNoteFormDialog(
     onDoneClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
     onSavedAction: (NoteAction) -> Unit = {},
-    @StringRes titleTextId: Int = R.string.add_note_form_title,
+    @StringRes titleTextId: Int = R.string.link_note,
 ) {
     var title by rememberSaveable { mutableStateOf(actionViewModel.builder.title) }
     var description by rememberSaveable { mutableStateOf(actionViewModel.builder.description) }
@@ -59,6 +59,7 @@ fun LinkNoteFormDialog(
     var deadline by rememberSaveable { mutableStateOf(actionViewModel.builder.deadline) }
     var notification by rememberSaveable { mutableStateOf(actionViewModel.builder.notification) }
     LinkNoteFormDialog(
+        titleTextId = titleTextId,
         title = title,
         description = description,
         errors = errors,
@@ -113,6 +114,7 @@ fun LinkNoteFormDialog(
         Card {
             LinkNoteForm(
                 title = title,
+                titleTextId = titleTextId,
                 description = description,
                 errors = errors,
                 onTitleChange = onTitleChange,
@@ -133,6 +135,7 @@ fun LinkNoteFormDialog(
 fun LinkNoteForm(
     modifier: Modifier = Modifier,
     title: String,
+    @StringRes titleTextId: Int,
     errors: List<NoteActionBuilderError>,
     description: String,
     onTitleChange: (String) -> Unit = {},
@@ -155,19 +158,18 @@ fun LinkNoteForm(
             .fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceEvenly,
     ) {
-        NoteFormTitle(titleTextId = R.string.add_note_form_title)
+        NoteFormTitle(titleTextId = titleTextId)
         Spacer(Modifier.height(8.dp))
         NoteFormTitleTextField(
+            isTitleEmpty = errors.contains(NoteActionBuilderError.EMPTY_TITLE),
+            isTitleTooLong = errors.contains(NoteActionBuilderError.TITLE_TOO_LONG),
             value = title,
-            hasError = errors.contains(NoteActionBuilderError.EMPTY_TITLE),
-            errorMessage = "Title cannot be empty",
             onValueChange = onTitleChange,
             focusRequester = titleFocusRequester,
         )
         NoteFormDescriptionTextField(
             value = description,
-            hasError = errors.contains(NoteActionBuilderError.EMPTY_DESCRIPTION),
-            errorMessage = "Description cannot be empty",
+            isDescriptionTooLong = errors.contains(NoteActionBuilderError.DESCRIPTION_TOO_LONG),
             onValueChange = onDescriptionChange,
             focusRequester = descriptionFocusRequester,
         )

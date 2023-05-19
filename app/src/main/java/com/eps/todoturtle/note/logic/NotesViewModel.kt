@@ -22,7 +22,7 @@ class NotesViewModel(
     doneNotesRepository: NoteRepository
 ) : ViewModel() {
     private val noteBuilder = NoteBuilder()
-    val noteErrors: MutableStateFlow<Collection<NoteBuildError>> = MutableStateFlow(emptyList())
+    val noteErrors: MutableStateFlow<List<NoteBuildError>> = MutableStateFlow(emptyList())
     var noteTitle = mutableStateOf("")
     var noteDescription = mutableStateOf("")
     var noteNotificationTime: Timestamp? = null

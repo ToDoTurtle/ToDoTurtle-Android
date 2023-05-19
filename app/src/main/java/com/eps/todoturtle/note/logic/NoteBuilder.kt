@@ -8,7 +8,7 @@ import java.util.UUID
 
 sealed class NoteBuildResult {
     data class Success(val note: Note) : NoteBuildResult()
-    data class Failure(val errors: Collection<NoteBuildError>) : NoteBuildResult()
+    data class Failure(val errors: List<NoteBuildError>) : NoteBuildResult()
 }
 
 class NoteBuilder {

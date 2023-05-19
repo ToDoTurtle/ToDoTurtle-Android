@@ -1,5 +1,6 @@
 package com.eps.todoturtle.action.logic
 
+import com.eps.todoturtle.shared.logic.extensions.isTooLong
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 
 class ActionBuilder {
@@ -14,14 +15,17 @@ class ActionBuilder {
         if (title.isBlank() || title.isEmpty()) {
             errors.add(NoteActionBuilderError.EMPTY_TITLE)
         }
-        if (description.isBlank() || description.isEmpty()) {
-            errors.add(NoteActionBuilderError.EMPTY_DESCRIPTION)
+        if (title.isTooLong()) {
+            errors.add(NoteActionBuilderError.TITLE_TOO_LONG)
+        }
+        if (description.isTooLong()) {
+            errors.add(NoteActionBuilderError.DESCRIPTION_TOO_LONG)
         }
         if (errors.isNotEmpty()) return Error(errors)
         return Success(
             NoteAction(
-                title!!,
-                description!!,
+                title,
+                description,
                 deadline,
                 notification,
                 getLocation,

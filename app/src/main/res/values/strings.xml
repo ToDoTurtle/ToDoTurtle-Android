@@ -47,7 +47,7 @@
     <string name="next">Continue</string>
     <string name="date">Date</string>
     <string name="go_back_to_date_picker_icon_desc">Button to go back to date picker</string>
-    <string name="link_note">Link a note</string>
+    <string name="link_note">Link an action</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="preference_category_network">Network</string>
@@ -61,4 +61,7 @@
     <string name="exit">Exit</string>
     <string name="close_app">Close app</string>
     <string name="app_reload_warning">Enabling this option reloads the app.</string>
+    <string name="note_form_title_too_long_error">Title too long.</string>
+    <string name="note_form_title_empty_error">Title empty.</string>
+    <string name="note_form_description_too_long_error">Description is too long.</string>
 </resources>

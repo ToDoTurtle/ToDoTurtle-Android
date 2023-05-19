@@ -37,6 +37,7 @@ class ActionViewModel(repository: ActionRepository) : ViewModel() {
                     actionCreator.send(result.noteAction)
                     builder.clear()
                 }
+                actionBuildErrors.value = emptyList()
             }
             is Error -> {
                 actionBuildErrors.value = result.errors.toList()

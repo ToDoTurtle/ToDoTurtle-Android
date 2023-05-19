@@ -2,5 +2,6 @@ package com.eps.todoturtle.action.logic
 
 enum class NoteActionBuilderError {
     EMPTY_TITLE,
-    EMPTY_DESCRIPTION,
+    DESCRIPTION_TOO_LONG,
+    TITLE_TOO_LONG,
 }
