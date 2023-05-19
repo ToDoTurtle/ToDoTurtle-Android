@@ -5,7 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePickerState
 
 data class Timestamp(
-    val time: Long,
+    var time: Long,
 ) {
     fun toGoogleTimestamp(): com.google.firebase.Timestamp {
         return com.google.firebase.Timestamp(time / 1000, 0)
@@ -18,8 +18,8 @@ data class Timestamp(
             timePickerState: TimePickerState,
         ): Timestamp {
             val date = datePickerState.selectedDateMillis!! +
-                timePickerState.hour * 3_600_000L +
-                timePickerState.minute * 60_000L
+                    timePickerState.hour * 3_600_000L +
+                    timePickerState.minute * 60_000L
             return Timestamp(
                 time = date,
             )

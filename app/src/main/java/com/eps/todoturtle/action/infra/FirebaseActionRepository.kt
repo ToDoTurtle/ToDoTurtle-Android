@@ -66,7 +66,8 @@ class FirebaseActionRepository : ActionRepository {
 
     private fun Timestamp?.toFirebaseTimestamp(): com.google.firebase.Timestamp? {
         if (this == null) return null
-        return com.google.firebase.Timestamp(this.time, 0)
+        val date = java.util.Date(this.time)
+        return com.google.firebase.Timestamp(date)
     }
 
     private fun com.google.firebase.Timestamp?.toDomainTimestamp(): Timestamp? {

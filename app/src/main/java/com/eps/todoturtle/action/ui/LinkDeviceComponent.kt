@@ -56,8 +56,6 @@ fun LinkNoteFormDialog(
     var description by rememberSaveable { mutableStateOf(actionViewModel.builder.description) }
     val errors by actionViewModel.actionBuildErrors.collectAsStateWithLifecycle()
     var saveLocation by rememberSaveable { mutableStateOf(actionViewModel.builder.getLocation) }
-    var deadline by rememberSaveable { mutableStateOf(actionViewModel.builder.deadline) }
-    var notification by rememberSaveable { mutableStateOf(actionViewModel.builder.notification) }
     LinkNoteFormDialog(
         titleTextId = titleTextId,
         title = title,
@@ -80,11 +78,9 @@ fun LinkNoteFormDialog(
         },
         getLocation = saveLocation,
         onAddDeadlineClick = {
-            deadline = it
             actionViewModel.builder.deadline = it
         },
         onAddNotificationClick = {
-            notification = it
             actionViewModel.builder.notification = it
         },
     )
