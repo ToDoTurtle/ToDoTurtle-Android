@@ -56,7 +56,7 @@ abstract class FirebaseNoteRepository : NoteRepository {
 
     override suspend fun add(note: Note) {
         val notes = getNotesCollection()
-        notes.add(
+        notes.document(note.identifier).set(
             mapOf(
                 NOTE_ID to note.identifier,
                 NOTE_TITLE to note.title,
@@ -75,9 +75,9 @@ abstract class FirebaseNoteRepository : NoteRepository {
 
     override suspend fun remove(note: Note) {
         val notes = getNotesCollection()
-        val documentToDelete = notes.whereEqualTo(NOTE_ID, note.identifier).get().await()
-        documentToDelete.forEach { document ->
-            notes.document(document.id).delete()
+        val noteDocument = notes.document(note.identifier).get().await()
+        if (noteDocument.exists()) {
+            notes.document(noteDocument.id).delete()
         }
     }
 }
