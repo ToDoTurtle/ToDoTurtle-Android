@@ -8,11 +8,12 @@ import com.eps.todoturtle.preferences.logic.data.Themes
 
 class AppPreferencesModifier(
     private val dataStore: DataStore<AppPreferences>,
-    private val context: Context,
+    context: Context,
 ) {
     private val muteModifier = MuteModifier(context)
 
     suspend fun updateMute(mute: Boolean) {
+        if (muteModifier.systemInDNDMode()) { muteModifier.notifyIfSystemInDNDMode(); return }
         dataStore.updateData { preferences ->
             preferences.copy(mute = mute)
         }
