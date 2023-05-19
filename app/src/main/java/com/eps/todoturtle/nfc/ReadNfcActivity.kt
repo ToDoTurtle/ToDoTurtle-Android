@@ -23,13 +23,22 @@ import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewMo
 import com.eps.todoturtle.action.logic.NoteAction
 import com.eps.todoturtle.note.infra.FirebaseToDoNoteRepository
 import com.eps.todoturtle.note.logic.Note
+import com.eps.todoturtle.note.logic.location.DefaultLocationClient
+import com.eps.todoturtle.note.logic.location.hasLocationPermission
+import com.eps.todoturtle.note.logic.location.isGpsEnabled
+import com.eps.todoturtle.note.logic.location.toGeoPoint
+import com.eps.todoturtle.permissions.logic.PermissionRequester
+import com.eps.todoturtle.permissions.logic.RequestPermissionContext
+import com.eps.todoturtle.permissions.logic.providers.CoarseLocationPermissionProvider
+import com.eps.todoturtle.permissions.logic.providers.FineLocationPermissionProvider
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import org.osmdroid.util.GeoPoint
+import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
 class ReadNfcActivity : ComponentActivity() {
@@ -52,24 +61,14 @@ class ReadNfcActivity : ComponentActivity() {
         }
 
         val notesRepository = FirebaseToDoNoteRepository()
-        val location = if (action!!.getLocation) {
-            getCurrentLocation()
-        } else {
-            null
-        }
-        val note = Note(
-            identifier = UUID.randomUUID().toString(),
-            title = action.title,
-            description = action.description,
-            deadlineTime = action.deadline,
-            notificationTime = action.notification,
-            location = location,
-            isNFCGenerated = true,
-        )
-
-        runBlocking(Dispatchers.IO) {
-            notesRepository.add(note)
-        }
+        val locationPermissionRequester =
+            PermissionRequester(
+                this,
+                listOf(
+                    FineLocationPermissionProvider(this),
+                    CoarseLocationPermissionProvider(this),
+                ),
+            )
 
         setContent {
             ToDoTurtleTheme(dataStore) {
@@ -77,7 +76,39 @@ class ReadNfcActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    ShowAction(action)
+                    RequestPermissionContext(locationPermissionRequester) {
+                        if (!hasLocationPermission()) {
+                            requestPermissions()
+                        } else if (!isGpsEnabled()) {
+                            showMessageAndFinish("Please enable GPS to continue")
+                        } else {
+                            runBlocking(Dispatchers.IO) {
+                                val location = if (action!!.getLocation) {
+                                    val locationClient = DefaultLocationClient(
+                                        applicationContext,
+                                        LocationServices.getFusedLocationProviderClient(
+                                            applicationContext
+                                        ),
+                                    )
+                                    locationClient.getCurrentLocation().await()
+                                } else {
+                                    null
+                                }
+                                val note = Note(
+                                    identifier = UUID.randomUUID().toString(),
+                                    title = action.title,
+                                    description = action.description,
+                                    deadlineTime = action.deadline,
+                                    notificationTime = action.notification,
+                                    location = location?.toGeoPoint(),
+                                    isNFCGenerated = true,
+                                )
+                                notesRepository.add(note)
+                            }
+                            ShowAction(action!!)
+                        }
+
+                    }
                 }
             }
         }
@@ -88,10 +119,6 @@ class ReadNfcActivity : ComponentActivity() {
             return getId(intent)
         }
         return null
-    }
-
-    private fun getCurrentLocation(): GeoPoint {
-        return GeoPoint(0.0, 0.0)
     }
 
     @Suppress("DEPRECATION") // Because of the NFC library uses deprecated methods
