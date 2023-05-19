@@ -13,31 +13,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.eps.todoturtle.R
-import com.eps.todoturtle.network.logic.NetworkAvailability
-import com.eps.todoturtle.network.ui.NetworkWarningDialog
 import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.permissions.logic.RequestPermissionContext
-import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun NoteScreen(
     locationClient: LocationClient,
     hasLocationPermission: () -> Boolean,
     locationPermissionRequester: PermissionRequester,
-    connectionAvailability: Flow<NetworkAvailability>,
-    onGoToSettingsClick: () -> Unit,
-    onCloseAppClick: () -> Unit,
     viewModel: NotesViewModel,
 ) {
     var inHistory by rememberSaveable { mutableStateOf(false) }
     var isFormVisible by rememberSaveable { mutableStateOf(false) }
-    var shouldShowNetworkDialog by rememberSaveable { mutableStateOf(false) }
-    val networkAvailability by connectionAvailability.collectAsStateWithLifecycle(NetworkAvailability.AVAILABLE)
-    shouldShowNetworkDialog = networkAvailability != NetworkAvailability.AVAILABLE
 
     Scaffold(
         floatingActionButton = { AddNoteButton(onClick = { isFormVisible = true }) },
@@ -73,15 +62,6 @@ fun NoteScreen(
             )
         }
     }
-
-    NetworkWarningDialog(
-        showDialog = shouldShowNetworkDialog,
-        reason = R.string.app_requires_internet,
-        onSettingsClick = onGoToSettingsClick,
-        onSecondaryButtonClick = { onCloseAppClick() },
-        secondaryButtonText = R.string.close_app,
-        onDismiss = {},
-    )
 }
 
 @Composable

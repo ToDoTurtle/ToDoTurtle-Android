@@ -6,6 +6,11 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eps.todoturtle.action.infra.FirebaseActionRepository
 import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
 import com.eps.todoturtle.devices.infra.FirebaseDeviceRepository
@@ -13,6 +18,8 @@ import com.eps.todoturtle.devices.logic.DeviceIconActivity
 import com.eps.todoturtle.devices.logic.DevicesViewModel.Companion.getDevicesViewModel
 import com.eps.todoturtle.network.logic.ConnectionChecker
 import com.eps.todoturtle.network.logic.ConnectionCheckerImpl
+import com.eps.todoturtle.network.logic.NetworkAvailability
+import com.eps.todoturtle.network.ui.NetworkWarningDialog
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.DefaultLocationClient
@@ -89,6 +96,19 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
 
         setContent {
             ToDoTurtleTheme(dataStore) {
+                var shouldShowNetworkDialog by rememberSaveable { mutableStateOf(false) }
+                val networkAvailability by connectionAvailability.collectAsStateWithLifecycle(
+                    NetworkAvailability.AVAILABLE)
+                shouldShowNetworkDialog = networkAvailability != NetworkAvailability.AVAILABLE
+
+                NetworkWarningDialog(
+                    showDialog = shouldShowNetworkDialog,
+                    reason = R.string.app_requires_internet,
+                    onSettingsClick = ::onGoToSettingsClick,
+                    onSecondaryButtonClick = ::onCloseAppClick,
+                    secondaryButtonText = R.string.close_app,
+                    onDismiss = {},
+                )
                 App(
                     devicesViewModel = devicesViewModel,
                     hasLocationPermision = { hasLocationPermission() },
@@ -102,9 +122,6 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     dataStore = dataStore,
                     hasCameraPermission = { hasCameraPermission() },
                     userAuth = userAuth,
-                    connectionAvailability = connectionAvailability,
-                    onGoSettingsClick = ::onGoToSettingsClick,
-                    onCloseAppClick = ::onCloseAppClick,
                     reloadActivity = ::reloadActivity,
                 )
             }

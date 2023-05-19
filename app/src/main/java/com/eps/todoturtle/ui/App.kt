@@ -58,9 +58,6 @@ fun App(
     dataStore: DataStore<AppPreferences>,
     hasCameraPermission: () -> Boolean,
     userAuth: UserAuth,
-    connectionAvailability: Flow<NetworkAvailability>,
-    onGoSettingsClick: () -> Unit,
-    onCloseAppClick: () -> Unit,
     reloadActivity: () -> Unit,
 ) {
     val navController = rememberNavController()
@@ -103,9 +100,6 @@ fun App(
                     profileViewModel = profileViewModel,
                     hasCameraPermission = { hasCameraPermission() },
                     userAuth = userAuth,
-                    connectionAvailability = connectionAvailability,
-                    onGoSettingsClick = onGoSettingsClick,
-                    onCloseAppClick = onCloseAppClick,
                     reloadActivity = reloadActivity,
                 )
             }

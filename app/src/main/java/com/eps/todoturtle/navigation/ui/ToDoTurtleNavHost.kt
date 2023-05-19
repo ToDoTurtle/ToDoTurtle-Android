@@ -57,9 +57,6 @@ fun ToDoTurtleNavHost(
     hasCameraPermission: () -> Boolean,
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
-    connectionAvailability: Flow<NetworkAvailability>,
-    onGoSettingsClick: () -> Unit,
-    onCloseAppClick: () -> Unit,
     reloadActivity: () -> Unit,
 ) {
     NavHost(
@@ -78,9 +75,6 @@ fun ToDoTurtleNavHost(
             locationClient,
             locationPermissionRequester,
             hasLocationPermission,
-            onGoSettingsClick,
-            connectionAvailability,
-            onCloseAppClick,
         )
         devices(
             navController,
@@ -121,9 +115,6 @@ fun NavGraphBuilder.notes(
     locationClient: LocationClient,
     locationPermissionRequester: PermissionRequester,
     hasLocationPermission: () -> Boolean,
-    onGoSettingsClick: () -> Unit,
-    connectionAvailability: Flow<NetworkAvailability>,
-    onCloseAppClick: () -> Unit,
 ) {
     composable(Destinations.NOTES.route) {
         NoteScreen(
@@ -131,9 +122,6 @@ fun NavGraphBuilder.notes(
             locationClient = locationClient,
             locationPermissionRequester = locationPermissionRequester,
             hasLocationPermission = hasLocationPermission,
-            connectionAvailability = connectionAvailability,
-            onGoToSettingsClick = onGoSettingsClick,
-            onCloseAppClick = onCloseAppClick,
         )
     }
 }
