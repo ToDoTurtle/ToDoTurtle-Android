@@ -15,9 +15,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.runBlocking
@@ -48,9 +46,10 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
         context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    private val networkPreferenceChannel: Channel<NetworkPreference> = Channel(UNLIMITED, onUndeliveredElement = {
-        Log.e("ConnectionCheckerImpl", "onUndeliveredElement: $it")
-    })
+    private val networkPreferenceChannel: Channel<NetworkPreference> = Channel(
+        UNLIMITED,
+        onUndeliveredElement = { Log.e("ConnectionCheckerImpl", "onUndeliveredElement: $it") },
+    )
     private val wifiStatusChannel: Channel<WifiStatus> = Channel(UNLIMITED)
     private val cellularStatusChannel: Channel<CellularStatus> = Channel(UNLIMITED)
 
@@ -143,8 +142,8 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
                     networkCapabilities: NetworkCapabilities,
                 ) {
                     super.onCapabilitiesChanged(network, networkCapabilities)
-                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                        && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                     ) {
                         runBlocking(Dispatchers.IO) {
                             currentWifiStatus = WifiStatus.INTERNET_CONNECTION
@@ -193,8 +192,8 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
                     networkCapabilities: NetworkCapabilities,
                 ) {
                     super.onCapabilitiesChanged(network, networkCapabilities)
-                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                        && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
                     ) {
                         runBlocking(Dispatchers.IO) {
                             currentCellularStatus = CellularStatus.INTERNET_CONNECTION

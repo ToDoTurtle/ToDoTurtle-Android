@@ -66,7 +66,7 @@ fun Note(
                         modifier = modifier,
                         description = note.description,
                         latitude = it.latitude,
-                        longitude = it.longitude
+                        longitude = it.longitude,
                     )
                 } ?: NoteBody(modifier = modifier, description = note.description)
             }

@@ -6,7 +6,7 @@ import com.eps.todoturtle.action.logic.NoteAction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
-class ActionStateRepository(val repository: ActionRepository): ActionRepository {
+class ActionStateRepository(val repository: ActionRepository) : ActionRepository {
 
     val actionLinkDevice: SnapshotStateMap<String, NoteAction> = SnapshotStateMap()
 
@@ -29,5 +29,4 @@ class ActionStateRepository(val repository: ActionRepository): ActionRepository 
     override suspend fun getAll() = actionLinkDevice.toMap()
 
     private fun getAllFromRepository() = runBlocking(Dispatchers.IO) { repository.getAll() }
-
 }

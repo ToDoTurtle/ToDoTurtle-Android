@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.shared.logic.extensions.RobotoThin
-import com.eps.todoturtle.ui.theme.inactiveOnSecondaryContainer
 
 @Composable
 internal fun PreferenceSwitch(
@@ -82,10 +81,10 @@ internal fun PreferenceSwitch(
                 Spacer(modifier = Modifier.weight(1f))
                 Switch(
                     checked = checked,
-                    onCheckedChange = {isChecked ->
+                    onCheckedChange = { isChecked ->
                         onCheckedChange(isChecked)
                         reload?.apply {
-                            if(isChecked) invoke()
+                            if (isChecked) invoke()
                         }
                     },
                 )

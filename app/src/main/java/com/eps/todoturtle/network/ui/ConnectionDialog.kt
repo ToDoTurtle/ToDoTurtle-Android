@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
-import com.eps.todoturtle.network.logic.NetworkAvailability
 
 @Composable
 fun NetworkWarningDialog(

@@ -20,7 +20,7 @@ import kotlinx.coroutines.runBlocking
 
 class DevicesViewModel private constructor(
     repository: DeviceRepository,
-    private val actionsRepository: ActionRepository
+    private val actionsRepository: ActionRepository,
 ) : ViewModel() {
 
     private lateinit var iconToDrawable: (id: Int) -> Drawable?

@@ -59,7 +59,6 @@ import com.eps.todoturtle.ui.theme.onFormContainer
 import com.google.android.gms.tasks.Tasks
 import org.osmdroid.util.GeoPoint
 
-
 @Composable
 fun AddNoteButton(
     modifier: Modifier = Modifier,
@@ -458,8 +457,11 @@ fun NoteFormTitleTextField(
         value = value,
         singleLine = true,
         hasError = isTitleTooLong || isTitleEmpty,
-        errorMessage = if (isTitleTooLong) stringResource(R.string.note_form_title_too_long_error)
-        else stringResource(R.string.note_form_title_empty_error),
+        errorMessage = if (isTitleTooLong) {
+            stringResource(R.string.note_form_title_too_long_error)
+        } else {
+            stringResource(R.string.note_form_title_empty_error)
+        },
         maxLines = 1,
         onValueChange = { onValueChange(it) },
         labelId = R.string.note_form_title_field,

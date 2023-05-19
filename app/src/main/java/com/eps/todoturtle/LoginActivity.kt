@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         val auth = Firebase.auth
         val userAuth = UserAuth(this@LoginActivity, auth)
 
-        this.connectionChecker  =  ConnectionCheckerImpl(this)
+        this.connectionChecker = ConnectionCheckerImpl(this)
         val connectionAvailability = connectionChecker.networkAvailability
 
         setContent {
@@ -38,7 +38,8 @@ class LoginActivity : AppCompatActivity() {
                     LoginUI(
                         userAuth = userAuth,
                         connectionAvailability = connectionAvailability,
-                        onGoToSettingsClick = { onGoToSettingsClick() }) {
+                        onGoToSettingsClick = { onGoToSettingsClick() },
+                    ) {
                         val intent = Intent(this, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)

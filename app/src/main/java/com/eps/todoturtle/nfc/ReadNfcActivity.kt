@@ -29,18 +29,21 @@ import com.google.firebase.ktx.Firebase
 class ReadNfcActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Firebase.auth.currentUser == null)
+        if (Firebase.auth.currentUser == null) {
             showMessageAndFinish("Please login to continue")
+        }
 
         val id = getId()
-        if (id == null)
+        if (id == null) {
             showMessageAndFinish("Error reading id!")
+        }
 
         val actionRepository = FirebaseActionRepository()
         val viewModel = getActionViewModel(actionRepository)
         val action = viewModel.actions[id]
-        if (action == null)
+        if (action == null) {
             showMessageAndFinish("Device doesn't have any action, please configure it for use them")
+        }
 
         setContent {
             ToDoTurtleTheme(dataStore) {
@@ -106,7 +109,7 @@ fun GreetingPreview() {
                 getLocation = false,
                 deadline = null,
                 notification = null,
-            )
+            ),
         )
     }
 }

@@ -17,8 +17,9 @@ class DeviceBuilder(
 
     fun build(): DeviceBuildResult {
         val errors: MutableList<DeviceBuildError> = mutableListOf()
-        if (identifier == null)
+        if (identifier == null) {
             throw Error("Identifier is null")
+        }
         if (name.value.isBlank() || name.value.isEmpty()) {
             errors.add(DeviceBuildError.NAME_EMPTY)
         }

@@ -2,7 +2,6 @@ package com.eps.todoturtle.note.logic
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
@@ -12,14 +11,12 @@ import com.eps.todoturtle.note.infra.FirebaseDoneNoteRepository
 import com.eps.todoturtle.note.infra.FirebaseToDoNoteRepository
 import com.eps.todoturtle.note.infra.NoteStateRepository
 import com.eps.todoturtle.shared.logic.forms.Timestamp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.osmdroid.util.GeoPoint
 
 class NotesViewModel(
     toDoNotesRepository: NoteRepository,
-    doneNotesRepository: NoteRepository
+    doneNotesRepository: NoteRepository,
 ) : ViewModel() {
     private val noteBuilder = NoteBuilder()
     val noteErrors: MutableStateFlow<List<NoteBuildError>> = MutableStateFlow(emptyList())
@@ -38,7 +35,7 @@ class NotesViewModel(
                 val savedStateHandle = createSavedStateHandle()
                 NotesViewModel(
                     toDoNotesRepository = FirebaseToDoNoteRepository(),
-                    doneNotesRepository = FirebaseDoneNoteRepository()
+                    doneNotesRepository = FirebaseDoneNoteRepository(),
                 )
             }
         }

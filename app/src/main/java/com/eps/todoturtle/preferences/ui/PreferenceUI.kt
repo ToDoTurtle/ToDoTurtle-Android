@@ -5,23 +5,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.datastore.core.DataStore
 import com.eps.todoturtle.R
-import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.preferences.logic.AppPreferencesModifier
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.shared.logic.extensions.dataStore
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @Composable

@@ -36,7 +36,7 @@ fun CheckCounter(
     NoteScreenHeadLineContainer(
         modifier = Modifier
             .padding(start = 32.dp, bottom = 0.dp)
-            .clip(MaterialTheme.shapes.medium)
+            .clip(MaterialTheme.shapes.medium),
     ) {
         Column {
             Row {
@@ -54,7 +54,7 @@ fun CheckCounter(
                 modifier = Modifier
                     .width(60.dp)
                     .height(2.dp)
-                    .background(color = MaterialTheme.colorScheme.outlineVariant)
+                    .background(color = MaterialTheme.colorScheme.outlineVariant),
             )
         }
     }
@@ -70,14 +70,14 @@ fun Counter(
         targetState = count,
         transitionSpec = {
             scaleIn() with
-                    slideOutOfContainer(
-                        towards = if (inHistory) {
-                            AnimatedContentScope.SlideDirection.Down
-                        } else {
-                            AnimatedContentScope.SlideDirection.Up
-                        },
-                        animationSpec = tween(durationMillis = 200),
-                    )
+                slideOutOfContainer(
+                    towards = if (inHistory) {
+                        AnimatedContentScope.SlideDirection.Down
+                    } else {
+                        AnimatedContentScope.SlideDirection.Up
+                    },
+                    animationSpec = tween(durationMillis = 200),
+                )
         },
     ) {
         Text(

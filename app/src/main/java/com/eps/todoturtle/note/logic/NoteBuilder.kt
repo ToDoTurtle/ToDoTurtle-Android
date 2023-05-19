@@ -37,7 +37,7 @@ class NoteBuilder {
                 description.value,
                 notificationTime,
                 deadlineTime,
-                location
+                location,
             )
         return NoteBuildResult.Success(note)
     }

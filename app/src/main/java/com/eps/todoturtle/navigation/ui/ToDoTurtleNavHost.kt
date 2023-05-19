@@ -80,7 +80,7 @@ fun ToDoTurtleNavHost(
             hasLocationPermission,
             onGoSettingsClick,
             connectionAvailability,
-            onCloseAppClick
+            onCloseAppClick,
         )
         devices(
             navController,
@@ -123,7 +123,7 @@ fun NavGraphBuilder.notes(
     hasLocationPermission: () -> Boolean,
     onGoSettingsClick: () -> Unit,
     connectionAvailability: Flow<NetworkAvailability>,
-    onCloseAppClick: () -> Unit
+    onCloseAppClick: () -> Unit,
 ) {
     composable(Destinations.NOTES.route) {
         NoteScreen(
@@ -133,7 +133,7 @@ fun NavGraphBuilder.notes(
             hasLocationPermission = hasLocationPermission,
             connectionAvailability = connectionAvailability,
             onGoToSettingsClick = onGoSettingsClick,
-            onCloseAppClick = onCloseAppClick
+            onCloseAppClick = onCloseAppClick,
         )
     }
 }
@@ -238,7 +238,7 @@ fun NavGraphBuilder.writeDevice(
 
 private fun NavGraphBuilder.settings(
     dataStore: DataStore<AppPreferences>,
-    reloadActivity: () -> Unit
+    reloadActivity: () -> Unit,
 ) {
     composable(Destinations.SETTINGS.route) {
         PreferenceUI(dataStore = dataStore, reloadActivity = reloadActivity)

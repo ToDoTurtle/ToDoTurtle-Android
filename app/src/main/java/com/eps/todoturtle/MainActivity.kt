@@ -2,15 +2,10 @@ package com.eps.todoturtle
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
-import android.view.WindowInsets
-import android.view.WindowInsetsController
-import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import com.eps.todoturtle.action.infra.FirebaseActionRepository
 import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
 import com.eps.todoturtle.devices.infra.FirebaseDeviceRepository

@@ -2,7 +2,6 @@ package com.eps.todoturtle.note.infra
 
 import com.eps.todoturtle.note.logic.Note
 import com.eps.todoturtle.note.logic.NoteRepository
-import com.eps.todoturtle.note.ui.NoteIcons
 import com.eps.todoturtle.shared.infra.getDoneNotesCollection
 import com.eps.todoturtle.shared.infra.getToDoNotesCollection
 import com.eps.todoturtle.shared.logic.forms.Timestamp
@@ -66,7 +65,7 @@ abstract class FirebaseNoteRepository : NoteRepository {
                 NOTE_LOCATION to note.location?.let {
                     com.google.firebase.firestore.GeoPoint(
                         it.latitude,
-                        it.longitude
+                        it.longitude,
                     )
                 },
             ),

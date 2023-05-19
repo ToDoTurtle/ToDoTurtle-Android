@@ -1,6 +1,5 @@
 package com.eps.todoturtle.action.infra
 
-import android.util.Log
 import com.eps.todoturtle.action.logic.ActionRepository
 import com.eps.todoturtle.action.logic.NoteAction
 
