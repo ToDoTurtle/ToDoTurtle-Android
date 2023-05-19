@@ -16,6 +16,7 @@ private const val NOTE_DESCRIPTION = "description"
 private const val NOTE_NOTIFICATION_TIME = "notificationTime"
 private const val NOTE_DEADLINE_TIME = "deadlineTime"
 private const val NOTE_LOCATION = "location"
+private const val IS_NFC_GENERATED = "nfc"
 
 class FirebaseToDoNoteRepository : FirebaseNoteRepository() {
     override fun getNotesCollection(): CollectionReference {
@@ -42,6 +43,7 @@ abstract class FirebaseNoteRepository : NoteRepository {
             val notificationTime = document.getTimestamp(NOTE_NOTIFICATION_TIME)
             val deadlineTime = document.getTimestamp(NOTE_DEADLINE_TIME)
             val location = document.getGeoPoint(NOTE_LOCATION)
+            val isNFCGenerated = document.getBoolean(IS_NFC_GENERATED)!!
             Note(
                 identifier = id,
                 title = title,
@@ -49,6 +51,7 @@ abstract class FirebaseNoteRepository : NoteRepository {
                 notificationTime = Timestamp.fromGoogleTimestamp(notificationTime),
                 deadlineTime = Timestamp.fromGoogleTimestamp(deadlineTime),
                 location = location?.let { GeoPoint(it.latitude, it.longitude) },
+                isNFCGenerated = isNFCGenerated,
             )
         }.toCollection(mutableListOf())
     }
@@ -68,6 +71,7 @@ abstract class FirebaseNoteRepository : NoteRepository {
                         it.longitude,
                     )
                 },
+                IS_NFC_GENERATED to note.isNFCGenerated,
             ),
         ).await()
     }

@@ -21,10 +21,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.eps.todoturtle.action.infra.FirebaseActionRepository
 import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
 import com.eps.todoturtle.action.logic.NoteAction
+import com.eps.todoturtle.note.infra.FirebaseToDoNoteRepository
+import com.eps.todoturtle.note.logic.Note
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import org.osmdroid.util.GeoPoint
+import java.util.UUID
 
 class ReadNfcActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,15 +51,33 @@ class ReadNfcActivity : ComponentActivity() {
             showMessageAndFinish("Device doesn't have any action, please configure it for use them")
         }
 
+        val notesRepository = FirebaseToDoNoteRepository()
+        val location = if (action!!.getLocation) {
+            getCurrentLocation()
+        } else {
+            null
+        }
+        val note = Note(
+            identifier = UUID.randomUUID().toString(),
+            title = action.title,
+            description = action.description,
+            deadlineTime = action.deadline,
+            notificationTime = action.notification,
+            location = location,
+            isNFCGenerated = true,
+        )
+
+        runBlocking(Dispatchers.IO) {
+            notesRepository.add(note)
+        }
+
         setContent {
             ToDoTurtleTheme(dataStore) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    action?.let {
-                        ShowAction(action)
-                    }
+                    ShowAction(action)
                 }
             }
         }
@@ -64,6 +88,10 @@ class ReadNfcActivity : ComponentActivity() {
             return getId(intent)
         }
         return null
+    }
+
+    private fun getCurrentLocation(): GeoPoint {
+        return GeoPoint(0.0, 0.0)
     }
 
     @Suppress("DEPRECATION") // Because of the NFC library uses deprecated methods
