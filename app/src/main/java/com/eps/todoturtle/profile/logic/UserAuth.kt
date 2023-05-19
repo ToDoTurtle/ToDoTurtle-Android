@@ -33,6 +33,9 @@ class UserAuth(
     }
 
     suspend fun login(mail: String, password: String): Pair<Boolean, String> {
+        if (invalidMail(mail) || invalidPassword(password)) {
+            return false to activity.baseContext.getString(R.string.blank_mail_password)
+        }
         return try {
             auth.signInWithEmailAndPassword(mail, password).await()
             true to ""

@@ -33,6 +33,7 @@
 
     <!--    Sign up strings   -->
     <string name="sign_up_mail">Mail</string>
+    <string name="blank_mail_password">Mail or password cannot be blank</string>
     <string name="sign_up_mail_error">Mail must have a valid format</string>
     <string name="sign_up_password">Password</string>
     <string name="sign_up_password_error">Password must be at least 8 characters long</string>
