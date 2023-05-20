@@ -179,7 +179,7 @@ fun NFCDeviceListItem(
                 actionViewModel.removeAction(it)
                 actionViewModel.builder.clear()
             },
-            onCloseListener = { bottomSheetState.getOut(scope, showBottomSheet) },
+            onCloseListener = { showBottomSheet.value = false },
         ),
     )
 }
