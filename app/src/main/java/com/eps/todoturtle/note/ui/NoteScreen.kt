@@ -85,9 +85,8 @@ fun NoteScreen(
                 hasLocationPermission = hasLocationPermission,
                 onCloseClick = { isEditFormVisible = false; viewModel.clearNoteFields() },
                 onDoneClick = {
-                    isEditFormVisible = false
                     if (inHistory) viewModel.updateDone() else viewModel.updateToDo()
-                    if (viewModel.noteErrors.value.isEmpty()) isAddNoteFormVisible = false
+                    if (viewModel.noteErrors.value.isEmpty()) isEditFormVisible = false
                 },
                 onDismissRequest = { isEditFormVisible = false; viewModel.clearNoteFields() },
                 titleTextId = R.string.edit_note,
