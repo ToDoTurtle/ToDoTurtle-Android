@@ -100,7 +100,7 @@ fun Note(
             note = note,
             onEditListener = onEditClick,
             onDeleteListener = onDeleteClick,
-            onCloseListener = { bottomSheetState.getOut(scope, showBottomSheet) },
+            onCloseListener = { showBottomSheet.value = false },
         )
     )
 }
