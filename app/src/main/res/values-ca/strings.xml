@@ -122,5 +122,6 @@
     <string name="addtional_sign_ups">O registra\'t amb</string>
     <string name="google_desc">Icona de Google, per a registrar-te amb ells</string>
     <string name="github_desc">Icona de Github</string>
+    <string name="edit_note">Editar nota</string>
 
 </resources>

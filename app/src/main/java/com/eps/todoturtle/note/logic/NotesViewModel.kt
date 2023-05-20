@@ -18,6 +18,7 @@ class NotesViewModel(
 ) : ViewModel() {
     private val noteBuilder = NoteBuilder()
     val noteErrors: MutableStateFlow<List<NoteBuildError>> = MutableStateFlow(emptyList())
+    var noteIdentifier: String = ""
     var noteTitle = mutableStateOf("")
     var noteDescription = mutableStateOf("")
     var noteNotificationTime: Timestamp? = null
@@ -56,9 +57,42 @@ class NotesViewModel(
         }
     }
 
-    fun deleteDone(note: Note) = doneRepository.remove(note)
+    fun load(note: Note) {
+        noteIdentifier = note.identifier
+        noteTitle.value = note.title
+        noteDescription.value = note.description
+        noteNotificationTime = note.notificationTime
+        noteDeadlineTime = note.deadlineTime
+        noteLocation = note.location
+    }
 
-    fun deleteToDo(note: Note) = toDoRepository.remove(note)
+    fun deleteDone(note: Note) = doneRepository.remove(note.identifier)
+
+    fun deleteToDo(note: Note) = toDoRepository.remove(note.identifier)
+
+    fun updateDone() = updateNote(doneRepository)
+
+    fun updateToDo() = updateNote(toDoRepository)
+
+    private fun updateNote(repository: NoteStateRepository) {
+        noteBuilder.title.value = noteTitle.value
+        noteBuilder.description.value = noteDescription.value
+        noteBuilder.notificationTime = noteNotificationTime
+        noteBuilder.deadlineTime = noteDeadlineTime
+        noteBuilder.location = noteLocation
+
+        when (val result = noteBuilder.build()) {
+            is NoteBuildResult.Success -> {
+                repository.remove(noteIdentifier)
+                repository.add(result.note)
+                clearNoteFields()
+            }
+
+            is NoteBuildResult.Failure -> {
+                noteErrors.value = result.errors
+            }
+        }
+    }
 
     fun getDoneNotes(): SnapshotStateList<Note> = doneRepository.getAll()
 

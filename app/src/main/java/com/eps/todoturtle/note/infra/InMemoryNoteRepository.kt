@@ -19,8 +19,8 @@ class InMemoryNoteRepository : NoteRepository {
         notes.add(note)
     }
 
-    override suspend fun remove(note: Note) {
-        val currentDevice = notes.find { it.identifier == note.identifier }
+    override suspend fun remove(identifier: String) {
+        val currentDevice = notes.find { it.identifier == identifier }
         notes.remove(currentDevice)
     }
 }

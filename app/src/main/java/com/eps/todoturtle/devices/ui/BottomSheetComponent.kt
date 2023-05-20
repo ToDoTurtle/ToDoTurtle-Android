@@ -1,6 +1,7 @@
 package com.eps.todoturtle.devices.ui
 
 import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.NFCDevice
+import com.eps.todoturtle.note.logic.Note
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +50,34 @@ fun BottomSheet(
             sheetState = bottomSheetState,
         ) {
             composable()
+        }
+    }
+}
+
+@Composable
+fun noteMenu(
+    note: Note,
+    onEditListener: (Note) -> Unit = {},
+    onDeleteListener: (Note) -> Unit = {},
+    onCloseListener: () -> Unit = {},
+): @Composable () -> Unit {
+    return {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+        ) {
+            optionMenu(
+                icon = Icons.Filled.Edit,
+                text = "Edit",
+                onEditClicked = { onEditListener(note) },
+            )
+            optionMenu(
+                icon = Icons.Filled.Delete,
+                text = "Delete",
+                onEditClicked = { onDeleteListener(note) },
+            )
+            optionMenu(icon = Icons.Filled.Close, text = "Close", onEditClicked = onCloseListener)
         }
     }
 }

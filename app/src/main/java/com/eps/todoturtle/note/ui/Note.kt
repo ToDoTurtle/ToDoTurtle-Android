@@ -1,12 +1,17 @@
 package com.eps.todoturtle.note.ui
 
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,13 +19,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +44,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.eps.todoturtle.R
+import com.eps.todoturtle.devices.ui.BottomSheet
+import com.eps.todoturtle.devices.ui.getOut
+import com.eps.todoturtle.devices.ui.noteMenu
 import com.eps.todoturtle.map.logic.MapLauncher
 import com.eps.todoturtle.map.ui.MapView
 import com.eps.todoturtle.note.logic.Note
@@ -42,23 +55,30 @@ import com.eps.todoturtle.ui.theme.inactiveOnSecondaryContainer
 import com.eps.todoturtle.ui.theme.noteContainer
 import com.eps.todoturtle.ui.theme.onNoteContainer
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Note(
     note: Note,
     inHistory: Boolean,
     onCheckClick: () -> Unit = {},
+    onEditClick: (Note) -> Unit = {},
+    onDeleteClick: (Note) -> Unit = {},
 ) {
     var isExpanded by remember { mutableStateOf(false) }
+    val showBottomSheet = rememberSaveable { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
 
-    ClickableNoteContainer(
+    NoteContainer(
         onClick = { isExpanded = !isExpanded },
+        onLongClick = { showBottomSheet.value = true },
     ) {
         NoteHead(
             note = note,
             isChecked = inHistory,
             onCheckClick = { onCheckClick() },
         )
-        if (isExpanded && note.description.isNotEmpty()) {
+        if (isExpanded && (note.description.isNotEmpty() || note.location != null)) {
             val modifier = Modifier.padding(start = 13.dp, bottom = 8.dp, end = 8.dp)
             note.apply {
                 location?.let {
@@ -72,11 +92,24 @@ fun Note(
             }
         }
     }
+
+    BottomSheet(
+        showBottomSheet,
+        bottomSheetState,
+        noteMenu(
+            note = note,
+            onEditListener = onEditClick,
+            onDeleteListener = onDeleteClick,
+            onCloseListener = { bottomSheetState.getOut(scope, showBottomSheet) },
+        )
+    )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ClickableNoteContainer(
+fun NoteContainer(
     onClick: () -> Unit,
+    onLongClick: () -> Unit,
     content: @Composable () -> Unit,
 ) {
     Column(
@@ -90,7 +123,10 @@ fun ClickableNoteContainer(
                 ),
             )
             .clip(MaterialTheme.shapes.medium)
-            .clickable { onClick() }
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick,
+            )
             .background(MaterialTheme.colorScheme.noteContainer)
             .fillMaxWidth(),
     ) {

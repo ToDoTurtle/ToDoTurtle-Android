@@ -20,6 +20,8 @@ import com.eps.todoturtle.note.logic.Note
 fun NoteList(
     notes: List<Note>,
     inHistory: Boolean,
+    onEditClick: (Note) -> Unit,
+    onDeleteClick: (Note) -> Unit,
     onCheckClick: (Note) -> Unit,
 ) {
     NoteListContainer(inHistory = inHistory) {
@@ -34,6 +36,8 @@ fun NoteList(
                     Note(
                         note = note,
                         inHistory = inHistory,
+                        onEditClick = { onEditClick(note) },
+                        onDeleteClick = { onDeleteClick(note) },
                         onCheckClick = { onCheckClick(note) },
                     )
                 }
@@ -53,10 +57,10 @@ fun NoteListContainer(
         transitionSpec = {
             if (targetState) {
                 slideInHorizontally { width -> width } + fadeIn() with
-                    slideOutHorizontally { width -> -width } + fadeOut()
+                        slideOutHorizontally { width -> -width } + fadeOut()
             } else {
                 slideInHorizontally { width -> -width } + fadeIn() with
-                    slideOutHorizontally { width -> width } + fadeOut()
+                        slideOutHorizontally { width -> width } + fadeOut()
             }
         },
     ) {

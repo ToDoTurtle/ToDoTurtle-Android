@@ -187,9 +187,7 @@ fun AddNoteForm(
             if (hasPermisions()) choosingLocation = true else requestPermisions()
         },
         onCloseClick = { onCloseClick(); viewModel.clearNoteFields() },
-        onDoneClick = {
-            viewModel.addToDo()
-            if (viewModel.noteErrors.value.isEmpty()) onDoneClick()
+        onDoneClick = { onDoneClick()
         },
     )
 

@@ -16,18 +16,18 @@ class NoteStateRepository(private val repository: NoteRepository) {
         return this.cached!!
     }
 
-    fun add(device: Note) {
+    fun add(note: Note) {
         assertCacheIsLoadedOperation {
-            this@NoteStateRepository.repository.add(device)
-            this@NoteStateRepository.cached!!.add(device)
+            this@NoteStateRepository.repository.add(note)
+            this@NoteStateRepository.cached!!.add(note)
         }
     }
 
-    fun remove(device: Note) {
+    fun remove(identifier: String) {
         assertCacheIsLoadedOperation {
-            this@NoteStateRepository.repository.remove(device)
-            val deviceToRemove = cached!!.find { it.identifier == device.identifier }
-            this@NoteStateRepository.cached!!.remove(deviceToRemove)
+            this@NoteStateRepository.repository.remove(identifier)
+            val noteToRemove = cached!!.find { it.identifier == identifier }
+            this@NoteStateRepository.cached!!.remove(noteToRemove)
         }
     }
 
