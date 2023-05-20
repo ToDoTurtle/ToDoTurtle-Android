@@ -12,7 +12,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.note.logic.NotesViewModel
@@ -32,8 +31,15 @@ fun NoteScreen(
     var isEditFormVisible by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
-        floatingActionButton = { AddNoteButton(onClick = { isAddNoteFormVisible = true }) },
-    ) {
+        floatingActionButton = {
+            NotesFloatingButton(
+                inHistory = inHistory,
+                onClick = {
+                    if (inHistory) viewModel.clearHistory()
+                    else isAddNoteFormVisible = true
+                },
+            )
+        }) {
         Column(
             horizontalAlignment = Alignment.End,
         ) {
@@ -58,40 +64,42 @@ fun NoteScreen(
                 },
             )
         }
-    }
 
-    if (isAddNoteFormVisible) {
-        RequestPermissionContext(locationPermissionRequester) {
-            AddNoteFormDialog(
-                locationClient = locationClient,
-                requestPermisions = { requestPermissions() },
-                hasLocationPermission = hasLocationPermission,
-                onCloseClick = { isAddNoteFormVisible = false },
-                onDoneClick = {
-                    viewModel.addToDo()
-                    if (viewModel.noteErrors.value.isEmpty()) isAddNoteFormVisible = false
-                },
-                onDismissRequest = { isAddNoteFormVisible = false },
-                viewModel = viewModel,
-            )
+        if (isAddNoteFormVisible) {
+            RequestPermissionContext(locationPermissionRequester) {
+                AddNoteFormDialog(
+                    locationClient = locationClient,
+                    requestPermisions = { requestPermissions() },
+                    hasLocationPermission = hasLocationPermission,
+                    onCloseClick = { isAddNoteFormVisible = false },
+                    onDoneClick = {
+                        viewModel.addToDo()
+                        if (viewModel.noteErrors.value.isEmpty()) isAddNoteFormVisible = false
+                    },
+                    onDismissRequest = { isAddNoteFormVisible = false },
+                    viewModel = viewModel,
+                )
+            }
         }
-    }
 
-    if (isEditFormVisible) {
-        RequestPermissionContext(locationPermissionRequester) {
-            AddNoteFormDialog(
-                locationClient = locationClient,
-                requestPermisions = { requestPermissions() },
-                hasLocationPermission = hasLocationPermission,
-                onCloseClick = { isEditFormVisible = false; viewModel.clearNoteFields() },
-                onDoneClick = {
-                    if (inHistory) viewModel.updateDone() else viewModel.updateToDo()
-                    if (viewModel.noteErrors.value.isEmpty()) isEditFormVisible = false
-                },
-                onDismissRequest = { isEditFormVisible = false; viewModel.clearNoteFields() },
-                titleTextId = R.string.edit_note,
-                viewModel = viewModel,
-            )
+        if (isEditFormVisible) {
+            RequestPermissionContext(locationPermissionRequester) {
+                AddNoteFormDialog(
+                    locationClient = locationClient,
+                    requestPermisions = { requestPermissions() },
+                    hasLocationPermission = hasLocationPermission,
+                    onCloseClick = { isEditFormVisible = false; viewModel.clearNoteFields() },
+                    onDoneClick = {
+                        if (inHistory) viewModel.updateDone() else viewModel.updateToDo()
+                        if (viewModel.noteErrors.value.isEmpty()) isEditFormVisible = false
+                    },
+                    onDismissRequest = {
+                        isEditFormVisible = false; viewModel.clearNoteFields()
+                    },
+                    titleTextId = R.string.edit_note,
+                    viewModel = viewModel,
+                )
+            }
         }
     }
 }

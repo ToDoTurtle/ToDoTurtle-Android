@@ -96,6 +96,7 @@
     <string name="link_note">Vincular acció</string>
     <string name="cancel">Cancel·lar</string>
     <string name="confirm">Confirmar</string>
+    <string name="preference_category_network">Xarxa</string>
     <string name="preferences_only_wifi_desc">Només usar wifi</string>
     <string name="preference_wifi_image_desc">Icon that describes phono data usage</string>
     <string name="no_internet_connection">Sense connexió</string>
@@ -124,6 +125,9 @@
     <string name="github_desc">Icona de Github</string>
     <string name="edit_note">Editar nota</string>
     <string name="aboutus_uri">https://todoturtle-appmedia.s3.eu-south-2.amazonaws.com/todoturtle-aboutus-cat.txt</string>
+    <string name="note_clear_history_button_desc">Button that clears history.</string>
+    <string name="note_clear_history_dialog_title">Clear history</string>
+    <string name="note_clear_history_dialog_text">S\'eliminaran totes les notes completes de l\'historic. Estàs segur?</string>
     <string name="location_edit_link_action">Ubicació</string>
     <string name="edit_note_menu">Editar</string>
     <string name="delete_note_menu">Eliminar</string>
@@ -147,5 +151,4 @@
     <string name="device_added_successfully">El dispositiu %s s\'ha afegit correctament. Entra a l\'aplicació per personalitzar-lo</string>
     <string name="firebase_messaging_token_error">No s\'ha pogut obtenir el token de Firebase. Si us plau, envia un correu als programadors de l\'aplicació</string>
     <string name="go_home">Anar a la pàgina inicial</string>
-    <string name="preference_category_network">Xarxa</string>
 </resources>

@@ -2,6 +2,13 @@ package com.eps.todoturtle.note.ui
 
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,9 +19,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -62,21 +71,90 @@ import com.eps.todoturtle.ui.theme.onFormContainer
 import com.google.android.gms.tasks.Tasks
 import org.osmdroid.util.GeoPoint
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AddNoteButton(
+fun NotesFloatingButton(
     modifier: Modifier = Modifier,
+    inHistory: Boolean,
     onClick: () -> Unit,
 ) {
+    var showConfirmDialog by rememberSaveable { mutableStateOf(false) }
+
     FloatingActionButton(
         containerColor = MaterialTheme.colorScheme.noteScreenButton,
         modifier = modifier,
-        onClick = onClick,
+        onClick = {
+            if (inHistory) showConfirmDialog = true
+            else onClick()
+        },
     ) {
-        Icon(
-            imageVector = Icons.Filled.Add,
-            contentDescription = stringResource(id = R.string.note_add_note_button_desc),
+        AnimatedContent(
+            targetState = inHistory,
+            transitionSpec = {
+                if (targetState) {
+                    slideInHorizontally { width -> width } + fadeIn() with
+                            slideOutHorizontally { width -> -width } + fadeOut()
+                } else {
+                    slideInHorizontally { width -> -width } + fadeIn() with
+                            slideOutHorizontally { width -> width } + fadeOut()
+                }
+            },
+        ) { targetInHistory ->
+            if (inHistory) ClearHistoryIcon() else AddNoteIcon()
+        }
+    }
+
+    if (showConfirmDialog) {
+        ConfirmClearHistoryDialog(
+            onDismissRequest = { showConfirmDialog = false },
+            onConfirmClick = onClick,
         )
     }
+}
+
+@Composable
+fun ConfirmClearHistoryDialog(
+    onDismissRequest: () -> Unit = {},
+    onConfirmClick: () -> Unit = {},
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text(stringResource(id = R.string.note_clear_history_dialog_title)) },
+        text = { Text(stringResource(id = R.string.note_clear_history_dialog_text)) },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onDismissRequest()
+                    onConfirmClick()
+                },
+            ) {
+                Text(stringResource(id = R.string.confirm))
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismissRequest,
+            ) {
+                Text(stringResource(id = R.string.cancel))
+            }
+        },
+    )
+}
+
+@Composable
+fun AddNoteIcon() {
+    Icon(
+        imageVector = Icons.Filled.Add,
+        contentDescription = stringResource(id = R.string.note_add_note_button_desc),
+    )
+}
+
+@Composable
+fun ClearHistoryIcon() {
+    Icon(
+        imageVector = Icons.Filled.Clear,
+        contentDescription = stringResource(id = R.string.note_clear_history_button_desc),
+    )
 }
 
 @Composable
@@ -187,7 +265,8 @@ fun AddNoteForm(
             if (hasPermisions()) choosingLocation = true else requestPermisions()
         },
         onCloseClick = { onCloseClick(); viewModel.clearNoteFields() },
-        onDoneClick = { onDoneClick()
+        onDoneClick = {
+            onDoneClick()
         },
     )
 

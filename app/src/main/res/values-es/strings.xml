@@ -147,4 +147,7 @@
     <string name="device_added_successfully">Dispositivo %s agregado correctamente, ingresa a la aplicación para personalizarlo</string>
     <string name="firebase_messaging_token_error">Error al obtener el token de Firebase. Por favor, envía un correo a los programadores de la aplicación</string>
     <string name="go_home">Ir a Inicio</string>
+    <string name="note_clear_history_button_desc">Button that clears history.</string>
+    <string name="note_clear_history_dialog_title">Clear history</string>
+    <string name="note_clear_history_dialog_text">Se van a eliminar todas las notas completadas del historial.  ¿Estás seguro?</string>
 </resources>

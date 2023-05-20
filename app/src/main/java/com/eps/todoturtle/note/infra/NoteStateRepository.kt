@@ -16,6 +16,13 @@ class NoteStateRepository(private val repository: NoteRepository) {
         return this.cached!!
     }
 
+    fun clear() {
+        assertCacheIsLoadedOperation {
+            cached!!.forEach { repository.remove(it) }
+            cached!!.clear()
+        }
+    }
+
     fun add(note: Note) {
         assertCacheIsLoadedOperation {
             this@NoteStateRepository.repository.add(note)

@@ -90,4 +90,7 @@
     <string name="device_added_successfully">Device %s added successfully, enter the app for customizing it</string>
     <string name="firebase_messaging_token_error">failed to get firebase token, please send a mail to the programmers of the app</string>
     <string name="go_home">Go Home</string>
+    <string name="note_clear_history_button_desc">Button that clears history.</string>
+    <string name="note_clear_history_dialog_title">Clear history</string>
+    <string name="note_clear_history_dialog_text">All done notes on the history are going to be deleted. Are you sure?</string>
 </resources>

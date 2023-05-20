@@ -57,6 +57,10 @@ class NotesViewModel(
         }
     }
 
+    fun clearHistory() {
+        doneRepository.clear()
+    }
+
     fun load(note: Note) {
         selectedNote = note
         noteTitle.value = note.title
