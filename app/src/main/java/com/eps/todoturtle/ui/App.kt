@@ -1,5 +1,6 @@
 package com.eps.todoturtle.ui
 
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
@@ -32,7 +33,6 @@ import com.eps.todoturtle.navigation.ui.Drawer
 import com.eps.todoturtle.navigation.ui.ToDoTurtleNavHost
 import com.eps.todoturtle.navigation.ui.TopBar
 import com.eps.todoturtle.navigation.ui.navigateSingleTopTo
-import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.location.LocationClient
@@ -40,7 +40,6 @@ import com.eps.todoturtle.permissions.logic.PermissionRequester
 import com.eps.todoturtle.preferences.logic.data.AppPreferences
 import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.logic.UserAuth
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,6 +58,7 @@ fun App(
     hasCameraPermission: () -> Boolean,
     userAuth: UserAuth,
     reloadActivity: () -> Unit,
+    context: Context,
 ) {
     val navController = rememberNavController()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -101,6 +101,7 @@ fun App(
                     hasCameraPermission = { hasCameraPermission() },
                     userAuth = userAuth,
                     reloadActivity = reloadActivity,
+                    context = context,
                 )
             }
         }

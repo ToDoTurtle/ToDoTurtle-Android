@@ -65,4 +65,6 @@
     <string name="note_form_title_empty_error">Title empty.</string>
     <string name="note_form_description_too_long_error">Description is too long.</string>
     <string name="edit_note">Edit note</string>
+    <string name="aboutus_uri">https://gist.github.com/oriolagobat/786ac67637baa60ce4e4ad79c88de533/raw/9bdc4ce467f469b5d865d55dac4aec478413473c/about_us.txt</string>
+    <string name="aboutus_image_uri">https://gist.github.com/oriolagobat/a688827df49e39ad8f107d6c25325407/raw/ee80f49ae15f89491f99fd249178f09f6ee14f7f/about_us_image.txt</string>
 </resources>

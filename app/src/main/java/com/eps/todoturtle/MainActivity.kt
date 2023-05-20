@@ -141,6 +141,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     hasCameraPermission = { hasCameraPermission() },
                     userAuth = userAuth,
                     reloadActivity = ::reloadActivity,
+                    context = applicationContext,
                 )
             }
         }

@@ -1,5 +1,6 @@
 package com.eps.todoturtle.navigation.ui
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,6 +59,7 @@ fun ToDoTurtleNavHost(
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
     reloadActivity: () -> Unit,
+    context: Context
 ) {
     NavHost(
         navController = navController,
@@ -84,7 +86,7 @@ fun ToDoTurtleNavHost(
         writeDevice(navController, nfcWriteViewModel)
         deviceConfiguration(devicesViewModel, navController)
         settings(dataStore, reloadActivity)
-        invite()
+        invite(context)
     }
 }
 
@@ -233,9 +235,9 @@ private fun NavGraphBuilder.settings(
     }
 }
 
-fun NavGraphBuilder.invite() {
+fun NavGraphBuilder.invite(context: Context) {
     composable(Destinations.ABOUT_US.route) {
-        AboutUsUI()
+        AboutUsUI(context)
     }
 }
 

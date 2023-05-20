@@ -123,4 +123,5 @@
     <string name="quick_note_form_close_button_desc">Botón de cerrar para cancelar la creación de una nota.</string>
     <string name="note_quick_form_done_button">Botón de aceptar para completar la creación de una nota.</string>
     <string name="edit_note">Editar nota</string>
+    <string name="aboutus_uri">https://gist.github.com/oriolagobat/786ac67637baa60ce4e4ad79c88de533/raw/9bdc4ce467f469b5d865d55dac4aec478413473c/about_us.txt</string>
 </resources>
