@@ -93,4 +93,9 @@
     <string name="note_clear_history_button_desc">Button that clears history.</string>
     <string name="note_clear_history_dialog_title">Clear history</string>
     <string name="note_clear_history_dialog_text">All done notes on the history are going to be deleted. Are you sure?</string>
+    <string name="coarse_permanently_declined">It seems like you permanently declined coarse location permission. Go to app settings to grant it.</string>
+    <string name="coarse_location_reason">This app needs access to your fine location so it can add your location to a note.</string>
+    <string name="fine_permanently_declined">It seems like you permanently declined fine location permission. Go to app settings to grant it.</string>
+    <string name="fine_permision_reason">This app needs access to your fine location so it can add your precise location to a note.</string>
+    <string name="aboutus_text">https://gist.github.com/oriolagobat/786ac67637baa60ce4e4ad79c88de533/raw/9bdc4ce467f469b5d865d55dac4aec478413473c/about_us.txt</string>
 </resources>
