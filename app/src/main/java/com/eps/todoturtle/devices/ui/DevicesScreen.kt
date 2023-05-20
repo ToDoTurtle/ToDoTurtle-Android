@@ -152,7 +152,6 @@ fun NFCDeviceListItem(
 ) {
     val showBottomSheet = rememberSaveable { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val scope = rememberCoroutineScope()
     Card(
         modifier = Modifier
             .padding(4.dp)
@@ -182,17 +181,6 @@ fun NFCDeviceListItem(
             onCloseListener = { showBottomSheet.value = false },
         ),
     )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-fun SheetState.getOut(scope: CoroutineScope, showBottomSheet: MutableState<Boolean>) {
-    scope.launch {
-        hide()
-    }.invokeOnCompletion {
-        if (isVisible) {
-            showBottomSheet.value = false
-        }
-    }
 }
 
 @Composable
@@ -252,9 +240,8 @@ fun DeviceIcon(iconToDrawableConverter: @Composable (Int) -> Drawable?, device: 
 @Composable
 fun RowScope.DeviceInformation(device: NFCDevice) {
     Column(modifier = Modifier.weight(1f)) {
-        Text(text = device.name, fontWeight = FontWeight.Bold)
-        Text(text = device.description, color = colorScheme.onSurface.copy(alpha = 0.6f))
-        Text(text = device.identifier, color = colorScheme.onSurface.copy(alpha = 0.6f))
+        Text(text = device.name, fontWeight = FontWeight.Bold, maxLines = 1)
+        Text(text = device.description, color = colorScheme.onSurface.copy(alpha = 0.6f), maxLines = 3)
     }
 }
 

@@ -103,6 +103,7 @@ fun DescriptionChooser(value: String, isError: Boolean, onChange: (String) -> Un
         value = value,
         isError = isError,
         onValueChange = onChange,
+        maxLines = 4,
         modifier = Modifier.fillMaxWidth(),
         supportingText = {
             if (isError) {

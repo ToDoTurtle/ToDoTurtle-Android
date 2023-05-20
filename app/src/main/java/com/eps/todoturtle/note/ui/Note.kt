@@ -45,7 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.ui.BottomSheet
-import com.eps.todoturtle.devices.ui.getOut
 import com.eps.todoturtle.devices.ui.noteMenu
 import com.eps.todoturtle.map.logic.MapLauncher
 import com.eps.todoturtle.map.ui.MapView
