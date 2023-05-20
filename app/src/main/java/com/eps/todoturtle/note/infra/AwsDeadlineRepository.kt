@@ -40,7 +40,7 @@ class AwsDeadlineRepository : DeadlineRepository {
                     contentType(ContentType.Application.Json)
                     setBody(
                         mapOf(
-                            "time" to time,
+                            "time" to time.time,
                         )
                     )
                 }
