@@ -12,12 +12,12 @@
     <string name="preference_category_general">General</string>
     <string name="preference_mute_desc">Silenciar sonidos</string>
     <string name="preference_mute_image_desc">Icono de silenciar</string>
-    <string name="preference_theme_desc">Tema de la aplicación</string>
+    <string name="preference_theme_desc">Tema</string>
     <string name="preference_theme_image_desc">Icono de una paleta</string>
     <string name="preference_theme_label">Tema</string>
     <string name="preference_theme_greenish">Verde</string>
     <string name="preference_theme_cold">Frío</string>
-    <string name="preference_theme_cold_dark">Frío - Oscuro</string>
+    <string name="preference_theme_cold_dark">Marino</string>
     <string name="preference_theme_amber">Ámbar</string>
     <string name="preference_theme_magenta">Magenta</string>
     <string name="profile_sign_out">Cerrar sesión</string>
@@ -55,7 +55,7 @@
     <string name="note_notes_icon_desc">Notas</string>
     <string name="invite_gif_desc">GIF de un hombre taladrando el suelo</string>
     <string name="invite_construction">En construcción…</string>
-    <string name="preference_theme_default">Predeterminado</string>
+    <string name="preference_theme_default">Por defecto</string>
     <string name="programming_error_nfc_tag">Error de programación</string>
     <string name="programing_error_explain_nfc_tag">La aplicación se encuentra en un estado no conocido, seguramente sea culpa de los programadores, porfavor envien el logcat a su correo</string>
     <string name="send_error_nfc_tag">Enviar</string>

@@ -94,7 +94,7 @@
     <string name="date">Fecha</string>
     <string name="go_back_to_date_picker_icon_desc">Button to go back to date picker</string>
     <string name="link_note">Vincular acción</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">Cancelar</string>
     <string name="confirm">Confirm</string>
     <string name="preference_category_network">Network</string>
     <string name="preferences_only_wifi_desc">Only use wifi</string>
@@ -106,7 +106,7 @@
     <string name="app_requires_internet">ToDo Turtle needs an internet connection to save your notes.</string>
     <string name="exit">Exit</string>
     <string name="close_app">Close app</string>
-    <string name="app_reload_warning">Enabling this option will reload the app.</string>
+    <string name="app_reload_warning">Activarla reiniciará la app.</string>
     <string name="note_form_title_too_long_error">Title too long.</string>
     <string name="note_form_title_empty_error">Title empty.</string>
     <string name="note_form_description_too_long_error">Description is too long.</string>
