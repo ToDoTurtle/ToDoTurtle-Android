@@ -168,7 +168,6 @@ class ConnectionCheckerImpl(private val context: Context) : ConnectionChecker {
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
             .build()
 
-        connectivityManager.activeNetworkInfo
         connectivityManager.registerNetworkCallback(
             networkRequest,
             object : ConnectivityManager.NetworkCallback() {
