@@ -1,8 +1,12 @@
 package com.eps.todoturtle.navigation.ui
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
@@ -15,9 +19,11 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -62,18 +68,29 @@ fun Drawer(
                     onItemClick = { onItemClick(Devices) },
                     badge = devicesCount.toString(),
                 )
-                ProfileItem(
-                    isSelected = selectedItem == Profile,
-                    onItemClick = { onItemClick(Profile) },
-                )
-                SettingsItem(
-                    isSelected = selectedItem == Settings,
-                    onItemClick = { onItemClick(Settings) },
-                )
-                AboutUsItem(
-                    isSelected = selectedItem == Invite,
-                    onItemClick = { onItemClick(Invite) },
-                )
+                Divider(thickness = 2.dp, modifier = Modifier.padding(horizontal = 20.dp).clip(
+                    RoundedCornerShape(8.dp)))
+                Column(
+                    Modifier
+                        .fillMaxHeight()
+                        .padding(bottom = 8.dp),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Divider(thickness = 2.dp, modifier = Modifier.padding(horizontal = 20.dp).clip(
+                        RoundedCornerShape(8.dp)))
+                    ProfileItem(
+                        isSelected = selectedItem == Profile,
+                        onItemClick = { onItemClick(Profile) },
+                    )
+                    SettingsItem(
+                        isSelected = selectedItem == Settings,
+                        onItemClick = { onItemClick(Settings) },
+                    )
+                    AboutUsItem(
+                        isSelected = selectedItem == Invite,
+                        onItemClick = { onItemClick(Invite) },
+                    )
+                }
             }
         },
     ) {
