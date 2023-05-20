@@ -123,6 +123,6 @@
     <string name="google_desc">Icona de Google, per a registrar-te amb ells</string>
     <string name="github_desc">Icona de Github</string>
     <string name="edit_note">Editar nota</string>
-    <string name="aboutus_uri">https://gist.github.com/oriolagobat/786ac67637baa60ce4e4ad79c88de533/raw/9bdc4ce467f469b5d865d55dac4aec478413473c/about_us.txt</string>
+    <string name="aboutus_uri">https://todoturtle-appmedia.s3.eu-south-2.amazonaws.com/todoturtle-aboutus-cat.txt</string>
 
 </resources>

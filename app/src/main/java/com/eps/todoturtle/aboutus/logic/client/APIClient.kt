@@ -1,6 +1,7 @@
 package com.eps.todoturtle.aboutus.logic.client
 
 import android.content.Context
+import com.eps.todoturtle.R
 import com.eps.todoturtle.aboutus.logic.routes.AboutUsRoutes
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
