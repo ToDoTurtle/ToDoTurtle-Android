@@ -2,7 +2,6 @@ package com.eps.todoturtle
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,7 +30,8 @@ class InitialActivity : AppCompatActivity() {
     private lateinit var connectionAvailability: NetworkAvailability
     private val coroutineScope: CoroutineScope by lazy {
         lifecycleScope + CoroutineExceptionHandler { _, throwable ->
-            throwable.printStackTrace()}
+            throwable.printStackTrace()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,12 +51,9 @@ class InitialActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    val connectionAvailability by connectionAvailabilityFlow.collectAsStateWithLifecycle(
-                        initialValue = connectionAvailability
-                    )
-                    if (connectionAvailability == NetworkAvailability.AVAILABLE) {
-                        startApp()
-                    }
+                    val connectionAvailability by connectionAvailabilityFlow
+                        .collectAsStateWithLifecycle(initialValue = connectionAvailability)
+                    if (connectionAvailability == NetworkAvailability.AVAILABLE) startApp()
                     NetworkWarningDialog(
                         showDialog = connectionAvailability != NetworkAvailability.AVAILABLE,
                         reason = R.string.app_requires_internet,
