@@ -18,7 +18,7 @@ fun AboutUsText(text: String) {
         modifier = Modifier
             .height(300.dp)
             .verticalScroll(scroll)
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp, vertical = 8.dp),
         color = MaterialTheme.colorScheme.onPrimaryContainer,
     )
 }
