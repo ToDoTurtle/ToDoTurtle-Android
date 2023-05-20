@@ -46,7 +46,7 @@ fun HistoryToggle(
             targetState = inHistory,
         ) {
             Row {
-                if (inHistory) GoBackIcon() else GoHistoryIcon()
+                if (inHistory) GoHistoryIcon() else GoBackIcon()
             }
         }
     }
