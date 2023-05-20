@@ -108,6 +108,8 @@ dependencies {
     // Google login
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
 
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
+
     // Ktor
     implementation 'io.ktor:ktor-client-android:1.5.0'
     implementation 'io.ktor:ktor-client-core:1.5.0'
