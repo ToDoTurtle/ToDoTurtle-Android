@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
                                 if (!task.isSuccessful) {
                                     Toast.makeText(
                                         this@LoginActivity,
-                                        "Failed to get token",
+                                        resources.getString(R.string.firebase_messaging_token_error),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     return@OnCompleteListener

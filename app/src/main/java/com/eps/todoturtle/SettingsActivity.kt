@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.eps.todoturtle.preferences.ui.PreferenceUIWithoutConnection
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
@@ -25,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
                 Scaffold(
                     floatingActionButton = {
                         FloatingActionButton(onClick = { onGoHomeClick() }) {
-                            Icon(Icons.Filled.Home, contentDescription = "Go Home")
+                            Icon(Icons.Filled.Home, contentDescription = stringResource(R.string.go_home))
                         }
                     },
                 ) {

@@ -1,7 +1,6 @@
 package com.eps.todoturtle.devices.ui
 
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -72,15 +72,15 @@ fun noteMenu(
         ) {
             optionMenu(
                 icon = Icons.Filled.Edit,
-                text = "Edit",
+                text = stringResource(id = R.string.edit_note_menu),
                 onEditClicked = { onEditListener(note) },
             )
             optionMenu(
                 icon = Icons.Filled.Delete,
-                text = "Delete",
+                text = stringResource(id = R.string.delete_note_menu),
                 onEditClicked = { onDeleteListener(note) },
             )
-            optionMenu(icon = Icons.Filled.Close, text = "Close", onEditClicked = onCloseListener)
+            optionMenu(icon = Icons.Filled.Close, text = stringResource(id = R.string.close_menu), onEditClicked = onCloseListener)
         }
     }
 }
@@ -103,20 +103,20 @@ fun deviceMenu(
             NoteCardInfo(device = device, drawableConverter)
             optionMenu(
                 icon = Icons.Filled.Edit,
-                text = "Edit",
+                text = stringResource(id = R.string.edit_device_menu),
                 onEditClicked = { onEditListener(device) },
             )
             optionMenu(
                 icon = Icons.Filled.Delete,
-                text = "Delete",
+                text = stringResource(id = R.string.delete_device_menu),
                 onEditClicked = { onDeleteListener(device) },
             )
             optionMenu(
                 icon = Icons.Filled.Delete,
-                text = "Delete Action",
+                text = stringResource(id = R.string.delete_action_menu),
                 onEditClicked = { onDeleteActionListener(device.identifier) },
             )
-            optionMenu(icon = Icons.Filled.Close, text = "Close", onEditClicked = onCloseListener)
+            optionMenu(icon = Icons.Filled.Close, text = stringResource(id = R.string.close_menu), onEditClicked = onCloseListener)
         }
     }
 }
@@ -133,15 +133,24 @@ fun NoteCardInfo(device: NFCDevice, drawableConverter: @Composable (Int) -> Draw
             verticalAlignment = Alignment.CenterVertically,
         ) {
             DeviceIcon(drawableConverter, device)
-            Column() {
-                Text(modifier=Modifier.padding(2.dp), text=device.name, fontWeight = FontWeight.Bold, fontFamily = FontFamily.SansSerif)
+            Column {
+                Text(
+                    modifier = Modifier.padding(2.dp),
+                    text = device.name,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif
+                )
                 Text(
                     modifier = Modifier.padding(2.dp),
                     text = device.description,
                     textAlign = TextAlign.Center,
                     maxLines = 3,
                 )
-                Text(modifier = Modifier.padding(2.dp), text = device.identifier, fontStyle = FontStyle.Italic)
+                Text(
+                    modifier = Modifier.padding(2.dp),
+                    text = device.identifier,
+                    fontStyle = FontStyle.Italic
+                )
             }
         }
     }

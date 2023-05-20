@@ -124,5 +124,28 @@
     <string name="github_desc">Icona de Github</string>
     <string name="edit_note">Editar nota</string>
     <string name="aboutus_uri">https://todoturtle-appmedia.s3.eu-south-2.amazonaws.com/todoturtle-aboutus-cat.txt</string>
-
+    <string name="location_edit_link_action">Ubicació</string>
+    <string name="edit_note_menu">Editar</string>
+    <string name="delete_note_menu">Eliminar</string>
+    <string name="close_menu">Tancar</string>
+    <string name="edit_device_menu">Editar dispositiu</string>
+    <string name="delete_device_menu">Eliminar dispositiu</string>
+    <string name="delete_action_menu">Eliminar acció</string>
+    <string name="device_name_not_valid">El nom del dispositiu no és vàlid</string>
+    <string name="device_description_not_valid">La descripció no pot estar buida</string>
+    <string name="icon_chooser_description">Selecciona una icona</string>
+    <string name="icon_chooser_button">Selecciona icona</string>
+    <string name="not_icon_selected_error">Si us plau, selecciona una icona</string>
+    <string name="save_device">Guardar</string>
+    <string name="please_login_to_continue">Si us plau, inicia sessió per continuar</string>
+    <string name="error_reading_nfc_id">Error en llegir l\'ID!</string>
+    <string name="error_device_dont_have_action">El dispositiu no té cap acció. Si us plau, configura\'l per a poder utilitzar-lo</string>
+    <string name="error_invalid_notification_time">Temps de notificació no vàlid. No rebràs cap notificació</string>
+    <string name="error_invalid_deadline_time">Temps límit no vàlid. No s\'eliminarà automàticament</string>
+    <string name="error_gps_disabled">Si us plau, activa el GPS per continuar</string>
+    <string name="please_login_to_add_device">Si us plau, inicia sessió per afegir un dispositiu</string>
+    <string name="device_added_successfully">El dispositiu %s s\'ha afegit correctament. Entra a l\'aplicació per personalitzar-lo</string>
+    <string name="firebase_messaging_token_error">No s\'ha pogut obtenir el token de Firebase. Si us plau, envia un correu als programadors de l\'aplicació</string>
+    <string name="go_home">Anar a la pàgina inicial</string>
+    <string name="preference_category_network">Xarxa</string>
 </resources>

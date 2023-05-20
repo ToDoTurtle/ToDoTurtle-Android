@@ -67,4 +67,27 @@
     <string name="edit_note">Edit note</string>
     <string name="aboutus_uri">https://todoturtle-appmedia.s3.eu-south-2.amazonaws.com/todoturtle-aboutus.txt</string>
     <string name="aboutus_image_uri" translatable="false">https://todoturtle-appmedia.s3.eu-south-2.amazonaws.com/todoturtle-staffpic-uri.txt</string>
+    <string name="location_edit_link_action">Location</string>
+    <string name="edit_note_menu">Edit</string>
+    <string name="delete_note_menu">Delete</string>
+    <string name="close_menu">Close</string>
+    <string name="edit_device_menu">Edit Device</string>
+    <string name="delete_device_menu">Delete Device</string>
+    <string name="delete_action_menu">Delete Action</string>
+    <string name="device_name_not_valid">Device Name isn\'t valid</string>
+    <string name="device_description_not_valid">Description cannot be empty</string>
+    <string name="icon_chooser_description">Choose an Icon</string>
+    <string name="icon_chooser_button">Choose Icon</string>
+    <string name="not_icon_selected_error">Please choose an icon</string>
+    <string name="save_device">Save</string>
+    <string name="please_login_to_continue">Please login to continue</string>
+    <string name="error_reading_nfc_id">Error reading id!</string>
+    <string name="error_device_dont_have_action">Device doesn\'t have any action, please configure it for use them</string>
+    <string name="error_invalid_notification_time">Invalid notification time. You will not receive a notification</string>
+    <string name="error_invalid_deadline_time">Invalid deadline time. It will not remove automatically</string>
+    <string name="error_gps_disabled">Please enable GPS to continue</string>
+    <string name="please_login_to_add_device">Please login to add a device</string>
+    <string name="device_added_successfully">Device %s added successfully, enter the app for customizing it</string>
+    <string name="firebase_messaging_token_error">failed to get firebase token, please send a mail to the programmers of the app</string>
+    <string name="go_home">Go Home</string>
 </resources>

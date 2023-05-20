@@ -16,11 +16,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eps.todoturtle.R
 import com.eps.todoturtle.devices.logic.DeviceBuildError
 import com.eps.todoturtle.devices.logic.DeviceConfigurationParams
 import com.eps.todoturtle.devices.logic.DevicesViewModel
@@ -83,7 +85,7 @@ fun DeviceNameChooser(value: String, isError: Boolean, onChange: (String) -> Uni
             if (isError) {
                 Text(
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    text = "Device Name isn't valid",
+                    text = stringResource(id = R.string.device_name_not_valid),
                     color = MaterialTheme.colorScheme.error,
                 )
             }
@@ -109,7 +111,7 @@ fun DescriptionChooser(value: String, isError: Boolean, onChange: (String) -> Un
             if (isError) {
                 Text(
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    text = "Description cannot be empty",
+                    text = stringResource(id = R.string.device_description_not_valid),
                     color = MaterialTheme.colorScheme.error,
                 )
             }
@@ -120,7 +122,7 @@ fun DescriptionChooser(value: String, isError: Boolean, onChange: (String) -> Un
 @Composable
 fun IconChooser(isError: Boolean, onClick: () -> Unit) {
     Text(
-        text = "Choose an Icon",
+        text = stringResource(id = R.string.icon_chooser_description),
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
         modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
@@ -129,10 +131,13 @@ fun IconChooser(isError: Boolean, onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Text(text = "Choose Icon")
+        Text(text = stringResource(id = R.string.icon_chooser_button))
     }
     if (isError) {
-        Text(text = "Please choose an icon", color = MaterialTheme.colorScheme.error)
+        Text(
+            text = stringResource(id = R.string.not_icon_selected_error),
+            color = MaterialTheme.colorScheme.error
+        )
     }
 }
 
@@ -145,7 +150,7 @@ fun SaveButton(onClick: () -> Unit) {
             .fillMaxWidth()
             .height(50.dp),
     ) {
-        Text(text = "Save")
+        Text(text = stringResource(id = R.string.save_device))
     }
 }
 

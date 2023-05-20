@@ -225,7 +225,7 @@ fun LocationFetchSwitch(checked: Boolean = false, checkedChanged: (Boolean) -> U
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text("Location")
+        Text(stringResource(R.string.location_edit_link_action))
         Switch(
             checked = checked,
             onCheckedChange = { changed ->

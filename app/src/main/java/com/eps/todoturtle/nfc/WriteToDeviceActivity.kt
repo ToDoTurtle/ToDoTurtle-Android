@@ -36,12 +36,10 @@ import com.maltaisn.icondialog.pack.IconPack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 
 class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivity {
 
-    private val callBackIcons: MutableStateFlow<Int?> = MutableStateFlow(null)
     private val currentIcon: Channel<Int> = Channel(UNLIMITED)
     private lateinit var iconDialog: IconDialog
 
@@ -53,7 +51,11 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
         theme.applyStyle(R.style.AppTheme, true)
 
         if (Firebase.auth.currentUser == null) {
-            Toast.makeText(this, "Please login to add a device", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                resources.getString(R.string.please_login_to_add_device),
+                Toast.LENGTH_SHORT
+            ).show()
             finish()
         }
         val nfcWriteViewModel = getNfcWriteModel()
@@ -72,13 +74,13 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
                         WriteDevice(
                             viewModel = nfcWriteViewModel,
                             onNfcNotSupported = {
-                                Toast.makeText(this, "NFC not supported", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, resources.getString(R.string.nfc_not_supported), Toast.LENGTH_SHORT).show()
                                 finish()
                             },
                             onTagLost = {
                                 Toast.makeText(
                                     this,
-                                    "TAG Lost, please try again",
+                                    resources.getString(R.string.move_too_fast_solution),
                                     Toast.LENGTH_SHORT
                                 )
                                     .show()
@@ -87,7 +89,7 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
                             onTagNotWriteable = {
                                 Toast.makeText(
                                     this,
-                                    "TAG can't be written, buy another one",
+                                    resources.getString(R.string.nfc_tag_not_supported_solution),
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 finish()
@@ -95,7 +97,7 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
                             unknownError = {
                                 Toast.makeText(
                                     this,
-                                    "Unknown error, please try again",
+                                    resources.getString(R.string.unknown_error_nfc_solution),
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 finish()
@@ -110,7 +112,7 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
                         DeviceConfigurationScreen(devicesViewModel, DeviceConfigurationParams.NEW) {
                             Toast.makeText(
                                 this,
-                                "Device ${it.name} added successfully, enter the app for customizing it",
+                                resources.getString(R.string.device_added_successfully, it.name),
                                 Toast.LENGTH_SHORT
                             ).show()
                             finish()

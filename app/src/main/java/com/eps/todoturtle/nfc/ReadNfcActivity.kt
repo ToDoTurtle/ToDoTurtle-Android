@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import com.eps.todoturtle.R
 import com.eps.todoturtle.action.infra.FirebaseActionRepository
 import com.eps.todoturtle.action.logic.ActionViewModel.Companion.getActionViewModel
 import com.eps.todoturtle.action.logic.NoteAction
@@ -45,26 +46,26 @@ class ReadNfcActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Firebase.auth.currentUser == null) {
-            showMessageAndFinish("Please login to continue")
+            showMessageAndFinish(resources.getString(R.string.please_login_to_continue))
         }
 
         val id = getId()
         if (id == null) {
-            showMessageAndFinish("Error reading id!")
+            showMessageAndFinish(resources.getString(R.string.error_reading_nfc_id))
         }
 
         val actionRepository = FirebaseActionRepository()
         val viewModel = getActionViewModel(actionRepository)
         val action = viewModel.actions[id]
         if (action == null) {
-            showMessageAndFinish("Device doesn't have any action, please configure it for use them")
+            showMessageAndFinish(resources.getString(R.string.error_device_dont_have_action))
         }
 
         val notesRepository = FirebaseToDoNoteRepository(onNotificationError = {
             runOnUiThread {
                 Toast.makeText(
                     this,
-                    "Invalid notification time. You will not receive a notification",
+                    resources.getString(R.string.error_invalid_notification_time),
                     Toast.LENGTH_LONG,
                 ).show()
             }
@@ -72,7 +73,7 @@ class ReadNfcActivity : ComponentActivity() {
             runOnUiThread {
                 Toast.makeText(
                     this,
-                    "Invalid deadline time. It will not remove automatically",
+                    resources.getString(R.string.error_invalid_deadline_time),
                     Toast.LENGTH_LONG,
                 ).show()
             }
@@ -96,7 +97,7 @@ class ReadNfcActivity : ComponentActivity() {
                         if (!hasLocationPermission()) {
                             requestPermissions()
                         } else if (!isGpsEnabled()) {
-                            showMessageAndFinish("Please enable GPS to continue")
+                            showMessageAndFinish(resources.getString(R.string.error_gps_disabled))
                         } else {
                             runBlocking(Dispatchers.IO) {
                                 val location = if (action!!.getLocation) {
@@ -150,6 +151,7 @@ class ReadNfcActivity : ComponentActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         finish()
     }
+
 }
 
 @Composable
@@ -159,12 +161,7 @@ fun ShowAction(action: NoteAction, modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize(),
     ) {
-        Text(text = "Note Action Info:")
-        Text(text = "Title: ${action.title}")
-        Text(text = "Description: ${action.description}")
-        Text(text = "Get Location: ${action.getLocation}")
-        Text(text = "Deadline: ${action.deadline}")
-        Text(text = "Notification: ${action.notification}")
+        Text(text = "TODO: CHANGE THIS")
     }
 }
 

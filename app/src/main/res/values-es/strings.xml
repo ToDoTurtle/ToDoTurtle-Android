@@ -124,4 +124,27 @@
     <string name="note_quick_form_done_button">Botón de aceptar para completar la creación de una nota.</string>
     <string name="edit_note">Editar nota</string>
     <string name="aboutus_uri">https://todoturtle-appmedia.s3.eu-south-2.amazonaws.com/todoturtle-aboutus-es.txt</string>
+    <string name="location_edit_link_action">Ubicación</string>
+    <string name="edit_note_menu">Editar</string>
+    <string name="delete_note_menu">Eliminar</string>
+    <string name="close_menu">Cerrar</string>
+    <string name="edit_device_menu">Editar dispositivo</string>
+    <string name="delete_device_menu">Eliminar dispositivo</string>
+    <string name="delete_action_menu">Eliminar acción</string>
+    <string name="device_name_not_valid">El nombre del dispositivo no es válido</string>
+    <string name="device_description_not_valid">La descripción no puede estar vacía</string>
+    <string name="icon_chooser_description">Seleccionar un icono</string>
+    <string name="icon_chooser_button">Seleccionar icono</string>
+    <string name="not_icon_selected_error">Por favor, selecciona un icono</string>
+    <string name="save_device">Guardar</string>
+    <string name="please_login_to_continue">Por favor, inicia sesión para continuar</string>
+    <string name="error_reading_nfc_id">Error al leer el ID</string>
+    <string name="error_device_dont_have_action">El dispositivo no tiene ninguna acción, por favor configúralo para poder utilizarlo</string>
+    <string name="error_invalid_notification_time">Tiempo de notificación no válido. No recibirás una notificación</string>
+    <string name="error_invalid_deadline_time">Tiempo límite no válido. No se eliminará automáticamente</string>
+    <string name="error_gps_disabled">Por favor, activa el GPS para continuar</string>
+    <string name="please_login_to_add_device">Por favor, inicia sesión para agregar un dispositivo</string>
+    <string name="device_added_successfully">Dispositivo %s agregado correctamente, ingresa a la aplicación para personalizarlo</string>
+    <string name="firebase_messaging_token_error">Error al obtener el token de Firebase. Por favor, envía un correo a los programadores de la aplicación</string>
+    <string name="go_home">Ir a Inicio</string>
 </resources>

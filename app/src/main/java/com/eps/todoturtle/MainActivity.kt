@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
             runOnUiThread {
                 Toast.makeText(
                     this,
-                    "Invalid notification time. You will not receive a notification",
+                    resources.getString(R.string.error_invalid_notification_time),
                     Toast.LENGTH_LONG,
                 ).show()
             }
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
             runOnUiThread {
                 Toast.makeText(
                     this,
-                    "Invalid deadline time. It will not remove automatically",
+                    resources.getString(R.string.error_invalid_deadline_time),
                     Toast.LENGTH_LONG,
                 ).show()
             }
