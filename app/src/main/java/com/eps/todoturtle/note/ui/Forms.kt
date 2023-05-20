@@ -1,5 +1,6 @@
 package com.eps.todoturtle.note.ui
 
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,11 +35,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -255,30 +258,44 @@ fun AddLocationDialog(
             modifier = Modifier
                 .fillMaxWidth(),
         ) {
-            locationClient.getCurrentLocation().onSuccessTask { newLocation ->
-                location = newLocation.toGeoPoint()
-                Tasks.forResult(newLocation)
-            }
-            LocationPicker(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
-                source = location,
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.End,
-            ) {
-                TextButton(onClick = onCancelClick) {
-                    Text(text = stringResource(id = R.string.cancel))
+            val context = LocalContext.current
+            var showLocation by rememberSaveable { mutableStateOf(false) }
+            try {
+                locationClient.getCurrentLocation().onSuccessTask { newLocation ->
+                    location = newLocation.toGeoPoint()
+                    Tasks.forResult(newLocation)
                 }
-                TextButton(
-                    onClick = { onAddLocationClick(location!!) },
-                    enabled = location != null,
+                showLocation = true
+            } catch (e: Throwable) {
+                Toast.makeText(
+                    context,
+                    "Failed to get location, please enable GPS",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                showLocation = false
+            }
+            if (showLocation) {
+                LocationPicker(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp),
+                    source = location,
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.End,
                 ) {
-                    Text(text = stringResource(id = R.string.confirm))
+                    TextButton(onClick = onCancelClick) {
+                        Text(text = stringResource(id = R.string.cancel))
+                    }
+                    TextButton(
+                        onClick = { onAddLocationClick(location!!) },
+                        enabled = location != null,
+                    ) {
+                        Text(text = stringResource(id = R.string.confirm))
+                    }
                 }
             }
         }
