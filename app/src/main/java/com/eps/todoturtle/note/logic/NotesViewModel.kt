@@ -1,12 +1,10 @@
 package com.eps.todoturtle.note.logic
 
+import androidx.activity.ComponentActivity
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.createSavedStateHandle
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.eps.todoturtle.note.infra.FirebaseDoneNoteRepository
 import com.eps.todoturtle.note.infra.FirebaseToDoNoteRepository
 import com.eps.todoturtle.note.infra.NoteStateRepository
@@ -30,14 +28,31 @@ class NotesViewModel(
     private val doneRepository = NoteStateRepository(doneNotesRepository)
 
     companion object {
-        val NoteScreenFactory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val savedStateHandle = createSavedStateHandle()
-                NotesViewModel(
-                    toDoNotesRepository = FirebaseToDoNoteRepository(),
-                    doneNotesRepository = FirebaseDoneNoteRepository(),
-                )
+        @Suppress("UNCHECKED_CAST")
+        private class NoteScreenViewModelFactory(
+            val toDoNotesRepository: NoteRepository,
+            val doneNotesRepository: NoteRepository,
+        ) :
+            ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return NotesViewModel(
+                    toDoNotesRepository = toDoNotesRepository,
+                    doneNotesRepository = doneNotesRepository
+                ) as T
             }
+        }
+
+        fun <T> T.getNoteScreenViewModel(
+            onDeadlineError: () -> Unit,
+            onNotificationError: () -> Unit,
+        ): NotesViewModel where T : ComponentActivity {
+            return ViewModelProvider(
+                this,
+                NoteScreenViewModelFactory(
+                    toDoNotesRepository = FirebaseToDoNoteRepository(onDeadlineError=onDeadlineError, onNotificationError=onNotificationError),
+                    doneNotesRepository = FirebaseDoneNoteRepository()
+                ),
+            )[NotesViewModel::class.java]
         }
     }
 

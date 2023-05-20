@@ -3,9 +3,10 @@ package com.eps.todoturtle.aboutus.logic.client
 import com.eps.todoturtle.aboutus.logic.routes.AboutUsRoutes
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
-import io.ktor.client.features.logging.LogLevel
-import io.ktor.client.features.logging.Logging
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
 
 class APIClient {
     private val client: HttpClient = HttpClient(Android) {
@@ -16,13 +17,13 @@ class APIClient {
 
     suspend fun getText(): String {
         return try {
-            client.get(AboutUsRoutes.TEXT.toString())
+            client.get(AboutUsRoutes.TEXT.toString()).bodyAsText()
         } catch (e: Exception) {
             "Error: ${e.message}"
         }
     }
 
     suspend fun getImageUrl(): String {
-        return client.get(AboutUsRoutes.IMAGE.toString())
+        return client.get(AboutUsRoutes.IMAGE.toString()).bodyAsText()
     }
 }

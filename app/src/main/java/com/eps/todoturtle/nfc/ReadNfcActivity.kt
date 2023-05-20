@@ -60,7 +60,23 @@ class ReadNfcActivity : ComponentActivity() {
             showMessageAndFinish("Device doesn't have any action, please configure it for use them")
         }
 
-        val notesRepository = FirebaseToDoNoteRepository()
+        val notesRepository = FirebaseToDoNoteRepository(onNotificationError = {
+            runOnUiThread {
+                Toast.makeText(
+                    this,
+                    "Invalid notification time. You will not receive a notification",
+                    Toast.LENGTH_LONG,
+                ).show()
+            }
+        }, onDeadlineError = {
+            runOnUiThread {
+                Toast.makeText(
+                    this,
+                    "Invalid deadline time. It will not remove automatically",
+                    Toast.LENGTH_LONG,
+                ).show()
+            }
+        })
         val locationPermissionRequester =
             PermissionRequester(
                 this,

@@ -111,9 +111,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
 
     // Ktor
-    implementation 'io.ktor:ktor-client-android:1.5.0'
-    implementation 'io.ktor:ktor-client-core:1.5.0'
-    implementation 'io.ktor:ktor-client-serialization:1.5.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'
-    implementation 'io.ktor:ktor-client-logging-jvm:1.5.0'
+    implementation 'io.ktor:ktor-client-android:2.3.0'
+    implementation 'io.ktor:ktor-client-core:2.3.0'
+    implementation 'io.ktor:ktor-client-serialization:2.3.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1'
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
+    implementation 'io.ktor:ktor-client-logging-jvm:2.3.0'
 }

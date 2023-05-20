@@ -3,6 +3,7 @@ package com.eps.todoturtle
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.network.ui.NetworkWarningDialog
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
 import com.eps.todoturtle.note.logic.NotesViewModel
+import com.eps.todoturtle.note.logic.NotesViewModel.Companion.getNoteScreenViewModel
 import com.eps.todoturtle.note.logic.location.DefaultLocationClient
 import com.eps.todoturtle.note.logic.location.LocationClient
 import com.eps.todoturtle.note.logic.location.hasLocationPermission
@@ -79,7 +81,23 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     CoarseLocationPermissionProvider(this),
                 ),
             )
-        val notesViewModel: NotesViewModel by viewModels { NotesViewModel.NoteScreenFactory }
+        val notesViewModel = getNoteScreenViewModel(onNotificationError = {
+            runOnUiThread {
+                Toast.makeText(
+                    this,
+                    "Invalid notification time. You will not receive a notification",
+                    Toast.LENGTH_LONG,
+                ).show()
+            }
+        }, onDeadlineError = {
+            runOnUiThread {
+                Toast.makeText(
+                    this,
+                    "Invalid deadline time. It will not remove automatically",
+                    Toast.LENGTH_LONG,
+                ).show()
+            }
+        })
         val actionsRepository = FirebaseActionRepository()
         val actionsViewModel = getActionViewModel(actionsRepository)
         val profileViewModel = ProfileViewModel(this, userAuth.getUid())

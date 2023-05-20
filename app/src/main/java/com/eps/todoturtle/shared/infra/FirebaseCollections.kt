@@ -66,7 +66,7 @@ fun getDoneNotesCollection(): CollectionReference {
     return userCollection.collection(DONE_NOTES_COLLECTION)
 }
 
-private suspend fun getDevicesTokenDocument(): MutableList<Any?> {
+suspend fun getDevicesTokens(): MutableList<Any?> {
     val userCollection = getUserCollection()
     val deviceTokensDocument =
         userCollection.collection(DEVICE_TOKENS_DOCUMENT).document(DEVICE_TOKENS_LIST).get().await()
@@ -86,7 +86,7 @@ private suspend fun updateDevicesTokens(devices: MutableList<Any?>) {
  * Adds the device token to the current user's device tokens list for push notification support
  */
 suspend fun addDeviceToken(token: String) {
-    val devicesTokens = getDevicesTokenDocument()
+    val devicesTokens = getDevicesTokens()
     if (!devicesTokens.contains(token)) {
         devicesTokens.add(token)
         updateDevicesTokens(devicesTokens)

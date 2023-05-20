@@ -1,13 +1,21 @@
 package com.eps.todoturtle.note.infra
 
+import android.content.Context
+import android.os.Looper
+import android.widget.Toast
+import com.eps.todoturtle.note.logic.DeadlineRepository
 import com.eps.todoturtle.note.logic.Note
 import com.eps.todoturtle.note.logic.NoteRepository
+import com.eps.todoturtle.notifications.AwsNotificationRepository
+import com.eps.todoturtle.notifications.NoteNotificationRepository
 import com.eps.todoturtle.shared.infra.getDoneNotesCollection
 import com.eps.todoturtle.shared.infra.getToDoNotesCollection
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import org.osmdroid.util.GeoPoint
 
 private const val NOTE_ID = "id"
@@ -18,24 +26,53 @@ private const val NOTE_DEADLINE_TIME = "deadlineTime"
 private const val NOTE_LOCATION = "location"
 private const val IS_NFC_GENERATED = "nfc"
 
-class FirebaseToDoNoteRepository : FirebaseNoteRepository() {
-    override fun getNotesCollection(): CollectionReference {
-        return getToDoNotesCollection()
+class FirebaseToDoNoteRepository(
+    private val onDeadlineError: () -> Unit = {},
+    private val onNotificationError: () -> Unit = {},
+    private val notificationRepository: NoteNotificationRepository = AwsNotificationRepository(),
+    private val deadlineRepository: DeadlineRepository = AwsDeadlineRepository(),
+    private val repo : NoteRepository = FirebaseNoteRepository(getToDoNotesCollection())
+) : NoteRepository by repo {
+
+    override suspend fun add(note: Note) {
+        val noteAfterDeadline = saveDeadline(note)
+        val noteAfterNotificationAndDeadline = saveNotification(noteAfterDeadline)
+        repo.add(noteAfterNotificationAndDeadline)
+    }
+
+    private suspend fun saveDeadline(note: Note): Note {
+        if (note.deadlineTime == null)
+            return note
+        if (deadlineRepository.saveDeadline(note))
+            return note
+        onDeadlineError()
+        return note.copy(deadlineTime = null)
+    }
+
+    private suspend fun saveNotification(note: Note): Note {
+        if (note.notificationTime == null)
+            return note
+        if (notificationRepository.saveNotification(note))
+            return note
+        onNotificationError()
+        return note.copy(notificationTime = null)
+    }
+
+    override suspend fun remove(note: Note) {
+        if (note.deadlineTime != null)
+            deadlineRepository.removeDeadline(note)
+        if (note.notificationTime != null)
+            notificationRepository.removeNotification(note)
+        repo.remove(note)
     }
 }
 
-class FirebaseDoneNoteRepository : FirebaseNoteRepository() {
-    override fun getNotesCollection(): CollectionReference {
-        return getDoneNotesCollection()
-    }
+class FirebaseDoneNoteRepository : NoteRepository by FirebaseNoteRepository(getDoneNotesCollection()) {
 }
 
-abstract class FirebaseNoteRepository : NoteRepository {
-
-    abstract fun getNotesCollection(): CollectionReference
+class FirebaseNoteRepository(private val notes: CollectionReference) : NoteRepository {
 
     override suspend fun getAll(): Collection<Note> {
-        val notes = getNotesCollection()
         return notes.get().await().map { document: QueryDocumentSnapshot ->
             val id = document.getString(NOTE_ID)!!
             val title = document.getString(NOTE_TITLE)!!
@@ -57,7 +94,6 @@ abstract class FirebaseNoteRepository : NoteRepository {
     }
 
     override suspend fun add(note: Note) {
-        val notes = getNotesCollection()
         notes.document(note.identifier).set(
             mapOf(
                 NOTE_ID to note.identifier,
@@ -77,7 +113,6 @@ abstract class FirebaseNoteRepository : NoteRepository {
     }
 
     override suspend fun remove(note: Note) {
-        val notes = getNotesCollection()
         val noteDocument = notes.document(note.identifier).get().await()
         if (noteDocument.exists()) {
             notes.document(noteDocument.id).delete()
