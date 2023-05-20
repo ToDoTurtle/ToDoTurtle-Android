@@ -462,10 +462,12 @@ fun ConfirmDateTimeButton(
 @Composable
 fun NextButton(
     modifier: Modifier = Modifier,
+    isActive: Boolean,
     onClick: () -> Unit = {},
 ) {
     Button(
         modifier = modifier,
+        enabled = isActive,
         onClick = onClick,
     ) {
         Text(text = stringResource(R.string.next))
@@ -505,7 +507,7 @@ fun DateTimePickerDialog(
                     )
                 }
             } else {
-                NextButton(onClick = onNextClick)
+                NextButton(onClick = onNextClick, isActive = datePickerState.selectedDateMillis != null)
             }
         },
     ) {
