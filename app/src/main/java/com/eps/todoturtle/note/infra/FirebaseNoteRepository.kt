@@ -112,8 +112,8 @@ class FirebaseNoteRepository(private val notes: CollectionReference) : NoteRepos
         ).await()
     }
 
-    override suspend fun remove(identifier: String) {
-        val noteDocument = notes.document(identifier).get().await()
+    override suspend fun remove(note: Note) {
+        val noteDocument = notes.document(note.identifier).get().await()
         if (noteDocument.exists()) {
             notes.document(noteDocument.id).delete()
         }

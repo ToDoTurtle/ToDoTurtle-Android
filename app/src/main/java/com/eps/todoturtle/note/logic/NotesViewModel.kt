@@ -18,7 +18,7 @@ class NotesViewModel(
 ) : ViewModel() {
     private val noteBuilder = NoteBuilder()
     val noteErrors: MutableStateFlow<List<NoteBuildError>> = MutableStateFlow(emptyList())
-    var noteIdentifier: String = ""
+    var selectedNote: Note? = null
     var noteTitle = mutableStateOf("")
     var noteDescription = mutableStateOf("")
     var noteNotificationTime: Timestamp? = null
@@ -58,7 +58,7 @@ class NotesViewModel(
     }
 
     fun load(note: Note) {
-        noteIdentifier = note.identifier
+        selectedNote = note
         noteTitle.value = note.title
         noteDescription.value = note.description
         noteNotificationTime = note.notificationTime
@@ -66,9 +66,9 @@ class NotesViewModel(
         noteLocation = note.location
     }
 
-    fun deleteDone(note: Note) = doneRepository.remove(note.identifier)
+    fun deleteDone(note: Note) = doneRepository.remove(note)
 
-    fun deleteToDo(note: Note) = toDoRepository.remove(note.identifier)
+    fun deleteToDo(note: Note) = toDoRepository.remove(note)
 
     fun updateDone() = updateNote(doneRepository)
 
@@ -81,15 +81,19 @@ class NotesViewModel(
         noteBuilder.deadlineTime = noteDeadlineTime
         noteBuilder.location = noteLocation
 
-        when (val result = noteBuilder.build()) {
-            is NoteBuildResult.Success -> {
-                repository.remove(noteIdentifier)
-                repository.add(result.note)
-                clearNoteFields()
-            }
+        if (selectedNote == null) noteErrors.value = listOf(NoteBuildError.NO_NOTE_SELECTED)
 
-            is NoteBuildResult.Failure -> {
-                noteErrors.value = result.errors
+        selectedNote?.let {
+            when (val result = noteBuilder.build()) {
+                is NoteBuildResult.Success -> {
+                    repository.remove(it)
+                    repository.add(result.note)
+                    clearNoteFields()
+                }
+
+                is NoteBuildResult.Failure -> {
+                    noteErrors.value = result.errors
+                }
             }
         }
     }

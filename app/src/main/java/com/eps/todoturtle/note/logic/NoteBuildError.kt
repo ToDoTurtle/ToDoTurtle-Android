@@ -4,4 +4,5 @@ enum class NoteBuildError {
     TITLE_EMPTY,
     DESCRIPTION_TOO_LONG,
     TITLE_TOO_LONG,
+    NO_NOTE_SELECTED,
 }

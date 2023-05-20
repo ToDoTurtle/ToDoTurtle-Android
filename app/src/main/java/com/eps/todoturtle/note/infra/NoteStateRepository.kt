@@ -23,10 +23,10 @@ class NoteStateRepository(private val repository: NoteRepository) {
         }
     }
 
-    fun remove(identifier: String) {
+    fun remove(note: Note) {
         assertCacheIsLoadedOperation {
-            this@NoteStateRepository.repository.remove(identifier)
-            val noteToRemove = cached!!.find { it.identifier == identifier }
+            this@NoteStateRepository.repository.remove(note)
+            val noteToRemove = cached!!.find { it.identifier == note.identifier }
             this@NoteStateRepository.cached!!.remove(noteToRemove)
         }
     }
