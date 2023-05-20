@@ -15,6 +15,7 @@ import org.osmdroid.util.GeoPoint
 class NotesViewModel(
     toDoNotesRepository: NoteRepository,
     doneNotesRepository: NoteRepository,
+    private val playTaskCompletedSound: () -> Unit,
 ) : ViewModel() {
     private val noteBuilder = NoteBuilder()
     val noteErrors: MutableStateFlow<List<NoteBuildError>> = MutableStateFlow(emptyList())
@@ -33,12 +34,14 @@ class NotesViewModel(
         private class NoteScreenViewModelFactory(
             val toDoNotesRepository: NoteRepository,
             val doneNotesRepository: NoteRepository,
+            val playTaskCompletedSound: () -> Unit,
         ) :
             ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return NotesViewModel(
                     toDoNotesRepository = toDoNotesRepository,
-                    doneNotesRepository = doneNotesRepository
+                    doneNotesRepository = doneNotesRepository,
+                    playTaskCompletedSound = playTaskCompletedSound,
                 ) as T
             }
         }
@@ -46,12 +49,14 @@ class NotesViewModel(
         fun <T> T.getNoteScreenViewModel(
             onDeadlineError: () -> Unit,
             onNotificationError: () -> Unit,
+            playTaskCompletedSound: () -> Unit,
         ): NotesViewModel where T : ComponentActivity {
             return ViewModelProvider(
                 this,
                 NoteScreenViewModelFactory(
                     toDoNotesRepository = FirebaseToDoNoteRepository(onDeadlineError=onDeadlineError, onNotificationError=onNotificationError),
-                    doneNotesRepository = FirebaseDoneNoteRepository()
+                    doneNotesRepository = FirebaseDoneNoteRepository(),
+                    playTaskCompletedSound = playTaskCompletedSound,
                 ),
             )[NotesViewModel::class.java]
         }
@@ -137,6 +142,7 @@ class NotesViewModel(
     }
 
     fun doNote(note: Note) {
+        playTaskCompletedSound()
         deleteToDo(note)
         addDone(note)
     }

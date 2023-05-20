@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +21,6 @@ import com.eps.todoturtle.network.logic.ConnectionCheckerImpl
 import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.network.ui.NetworkWarningDialog
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel.INIT.getNfcWriteModel
-import com.eps.todoturtle.note.logic.NotesViewModel
 import com.eps.todoturtle.note.logic.NotesViewModel.Companion.getNoteScreenViewModel
 import com.eps.todoturtle.note.logic.location.DefaultLocationClient
 import com.eps.todoturtle.note.logic.location.LocationClient
@@ -35,6 +33,7 @@ import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.shared.logic.extensions.dataStore
 import com.eps.todoturtle.shared.logic.extensions.hasCameraPermission
+import com.eps.todoturtle.soundpool.TaskCompletedPlayer
 import com.eps.todoturtle.ui.App
 import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.google.android.gms.location.LocationServices
@@ -62,8 +61,11 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
     private lateinit var locationClient: LocationClient
 
     private lateinit var connectionChecker: ConnectionChecker
+
+    private lateinit var taskCompletedPlayer: TaskCompletedPlayer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        taskCompletedPlayer = TaskCompletedPlayer(this)
 
         connectionChecker = ConnectionCheckerImpl(this)
         val connectionAvailability = connectionChecker.networkAvailability
@@ -81,23 +83,29 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
                     CoarseLocationPermissionProvider(this),
                 ),
             )
-        val notesViewModel = getNoteScreenViewModel(onNotificationError = {
-            runOnUiThread {
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.error_invalid_notification_time),
-                    Toast.LENGTH_LONG,
-                ).show()
-            }
-        }, onDeadlineError = {
-            runOnUiThread {
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.error_invalid_deadline_time),
-                    Toast.LENGTH_LONG,
-                ).show()
-            }
-        })
+        val notesViewModel = getNoteScreenViewModel(
+            onNotificationError = {
+                runOnUiThread {
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.error_invalid_notification_time),
+                        Toast.LENGTH_LONG,
+                    ).show()
+                }
+            },
+            onDeadlineError = {
+                runOnUiThread {
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.error_invalid_deadline_time),
+                        Toast.LENGTH_LONG,
+                    ).show()
+                }
+            },
+            playTaskCompletedSound = {
+                taskCompletedPlayer.play()
+            },
+        )
         val actionsRepository = FirebaseActionRepository()
         val actionsViewModel = getActionViewModel(actionsRepository)
         val profileViewModel = ProfileViewModel(this, userAuth.getUid())
@@ -116,7 +124,8 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
             ToDoTurtleTheme(dataStore) {
                 var shouldShowNetworkDialog by rememberSaveable { mutableStateOf(false) }
                 val networkAvailability by connectionAvailability.collectAsStateWithLifecycle(
-                    NetworkAvailability.AVAILABLE)
+                    NetworkAvailability.AVAILABLE
+                )
                 shouldShowNetworkDialog = networkAvailability != NetworkAvailability.AVAILABLE
 
                 NetworkWarningDialog(
@@ -192,5 +201,10 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
         val intent = Intent(this, MainActivity::class.java)
         finish()
         startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        taskCompletedPlayer.destroy()
     }
 }
