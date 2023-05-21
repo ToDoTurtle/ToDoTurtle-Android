@@ -84,8 +84,11 @@ fun NotesFloatingButton(
         containerColor = MaterialTheme.colorScheme.noteScreenButton,
         modifier = modifier,
         onClick = {
-            if (inHistory) showConfirmDialog = true
-            else onClick()
+            if (inHistory) {
+                showConfirmDialog = true
+            } else {
+                onClick()
+            }
         },
     ) {
         AnimatedContent(
@@ -93,10 +96,10 @@ fun NotesFloatingButton(
             transitionSpec = {
                 if (targetState) {
                     slideInHorizontally { width -> width } + fadeIn() with
-                            slideOutHorizontally { width -> -width } + fadeOut()
+                        slideOutHorizontally { width -> -width } + fadeOut()
                 } else {
                     slideInHorizontally { width -> -width } + fadeIn() with
-                            slideOutHorizontally { width -> width } + fadeOut()
+                        slideOutHorizontally { width -> width } + fadeOut()
                 }
             },
         ) { targetInHistory ->

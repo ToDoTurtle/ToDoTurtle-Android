@@ -2,7 +2,6 @@ package com.eps.todoturtle.note.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -28,7 +27,7 @@ fun NoteList(
 ) {
     NoteListContainer(inHistory = inHistory) {
         LazyColumn(
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier.fillMaxHeight(),
         ) {
             items(
                 items = notes,
@@ -61,10 +60,10 @@ fun NoteListContainer(
         transitionSpec = {
             if (targetState) {
                 slideInHorizontally { width -> width } + fadeIn() with
-                        slideOutHorizontally { width -> -width } + fadeOut()
+                    slideOutHorizontally { width -> -width } + fadeOut()
             } else {
                 slideInHorizontally { width -> -width } + fadeIn() with
-                        slideOutHorizontally { width -> width } + fadeOut()
+                    slideOutHorizontally { width -> width } + fadeOut()
             }
         },
     ) {

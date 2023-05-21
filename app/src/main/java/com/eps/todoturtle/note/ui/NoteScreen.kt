@@ -35,11 +35,13 @@ fun NoteScreen(
             NotesFloatingButton(
                 inHistory = inHistory,
                 onClick = {
-                    if (inHistory) viewModel.clearHistory()
-                    else isAddNoteFormVisible = true
+                    if (inHistory) {
+                        viewModel.clearHistory()
+                    } else isAddNoteFormVisible = true
                 },
             )
-        }) {
+        },
+    ) {
         Column(
             horizontalAlignment = Alignment.End,
         ) {
@@ -56,8 +58,9 @@ fun NoteScreen(
                     isEditFormVisible = true
                 },
                 onDeleteClick = { note ->
-                    if (inHistory) viewModel.deleteDone(note)
-                    else viewModel.deleteToDo(note)
+                    if (inHistory) {
+                        viewModel.deleteDone(note)
+                    } else viewModel.deleteToDo(note)
                 },
                 onCheckClick = { note ->
                     if (inHistory) viewModel.undoNote(note) else viewModel.doNote(note)

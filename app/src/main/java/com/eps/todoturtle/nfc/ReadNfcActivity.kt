@@ -16,7 +16,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -94,23 +93,26 @@ class ReadNfcActivity : ComponentActivity() {
             showMessageAndFinish(resources.getString(R.string.error_device_dont_have_action))
         }
 
-        val notesRepository = FirebaseToDoNoteRepository(onNotificationError = {
-            runOnUiThread {
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.error_invalid_notification_time),
-                    Toast.LENGTH_LONG,
-                ).show()
-            }
-        }, onDeadlineError = {
-            runOnUiThread {
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.error_invalid_deadline_time),
-                    Toast.LENGTH_LONG,
-                ).show()
-            }
-        })
+        val notesRepository = FirebaseToDoNoteRepository(
+            onNotificationError = {
+                runOnUiThread {
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.error_invalid_notification_time),
+                        Toast.LENGTH_LONG,
+                    ).show()
+                }
+            },
+            onDeadlineError = {
+                runOnUiThread {
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.error_invalid_deadline_time),
+                        Toast.LENGTH_LONG,
+                    ).show()
+                }
+            },
+        )
         val locationPermissionRequester =
             PermissionRequester(
                 this,
@@ -214,7 +216,6 @@ class ReadNfcActivity : ComponentActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         finish()
     }
-
 }
 
 @Composable
@@ -231,9 +232,8 @@ fun ShowAction(action: NoteAction, modifier: Modifier = Modifier) {
 @Composable
 fun LoadingAnimation(
     circleColor: Color = MaterialTheme.colorScheme.primary,
-    animationDelay: Int = 1000
+    animationDelay: Int = 1000,
 ) {
-
     var circleScale by remember {
         mutableStateOf(0f)
     }
@@ -242,9 +242,9 @@ fun LoadingAnimation(
         targetValue = circleScale,
         animationSpec = infiniteRepeatable(
             animation = tween(
-                durationMillis = animationDelay
-            )
-        )
+                durationMillis = animationDelay,
+            ),
+        ),
     )
 
     LaunchedEffect(Unit) {
@@ -258,10 +258,9 @@ fun LoadingAnimation(
             .border(
                 width = 4.dp,
                 color = circleColor.copy(alpha = 1 - circleScaleAnimate.value),
-                shape = CircleShape
-            )
+                shape = CircleShape,
+            ),
     ) {
-
     }
 }
 
@@ -338,14 +337,12 @@ fun TagReadAnimation(
 
     Surface(
         modifier
-            .background(MaterialTheme.colorScheme.onBackground)
+            .background(MaterialTheme.colorScheme.onBackground),
     ) {
-
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Column(
-                Modifier.padding(4.dp)
+                Modifier.padding(4.dp),
             ) {
-
                 val offsetEven = with(LocalDensity.current) {
                     orbOffset.value.toDp()
                 }
@@ -362,37 +359,41 @@ fun TagReadAnimation(
                                 .rotate(item.times(45f))
                                 .offset(
                                     x = 0.dp,
-                                    y = (if (item % 2 == 0) offsetEven else offsetOdd.dp)
+                                    y = (if (item % 2 == 0) offsetEven else offsetOdd.dp),
                                 )
                                 .scale(orbScale.value),
                             onDraw = {
                                 drawCircle(
                                     color = secondaryColor,
                                     alpha = if (item % 2 == 0) 1f else 0.5f,
-                                    radius = if (item % 2 == 0) 15f else 5f
+                                    radius = if (item % 2 == 0) 15f else 5f,
                                 )
-                            })
+                            },
+                        )
                     }
 
-
-                    Canvas(modifier = Modifier
-                        .size(100.dp)
-                        .align(Alignment.Center)
-                        .scale(ringScale.value), onDraw = {
-                        drawCircle(
-                            color = Color.Gray.copy(alpha = ringOpacity.value),
-                            style = Stroke(width = 8f)
-                        )
-                    })
+                    Canvas(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .align(Alignment.Center)
+                            .scale(ringScale.value),
+                        onDraw = {
+                            drawCircle(
+                                color = Color.Gray.copy(alpha = ringOpacity.value),
+                                style = Stroke(width = 8f),
+                            )
+                        },
+                    )
 
                     Icon(
                         painter = painterResource(id = R.drawable.add_task),
                         contentDescription = null,
-                        tint = color.value, modifier = Modifier
+                        tint = color.value,
+                        modifier = Modifier
                             .align(Alignment.Center)
                             .size(50.dp)
                             .scale(imageScale.value)
-                            .rotate(imageRotation.value)
+                            .rotate(imageRotation.value),
                     )
                 }
             }

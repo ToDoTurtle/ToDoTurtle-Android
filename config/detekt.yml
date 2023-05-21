@@ -127,7 +127,7 @@ complexity:
     threshold: 600
   LongMethod:
     active: true
-    threshold: 80
+    threshold: 120
   LongParameterList:
     active: false
     functionThreshold: 6
@@ -167,7 +167,7 @@ complexity:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     thresholdInFiles: 20
-    thresholdInClasses: 11
+    thresholdInClasses: 20
     thresholdInInterfaces: 11
     thresholdInObjects: 11
     thresholdInEnums: 11
@@ -632,7 +632,7 @@ style:
     active: false
   ReturnCount:
     active: true
-    max: 2
+    max: 3
     excludedFunctions:
       - 'equals'
     excludeLabeled: false

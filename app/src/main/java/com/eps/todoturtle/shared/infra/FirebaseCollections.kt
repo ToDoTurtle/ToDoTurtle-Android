@@ -71,8 +71,11 @@ suspend fun getDevicesTokens(): MutableList<Any?> {
     val deviceTokensDocument =
         userCollection.collection(DEVICE_TOKENS_DOCUMENT).document(DEVICE_TOKENS_LIST).get().await()
     val devices = (deviceTokensDocument.get(DEVICE_TOKENS_KEY) as List<*>?)
-    if (devices == null) return mutableListOf()
-    else return devices.toMutableList()
+    if (devices == null) {
+        return mutableListOf()
+    } else {
+        return devices.toMutableList()
+    }
 }
 
 private suspend fun updateDevicesTokens(devices: MutableList<Any?>) {

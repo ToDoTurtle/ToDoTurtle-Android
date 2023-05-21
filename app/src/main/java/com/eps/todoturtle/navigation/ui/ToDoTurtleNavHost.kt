@@ -27,7 +27,6 @@ import com.eps.todoturtle.devices.ui.DeviceConfigurationScreen
 import com.eps.todoturtle.devices.ui.DeviceScreen
 import com.eps.todoturtle.navigation.logic.DEVICE_WRITE_SUCCESSFUL_PARAMETER
 import com.eps.todoturtle.navigation.logic.Destinations
-import com.eps.todoturtle.network.logic.NetworkAvailability
 import com.eps.todoturtle.nfc.logic.NfcWriteViewModel
 import com.eps.todoturtle.nfc.ui.WriteDevice
 import com.eps.todoturtle.note.logic.NotesViewModel
@@ -40,7 +39,6 @@ import com.eps.todoturtle.preferences.ui.PreferenceUI
 import com.eps.todoturtle.profile.logic.ProfileViewModel
 import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.details.DetailsUI
-import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun ToDoTurtleNavHost(
@@ -59,7 +57,7 @@ fun ToDoTurtleNavHost(
     modifier: Modifier = Modifier,
     userAuth: UserAuth,
     reloadActivity: () -> Unit,
-    context: Context
+    context: Context,
 ) {
     NavHost(
         navController = navController,

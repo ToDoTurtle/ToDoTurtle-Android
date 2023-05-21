@@ -143,7 +143,7 @@ fun IconChooser(isError: Boolean, onClick: () -> Unit) {
     if (isError) {
         Text(
             text = stringResource(id = R.string.not_icon_selected_error),
-            color = MaterialTheme.colorScheme.error
+            color = MaterialTheme.colorScheme.error,
         )
     }
 }

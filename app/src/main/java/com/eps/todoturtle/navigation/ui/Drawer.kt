@@ -19,7 +19,6 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -68,16 +67,24 @@ fun Drawer(
                     onItemClick = { onItemClick(Devices) },
                     badge = devicesCount.toString(),
                 )
-                Divider(thickness = 2.dp, modifier = Modifier.padding(horizontal = 20.dp).clip(
-                    RoundedCornerShape(8.dp)))
+                Divider(
+                    thickness = 2.dp,
+                    modifier = Modifier.padding(horizontal = 20.dp).clip(
+                        RoundedCornerShape(8.dp),
+                    ),
+                )
                 Column(
                     Modifier
                         .fillMaxHeight()
                         .padding(bottom = 8.dp),
-                    verticalArrangement = Arrangement.Bottom
+                    verticalArrangement = Arrangement.Bottom,
                 ) {
-                    Divider(thickness = 2.dp, modifier = Modifier.padding(horizontal = 20.dp).clip(
-                        RoundedCornerShape(8.dp)))
+                    Divider(
+                        thickness = 2.dp,
+                        modifier = Modifier.padding(horizontal = 20.dp).clip(
+                            RoundedCornerShape(8.dp),
+                        ),
+                    )
                     ProfileItem(
                         isSelected = selectedItem == Profile,
                         onItemClick = { onItemClick(Profile) },

@@ -80,7 +80,11 @@ fun noteMenu(
                 text = stringResource(id = R.string.delete_note_menu),
                 onEditClicked = { onDeleteListener(note) },
             )
-            optionMenu(icon = Icons.Filled.Close, text = stringResource(id = R.string.close_menu), onEditClicked = onCloseListener)
+            optionMenu(
+                icon = Icons.Filled.Close,
+                text = stringResource(id = R.string.close_menu),
+                onEditClicked = onCloseListener,
+            )
         }
     }
 }
@@ -116,7 +120,11 @@ fun deviceMenu(
                 text = stringResource(id = R.string.delete_action_menu),
                 onEditClicked = { onDeleteActionListener(device.identifier) },
             )
-            optionMenu(icon = Icons.Filled.Close, text = stringResource(id = R.string.close_menu), onEditClicked = onCloseListener)
+            optionMenu(
+                icon = Icons.Filled.Close,
+                text = stringResource(id = R.string.close_menu),
+                onEditClicked = onCloseListener,
+            )
         }
     }
 }
@@ -138,7 +146,7 @@ fun NoteCardInfo(device: NFCDevice, drawableConverter: @Composable (Int) -> Draw
                     modifier = Modifier.padding(2.dp),
                     text = device.name,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.SansSerif
+                    fontFamily = FontFamily.SansSerif,
                 )
                 Text(
                     modifier = Modifier.padding(2.dp),
@@ -149,7 +157,7 @@ fun NoteCardInfo(device: NFCDevice, drawableConverter: @Composable (Int) -> Draw
                 Text(
                     modifier = Modifier.padding(2.dp),
                     text = device.identifier,
-                    fontStyle = FontStyle.Italic
+                    fontStyle = FontStyle.Italic,
                 )
             }
         }

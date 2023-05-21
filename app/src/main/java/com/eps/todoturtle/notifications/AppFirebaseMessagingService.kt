@@ -7,7 +7,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
-class AppFirebaseMessagingService: FirebaseMessagingService() {
+class AppFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -16,5 +16,4 @@ class AppFirebaseMessagingService: FirebaseMessagingService() {
             addDeviceToken(token)
         }
     }
-
 }

@@ -1,8 +1,5 @@
 package com.eps.todoturtle.note.infra
 
-import android.content.Context
-import android.os.Looper
-import android.widget.Toast
 import com.eps.todoturtle.note.logic.DeadlineRepository
 import com.eps.todoturtle.note.logic.Note
 import com.eps.todoturtle.note.logic.NoteRepository
@@ -13,9 +10,7 @@ import com.eps.todoturtle.shared.infra.getToDoNotesCollection
 import com.eps.todoturtle.shared.logic.forms.Timestamp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.QueryDocumentSnapshot
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import org.osmdroid.util.GeoPoint
 
 private const val NOTE_ID = "id"
@@ -31,7 +26,7 @@ class FirebaseToDoNoteRepository(
     private val onNotificationError: () -> Unit = {},
     private val notificationRepository: NoteNotificationRepository = AwsNotificationRepository(),
     private val deadlineRepository: DeadlineRepository = AwsDeadlineRepository(),
-    private val repo : NoteRepository = FirebaseNoteRepository(getToDoNotesCollection())
+    private val repo: NoteRepository = FirebaseNoteRepository(getToDoNotesCollection()),
 ) : NoteRepository by repo {
 
     override suspend fun add(note: Note) {
@@ -41,34 +36,39 @@ class FirebaseToDoNoteRepository(
     }
 
     private suspend fun saveDeadline(note: Note): Note {
-        if (note.deadlineTime == null)
+        if (note.deadlineTime == null) {
             return note
-        if (deadlineRepository.saveDeadline(note))
+        }
+        if (deadlineRepository.saveDeadline(note)) {
             return note
+        }
         onDeadlineError()
         return note.copy(deadlineTime = null)
     }
 
     private suspend fun saveNotification(note: Note): Note {
-        if (note.notificationTime == null)
+        if (note.notificationTime == null) {
             return note
-        if (notificationRepository.saveNotification(note))
+        }
+        if (notificationRepository.saveNotification(note)) {
             return note
+        }
         onNotificationError()
         return note.copy(notificationTime = null)
     }
 
     override suspend fun remove(note: Note) {
-        if (note.deadlineTime != null)
+        if (note.deadlineTime != null) {
             deadlineRepository.removeDeadline(note)
-        if (note.notificationTime != null)
+        }
+        if (note.notificationTime != null) {
             notificationRepository.removeNotification(note)
+        }
         repo.remove(note)
     }
 }
 
-class FirebaseDoneNoteRepository : NoteRepository by FirebaseNoteRepository(getDoneNotesCollection()) {
-}
+class FirebaseDoneNoteRepository : NoteRepository by FirebaseNoteRepository(getDoneNotesCollection())
 
 class FirebaseNoteRepository(private val notes: CollectionReference) : NoteRepository {
 

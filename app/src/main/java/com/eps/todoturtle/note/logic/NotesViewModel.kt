@@ -54,7 +54,10 @@ class NotesViewModel(
             return ViewModelProvider(
                 this,
                 NoteScreenViewModelFactory(
-                    toDoNotesRepository = FirebaseToDoNoteRepository(onDeadlineError=onDeadlineError, onNotificationError=onNotificationError),
+                    toDoNotesRepository = FirebaseToDoNoteRepository(
+                        onDeadlineError = onDeadlineError,
+                        onNotificationError = onNotificationError,
+                    ),
                     doneNotesRepository = FirebaseDoneNoteRepository(),
                     playTaskCompletedSound = playTaskCompletedSound,
                 ),

@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback, DeviceIconActivit
             ToDoTurtleTheme(dataStore) {
                 var shouldShowNetworkDialog by rememberSaveable { mutableStateOf(false) }
                 val networkAvailability by connectionAvailability.collectAsStateWithLifecycle(
-                    NetworkAvailability.AVAILABLE
+                    NetworkAvailability.AVAILABLE,
                 )
                 shouldShowNetworkDialog = networkAvailability != NetworkAvailability.AVAILABLE
 

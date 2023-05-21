@@ -23,10 +23,12 @@ class AwsDeadlineRepository : DeadlineRepository {
 
     private val client: HttpClient = HttpClient(Android) {
         install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-            })
+            json(
+                Json {
+                    prettyPrint = true
+                    isLenient = true
+                },
+            )
         }
         install(Logging) {
             level = LogLevel.ALL
@@ -41,7 +43,7 @@ class AwsDeadlineRepository : DeadlineRepository {
                     setBody(
                         mapOf(
                             "time" to time.time,
-                        )
+                        ),
                     )
                 }
             }
@@ -62,6 +64,6 @@ class AwsDeadlineRepository : DeadlineRepository {
 
     private fun getUrl(note: Note): String {
         val userId = Firebase.auth.currentUser!!.uid
-        return AWS_API_URL + "/user/${userId}/note/${note.identifier}/deadline"
+        return AWS_API_URL + "/user/$userId/note/${note.identifier}/deadline"
     }
 }

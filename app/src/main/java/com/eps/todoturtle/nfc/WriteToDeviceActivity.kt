@@ -54,14 +54,14 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
             Toast.makeText(
                 this,
                 resources.getString(R.string.please_login_to_add_device),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
             finish()
         }
         val nfcWriteViewModel = getNfcWriteModel()
         val devicesViewModel = getDevicesViewModel(
             repository = FirebaseDeviceRepository(),
-            actionsRepository = FirebaseActionRepository()
+            actionsRepository = FirebaseActionRepository(),
         )
         setContent {
             ToDoTurtleTheme(LocalContext.current.dataStore) {
@@ -74,14 +74,18 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
                         WriteDevice(
                             viewModel = nfcWriteViewModel,
                             onNfcNotSupported = {
-                                Toast.makeText(this, resources.getString(R.string.nfc_not_supported), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this,
+                                    resources.getString(R.string.nfc_not_supported),
+                                    Toast.LENGTH_SHORT,
+                                ).show()
                                 finish()
                             },
                             onTagLost = {
                                 Toast.makeText(
                                     this,
                                     resources.getString(R.string.move_too_fast_solution),
-                                    Toast.LENGTH_SHORT
+                                    Toast.LENGTH_SHORT,
                                 )
                                     .show()
                                 finish()
@@ -90,7 +94,7 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
                                 Toast.makeText(
                                     this,
                                     resources.getString(R.string.nfc_tag_not_supported_solution),
-                                    Toast.LENGTH_SHORT
+                                    Toast.LENGTH_SHORT,
                                 ).show()
                                 finish()
                             },
@@ -98,7 +102,7 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
                                 Toast.makeText(
                                     this,
                                     resources.getString(R.string.unknown_error_nfc_solution),
-                                    Toast.LENGTH_SHORT
+                                    Toast.LENGTH_SHORT,
                                 ).show()
                                 finish()
                             },
@@ -113,7 +117,7 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
                             Toast.makeText(
                                 this,
                                 resources.getString(R.string.device_added_successfully, it.name),
-                                Toast.LENGTH_SHORT
+                                Toast.LENGTH_SHORT,
                             ).show()
                             finish()
                         }
@@ -149,5 +153,4 @@ class WriteToDeviceActivity : AppCompatActivity(), IconDialog.Callback, DeviceIc
         val iconDrawableLoader = IconDrawableLoader(this)
         return iconDialogIconPack?.getIconDrawable(id, iconDrawableLoader)
     }
-
 }

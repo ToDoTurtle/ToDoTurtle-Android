@@ -22,7 +22,6 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
-
 @Serializable
 data class Notification(
     val title: String,
@@ -35,10 +34,12 @@ class AwsNotificationRepository : NoteNotificationRepository {
 
     private val client: HttpClient = HttpClient(Android) {
         install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-            })
+            json(
+                Json {
+                    prettyPrint = true
+                    isLenient = true
+                },
+            )
         }
         install(Logging) {
             level = LogLevel.ALL
@@ -75,7 +76,6 @@ class AwsNotificationRepository : NoteNotificationRepository {
 
     private fun getUrl(note: Note): String {
         val userId = Firebase.auth.currentUser!!.uid
-        return AWS_API_URL + "/user/${userId}/note/${note.identifier}/notify"
+        return AWS_API_URL + "/user/$userId/note/${note.identifier}/notify"
     }
-
 }

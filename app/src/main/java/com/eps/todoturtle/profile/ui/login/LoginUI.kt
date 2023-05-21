@@ -1,17 +1,14 @@
 package com.eps.todoturtle.profile.ui.login
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.overscroll
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +34,6 @@ import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
 import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
-import com.eps.todoturtle.ui.theme.inactiveOnSecondaryContainer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -68,7 +64,7 @@ fun LoginContent(
     var shouldShowSignUp by rememberSaveable { mutableStateOf(false) }
     var shouldShowNetworkDialog by rememberSaveable { mutableStateOf(false) }
     val networkAvailability by connectionAvailability.collectAsStateWithLifecycle(
-        NetworkAvailability.AVAILABLE
+        NetworkAvailability.AVAILABLE,
     )
 
     Spacer(modifier = Modifier.size(20.dp))

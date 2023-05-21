@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
                                     Toast.makeText(
                                         this@LoginActivity,
                                         resources.getString(R.string.firebase_messaging_token_error),
-                                        Toast.LENGTH_SHORT
+                                        Toast.LENGTH_SHORT,
                                     ).show()
                                     return@OnCompleteListener
                                 }
@@ -60,7 +60,8 @@ class LoginActivity : AppCompatActivity() {
                                 runBlocking(Dispatchers.IO) {
                                     addDeviceToken(token)
                                 }
-                            })
+                            },
+                        )
                         val intent = Intent(this, MainActivity::class.java)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
