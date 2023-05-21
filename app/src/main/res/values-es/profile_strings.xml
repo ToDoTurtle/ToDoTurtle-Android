@@ -17,4 +17,5 @@
     <string name="profile_login_sign_up_question">¿No tienes cuenta?</string>
     <string name="sign_up_password_confirm">Confirma tu contraseña</string>
     <string name="sign_up_password_confirm_error">Ambas contraseñas deben coincidir</string>
+    <string name="mail_not_changable_still">" El cambio de correo electrónico aún no está soportado, proximamente en nuevas versiones."</string>
 </resources>

@@ -162,4 +162,5 @@
     <string name="sign_up_password_confirm_error">Ambdues contrasenyes han de coincidir</string>
     <string name="nfc_tag_read_ngenerating_note">NFC llegit. \n Generant nota…</string>
     <string name="done">Fet!</string>
+    <string name="mail_not_changable_still">El canvi de correu electrònic encara no està suportat, pròximament en noves versions.</string>
 </resources>
