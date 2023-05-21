@@ -21,6 +21,9 @@ class UserAuth(
 
         fun invalidPassword(password: String) =
             password.length < 8
+        
+        fun mismatchingPasswords(password: String, passwordConfirmation: String) =
+            password != passwordConfirmation
     }
 
     suspend fun registerUser(mail: String, password: String): Pair<Boolean, String> {

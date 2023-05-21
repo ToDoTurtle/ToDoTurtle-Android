@@ -38,6 +38,8 @@
     <string name="sign_up_mail_error">Mail must have a valid format</string>
     <string name="sign_up_password">Password</string>
     <string name="sign_up_password_error">Password must be at least 8 characters long</string>
+    <string name="sign_up_password_confirm">Confirm your password</string>
+    <string name="sign_up_password_confirm_error">Both password must match</string>
     <string name="sign_up_confirm">Sign up</string>
     <string name="profile_login_sign_up_question">Don\'t have an account?</string>
     <string name="sign_up_button">Sign up</string>

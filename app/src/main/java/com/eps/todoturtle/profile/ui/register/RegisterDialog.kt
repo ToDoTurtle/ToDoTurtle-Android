@@ -42,6 +42,8 @@ fun RegisterDialog(
     var errorMessage by rememberSaveable { mutableStateOf(context.getString(R.string.sign_up_mail_error)) }
     var password by rememberSaveable { mutableStateOf("") }
     var passwordError by rememberSaveable { mutableStateOf(false) }
+    var passwordConfirmation by rememberSaveable { mutableStateOf("") }
+    var passwordConfirmationError by rememberSaveable { mutableStateOf(false) }
 
     Dialog(onDismissRequest = { onDismiss() }) {
         Card(
@@ -72,6 +74,15 @@ fun RegisterDialog(
                     password = it
                     passwordError = false
                 }
+                PasswordTextField(
+                    label = R.string.sign_up_password_confirm,
+                    errorMessage = stringResource(id = R.string.sign_up_password_confirm_error),
+                    password = passwordConfirmation,
+                    error = passwordConfirmationError,
+                ) {
+                    passwordConfirmation = it
+                    passwordConfirmationError = false
+                }
                 AdditionalSignUpButton(userAuth) {
                     onDismiss()
                     onSuccessfulRegister()
@@ -84,6 +95,10 @@ fun RegisterDialog(
                     }
                     if (UserAuth.invalidPassword(password)) {
                         passwordError = true
+                        return@SignUpButton
+                    }
+                    if (UserAuth.mismatchingPasswords(password, passwordConfirmation)) {
+                        passwordConfirmationError = true
                         return@SignUpButton
                     }
                     scope.launch {

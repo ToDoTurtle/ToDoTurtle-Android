@@ -158,6 +158,8 @@
     <string name="go_home">Anar a la pàgina inicial</string>
     <string name="profile_login_sign_up_question">No tens un compte?</string>
     <string name="hostage_type_not_implemented">No implementat! Properament en noves versions</string>
+    <string name="sign_up_password_confirm">Confirma la teva contrasenya</string>
+    <string name="sign_up_password_confirm_error">Ambdues contrasenyes han de coincidir</string>
     <string name="nfc_tag_read_ngenerating_note">NFC llegit. \n Generant nota…</string>
     <string name="done">Fet!</string>
 </resources>
