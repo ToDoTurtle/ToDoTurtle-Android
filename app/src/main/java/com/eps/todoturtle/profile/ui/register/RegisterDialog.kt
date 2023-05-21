@@ -87,11 +87,12 @@ fun RegisterDialog(
                         return@SignUpButton
                     }
                     scope.launch {
-                        val registerResult = userAuth.registerUser(mail, password)
-                        if (registerResult.first) {
-                            errorMessage = registerResult.second
+                        val (success, error) = userAuth.registerUser(mail, password)
+                        if (!success) {
+                            errorMessage = error
                         } else {
                             onDismiss()
+                            onSuccessfulRegister()
                         }
                     }
                 }
