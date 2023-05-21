@@ -81,4 +81,6 @@
     <string name="fine_permanently_declined">Parece que has rechazado permanentemente el permiso de ubicación precisa. Ve a la configuración de la aplicación para otorgarlo.</string>
     <string name="aboutus_text">https://gist.github.com/oriolagobat/786ac67637baa60ce4e4ad79c88de533/raw/9bdc4ce467f469b5d865d55dac4aec478413473c/about_us.txt</string>
     <string name="aboutus_uri">https://todoturtle-appmedia.s3.eu-south-2.amazonaws.com/todoturtle-aboutus-es.txt</string>
+    <string name="nfc_tag_read_ngenerating_note">NFC leído. \n Generando nota…</string>
+    <string name="done">¡Hecho!</string>
 </resources>

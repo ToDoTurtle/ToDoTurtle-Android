@@ -98,4 +98,6 @@
     <string name="fine_permanently_declined">It seems like you permanently declined fine location permission. Go to app settings to grant it.</string>
     <string name="fine_permision_reason">This app needs access to your fine location so it can add your precise location to a note.</string>
     <string name="aboutus_text">https://gist.github.com/oriolagobat/786ac67637baa60ce4e4ad79c88de533/raw/9bdc4ce467f469b5d865d55dac4aec478413473c/about_us.txt</string>
+    <string name="nfc_tag_read_ngenerating_note">NFC tag read. \n Generating note…</string>
+    <string name="done">Done!</string>
 </resources>
