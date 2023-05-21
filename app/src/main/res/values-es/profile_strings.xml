@@ -14,4 +14,5 @@
     <string name="google_desc">Icono de Google, para realizar el registro con Github</string>
     <string name="github_desc">Icono de Github, para realizar el registro con Github</string>
     <string name="profile_login_sign_up_question">¿No tienes una cuenta?</string>
+    <string name="hostage_type_not_implemented">¡No implementado! Proximamente en nuevas versiones</string>
 </resources>

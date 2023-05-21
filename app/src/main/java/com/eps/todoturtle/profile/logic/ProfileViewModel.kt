@@ -2,6 +2,7 @@ package com.eps.todoturtle.profile.logic
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.eps.todoturtle.R
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.runBlocking
 
 class ProfileViewModel(
-    context: Context,
+    private val context: Context,
     userId: String,
 ) : ViewModel() {
     private var storage: DetailsPictureStorage
@@ -56,6 +57,11 @@ class ProfileViewModel(
                 hostage = newHostageType,
             )
         }
+        Toast.makeText(
+            context,
+            context.getString(R.string.hostage_type_not_implemented),
+            Toast.LENGTH_SHORT,
+        ).show()
     }
 
     fun changeProfilePicture(newProfilePicture: Bitmap) {

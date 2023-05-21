@@ -12,6 +12,7 @@
     <!--    Hostage types    -->
     <string name="profile_self_hosted">Self-hosted</string>
     <string name="profile_firebase">Firebase hosting</string>
+    <string name="hostage_type_not_implemented">Not implemented!. Coming up in future releases</string>
 
     <!--    Image options    -->
     <string name="profile_chosen_image">Chosen image</string>

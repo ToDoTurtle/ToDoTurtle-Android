@@ -157,4 +157,5 @@
     <string name="firebase_messaging_token_error">No s\'ha pogut obtenir el token de Firebase. Si us plau, envia un correu als programadors de l\'aplicació</string>
     <string name="go_home">Anar a la pàgina inicial</string>
     <string name="profile_login_sign_up_question">No tens un compte?</string>
+    <string name="hostage_type_not_implemented">No implementat! Properament en noves versions</string>
 </resources>
