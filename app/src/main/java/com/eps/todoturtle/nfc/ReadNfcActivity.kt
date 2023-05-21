@@ -4,6 +4,7 @@ import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +15,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,8 +44,7 @@ import com.eps.todoturtle.ui.theme.ToDoTurtleTheme
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
@@ -93,13 +99,31 @@ class ReadNfcActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
+                    var isTagRead by rememberSaveable { mutableStateOf(false) }
+                    if (!isTagRead) {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Text(text = "Reading NFC tag")
+                        }
+                    } else ShowAction(action!!)
+
                     RequestPermissionContext(locationPermissionRequester) {
-                        if (!hasLocationPermission()) {
-                            requestPermissions()
-                        } else if (!isGpsEnabled()) {
-                            showMessageAndFinish(resources.getString(R.string.error_gps_disabled))
-                        } else {
-                            runBlocking(Dispatchers.IO) {
+                        if (action!!.getLocation) {
+                            if (!hasLocationPermission()) {
+                                requestPermissions()
+                            } else if (!isGpsEnabled()) {
+                                showMessageAndFinish(resources.getString(R.string.error_gps_disabled))
+                            }
+                        }
+                    }
+
+                    val coroutineScope = rememberCoroutineScope()
+                    LaunchedEffect(Unit) {
+                        if (action!!.getLocation && hasLocationPermission() && isGpsEnabled()) {
+                            coroutineScope.launch {
                                 val location = if (action!!.getLocation) {
                                     val locationClient = DefaultLocationClient(
                                         applicationContext,
@@ -107,10 +131,12 @@ class ReadNfcActivity : ComponentActivity() {
                                             applicationContext,
                                         ),
                                     )
+                                    Log.e("ReadNfcActivity", "Getting location")
                                     locationClient.getCurrentLocation().await()
                                 } else {
                                     null
                                 }
+                                Log.e("ReadNfcActivity", "Location received")
                                 val note = Note(
                                     identifier = UUID.randomUUID().toString(),
                                     title = action.title,
@@ -121,8 +147,10 @@ class ReadNfcActivity : ComponentActivity() {
                                     isNFCGenerated = true,
                                 )
                                 notesRepository.add(note)
+                                Log.e("ReadNfcActivity", "Note added")
+                                Log.e("ReadNfcActivity", "Showing feedback")
+                                isTagRead = true
                             }
-                            ShowAction(action!!)
                         }
                     }
                 }

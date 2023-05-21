@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.overscroll
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -172,18 +174,19 @@ fun SignUpText(
     buttonText: String,
     onSignInClick: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier.padding(horizontal = 16.dp)
-    ) {
-        Text(
-            text = questionText,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            text = buttonText,
-            modifier = Modifier
-                .padding(start = 4.dp)
-                .clickable { onSignInClick() },
-        )
+    val text = buildAnnotatedString {
+        withStyle(
+            MaterialTheme.typography.bodySmall.toSpanStyle(),
+        ) {
+            append(questionText)
+        }
+        withStyle(
+            MaterialTheme.typography.bodySmall.copy(
+                color = MaterialTheme.colorScheme.onSurface,
+            ).toSpanStyle(),
+        ) {
+            append(" $buttonText")
+        }
     }
+    BasicText(text = text, modifier = Modifier.padding(horizontal = 16.dp).clickable { onSignInClick() })
 }
