@@ -10,6 +10,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.with
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -27,7 +28,7 @@ fun NoteList(
 ) {
     NoteListContainer(inHistory = inHistory) {
         LazyColumn(
-            modifier = Modifier.animateContentSize(),
+            modifier = Modifier.fillMaxHeight()
         ) {
             items(
                 items = notes,
