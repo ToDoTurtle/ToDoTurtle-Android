@@ -1,11 +1,13 @@
 package com.eps.todoturtle.profile.ui.details
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.logic.ProfileViewModel
@@ -37,6 +39,7 @@ fun DetailsContent(
     onSignOutClick: () -> Unit,
 ) {
     val details by profileViewModel.details.collectAsState()
+    val context = LocalContext.current
 
     ProfilePicture(
         hasPermissions = hasPermissions,
@@ -45,11 +48,13 @@ fun DetailsContent(
     ) {
         profileViewModel.changeProfilePicture(it)
     }
-    ProfileOutlinedText(details.username, R.string.profile_username, topPadding = 15) {
-        profileViewModel.changeUsername(it)
-    }
     ProfileOutlinedText(details.mail, R.string.profile_mail, topPadding = 15) {
-        profileViewModel.changeMail(it)
+        // profileViewModel.changeMail(it)
+        Toast.makeText(
+            context,
+            context.getString(R.string.mail_not_changable_still),
+            Toast.LENGTH_SHORT,
+        ).show()
     }
     HostageTypeProfileField(details.hostage) {
         profileViewModel.changeHostageType(it)
