@@ -89,6 +89,7 @@ fun RegisterDialog(
                     scope.launch {
                         val (success, error) = userAuth.registerUser(mail, password)
                         if (!success) {
+                            mailError = true
                             errorMessage = error
                         } else {
                             onDismiss()
