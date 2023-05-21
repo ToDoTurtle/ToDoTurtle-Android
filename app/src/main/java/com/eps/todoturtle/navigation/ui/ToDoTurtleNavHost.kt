@@ -101,6 +101,7 @@ fun NavGraphBuilder.profile(
             DetailsUI(
                 requestPermissions = { requestPermissions() },
                 hasPermissions = { hasCameraPermission() },
+                userAuth = userAuth,
                 profileViewModel = profileViewModel,
             ) {
                 userAuth.logout()

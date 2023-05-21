@@ -11,18 +11,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.eps.todoturtle.R
 import com.eps.todoturtle.profile.logic.ProfileViewModel
+import com.eps.todoturtle.profile.logic.UserAuth
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
 
 @Composable
 fun DetailsUI(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
+    userAuth: UserAuth,
     profileViewModel: ProfileViewModel,
     onSignOutClick: () -> Unit,
 ) {
     ProfileUI {
         DetailsContent(
             hasPermissions = hasPermissions,
+            userAuth = userAuth,
             requestPermissions = requestPermissions,
             profileViewModel = profileViewModel,
         ) {
@@ -36,6 +39,7 @@ fun DetailsContent(
     hasPermissions: () -> Boolean,
     requestPermissions: () -> Unit,
     profileViewModel: ProfileViewModel,
+    userAuth: UserAuth,
     onSignOutClick: () -> Unit,
 ) {
     val details by profileViewModel.details.collectAsState()
@@ -48,7 +52,7 @@ fun DetailsContent(
     ) {
         profileViewModel.changeProfilePicture(it)
     }
-    ProfileOutlinedText(details.mail, R.string.profile_mail, topPadding = 15) {
+    ProfileOutlinedText(userAuth.getMail(), R.string.profile_mail, topPadding = 15) {
         // profileViewModel.changeMail(it)
         Toast.makeText(
             context,
