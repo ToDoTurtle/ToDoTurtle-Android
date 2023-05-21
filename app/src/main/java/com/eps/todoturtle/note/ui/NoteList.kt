@@ -2,6 +2,7 @@ package com.eps.todoturtle.note.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -25,7 +26,9 @@ fun NoteList(
     onCheckClick: (Note) -> Unit,
 ) {
     NoteListContainer(inHistory = inHistory) {
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.animateContentSize(),
+        ) {
             items(
                 items = notes,
                 key = { it.identifier },

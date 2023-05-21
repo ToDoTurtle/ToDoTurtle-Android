@@ -1,13 +1,15 @@
 package com.eps.todoturtle.profile.ui.login
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +35,7 @@ import com.eps.todoturtle.profile.ui.shared.PasswordTextField
 import com.eps.todoturtle.profile.ui.shared.ProfileUI
 import com.eps.todoturtle.profile.ui.shared.UsernameTextField
 import com.eps.todoturtle.shared.logic.extensions.bitmapFrom
+import com.eps.todoturtle.ui.theme.inactiveOnSecondaryContainer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -62,7 +65,9 @@ fun LoginContent(
     var password by rememberSaveable { mutableStateOf("") }
     var shouldShowSignUp by rememberSaveable { mutableStateOf(false) }
     var shouldShowNetworkDialog by rememberSaveable { mutableStateOf(false) }
-    val networkAvailability by connectionAvailability.collectAsStateWithLifecycle(NetworkAvailability.AVAILABLE)
+    val networkAvailability by connectionAvailability.collectAsStateWithLifecycle(
+        NetworkAvailability.AVAILABLE
+    )
 
     Spacer(modifier = Modifier.size(20.dp))
     CenteredPicture(
@@ -89,7 +94,10 @@ fun LoginContent(
         password = it
         wrongLogin = false
     }
-    SignUpText(text = R.string.sign_up) {
+    SignUpText(
+        questionText = stringResource(id = R.string.profile_login_sign_up_question),
+        buttonText = stringResource(id = R.string.sign_up_button),
+    ) {
         shouldShowSignUp = true
     }
     if (shouldShowSignUp) {
@@ -160,11 +168,22 @@ fun WelcomeMessage() {
 
 @Composable
 fun SignUpText(
-    @StringRes text: Int,
+    questionText: String,
+    buttonText: String,
     onSignInClick: () -> Unit,
 ) {
-    Text(
-        text = stringResource(id = text),
-        modifier = Modifier.clickable { onSignInClick() },
-    )
+    Row(
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
+        Text(
+            text = questionText,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Text(
+            text = buttonText,
+            modifier = Modifier
+                .padding(start = 4.dp)
+                .clickable { onSignInClick() },
+        )
+    }
 }

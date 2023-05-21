@@ -116,8 +116,8 @@
     <string name="sign_up_mail_error">El correu electrònic ha de tenir un format vàlid</string>
     <string name="sign_up_password">Contrasenya</string>
     <string name="sign_up_password_error">La contrasenya ha de tenir un mínim de 8 caràcters</string>
-    <string name="sign_up_confirm">Registrar-se</string>
-    <string name="sign_up">No tens un compte? Registra\'t</string>
+    <string name="sign_up_confirm">Registra\'t</string>
+    <string name="sign_up_button">Registra\'t</string>
     <string name="sign_up_error_registration">Hi ha hagut un problema durant el registre. Assegura\'t de que el teu correu no estigui registrat. Si no és el cas, posa\'t en contacte amb els desenvolupdaors</string>
     <string name="additional_sign_up_error">Hi ha hagut un error durant el registre, posa\'t en contacte amb els desenvolupadors.</string>
     <string name="addtional_sign_ups">O registra\'t amb</string>
@@ -156,4 +156,5 @@
     <string name="device_added_successfully">El dispositiu %s s\'ha afegit correctament. Entra a l\'aplicació per personalitzar-lo</string>
     <string name="firebase_messaging_token_error">No s\'ha pogut obtenir el token de Firebase. Si us plau, envia un correu als programadors de l\'aplicació</string>
     <string name="go_home">Anar a la pàgina inicial</string>
+    <string name="profile_login_sign_up_question">No tens un compte?</string>
 </resources>

@@ -127,7 +127,7 @@ fun NFCDeviceList(
     iconToDrawableConverter: @Composable (Int) -> Drawable?,
 ) {
     LazyColumn(
-        modifier = Modifier.padding(4.dp),
+        modifier = Modifier.padding(horizontal = 24.dp),
     ) {
         items(devices.size) { index ->
             NFCDeviceListItem(
@@ -154,7 +154,7 @@ fun NFCDeviceListItem(
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     Card(
         modifier = Modifier
-            .padding(4.dp)
+            .padding(vertical = 8.dp)
             .combinedClickable(
                 onLongClick = { showBottomSheet.value = true },
             ) { },
