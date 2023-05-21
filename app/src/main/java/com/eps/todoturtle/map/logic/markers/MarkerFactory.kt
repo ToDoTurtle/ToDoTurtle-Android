@@ -19,7 +19,6 @@ object MarkerFactory {
     fun setCurrentMarker(map: MapView) {
         val overlay = MyLocationNewOverlay(map).apply {
             enableMyLocation()
-            enableFollowLocation()
         }
         map.overlays.add(overlay)
     }
